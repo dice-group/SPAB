@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.aksw.spab.exceptions.ParseException;
 import org.aksw.spab.exceptions.PerfectSolutionException;
+import org.aksw.spab.exceptions.SpabException;
 import org.aksw.spab.exceptions.UserInputException;
 import org.aksw.spab.input.Input;
 
@@ -76,8 +77,11 @@ public class Spab {
 
 	/**
 	 * Executes SPAB.
+	 * 
+	 * @throws SpabException
+	 *             on errors in SPAB algorithm.
 	 */
-	public Candidate run() {
+	public Candidate run() throws SpabException {
 
 		// Generate and add first candidate
 		Candidate firstCandidate = new Candidate(null);
