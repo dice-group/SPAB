@@ -15,7 +15,7 @@ import org.jgrapht.graph.DefaultEdge;
  */
 public class CandidateGraph {
 
-	protected int depth = 0;
+	protected int depth = Candidate.START_GENERATION;
 	protected Graph<Candidate, DefaultEdge> graph;
 	protected Candidate root = null;
 

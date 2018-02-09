@@ -40,15 +40,16 @@ public class SpabExample {
 		spab.addPositive(query2);
 		spab.addNegative(query3);
 
-		spab.setLambda(.3f);
+		spab.setLambda(.5f);
 		spab.setMaxIterations(30);
+		spab.setCheckPerfectSolution(true);
 
 		Candidate bestCandidate = spab.run();
 
-		System.out.println("Score of best candidate:      " + bestCandidate.getScore());
-		System.out.println("F-score of best candidate:    " + bestCandidate.getfMeasure());
+		System.out.println("Final score of best candidate: " + bestCandidate.getScore());
+		System.out.println("F-measure of best candidate:   " + bestCandidate.getfMeasure());
 		System.out.println("Generation of best candidate: " + bestCandidate.getGeneration());
-		System.out.println("Generated generations: " + spab.getGraph().getDepth());
+		System.out.println("Generated generations:        " + spab.getGraph().getDepth());
 		System.out.println("Number of remaining candidates in queue: " + spab.getQueue().getQueue().size());
 		System.out.print("Next best scores: ");
 		while (!spab.getQueue().getQueue().isEmpty()) {

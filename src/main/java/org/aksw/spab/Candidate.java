@@ -15,7 +15,7 @@ import org.aksw.spab.input.InputQuery;
  */
 public class Candidate {
 
-	protected final static int START_GENERATION = 1;
+	public final static int START_GENERATION = 0;
 
 	protected Float fMeasure = null;
 	protected int generation;
@@ -72,6 +72,7 @@ public class Candidate {
 
 			float precision;
 			float precisionDenomiator = truePositives + falsePositives;
+			// If division by zero, set fraction to 1
 			if (precisionDenomiator == 0f) {
 				precision = 1f;
 			} else {
@@ -80,13 +81,15 @@ public class Candidate {
 
 			float recall;
 			float recallDenominator = truePositives + falseNegatives;
+			// If division by zero, set fraction to 1
 			if (recallDenominator == 0f) {
 				recall = 1f;
 			} else {
 				recall = truePositives / recallDenominator;
 			}
 
-			if (precision + recall == 0f) {
+			// If no precision and no recall given, set F-measure to 0
+			if (precision == 0f && recall == 0f) {
 				fMeasure = 0f;
 			} else {
 				fMeasure = 2f * ((precision * recall) / (precision + recall));
@@ -94,11 +97,17 @@ public class Candidate {
 		}
 
 		// Calculate score
-		float lengthRelation = getGeneration() / maxDepth;
+		float lengthRelation;
+		// If only one node in graph, set maximum bonus
+		if (maxDepth == 0) {
+			lengthRelation = 0;
+		} else {
+			lengthRelation = getGeneration() / maxDepth;
+		}
 		score = (1f - input.getLambda()) * fMeasure + input.getLambda() * (1f - lengthRelation);
 
-		// Check for perfect solution
-		if (firstCall && falsePositives == 0 && falseNegatives == 0) {
+		// At first call of this method: Check for perfect solution
+		if (input.isPerfectSolutionChecked() && firstCall && falsePositives == 0 && falseNegatives == 0) {
 			throw new PerfectSolutionException(this);
 		}
 	}

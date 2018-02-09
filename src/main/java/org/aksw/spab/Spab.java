@@ -11,6 +11,12 @@ import org.aksw.spab.input.Input;
 /**
  * SPAB: SPARQL Benchmark Query Generator
  * 
+ * Configuration: Use the set-methods.
+ * 
+ * Input: Use the add-methods.
+ * 
+ * Execution: Use the run-method.
+ * 
  * @author Adrian Wilke
  */
 public class Spab {
@@ -80,6 +86,8 @@ public class Spab {
 	/**
 	 * Executes SPAB.
 	 * 
+	 * @return The best candidate found.
+	 * 
 	 * @throws SpabException
 	 *             on errors in SPAB algorithm.
 	 */
@@ -97,9 +105,22 @@ public class Spab {
 	}
 
 	/**
+	 * Sets, if algorithm should stop on discovery of perfect solution. If true, the
+	 * overall execution time can become better. If false, the final score of the
+	 * best candidate can become better.
+	 * 
+	 * Default value: {@link Input#CHECK_PERFECT_SOLUTION}
+	 */
+	public void setCheckPerfectSolution(boolean checkPerfectSolution) {
+		input.checkPerfectSolution(checkPerfectSolution);
+	}
+
+	/**
 	 * Checks and sets lambda. Has to be 0 <= L < 1. If lambda is 0, only the
 	 * f-measure of candidates is used. With higher values, shorter candidates will
 	 * be rated better.
+	 * 
+	 * Default value: {@link Input#LAMBDA}
 	 * 
 	 * @throws UserInputException
 	 *             if lambda is not in scope.
@@ -109,7 +130,9 @@ public class Spab {
 	}
 
 	/**
-	 * Set maximum number of iterations
+	 * Set maximum number of iterations.
+	 * 
+	 * Default value: {@link Input#MAX_ITERATIONS}
 	 */
 	public void setMaxIterations(int maxIterations) {
 		input.setMaxIterations(maxIterations);

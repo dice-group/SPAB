@@ -19,8 +19,13 @@ import org.topbraid.spin.system.SPINModuleRegistry;
  */
 public class Input {
 
-	protected float lambda = 0;
-	protected int maxIterations = 10;
+	public static final boolean CHECK_PERFECT_SOLUTION = true;
+	public static final float LAMBDA = 0.2f;
+	public static final int MAX_ITERATIONS = 10;
+
+	protected boolean checkPerfectSolution = CHECK_PERFECT_SOLUTION;
+	protected float lambda = LAMBDA;
+	protected int maxIterations = MAX_ITERATIONS;
 
 	protected Model model;
 
@@ -72,6 +77,15 @@ public class Input {
 	}
 
 	/**
+	 * Sets, if algorithm should stop on discovery of perfect solution. If true, the
+	 * overall execution time can become better. If false, the final score of the
+	 * best candidate can become better.
+	 */
+	public void checkPerfectSolution(boolean checkPerfectSolution) {
+		this.checkPerfectSolution = checkPerfectSolution;
+	}
+
+	/**
 	 * Gets lambda.
 	 */
 	public float getLambda() {
@@ -104,6 +118,13 @@ public class Input {
 	 */
 	public List<InputQuery> getPositives() {
 		return positives;
+	}
+
+	/**
+	 * Gets info, if algorithm should stop on discovery of perfect solution.
+	 */
+	public boolean isPerfectSolutionChecked() {
+		return checkPerfectSolution;
 	}
 
 	/**
