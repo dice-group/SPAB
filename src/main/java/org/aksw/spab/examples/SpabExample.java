@@ -12,12 +12,6 @@ public class SpabExample {
 
 	public static final boolean TEST_SPAB = true;
 
-	public String query1 = "SELECT ?x ?name\n" + "WHERE  { ?x foaf:name ?name }";
-	public String query2 = "SELECT ?name ?mbox\n" + "WHERE\n" + "  { ?x foaf:name ?name .\n"
-			+ "    ?x foaf:mbox ?mbox }";
-	public String query3 = "SELECT ?title\n" + "WHERE\n" + "{\n"
-			+ "  <http://example.org/book/book1> <http://purl.org/dc/elements/1.1/title> ?title .\n" + "}    ";
-
 	public static void main(String[] args) throws Exception {
 		SpabExample example = new SpabExample();
 
@@ -26,6 +20,13 @@ public class SpabExample {
 		}
 	}
 
+	public String query1 = "SELECT ?x ?name\n" + "WHERE  { ?x foaf:name ?name }";
+	public String query2 = "SELECT ?name ?mbox\n" + "WHERE\n" + "  { ?x foaf:name ?name .\n"
+			+ "    ?x foaf:mbox ?mbox }";
+
+	public String query3 = "SELECT ?title\n" + "WHERE\n" + "{\n"
+			+ "  <http://example.org/book/book1> <http://purl.org/dc/elements/1.1/title> ?title .\n" + "}    ";
+
 	public void testSpab() throws Exception {
 
 		Spab spab = new Spab();
@@ -33,12 +34,10 @@ public class SpabExample {
 
 		spab.addPositive(query1);
 		spab.addPositive(query2);
+		spab.addNegative(query3);
+
 		spab.addPositive(query1);
 		spab.addPositive(query2);
-		spab.addPositive(query1);
-		spab.addNegative(query3);
-		spab.addNegative(query3);
-		spab.addNegative(query3);
 		spab.addNegative(query3);
 
 		spab.setLambda(.3f);
@@ -46,11 +45,16 @@ public class SpabExample {
 
 		Candidate bestCandidate = spab.run();
 
-		System.out.println("Best score: " + bestCandidate.getScore());
-		System.out.println("Number of candidates: " + spab.getGraph().getGraph().vertexSet().size());
+		System.out.println("Score of best candidate:      " + bestCandidate.getScore());
+		System.out.println("F-score of best candidate:    " + bestCandidate.getfMeasure());
+		System.out.println("Generation of best candidate: " + bestCandidate.getGeneration());
+		System.out.println("Generated generations: " + spab.getGraph().getDepth());
+		System.out.println("Number of remaining candidates in queue: " + spab.getQueue().getQueue().size());
 		System.out.print("Next best scores: ");
 		while (!spab.getQueue().getQueue().isEmpty()) {
-			System.out.print(spab.getQueue().getQueue().poll().getScore() + " ");
+			System.out.print(spab.getQueue().getBestCandidate().getScore() + " ");
 		}
+		System.out.println();
+		System.out.println("Number generated candidates: " + spab.getGraph().getAllCandidates().size());
 	}
 }

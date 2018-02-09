@@ -31,57 +31,34 @@ import org.topbraid.spin.arq.ARQFactory;
  */
 public class InputQuery {
 
-	final static private boolean DEBUG_STATEMENTS = false;
-	final static private boolean DEBUG_TRIPLES = false;
-	final static private String LINE_SEPARATOR = System.getProperty("line.separator");
+	final static protected boolean DEBUG_STATEMENTS = false;
+	final static protected boolean DEBUG_TRIPLES = false;
+	final static protected String LINE_SEPARATOR = System.getProperty("line.separator");
 
-	// The original input
-	final private String originalQuery;
-
-	// The set this query belongs to
-	final private Input inputSet;
-
-	// The model of the query
-	private Model model;
-
-	// The parsed query
-	private Query query;
+	// Duration of creating the model in milliseconds
+	protected int creationMillis = 0;
 
 	// Hierarchical representation of the query
-	private InputGraph graph;
+	protected InputGraph graph;
 
-	private String queryCache = null;
+	// The set this query belongs to
+	final protected Input inputSet;
+
+	// The model of the query
+	protected Model model;
+
+	// The original input
+	final protected String originalQuery;
+
+	// The parsed query
+	protected Query query;
+
+	// Cache for {@link #getQueryWithoutPrefixes()}
+	protected String queryWithoutPrefixesCache = null;
 
 	public InputQuery(String sparqlQuery, Input inputSet) {
 		this.originalQuery = sparqlQuery;
 		this.inputSet = inputSet;
-	}
-
-	/**
-	 * Creates models/representations for the query.
-	 * 
-	 * @throws ParseException
-	 *             if root element in the statement-representation of the query is
-	 *             not found or if non-expected triples are found
-	 */
-	public void createModel() throws ParseException {
-
-		// Create model
-		model = ModelFactory.createDefaultModel();
-		Iterator<Entry<String, String>> i = inputSet.getNamespaces().entrySet().iterator();
-		while (i.hasNext()) {
-			Entry<String, String> nameToUri = i.next();
-			model.setNsPrefix(nameToUri.getKey(), nameToUri.getValue());
-		}
-
-		// Create SPIN query
-		// Changes model, which is important for building the graph
-		query = ARQFactory.get().createQuery(model, originalQuery);
-		ARQ2SPIN arq2spin = new ARQ2SPIN(model);
-		arq2spin.createQuery(query, null);
-
-		// Build up graph from statements in model
-		createGraph();
 	}
 
 	/**
@@ -91,15 +68,15 @@ public class InputQuery {
 	 *             if root element in the statement-representation of the query is
 	 *             not found
 	 */
-	private void createGraph() throws ParseException {
+	protected void createGraph() throws ParseException {
 
 		graph = new InputGraph();
 
 		// Container for subject-predicate-object-triples
 		class Triple {
-			public Resource subject;
-			public Property predicate;
 			public RDFNode object;
+			public Property predicate;
+			public Resource subject;
 
 			public Triple(Resource subject, Property predicate, RDFNode object) {
 				this.subject = subject;
@@ -185,19 +162,41 @@ public class InputQuery {
 	}
 
 	/**
-	 * Gets SPIN representation in Turtle syntax.
+	 * Creates models/representations for the query.
+	 * 
+	 * @throws ParseException
+	 *             if root element in the statement-representation of the query is
+	 *             not found or if non-expected triples are found
 	 */
-	public String getSpin() {
-		Writer writer = new StringWriter();
-		model.write(writer, FileUtils.langTurtle);
-		return writer.toString();
+	public void createModel() throws ParseException {
+
+		long time = System.currentTimeMillis();
+
+		// Create model
+		model = ModelFactory.createDefaultModel();
+		Iterator<Entry<String, String>> i = inputSet.getNamespaces().entrySet().iterator();
+		while (i.hasNext()) {
+			Entry<String, String> nameToUri = i.next();
+			model.setNsPrefix(nameToUri.getKey(), nameToUri.getValue());
+		}
+
+		// Create SPIN query
+		// Changes model, which is important for building the graph
+		query = ARQFactory.get().createQuery(model, originalQuery);
+		ARQ2SPIN arq2spin = new ARQ2SPIN(model);
+		arq2spin.createQuery(query, null);
+
+		// Build up graph from statements in model
+		createGraph();
+
+		creationMillis = Math.toIntExact(System.currentTimeMillis() - time);
 	}
 
 	/**
-	 * Gets the SPARQL query.
+	 * Gets duration of creation of the model in milliseconds
 	 */
-	public Query getQuery() {
-		return query;
+	public int getCreationMillis() {
+		return creationMillis;
 	}
 
 	/**
@@ -208,10 +207,17 @@ public class InputQuery {
 	}
 
 	/**
+	 * Gets the SPARQL query.
+	 */
+	public Query getQuery() {
+		return query;
+	}
+
+	/**
 	 * Removes prefixes in SPARQL query and returns resulting string.
 	 */
 	public String getQueryWithoutPrefixes() {
-		if (queryCache == null) {
+		if (queryWithoutPrefixesCache == null) {
 			String lines[] = getQuery().toString().split("\\r?\\n");
 			boolean firstLine = true;
 			StringBuffer sb = new StringBuffer();
@@ -225,8 +231,18 @@ public class InputQuery {
 					sb.append(line);
 				}
 			}
-			queryCache = sb.toString();
+			queryWithoutPrefixesCache = sb.toString();
 		}
-		return queryCache;
+		return queryWithoutPrefixesCache;
 	}
+
+	/**
+	 * Gets SPIN representation in Turtle syntax.
+	 */
+	public String getSpin() {
+		Writer writer = new StringWriter();
+		model.write(writer, FileUtils.langTurtle);
+		return writer.toString();
+	}
+
 }

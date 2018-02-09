@@ -10,8 +10,8 @@ import org.jgrapht.graph.DefaultEdge;
  */
 public class InputEdge extends DefaultEdge {
 
-	private static final long serialVersionUID = 1L;
-	private Property predicate;
+	protected static final long serialVersionUID = 1L;
+	protected Property predicate;
 
 	/**
 	 * Initializes edge.

@@ -11,7 +11,7 @@ import java.util.PriorityQueue;
  */
 public class CandidateQueue {
 
-	PriorityQueue<Candidate> queue;
+	protected PriorityQueue<Candidate> queue;
 
 	/**
 	 * Initializes queue.
@@ -32,10 +32,18 @@ public class CandidateQueue {
 	}
 
 	/**
-	 * Retrieves and removes head of queue, or returns null if queue is empty.
+	 * Gets best candidate (which is the head of the underlying priority queue) and
+	 * removes it from queue, or returns null if queue is empty.
 	 */
-	public Candidate poll() {
+	public Candidate getBestCandidate() {
 		return queue.poll();
+	}
+
+	/**
+	 * Gets underlying queue.
+	 */
+	public PriorityQueue<Candidate> getQueue() {
+		return queue;
 	}
 
 	/**
@@ -49,12 +57,5 @@ public class CandidateQueue {
 			}
 		});
 		return candidates;
-	}
-
-	/**
-	 * Gets underlying queue.
-	 */
-	public PriorityQueue<Candidate> getQueue() {
-		return queue;
 	}
 }

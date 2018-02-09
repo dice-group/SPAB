@@ -12,7 +12,7 @@ import org.apache.jena.rdf.model.RDFNode;
  */
 public class InputVertex {
 
-	RDFNode resource;
+	protected RDFNode resource;
 
 	/**
 	 * Initializes vertex.

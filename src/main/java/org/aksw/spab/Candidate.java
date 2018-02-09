@@ -15,47 +15,27 @@ import org.aksw.spab.input.InputQuery;
  */
 public class Candidate {
 
-	private int generation;
-	private Float score = null;
-	private Float fMeasure = null;
+	protected final static int START_GENERATION = 1;
+
+	protected Float fMeasure = null;
+	protected int generation;
+	protected Float score = null;
+
+	/**
+	 * Initializes candidate, which has no parent
+	 */
+	public Candidate() {
+		this(null);
+	}
 
 	/**
 	 * Initializes candidate by setting generation depending on parent.
 	 */
 	public Candidate(Candidate parent) {
 		if (parent == null) {
-			generation = 1;
+			generation = START_GENERATION;
 		} else {
 			generation = parent.getGeneration() + 1;
-		}
-	}
-
-	/**
-	 * Generates children for this candidate.
-	 */
-	public List<Candidate> generateChildren() {
-
-		List<Candidate> list = new LinkedList<Candidate>();
-
-		// TODO: Please, get more realistic.
-		int numberOfCandidates = ThreadLocalRandom.current().nextInt(1, 3 + 1);
-		for (int i = 0; i < numberOfCandidates; i++) {
-			Candidate candidate = new Candidate(this);
-			list.add(candidate);
-		}
-		return list;
-	}
-
-	/**
-	 * Checks, if regular expression of candidate matches query string.
-	 */
-	public boolean matches(String query) {
-
-		// TODO: Somewhat more deterministic, please ...
-		if (Math.random() < .3) {
-			return true;
-		} else {
-			return false;
 		}
 	}
 
@@ -67,12 +47,15 @@ public class Candidate {
 	 */
 	public void calculateScore(Input input, int maxDepth) throws PerfectSolutionException {
 
+		boolean firstCall = false;
+		int truePositives = 0;
+		int falsePositives = 0;
+		int falseNegatives = 0;
+
 		// Input and matching-method never changes. f-Measure can be cached.
 		if (fMeasure == null) {
 
-			int truePositives = 0;
-			int falsePositives = 0;
-			int falseNegatives = 0;
+			firstCall = true;
 
 			for (InputQuery inputQuery : input.getPositives()) {
 				if (matches(inputQuery.getQueryWithoutPrefixes())) {
@@ -85,12 +68,6 @@ public class Candidate {
 				if (matches(inputQuery.getQueryWithoutPrefixes())) {
 					falsePositives++;
 				}
-			}
-
-			if (falsePositives == 0 && falseNegatives == 0) {
-				fMeasure = 1f;
-				score = 1f;
-				throw new PerfectSolutionException(this);
 			}
 
 			float precision;
@@ -116,8 +93,37 @@ public class Candidate {
 			}
 		}
 
+		// Calculate score
 		float lengthRelation = getGeneration() / maxDepth;
 		score = (1f - input.getLambda()) * fMeasure + input.getLambda() * (1f - lengthRelation);
+
+		// Check for perfect solution
+		if (firstCall && falsePositives == 0 && falseNegatives == 0) {
+			throw new PerfectSolutionException(this);
+		}
+	}
+
+	/**
+	 * Generates children for this candidate.
+	 */
+	public List<Candidate> generateChildren() {
+
+		List<Candidate> list = new LinkedList<Candidate>();
+
+		// TODO: Please, get more realistic.
+		int numberOfCandidates = ThreadLocalRandom.current().nextInt(1, 3 + 1);
+		for (int i = 0; i < numberOfCandidates; i++) {
+			Candidate candidate = new Candidate(this);
+			list.add(candidate);
+		}
+		return list;
+	}
+
+	/**
+	 * Gets the F-measure (F-score, F1 score) of candidate
+	 */
+	public Float getfMeasure() {
+		return fMeasure;
 	}
 
 	/**
@@ -133,5 +139,18 @@ public class Candidate {
 	 */
 	public float getScore() {
 		return score;
+	}
+
+	/**
+	 * Checks, if regular expression of candidate matches query string.
+	 */
+	public boolean matches(String query) {
+
+		// TODO: Somewhat more deterministic, please ...
+		if (Math.random() < .5) {
+			return true;
+		} else {
+			return false;
+		}
 	}
 }

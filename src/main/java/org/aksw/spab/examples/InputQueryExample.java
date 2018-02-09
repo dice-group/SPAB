@@ -12,9 +12,6 @@ public class InputQueryExample {
 
 	public static final boolean TEST_INPUT_QUERY = true;
 
-	public String exampleQuery = "SELECT ?person\n" + "WHERE {\n" + " ?person a rdf:Person .\n"
-			+ " ?person rdf:age ?age .\n" + " FILTER (?age > 18) .\n" + "}";
-
 	public static void main(String[] args) throws Exception {
 		InputQueryExample example = new InputQueryExample();
 
@@ -23,6 +20,9 @@ public class InputQueryExample {
 			example.testInputQuery();
 		}
 	}
+
+	public String exampleQuery = "SELECT ?person\n" + "WHERE {\n" + " ?person a rdf:Person .\n"
+			+ " ?person rdf:age ?age .\n" + " FILTER (?age > 18) .\n" + "}";
 
 	public void testInputQuery() throws Exception {
 

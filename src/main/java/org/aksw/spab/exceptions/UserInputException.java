@@ -7,7 +7,7 @@ package org.aksw.spab.exceptions;
  */
 public class UserInputException extends Exception {
 
-	private static final long serialVersionUID = 1L;
+	protected static final long serialVersionUID = 1L;
 
 	public UserInputException(String message) {
 		super(message);

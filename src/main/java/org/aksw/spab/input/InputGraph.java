@@ -14,8 +14,8 @@ import org.jgrapht.graph.DefaultDirectedGraph;
  */
 public class InputGraph {
 
-	private Graph<InputVertex, InputEdge> graph;
-	private InputVertex root;
+	protected Graph<InputVertex, InputEdge> graph;
+	protected InputVertex root;
 
 	/**
 	 * Initializes graph and creates root vertex.
@@ -61,7 +61,7 @@ public class InputGraph {
 	/**
 	 * Recursively builds string for vertex.
 	 */
-	private StringBuilder toString(InputVertex vertex, StringBuilder sb, int indent) {
+	protected StringBuilder toString(InputVertex vertex, StringBuilder sb, int indent) {
 
 		if (vertex.resource != null) {
 			sb.append("\n");

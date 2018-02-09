@@ -19,13 +19,13 @@ import org.topbraid.spin.system.SPINModuleRegistry;
  */
 public class Input {
 
-	private List<InputQuery> positives;
-	private List<InputQuery> negatives;
+	protected float lambda = 0;
+	protected int maxIterations = 10;
 
-	private Model model;
+	protected Model model;
 
-	private float lambda = 0;
-	private int maxIterations = 10;
+	protected List<InputQuery> negatives;
+	protected List<InputQuery> positives;
 
 	/**
 	 * Initializes model and sets namespace prefixes for RDF, RDFS, and SPIN.
@@ -48,18 +48,6 @@ public class Input {
 	}
 
 	/**
-	 * Adds query to set of positive inputs.
-	 * 
-	 * @throws ParseException
-	 *             if query can not be parsed
-	 */
-	public void addPositive(String sparqlQuery) throws ParseException {
-		InputQuery inputQuery = new InputQuery(sparqlQuery, this);
-		inputQuery.createModel();
-		positives.add(positives.size(), inputQuery);
-	}
-
-	/**
 	 * Adds query to set of negative inputs.
 	 * 
 	 * @throws ParseException
@@ -72,23 +60,15 @@ public class Input {
 	}
 
 	/**
-	 * Checks and sets lambda.
+	 * Adds query to set of positive inputs.
 	 * 
-	 * @throws UserInputException
-	 *             if lambda is not in scope.
+	 * @throws ParseException
+	 *             if query can not be parsed
 	 */
-	public void setLambda(float lambda) throws UserInputException {
-		if (lambda < 0 || lambda >= 1) {
-			throw new UserInputException("Lambda has to be 0 <= L < 1. Given value: " + lambda);
-		}
-		this.lambda = lambda;
-	}
-
-	/**
-	 * Set maximum number of iterations
-	 */
-	public void setMaxIterations(int maxIterations) {
-		this.maxIterations = maxIterations;
+	public void addPositive(String sparqlQuery) throws ParseException {
+		InputQuery inputQuery = new InputQuery(sparqlQuery, this);
+		inputQuery.createModel();
+		positives.add(positives.size(), inputQuery);
 	}
 
 	/**
@@ -113,6 +93,13 @@ public class Input {
 	}
 
 	/**
+	 * Gets set of negatie inputs.
+	 */
+	public List<InputQuery> getNegatives() {
+		return negatives;
+	}
+
+	/**
 	 * Gets set of positive inputs.
 	 */
 	public List<InputQuery> getPositives() {
@@ -120,9 +107,24 @@ public class Input {
 	}
 
 	/**
-	 * Gets set of negatie inputs.
+	 * Checks and sets lambda. Has to be 0 <= L < 1. If lambda is 0, only the
+	 * f-measure of candidates is used. With higher values, shorter candidates will
+	 * be rated better.
+	 * 
+	 * @throws UserInputException
+	 *             if lambda is not in scope.
 	 */
-	public List<InputQuery> getNegatives() {
-		return negatives;
+	public void setLambda(float lambda) throws UserInputException {
+		if (lambda < 0 || lambda >= 1) {
+			throw new UserInputException("Lambda has to be 0 <= L < 1. Given value: " + lambda);
+		}
+		this.lambda = lambda;
+	}
+
+	/**
+	 * Set maximum number of iterations
+	 */
+	public void setMaxIterations(int maxIterations) {
+		this.maxIterations = maxIterations;
 	}
 }

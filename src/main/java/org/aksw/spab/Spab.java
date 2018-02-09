@@ -15,9 +15,9 @@ import org.aksw.spab.input.Input;
  */
 public class Spab {
 
-	private Input input;
-	private CandidateGraph graph;
-	private CandidateQueue queue;
+	protected CandidateGraph graph;
+	protected Input input;
+	protected CandidateQueue queue;
 
 	/**
 	 * Initializes SPAB.
@@ -37,6 +37,16 @@ public class Spab {
 	}
 
 	/**
+	 * Adds query to set of negative inputs.
+	 * 
+	 * @throws ParseException
+	 *             if query can not be parsed
+	 */
+	public void addNegative(String sparqlQuery) throws ParseException {
+		input.addNegative(sparqlQuery);
+	}
+
+	/**
 	 * Adds query to set of positive inputs.
 	 * 
 	 * @throws ParseException
@@ -47,13 +57,43 @@ public class Spab {
 	}
 
 	/**
-	 * Adds query to set of negative inputs.
-	 * 
-	 * @throws ParseException
-	 *             if query can not be parsed
+	 * Gets candidate graph.
 	 */
-	public void addNegative(String sparqlQuery) throws ParseException {
-		input.addNegative(sparqlQuery);
+	public CandidateGraph getGraph() {
+		return graph;
+	}
+
+	/**
+	 * Gets input container.
+	 */
+	public Input getInput() {
+		return input;
+	}
+
+	/**
+	 * Gets candidate priority queue.
+	 */
+	public CandidateQueue getQueue() {
+		return queue;
+	}
+
+	/**
+	 * Executes SPAB.
+	 * 
+	 * @throws SpabException
+	 *             on errors in SPAB algorithm.
+	 */
+	public Candidate run() throws SpabException {
+		try {
+
+			// Run for maximum number of iterations
+			return spab();
+
+		} catch (PerfectSolutionException e) {
+
+			// Perfect candidate was found before reaching maximum number of iterations
+			return e.getCandidate();
+		}
 	}
 
 	/**
@@ -80,79 +120,50 @@ public class Spab {
 	 * 
 	 * @throws SpabException
 	 *             on errors in SPAB algorithm.
+	 * @throws PerfectSolutionException
+	 *             if candidate is found, which has no false positives or false
+	 *             negatives
 	 */
-	public Candidate run() throws SpabException {
+	protected Candidate spab() throws SpabException, PerfectSolutionException {
 
 		// Generate and add first candidate
-		Candidate firstCandidate = new Candidate(null);
-		graph.addCandidate(firstCandidate, null);
-		try {
-			firstCandidate.calculateScore(input, graph.getDepth());
-		} catch (PerfectSolutionException e) {
-			return e.getCandidate();
-		}
+		Candidate firstCandidate = new Candidate();
+		graph.addCandidate(firstCandidate);
+		firstCandidate.calculateScore(input, graph.getDepth());
 		queue.add(firstCandidate);
 
 		// For specified number of iterations run algorithm
 		for (int i = 1; i <= input.getMaxIterations(); i++) {
 
 			// Get best candidate, generate children, and add them into graph
-			Candidate bestCandidate = queue.poll();
+			Candidate bestCandidate = queue.getBestCandidate();
 			List<Candidate> bestCandidateChildren = bestCandidate.generateChildren();
 			graph.addCandidates(bestCandidateChildren, bestCandidate);
 
-			// Graph depth changes, as new children were generated and added.
-			// Graph depth influences score of all candidates.
-			// Scores of all current candidates have to be re-calculated.
-			// Reset of queue needed to maintain priorities based on new scores.
+			// Graph depth increases by 1, as new children were generated and added.
+			// The graph depth influences score of all candidates.
+			// Therefore, the scores of all current candidates have to be re-calculated.
+			// A reset of the priority queue is needed to maintain changed
+			// priorities, represented by scores.
 			for (Candidate queueCandidate : queue.reset()) {
-				try {
-					queueCandidate.calculateScore(input, graph.getDepth());
-				} catch (PerfectSolutionException e) {
-					return e.getCandidate();
-				}
+				queueCandidate.calculateScore(input, graph.getDepth());
 				queue.add(queueCandidate);
 			}
 
 			// Calculate scores of new children and add them to queue
 			for (Candidate bestCandidateChild : bestCandidateChildren) {
-				try {
-					bestCandidateChild.calculateScore(input, graph.getDepth());
-				} catch (PerfectSolutionException e) {
-					return e.getCandidate();
-				}
+				bestCandidateChild.calculateScore(input, graph.getDepth());
 				queue.add(bestCandidateChild);
 			}
 		}
 
 		// Return best candidate
 		Candidate bestCandidate = firstCandidate;
-		for (Candidate candidate : graph.getGraph().vertexSet()) {
+		for (Candidate candidate : graph.getAllCandidates()) {
 			if (candidate.getScore() > bestCandidate.getScore()) {
 				bestCandidate = candidate;
 			}
 		}
 		return bestCandidate;
-	}
-
-	/**
-	 * Gets input container.
-	 */
-	public Input getInput() {
-		return input;
-	}
-
-	/**
-	 * Gets candidate graph.
-	 */
-	public CandidateGraph getGraph() {
-		return graph;
-	}
-
-	/**
-	 * Gets candidate priority queue.
-	 */
-	public CandidateQueue getQueue() {
-		return queue;
 	}
 }

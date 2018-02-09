@@ -1,6 +1,7 @@
 package org.aksw.spab;
 
 import java.util.Collection;
+import java.util.Set;
 
 import org.aksw.spab.exceptions.SpabException;
 import org.jgrapht.Graph;
@@ -14,15 +15,25 @@ import org.jgrapht.graph.DefaultEdge;
  */
 public class CandidateGraph {
 
-	private Graph<Candidate, DefaultEdge> graph;
-	private Candidate root = null;
-	private int depth = 0;
+	protected int depth = 0;
+	protected Graph<Candidate, DefaultEdge> graph;
+	protected Candidate root = null;
 
 	/**
 	 * Initializes graph.
 	 */
 	public CandidateGraph() {
 		graph = new DefaultDirectedGraph<Candidate, DefaultEdge>(DefaultEdge.class);
+	}
+
+	/**
+	 * Adds candidate vertex, which represents root of the graph.
+	 * 
+	 * @throws SpabException
+	 *             if a second root vertex is found
+	 */
+	public void addCandidate(Candidate candidate) throws SpabException {
+		addCandidate(candidate, null);
 	}
 
 	/**
@@ -69,6 +80,20 @@ public class CandidateGraph {
 	}
 
 	/**
+	 * Get all vertices in the graph.
+	 */
+	public Set<Candidate> getAllCandidates() {
+		return graph.vertexSet();
+	}
+
+	/**
+	 * Gets depth of graph.
+	 */
+	public int getDepth() {
+		return depth;
+	}
+
+	/**
 	 * Gets underling graph.
 	 */
 	public Graph<Candidate, DefaultEdge> getGraph() {
@@ -80,12 +105,5 @@ public class CandidateGraph {
 	 */
 	public Candidate getRoot() {
 		return root;
-	}
-
-	/**
-	 * Gets depth of graph.
-	 */
-	public int getDepth() {
-		return depth;
 	}
 }

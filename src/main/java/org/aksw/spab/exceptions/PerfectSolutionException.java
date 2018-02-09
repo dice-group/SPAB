@@ -9,8 +9,8 @@ import org.aksw.spab.Candidate;
  */
 public class PerfectSolutionException extends Exception {
 
-	private static final long serialVersionUID = 1L;
-	private Candidate candidate;
+	protected static final long serialVersionUID = 1L;
+	protected Candidate candidate;
 
 	public PerfectSolutionException(Candidate candidate) {
 		super();
