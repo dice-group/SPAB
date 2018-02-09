@@ -6,6 +6,7 @@ import java.util.Map;
 
 import org.aksw.spab.exceptions.ParseException;
 import org.aksw.spab.exceptions.UserInputException;
+import org.apache.jena.query.QueryParseException;
 import org.apache.jena.rdf.model.Model;
 import org.apache.jena.rdf.model.ModelFactory;
 import org.apache.jena.vocabulary.RDF;
@@ -55,10 +56,12 @@ public class Input {
 	/**
 	 * Adds query to set of negative inputs.
 	 * 
-	 * @throws ParseException
+	 * @throws ParseExceptionon
+	 *             on errors building the graph for the query
+	 * @throws QueryParseException
 	 *             if query can not be parsed
 	 */
-	public void addNegative(String sparqlQuery) throws ParseException {
+	public void addNegative(String sparqlQuery) throws ParseException, QueryParseException {
 		InputQuery inputQuery = new InputQuery(sparqlQuery, this);
 		inputQuery.createModel();
 		negatives.add(negatives.size(), inputQuery);
@@ -67,10 +70,12 @@ public class Input {
 	/**
 	 * Adds query to set of positive inputs.
 	 * 
-	 * @throws ParseException
+	 * @throws ParseExceptionon
+	 *             on errors building the graph for the query
+	 * @throws QueryParseException
 	 *             if query can not be parsed
 	 */
-	public void addPositive(String sparqlQuery) throws ParseException {
+	public void addPositive(String sparqlQuery) throws ParseException, QueryParseException {
 		InputQuery inputQuery = new InputQuery(sparqlQuery, this);
 		inputQuery.createModel();
 		positives.add(positives.size(), inputQuery);

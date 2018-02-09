@@ -24,6 +24,8 @@ import org.apache.jena.util.FileUtils;
 import org.topbraid.spin.arq.ARQ2SPIN;
 import org.topbraid.spin.arq.ARQFactory;
 
+import org.apache.jena.query.QueryParseException;
+
 /**
  * Representations for a single SPARQL query.
  * 
@@ -65,8 +67,8 @@ public class InputQuery {
 	 * Builds up graph based on statements in model.
 	 * 
 	 * @throws ParseException
-	 *             if root element in the statement-representation of the query is
-	 *             not found
+	 *             if query root element in the statement-representation of the
+	 *             query is not found or if non-expected triples are found
 	 */
 	protected void createGraph() throws ParseException {
 
@@ -164,11 +166,12 @@ public class InputQuery {
 	/**
 	 * Creates models/representations for the query.
 	 * 
-	 * @throws ParseException
-	 *             if root element in the statement-representation of the query is
-	 *             not found or if non-expected triples are found
+	 * @throws ParseExceptionon
+	 *             on errors building the graph for the query
+	 * @throws QueryParseException
+	 *             if query can not be parsed
 	 */
-	public void createModel() throws ParseException {
+	public void createModel() throws ParseException, QueryParseException {
 
 		long time = System.currentTimeMillis();
 
@@ -182,6 +185,7 @@ public class InputQuery {
 
 		// Create SPIN query
 		// Changes model, which is important for building the graph
+		// Throws QueryParseException
 		query = ARQFactory.get().createQuery(model, originalQuery);
 		ARQ2SPIN arq2spin = new ARQ2SPIN(model);
 		arq2spin.createQuery(query, null);
