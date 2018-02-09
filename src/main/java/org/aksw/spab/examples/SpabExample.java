@@ -10,24 +10,15 @@ import org.aksw.spab.Spab;
  */
 public class SpabExample {
 
-	public static final boolean TEST_SPAB = true;
+	public static String query1 = "SELECT ?x ?name\n" + "WHERE  { ?x foaf:name ?name }";
+	public static String query2 = "SELECT ?name ?mbox\n" + "WHERE\n" + "  { ?x foaf:name ?name .\n"
+			+ "    ?x foaf:mbox ?mbox }";
+	public static String query3 = "SELECT ?title\n" + "WHERE\n" + "{\n"
+			+ "  <http://example.org/book/book1> <http://purl.org/dc/elements/1.1/title> ?title .\n" + "}";
 
 	public static void main(String[] args) throws Exception {
-		SpabExample example = new SpabExample();
 
-		if (TEST_SPAB) {
-			example.testSpab();
-		}
-	}
-
-	public String query1 = "SELECT ?x ?name\n" + "WHERE  { ?x foaf:name ?name }";
-	public String query2 = "SELECT ?name ?mbox\n" + "WHERE\n" + "  { ?x foaf:name ?name .\n"
-			+ "    ?x foaf:mbox ?mbox }";
-
-	public String query3 = "SELECT ?title\n" + "WHERE\n" + "{\n"
-			+ "  <http://example.org/book/book1> <http://purl.org/dc/elements/1.1/title> ?title .\n" + "}    ";
-
-	public void testSpab() throws Exception {
+		System.out.println(query1);
 
 		Spab spab = new Spab();
 		spab.addNamespacePrefix("foaf", "<http://xmlns.com/foaf/0.1/>");

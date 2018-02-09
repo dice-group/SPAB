@@ -10,21 +10,10 @@ import org.aksw.spab.input.InputQuery;
  */
 public class InputQueryExample {
 
-	public static final boolean TEST_INPUT_QUERY = true;
-
-	public static void main(String[] args) throws Exception {
-		InputQueryExample example = new InputQueryExample();
-
-		// Input test
-		if (TEST_INPUT_QUERY) {
-			example.testInputQuery();
-		}
-	}
-
-	public String exampleQuery = "SELECT ?person\n" + "WHERE {\n" + " ?person a rdf:Person .\n"
+	public static String exampleQuery = "SELECT ?person\n" + "WHERE {\n" + " ?person a rdf:Person .\n"
 			+ " ?person rdf:age ?age .\n" + " FILTER (?age > 18) .\n" + "}";
 
-	public void testInputQuery() throws Exception {
+	public static void main(String[] args) throws Exception {
 
 		Spab spab = new Spab();
 		spab.addPositive(exampleQuery);
