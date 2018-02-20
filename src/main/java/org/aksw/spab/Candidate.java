@@ -58,14 +58,14 @@ public class Candidate {
 			firstCall = true;
 
 			for (InputQuery inputQuery : input.getPositives()) {
-				if (matches(inputQuery.getQueryWithoutPrefixes())) {
+				if (matches(inputQuery.getQuery().toString())) {
 					truePositives++;
 				} else {
 					falseNegatives++;
 				}
 			}
 			for (InputQuery inputQuery : input.getNegatives()) {
-				if (matches(inputQuery.getQueryWithoutPrefixes())) {
+				if (matches(inputQuery.getQuery().toString())) {
 					falsePositives++;
 				}
 			}

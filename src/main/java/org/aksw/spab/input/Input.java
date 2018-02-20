@@ -4,17 +4,14 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-import org.aksw.spab.exceptions.ParseException;
 import org.aksw.spab.exceptions.UserInputException;
-import org.apache.jena.query.QueryParseException;
 import org.apache.jena.rdf.model.Model;
 import org.apache.jena.rdf.model.ModelFactory;
 import org.apache.jena.vocabulary.RDF;
 import org.apache.jena.vocabulary.RDFS;
-import org.topbraid.spin.system.SPINModuleRegistry;
 
 /**
- * Container for SPAB inputs.
+ * Container for SPAB configuration and input queries.
  * 
  * @author Adrian Wilke
  */
@@ -43,7 +40,6 @@ public class Input {
 		model = ModelFactory.createDefaultModel();
 		model.setNsPrefix("rdf", RDF.getURI());
 		model.setNsPrefix("rdfs", RDFS.getURI());
-		SPINModuleRegistry.get().init();
 	}
 
 	/**
@@ -56,29 +52,21 @@ public class Input {
 	/**
 	 * Adds query to set of negative inputs.
 	 * 
-	 * @throws ParseExceptionon
-	 *             on errors building the graph for the query
-	 * @throws QueryParseException
-	 *             if query can not be parsed
+	 * @throws UserInputException
+	 *             if query string could not be parsed
 	 */
-	public void addNegative(String sparqlQuery) throws ParseException, QueryParseException {
-		InputQuery inputQuery = new InputQuery(sparqlQuery, this);
-		inputQuery.createModel();
-		negatives.add(negatives.size(), inputQuery);
+	public void addNegative(String sparqlQuery) {
+		negatives.add(new InputQuery(sparqlQuery, this));
 	}
 
 	/**
 	 * Adds query to set of positive inputs.
 	 * 
-	 * @throws ParseExceptionon
-	 *             on errors building the graph for the query
-	 * @throws QueryParseException
-	 *             if query can not be parsed
+	 * @throws UserInputException
+	 *             if query string could not be parsed
 	 */
-	public void addPositive(String sparqlQuery) throws ParseException, QueryParseException {
-		InputQuery inputQuery = new InputQuery(sparqlQuery, this);
-		inputQuery.createModel();
-		positives.add(positives.size(), inputQuery);
+	public void addPositive(String sparqlQuery) {
+		positives.add(new InputQuery(sparqlQuery, this));
 	}
 
 	/**

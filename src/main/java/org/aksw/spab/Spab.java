@@ -2,12 +2,10 @@ package org.aksw.spab;
 
 import java.util.List;
 
-import org.aksw.spab.exceptions.ParseException;
 import org.aksw.spab.exceptions.PerfectSolutionException;
 import org.aksw.spab.exceptions.SpabException;
 import org.aksw.spab.exceptions.UserInputException;
 import org.aksw.spab.input.Input;
-import org.apache.jena.query.QueryParseException;
 
 /**
  * SPAB: SPARQL Benchmark Query Generator
@@ -17,6 +15,8 @@ import org.apache.jena.query.QueryParseException;
  * Input: Use the add-methods.
  * 
  * Execution: Use the run-method.
+ * 
+ * Information: Use the get-methods.
  * 
  * @author Adrian Wilke
  */
@@ -46,24 +46,20 @@ public class Spab {
 	/**
 	 * Adds query to set of negative inputs.
 	 * 
-	 * @throws ParseExceptionon
-	 *             on errors building the graph for the query
-	 * @throws QueryParseException
-	 *             if query can not be parsed
+	 * @throws UserInputException
+	 *             if query string could not be parsed
 	 */
-	public void addNegative(String sparqlQuery) throws ParseException, QueryParseException {
+	public void addNegative(String sparqlQuery) {
 		input.addNegative(sparqlQuery);
 	}
 
 	/**
 	 * Adds query to set of positive inputs.
 	 * 
-	 * @throws ParseExceptionon
-	 *             on errors building the graph for the query
-	 * @throws QueryParseException
-	 *             if query can not be parsed
+	 * @throws UserInputException
+	 *             if query string could not be parsed
 	 */
-	public void addPositive(String sparqlQuery) throws ParseException, QueryParseException {
+	public void addPositive(String sparqlQuery) {
 		input.addPositive(sparqlQuery);
 	}
 

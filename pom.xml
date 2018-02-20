@@ -3,10 +3,11 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.aksw.spab</groupId>
 	<artifactId>SPAB</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>0.0.2-SNAPSHOT</version>
 	<name>BenchmarkGenerator</name>
 	<dependencies>
 
+		<!-- https://mvnrepository.com/artifact/org.jgrapht/jgrapht-core -->
 		<dependency>
 			<groupId>org.jgrapht</groupId>
 			<artifactId>jgrapht-core</artifactId>
@@ -14,18 +15,12 @@
 		</dependency>
 
 
+		<!-- https://mvnrepository.com/artifact/org.apache.jena/jena-arq -->
 		<dependency>
-			<groupId>org.topbraid</groupId>
-			<artifactId>spin</artifactId>
-			<version>2.0.0</version>
+			<groupId>org.apache.jena</groupId>
+			<artifactId>jena-arq</artifactId>
+			<version>3.6.0</version>
 		</dependency>
 
 	</dependencies>
-
-	<repositories>
-		<repository>
-			<id>org.topbraid</id>
-			<url>http://topquadrant.com/repository/spin</url>
-		</repository>
-	</repositories>
 </project>

@@ -2,6 +2,7 @@ package org.aksw.spab.examples;
 
 import org.aksw.spab.Candidate;
 import org.aksw.spab.Spab;
+import org.aksw.spab.exceptions.SpabException;
 
 /**
  * Example tests SPAB algorithm.
@@ -16,7 +17,7 @@ public class SpabExample {
 	public static String query3 = "SELECT ?title\n" + "WHERE\n" + "{\n"
 			+ "  <http://example.org/book/book1> <http://purl.org/dc/elements/1.1/title> ?title .\n" + "}";
 
-	public static void main(String[] args) throws Exception {
+	public static void main(String[] args) throws SpabException  {
 
 		System.out.println(query1);
 
