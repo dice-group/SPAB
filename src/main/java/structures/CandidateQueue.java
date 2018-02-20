@@ -1,4 +1,4 @@
-package org.aksw.spab;
+package structures;
 
 import java.util.Comparator;
 import java.util.PriorityQueue;
@@ -49,7 +49,7 @@ public class CandidateQueue {
 	/**
 	 * Resets queue and returns all contained candidates
 	 */
-	CandidateVertex[] reset() {
+	public CandidateVertex[] reset() {
 		CandidateVertex[] candidates = queue.toArray(new CandidateVertex[0]);
 		queue = new PriorityQueue<CandidateVertex>(new Comparator<CandidateVertex>() {
 			public int compare(CandidateVertex c1, CandidateVertex c2) {

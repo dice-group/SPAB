@@ -1,7 +1,7 @@
 package org.aksw.spab.examples;
 
-import org.aksw.spab.Spab;
-import org.aksw.spab.input.InputQuery;
+import org.aksw.spab.SpabApi;
+import org.aksw.spab.input.SparqlQuery;
 
 /**
  * Example shows different representations of input queries.
@@ -15,22 +15,28 @@ public class InputQueryExample {
 
 	public static void main(String[] args) {
 
-		Spab spab = new Spab();
+		SpabApi spab = new SpabApi();
 		spab.addPositive(exampleQuery);
-		InputQuery inputQuery = spab.getInput().getPositives().get(0);
+		SparqlQuery inputQuery = spab.getInput().getPositives().get(0);
 
 		System.out.println("Original query string:");
 		System.out.println();
 		System.out.println(exampleQuery);
 		System.out.println();
-		System.out.println("------------------------------------------------------------------------------");
+		System.out.println("----------------------------------------------------------------------------------------");
 		System.out.println();
 
-		System.out.println("Parsed query:");
+		System.out.println("Parsed query representation:");
 		System.out.println();
 		System.out.println(inputQuery.getQuery());
+		System.out.println("----------------------------------------------------------------------------------------");
 		System.out.println();
-		System.out.println("------------------------------------------------------------------------------");
+
+		System.out.println("Resulting string representation:");
+		System.out.println();
+		System.out.println(inputQuery.getStringRepresentation());
+		System.out.println();
+		System.out.println("----------------------------------------------------------------------------------------");
 		System.out.println();
 	}
 }

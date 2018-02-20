@@ -5,15 +5,15 @@ package org.aksw.spab.exceptions;
  * 
  * @author Adrian Wilke
  */
-public class UserInputException extends RuntimeException {
+public class InputRuntimeException extends RuntimeException {
 
 	protected static final long serialVersionUID = 1L;
 
-	public UserInputException(String message) {
+	public InputRuntimeException(String message) {
 		super(message);
 	}
 
-    public UserInputException(Throwable cause) {
+    public InputRuntimeException(Throwable cause) {
         super(cause);
     }
 }

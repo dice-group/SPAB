@@ -12,4 +12,8 @@ public class SpabException extends Exception {
 	public SpabException(String message) {
 		super(message);
 	}
+
+    public SpabException(Throwable cause) {
+        super(cause);
+    }
 }

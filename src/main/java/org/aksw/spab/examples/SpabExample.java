@@ -1,8 +1,9 @@
 package org.aksw.spab.examples;
 
-import org.aksw.spab.CandidateVertex;
-import org.aksw.spab.Spab;
+import org.aksw.spab.SpabApi;
 import org.aksw.spab.exceptions.SpabException;
+
+import structures.CandidateVertex;
 
 /**
  * Example tests SPAB algorithm.
@@ -21,7 +22,7 @@ public class SpabExample {
 
 		System.out.println(query1);
 
-		Spab spab = new Spab();
+		SpabApi spab = new SpabApi();
 		spab.addNamespacePrefix("foaf", "<http://xmlns.com/foaf/0.1/>");
 
 		spab.addPositive(query1);

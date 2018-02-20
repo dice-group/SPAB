@@ -1,13 +1,14 @@
-package org.aksw.spab;
+package structures;
 
 import java.util.LinkedList;
 import java.util.List;
 
 import org.aksw.spab.candidates.Candidate;
-import org.aksw.spab.exceptions.CandidateException;
+import org.aksw.spab.exceptions.CandidateRuntimeException;
 import org.aksw.spab.exceptions.PerfectSolutionException;
+import org.aksw.spab.input.Configuration;
 import org.aksw.spab.input.Input;
-import org.aksw.spab.input.InputQuery;
+import org.aksw.spab.input.SparqlQuery;
 
 /**
  * Candidate for a comprehensive SPARQL query.
@@ -54,7 +55,7 @@ public class CandidateVertex {
 	 * @throws PerfectSolutionException
 	 *             if candidate has no false positives or false negatives
 	 */
-	public void calculateScore(Input input, int maxDepth) throws PerfectSolutionException {
+	public void calculateScore(Input input, Configuration configuration, int maxDepth) throws PerfectSolutionException {
 
 		boolean firstCall = false;
 		int truePositives = 0;
@@ -66,14 +67,14 @@ public class CandidateVertex {
 
 			firstCall = true;
 
-			for (InputQuery inputQuery : input.getPositives()) {
+			for (SparqlQuery inputQuery : input.getPositives()) {
 				if (matches(inputQuery.getQuery().toString())) {
 					truePositives++;
 				} else {
 					falseNegatives++;
 				}
 			}
-			for (InputQuery inputQuery : input.getNegatives()) {
+			for (SparqlQuery inputQuery : input.getNegatives()) {
 				if (matches(inputQuery.getQuery().toString())) {
 					falsePositives++;
 				}
@@ -113,10 +114,10 @@ public class CandidateVertex {
 		} else {
 			lengthRelation = getGeneration() / maxDepth;
 		}
-		score = (1f - input.getLambda()) * fMeasure + input.getLambda() * (1f - lengthRelation);
+		score = (1f - configuration.getLambda()) * fMeasure + configuration.getLambda() * (1f - lengthRelation);
 
 		// At first call of this method: Check for perfect solution
-		if (input.isPerfectSolutionChecked() && firstCall && falsePositives == 0 && falseNegatives == 0) {
+		if (configuration.isPerfectSolutionChecked() && firstCall && falsePositives == 0 && falseNegatives == 0) {
 			throw new PerfectSolutionException(this);
 		}
 	}
@@ -124,10 +125,10 @@ public class CandidateVertex {
 	/**
 	 * Generates children for this candidate.
 	 * 
-	 * @throws CandidateException
+	 * @throws CandidateRuntimeException
 	 *             on Exceptions in {@link Candidate} implementations
 	 */
-	public List<CandidateVertex> generateChildren() throws CandidateException {
+	public List<CandidateVertex> generateChildren() throws CandidateRuntimeException {
 		List<CandidateVertex> list = new LinkedList<CandidateVertex>();
 		for (Candidate candidate : this.candidate.getChildren()) {
 			list.add(new CandidateVertex(this, candidate));
@@ -160,10 +161,11 @@ public class CandidateVertex {
 	/**
 	 * Checks, whether regular expression of candidate matches query string.
 	 * 
-	 * @throws CandidateException
+	 * @throws CandidateRuntimeException
 	 *             on Exceptions in {@link Candidate} implementations
 	 */
-	public boolean matches(String query) throws CandidateException {
+	@SuppressWarnings("deprecation")
+	public boolean matches(String query) throws CandidateRuntimeException {
 
 		String candidateRegEx = candidate.getRexEx();
 		if (candidateRegEx != null) {

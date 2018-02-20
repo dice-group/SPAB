@@ -4,7 +4,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-import org.aksw.spab.exceptions.UserInputException;
+import org.aksw.spab.exceptions.InputRuntimeException;
 import org.apache.jena.rdf.model.Model;
 import org.apache.jena.rdf.model.ModelFactory;
 import org.apache.jena.vocabulary.RDF;
@@ -17,25 +17,16 @@ import org.apache.jena.vocabulary.RDFS;
  */
 public class Input {
 
-	public static final boolean CHECK_PERFECT_SOLUTION = true;
-	public static final float LAMBDA = 0.2f;
-	public static final int MAX_ITERATIONS = 10;
-
-	protected boolean checkPerfectSolution = CHECK_PERFECT_SOLUTION;
-	protected float lambda = LAMBDA;
-	protected int maxIterations = MAX_ITERATIONS;
-
 	protected Model model;
-
-	protected List<InputQuery> negatives;
-	protected List<InputQuery> positives;
+	protected List<SparqlQuery> negatives;
+	protected List<SparqlQuery> positives;
 
 	/**
 	 * Initializes model and sets namespace prefixes for RDF, RDFS, and SPIN.
 	 */
 	public Input() {
-		positives = new LinkedList<InputQuery>();
-		negatives = new LinkedList<InputQuery>();
+		positives = new LinkedList<SparqlQuery>();
+		negatives = new LinkedList<SparqlQuery>();
 
 		model = ModelFactory.createDefaultModel();
 		model.setNsPrefix("rdf", RDF.getURI());
@@ -52,44 +43,21 @@ public class Input {
 	/**
 	 * Adds query to set of negative inputs.
 	 * 
-	 * @throws UserInputException
+	 * @throws InputRuntimeException
 	 *             if query string could not be parsed
 	 */
 	public void addNegative(String sparqlQuery) {
-		negatives.add(new InputQuery(sparqlQuery, this));
+		negatives.add(new SparqlQuery(sparqlQuery, this));
 	}
 
 	/**
 	 * Adds query to set of positive inputs.
 	 * 
-	 * @throws UserInputException
+	 * @throws InputRuntimeException
 	 *             if query string could not be parsed
 	 */
 	public void addPositive(String sparqlQuery) {
-		positives.add(new InputQuery(sparqlQuery, this));
-	}
-
-	/**
-	 * Sets, if algorithm should stop on discovery of perfect solution. If true, the
-	 * overall execution time can become better. If false, the final score of the
-	 * best candidate can become better.
-	 */
-	public void checkPerfectSolution(boolean checkPerfectSolution) {
-		this.checkPerfectSolution = checkPerfectSolution;
-	}
-
-	/**
-	 * Gets lambda.
-	 */
-	public float getLambda() {
-		return lambda;
-	}
-
-	/**
-	 * Gets maximum number of iterations
-	 */
-	public int getMaxIterations() {
-		return maxIterations;
+		positives.add(new SparqlQuery(sparqlQuery, this));
 	}
 
 	/**
@@ -100,45 +68,17 @@ public class Input {
 	}
 
 	/**
-	 * Gets set of negatie inputs.
+	 * Gets set of negative inputs.
 	 */
-	public List<InputQuery> getNegatives() {
+	public List<SparqlQuery> getNegatives() {
 		return negatives;
 	}
 
 	/**
 	 * Gets set of positive inputs.
 	 */
-	public List<InputQuery> getPositives() {
+	public List<SparqlQuery> getPositives() {
 		return positives;
 	}
 
-	/**
-	 * Gets info, if algorithm should stop on discovery of perfect solution.
-	 */
-	public boolean isPerfectSolutionChecked() {
-		return checkPerfectSolution;
-	}
-
-	/**
-	 * Checks and sets lambda. Has to be 0 <= L < 1. If lambda is 0, only the
-	 * f-measure of candidates is used. With higher values, shorter candidates will
-	 * be rated better.
-	 * 
-	 * @throws UserInputException
-	 *             if lambda is not in scope.
-	 */
-	public void setLambda(float lambda) throws UserInputException {
-		if (lambda < 0 || lambda >= 1) {
-			throw new UserInputException("Lambda has to be 0 <= L < 1. Given value: " + lambda);
-		}
-		this.lambda = lambda;
-	}
-
-	/**
-	 * Set maximum number of iterations
-	 */
-	public void setMaxIterations(int maxIterations) {
-		this.maxIterations = maxIterations;
-	}
 }

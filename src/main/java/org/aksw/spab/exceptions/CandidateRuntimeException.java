@@ -7,24 +7,24 @@ import org.aksw.spab.candidates.Candidate;
  * 
  * @author Adrian Wilke
  */
-public class CandidateException extends RuntimeException {
+public class CandidateRuntimeException extends RuntimeException {
 
 	private static final long serialVersionUID = 1L;
 
-	public CandidateException(String message) {
+	public CandidateRuntimeException(String message) {
 		super(message);
 	}
 
-	public CandidateException(String message, Throwable cause) {
+	public CandidateRuntimeException(String message, Throwable cause) {
 		super(message, cause);
 	}
 
-	protected CandidateException(String message, Throwable cause, boolean enableSuppression,
+	protected CandidateRuntimeException(String message, Throwable cause, boolean enableSuppression,
 			boolean writableStackTrace) {
 		super(message, cause, enableSuppression, writableStackTrace);
 	}
 
-	public CandidateException(Throwable cause) {
+	public CandidateRuntimeException(Throwable cause) {
 		super(cause);
 	}
 }

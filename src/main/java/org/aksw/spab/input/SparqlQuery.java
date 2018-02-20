@@ -2,7 +2,7 @@ package org.aksw.spab.input;
 
 import java.util.Map.Entry;
 
-import org.aksw.spab.exceptions.UserInputException;
+import org.aksw.spab.exceptions.InputRuntimeException;
 import org.apache.jena.query.Query;
 import org.apache.jena.query.QueryFactory;
 import org.apache.jena.query.QueryParseException;
@@ -13,7 +13,7 @@ import org.apache.jena.sparql.core.Prologue;
  * 
  * @author Adrian Wilke
  */
-public class InputQuery {
+public class SparqlQuery {
 
 	/**
 	 * The {@link Input} this query belongs to
@@ -39,15 +39,39 @@ public class InputQuery {
 	 *            A SPARQL query
 	 * @param input
 	 *            The {@link Input} this query belongs to
-	 *            
-	 * @throws UserInputException
+	 * 
+	 * @throws InputRuntimeException
 	 *             if query string could not be parsed
 	 */
-	public InputQuery(String sparqlQuery, Input input) {
+	public SparqlQuery(String sparqlQuery, Input input) {
 		this.originalString = sparqlQuery;
 		this.input = input;
 
 		create();
+	}
+
+	/**
+	 * Creates the query.
+	 * 
+	 * Uses namespaces of {@link Input}.
+	 * 
+	 * @throws InputRuntimeException
+	 *             if query string could not be parsed
+	 */
+	protected void create() throws InputRuntimeException {
+
+		// Add namespaces
+		Prologue queryPrologue = new Prologue();
+		for (Entry<String, String> namespace : input.getNamespaces().entrySet()) {
+			queryPrologue.setPrefix(namespace.getKey(), namespace.getValue());
+		}
+
+		// Create query
+		try {
+			query = QueryFactory.parse(new Query(queryPrologue), getOriginalString(), null, null);
+		} catch (QueryParseException e) {
+			throw new InputRuntimeException(e);
+		}
 	}
 
 	/**
@@ -81,26 +105,21 @@ public class InputQuery {
 	}
 
 	/**
-	 * Creates the query.
+	 * Gets a string representation of a SPARQL query.
+	 * 
+	 * Line breaks are substituted with blank spaces. Afterwards, multiple blank
+	 * spaces are reduced to one blank space.
+	 * 
+	 * Uses cache.
 	 * 
 	 * Uses namespaces of {@link Input}.
-	 * 
-	 * @throws UserInputException
-	 *             if query string could not be parsed
 	 */
-	protected void create() throws UserInputException {
+	public String getStringRepresentation() {
+		return getQuery(true).toString().replaceAll("\n", " ").replaceAll("\r", "").replaceAll(" +", " ");
+	}
 
-		// Add namespaces
-		Prologue queryPrologue = new Prologue();
-		for (Entry<String, String> namespace : input.getNamespaces().entrySet()) {
-			queryPrologue.setPrefix(namespace.getKey(), namespace.getValue());
-		}
-
-		// Create query
-		try {
-			query = QueryFactory.parse(new Query(queryPrologue), getOriginalString(), null, null);
-		} catch (QueryParseException e) {
-			throw new UserInputException(e);
-		}
+	@Override
+	public String toString() {
+		return getStringRepresentation();
 	}
 }

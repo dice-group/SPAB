@@ -1,6 +1,6 @@
 package org.aksw.spab.exceptions;
 
-import org.aksw.spab.CandidateVertex;
+import structures.CandidateVertex;
 
 /**
  * Thrown, if a candidate is found, which produces a perfect solution.

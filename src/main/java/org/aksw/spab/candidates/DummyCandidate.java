@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
 import org.aksw.spab.candidates.Candidate;
-import org.aksw.spab.exceptions.CandidateException;
+import org.aksw.spab.exceptions.CandidateRuntimeException;
 
 /**
  * Non-deterministic and non-realistic candidate implementation.
@@ -22,7 +22,7 @@ public class DummyCandidate implements Candidate {
 	 * Generates dummy children between {@link CHILDREN_MIN} and
 	 * {@link CHILDREN_MAX}
 	 */
-	public List<Candidate> getChildren() throws CandidateException {
+	public List<Candidate> getChildren() throws CandidateRuntimeException {
 		try {
 
 			List<Candidate> list = new LinkedList<Candidate>();
@@ -34,27 +34,27 @@ public class DummyCandidate implements Candidate {
 			return list;
 
 		} catch (Exception e) {
-			throw new CandidateException(e);
+			throw new CandidateRuntimeException(e);
 		}
 	}
 
 	/**
 	 * Returns null.
 	 */
-	public String getRexEx() throws CandidateException {
+	public String getRexEx() throws CandidateRuntimeException {
 		try {
 
 			return null;
 
 		} catch (Exception e) {
-			throw new CandidateException(e);
+			throw new CandidateRuntimeException(e);
 		}
 	}
 
 	/**
 	 * Matches with a probability of {@link MATCHING_PROBABILITY}
 	 */
-	public boolean matches(String query) throws CandidateException {
+	public boolean matches(String query) throws CandidateRuntimeException {
 		try {
 
 			if (Math.random() < MATCHING_PROBABILITY) {
@@ -64,8 +64,7 @@ public class DummyCandidate implements Candidate {
 			}
 
 		} catch (Exception e) {
-			throw new CandidateException(e);
+			throw new CandidateRuntimeException(e);
 		}
 	}
-
 }

@@ -1,4 +1,4 @@
-package org.aksw.spab;
+package structures;
 
 import java.util.Collection;
 import java.util.Set;
