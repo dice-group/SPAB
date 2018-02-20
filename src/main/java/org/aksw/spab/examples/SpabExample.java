@@ -2,8 +2,7 @@ package org.aksw.spab.examples;
 
 import org.aksw.spab.SpabApi;
 import org.aksw.spab.exceptions.SpabException;
-
-import structures.CandidateVertex;
+import org.aksw.spab.structures.CandidateVertex;
 
 /**
  * Example tests SPAB algorithm.

@@ -7,10 +7,9 @@ import org.aksw.spab.exceptions.PerfectSolutionException;
 import org.aksw.spab.exceptions.SpabException;
 import org.aksw.spab.input.Configuration;
 import org.aksw.spab.input.Input;
-
-import structures.CandidateGraph;
-import structures.CandidateQueue;
-import structures.CandidateVertex;
+import org.aksw.spab.structures.CandidateGraph;
+import org.aksw.spab.structures.CandidateQueue;
+import org.aksw.spab.structures.CandidateVertex;
 
 /**
  * SPAB: SPARQL Benchmark Query Generator

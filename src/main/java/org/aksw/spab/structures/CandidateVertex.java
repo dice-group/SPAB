@@ -1,4 +1,4 @@
-package structures;
+package org.aksw.spab.structures;
 
 import java.util.LinkedList;
 import java.util.List;

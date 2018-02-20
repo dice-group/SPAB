@@ -4,10 +4,9 @@ import org.aksw.spab.exceptions.CandidateRuntimeException;
 import org.aksw.spab.exceptions.InputRuntimeException;
 import org.aksw.spab.exceptions.SpabException;
 import org.aksw.spab.input.Input;
-
-import structures.CandidateGraph;
-import structures.CandidateQueue;
-import structures.CandidateVertex;
+import org.aksw.spab.structures.CandidateGraph;
+import org.aksw.spab.structures.CandidateQueue;
+import org.aksw.spab.structures.CandidateVertex;
 
 /**
  * SPAB API: SPARQL Benchmark Query Generator
