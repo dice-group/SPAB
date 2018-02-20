@@ -11,7 +11,7 @@ import org.apache.jena.vocabulary.RDF;
 import org.apache.jena.vocabulary.RDFS;
 
 /**
- * Container for SPAB configuration and input queries.
+ * Container for input queries.
  * 
  * @author Adrian Wilke
  */

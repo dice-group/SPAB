@@ -3,6 +3,11 @@ package org.aksw.spab.input;
 import org.aksw.spab.SpabApi.CandidateImplementation;
 import org.aksw.spab.exceptions.InputRuntimeException;
 
+/**
+ * Container for configuration values.
+ * 
+ * @author Adrian Wilke
+ */
 public class Configuration {
 
 	// Default values

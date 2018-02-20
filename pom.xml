@@ -14,7 +14,6 @@
 			<version>1.1.0</version>
 		</dependency>
 
-
 		<!-- https://mvnrepository.com/artifact/org.apache.jena/jena-arq -->
 		<dependency>
 			<groupId>org.apache.jena</groupId>

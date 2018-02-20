@@ -3,6 +3,7 @@ package org.aksw.spab;
 import org.aksw.spab.exceptions.CandidateRuntimeException;
 import org.aksw.spab.exceptions.InputRuntimeException;
 import org.aksw.spab.exceptions.SpabException;
+import org.aksw.spab.input.Configuration;
 import org.aksw.spab.input.Input;
 import org.aksw.spab.structures.CandidateGraph;
 import org.aksw.spab.structures.CandidateQueue;
@@ -115,7 +116,7 @@ public class SpabApi {
 	 * overall execution time can become better. If false, the final score of the
 	 * best candidate can become better.
 	 * 
-	 * Default value: {@link Input#CHECK_PERFECT_SOLUTION}
+	 * Default value: {@link Configuration#CHECK_PERFECT_SOLUTION}
 	 */
 	public void setCheckPerfectSolution(boolean checkPerfectSolution) {
 		spab.getConfiguration().checkPerfectSolution(checkPerfectSolution);
@@ -126,7 +127,7 @@ public class SpabApi {
 	 * f-measure of candidates is used. With higher values, shorter candidates will
 	 * be rated better.
 	 * 
-	 * Default value: {@link Input#LAMBDA}
+	 * Default value: {@link Configuration#LAMBDA}
 	 * 
 	 * @throws InputRuntimeException
 	 *             if lambda is not in scope.
@@ -139,6 +140,9 @@ public class SpabApi {
 	 * Sets the implementation used for SPARQL query candidates. These candidates
 	 * represent general SPARQL queries, which are compared with SPARQL query
 	 * inputs.
+	 * 
+	 * 
+	 * Default value: {@link Configuration#MAX_ITERATIONS}
 	 */
 	public void setCandidateImplementation(CandidateImplementation candidateImplementation) {
 		spab.getConfiguration().setCandidateImplementation(candidateImplementation);
@@ -147,7 +151,7 @@ public class SpabApi {
 	/**
 	 * Set maximum number of iterations.
 	 * 
-	 * Default value: {@link Input#MAX_ITERATIONS}
+	 * Default value: {@link Configuration#MAX_ITERATIONS}
 	 */
 	public void setMaxIterations(int maxIterations) {
 		spab.getConfiguration().setMaxIterations(maxIterations);
