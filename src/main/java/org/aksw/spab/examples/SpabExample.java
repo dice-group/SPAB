@@ -1,6 +1,6 @@
 package org.aksw.spab.examples;
 
-import org.aksw.spab.Candidate;
+import org.aksw.spab.CandidateVertex;
 import org.aksw.spab.Spab;
 import org.aksw.spab.exceptions.SpabException;
 
@@ -36,7 +36,7 @@ public class SpabExample {
 		spab.setMaxIterations(30);
 		spab.setCheckPerfectSolution(true);
 
-		Candidate bestCandidate = spab.run();
+		CandidateVertex bestCandidate = spab.run();
 
 		System.out.println("Final score of best candidate: " + bestCandidate.getScore());
 		System.out.println("F-measure of best candidate:   " + bestCandidate.getfMeasure());

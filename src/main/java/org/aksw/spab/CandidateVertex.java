@@ -2,8 +2,9 @@ package org.aksw.spab;
 
 import java.util.LinkedList;
 import java.util.List;
-import java.util.concurrent.ThreadLocalRandom;
 
+import org.aksw.spab.candidates.Candidate;
+import org.aksw.spab.exceptions.CandidateException;
 import org.aksw.spab.exceptions.PerfectSolutionException;
 import org.aksw.spab.input.Input;
 import org.aksw.spab.input.InputQuery;
@@ -13,7 +14,7 @@ import org.aksw.spab.input.InputQuery;
  * 
  * @author Adrian Wilke
  */
-public class Candidate {
+public class CandidateVertex {
 
 	public final static int START_GENERATION = 0;
 
@@ -21,22 +22,30 @@ public class Candidate {
 	protected int generation;
 	protected Float score = null;
 
+	protected Candidate candidate;
+
 	/**
-	 * Initializes candidate, which has no parent
+	 * Initializes candidate, which has no parent.
+	 * 
+	 * Stores the {@link Candidate}.
 	 */
-	public Candidate() {
-		this(null);
+	public CandidateVertex(Candidate candidate) {
+		this(null, candidate);
 	}
 
 	/**
 	 * Initializes candidate by setting generation depending on parent.
+	 * 
+	 * Stores the {@link Candidate}.
 	 */
-	public Candidate(Candidate parent) {
+	public CandidateVertex(CandidateVertex parent, Candidate candidate) {
 		if (parent == null) {
 			generation = START_GENERATION;
 		} else {
 			generation = parent.getGeneration() + 1;
 		}
+
+		this.candidate = candidate;
 	}
 
 	/**
@@ -114,16 +123,14 @@ public class Candidate {
 
 	/**
 	 * Generates children for this candidate.
+	 * 
+	 * @throws CandidateException
+	 *             on Exceptions in {@link Candidate} implementations
 	 */
-	public List<Candidate> generateChildren() {
-
-		List<Candidate> list = new LinkedList<Candidate>();
-
-		// TODO: Please, get more realistic.
-		int numberOfCandidates = ThreadLocalRandom.current().nextInt(1, 3 + 1);
-		for (int i = 0; i < numberOfCandidates; i++) {
-			Candidate candidate = new Candidate(this);
-			list.add(candidate);
+	public List<CandidateVertex> generateChildren() throws CandidateException {
+		List<CandidateVertex> list = new LinkedList<CandidateVertex>();
+		for (Candidate candidate : this.candidate.getChildren()) {
+			list.add(new CandidateVertex(this, candidate));
 		}
 		return list;
 	}
@@ -144,22 +151,27 @@ public class Candidate {
 
 	/**
 	 * Gets score of candidate. Score has to be calculated by
-	 * {@link Candidate#calculateScore(Input)}.
+	 * {@link CandidateVertex#calculateScore(Input)}.
 	 */
 	public float getScore() {
 		return score;
 	}
 
 	/**
-	 * Checks, if regular expression of candidate matches query string.
+	 * Checks, whether regular expression of candidate matches query string.
+	 * 
+	 * @throws CandidateException
+	 *             on Exceptions in {@link Candidate} implementations
 	 */
-	public boolean matches(String query) {
+	public boolean matches(String query) throws CandidateException {
 
-		// TODO: Somewhat more deterministic, please ...
-		if (Math.random() < .5) {
-			return true;
+		String candidateRegEx = candidate.getRexEx();
+		if (candidateRegEx != null) {
+			// Default implementation
+			return query.matches(candidateRegEx);
 		} else {
-			return false;
+			// Fallback, e.g. used by {@link DummyCandidate}
+			return candidate.matches(query);
 		}
 	}
 }

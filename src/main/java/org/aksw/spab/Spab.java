@@ -92,7 +92,7 @@ public class Spab {
 	 * @throws SpabException
 	 *             on errors in SPAB algorithm.
 	 */
-	public Candidate run() throws SpabException {
+	public CandidateVertex run() throws SpabException {
 		try {
 
 			// Run for maximum number of iterations
@@ -148,10 +148,10 @@ public class Spab {
 	 *             if candidate is found, which has no false positives or false
 	 *             negatives
 	 */
-	protected Candidate spab() throws SpabException, PerfectSolutionException {
+	protected CandidateVertex spab() throws SpabException, PerfectSolutionException {
 
 		// Generate and add first candidate
-		Candidate firstCandidate = new Candidate();
+		CandidateVertex firstCandidate = new CandidateVertex(Configuration.getRoot());
 		graph.addCandidate(firstCandidate);
 		firstCandidate.calculateScore(input, graph.getDepth());
 		queue.add(firstCandidate);
@@ -160,8 +160,8 @@ public class Spab {
 		for (int i = 1; i <= input.getMaxIterations(); i++) {
 
 			// Get best candidate, generate children, and add them into graph
-			Candidate bestCandidate = queue.getBestCandidate();
-			List<Candidate> bestCandidateChildren = bestCandidate.generateChildren();
+			CandidateVertex bestCandidate = queue.getBestCandidate();
+			List<CandidateVertex> bestCandidateChildren = bestCandidate.generateChildren();
 			graph.addCandidates(bestCandidateChildren, bestCandidate);
 
 			// Graph depth increases by 1, as new children were generated and added.
@@ -169,21 +169,21 @@ public class Spab {
 			// Therefore, the scores of all current candidates have to be re-calculated.
 			// A reset of the priority queue is needed to maintain changed
 			// priorities, represented by scores.
-			for (Candidate queueCandidate : queue.reset()) {
+			for (CandidateVertex queueCandidate : queue.reset()) {
 				queueCandidate.calculateScore(input, graph.getDepth());
 				queue.add(queueCandidate);
 			}
 
 			// Calculate scores of new children and add them to queue
-			for (Candidate bestCandidateChild : bestCandidateChildren) {
+			for (CandidateVertex bestCandidateChild : bestCandidateChildren) {
 				bestCandidateChild.calculateScore(input, graph.getDepth());
 				queue.add(bestCandidateChild);
 			}
 		}
 
 		// Return best candidate
-		Candidate bestCandidate = firstCandidate;
-		for (Candidate candidate : graph.getAllCandidates()) {
+		CandidateVertex bestCandidate = firstCandidate;
+		for (CandidateVertex candidate : graph.getAllCandidates()) {
 			if (candidate.getScore() > bestCandidate.getScore()) {
 				bestCandidate = candidate;
 			}

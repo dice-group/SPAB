@@ -11,14 +11,14 @@ import java.util.PriorityQueue;
  */
 public class CandidateQueue {
 
-	protected PriorityQueue<Candidate> queue;
+	protected PriorityQueue<CandidateVertex> queue;
 
 	/**
 	 * Initializes queue.
 	 */
 	public CandidateQueue() {
-		queue = new PriorityQueue<Candidate>(new Comparator<Candidate>() {
-			public int compare(Candidate c1, Candidate c2) {
+		queue = new PriorityQueue<CandidateVertex>(new Comparator<CandidateVertex>() {
+			public int compare(CandidateVertex c1, CandidateVertex c2) {
 				return Float.compare(c2.getScore(), c1.getScore());
 			}
 		});
@@ -27,7 +27,7 @@ public class CandidateQueue {
 	/**
 	 * Inserts candidate into queue.
 	 */
-	public boolean add(Candidate candidate) {
+	public boolean add(CandidateVertex candidate) {
 		return queue.add(candidate);
 	}
 
@@ -35,24 +35,24 @@ public class CandidateQueue {
 	 * Gets best candidate (which is the head of the underlying priority queue) and
 	 * removes it from queue, or returns null if queue is empty.
 	 */
-	public Candidate getBestCandidate() {
+	public CandidateVertex getBestCandidate() {
 		return queue.poll();
 	}
 
 	/**
 	 * Gets underlying queue.
 	 */
-	public PriorityQueue<Candidate> getQueue() {
+	public PriorityQueue<CandidateVertex> getQueue() {
 		return queue;
 	}
 
 	/**
 	 * Resets queue and returns all contained candidates
 	 */
-	Candidate[] reset() {
-		Candidate[] candidates = queue.toArray(new Candidate[0]);
-		queue = new PriorityQueue<Candidate>(new Comparator<Candidate>() {
-			public int compare(Candidate c1, Candidate c2) {
+	CandidateVertex[] reset() {
+		CandidateVertex[] candidates = queue.toArray(new CandidateVertex[0]);
+		queue = new PriorityQueue<CandidateVertex>(new Comparator<CandidateVertex>() {
+			public int compare(CandidateVertex c1, CandidateVertex c2) {
 				return Float.compare(c2.getScore(), c1.getScore());
 			}
 		});

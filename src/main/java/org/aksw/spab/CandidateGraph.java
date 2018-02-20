@@ -15,15 +15,15 @@ import org.jgrapht.graph.DefaultEdge;
  */
 public class CandidateGraph {
 
-	protected int depth = Candidate.START_GENERATION;
-	protected Graph<Candidate, DefaultEdge> graph;
-	protected Candidate root = null;
+	protected int depth = CandidateVertex.START_GENERATION;
+	protected Graph<CandidateVertex, DefaultEdge> graph;
+	protected CandidateVertex root = null;
 
 	/**
 	 * Initializes graph.
 	 */
 	public CandidateGraph() {
-		graph = new DefaultDirectedGraph<Candidate, DefaultEdge>(DefaultEdge.class);
+		graph = new DefaultDirectedGraph<CandidateVertex, DefaultEdge>(DefaultEdge.class);
 	}
 
 	/**
@@ -32,7 +32,7 @@ public class CandidateGraph {
 	 * @throws SpabException
 	 *             if a second root vertex is found
 	 */
-	public void addCandidate(Candidate candidate) throws SpabException {
+	public void addCandidate(CandidateVertex candidate) throws SpabException {
 		addCandidate(candidate, null);
 	}
 
@@ -43,7 +43,7 @@ public class CandidateGraph {
 	 * @throws SpabException
 	 *             if a second root vertex is found
 	 */
-	public void addCandidate(Candidate candidate, Candidate parent) throws SpabException {
+	public void addCandidate(CandidateVertex candidate, CandidateVertex parent) throws SpabException {
 
 		// Add vertex to graph
 		graph.addVertex(candidate);
@@ -73,8 +73,8 @@ public class CandidateGraph {
 	 * @throws SpabException
 	 *             if a second root vertex is found
 	 */
-	public void addCandidates(Collection<Candidate> candidates, Candidate parent) throws SpabException {
-		for (Candidate candidate : candidates) {
+	public void addCandidates(Collection<CandidateVertex> candidates, CandidateVertex parent) throws SpabException {
+		for (CandidateVertex candidate : candidates) {
 			addCandidate(candidate, parent);
 		}
 	}
@@ -82,7 +82,7 @@ public class CandidateGraph {
 	/**
 	 * Get all vertices in the graph.
 	 */
-	public Set<Candidate> getAllCandidates() {
+	public Set<CandidateVertex> getAllCandidates() {
 		return graph.vertexSet();
 	}
 
@@ -96,14 +96,14 @@ public class CandidateGraph {
 	/**
 	 * Gets underling graph.
 	 */
-	public Graph<Candidate, DefaultEdge> getGraph() {
+	public Graph<CandidateVertex, DefaultEdge> getGraph() {
 		return graph;
 	}
 
 	/**
 	 * Gets root vertex of graph.
 	 */
-	public Candidate getRoot() {
+	public CandidateVertex getRoot() {
 		return root;
 	}
 }

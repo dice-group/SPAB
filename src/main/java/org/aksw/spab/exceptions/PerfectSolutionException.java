@@ -1,6 +1,6 @@
 package org.aksw.spab.exceptions;
 
-import org.aksw.spab.Candidate;
+import org.aksw.spab.CandidateVertex;
 
 /**
  * Thrown, if a candidate is found, which produces a perfect solution.
@@ -10,9 +10,9 @@ import org.aksw.spab.Candidate;
 public class PerfectSolutionException extends Exception {
 
 	protected static final long serialVersionUID = 1L;
-	protected Candidate candidate;
+	protected CandidateVertex candidate;
 
-	public PerfectSolutionException(Candidate candidate) {
+	public PerfectSolutionException(CandidateVertex candidate) {
 		super();
 		this.candidate = candidate;
 	}
@@ -20,7 +20,7 @@ public class PerfectSolutionException extends Exception {
 	/**
 	 * Gets candidate, which produces perfect solution.
 	 */
-	public Candidate getCandidate() {
+	public CandidateVertex getCandidate() {
 		return candidate;
 	}
 }
