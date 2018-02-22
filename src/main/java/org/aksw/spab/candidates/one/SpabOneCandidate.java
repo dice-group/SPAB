@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.aksw.spab.candidates.Candidate;
 import org.aksw.spab.exceptions.CandidateRuntimeException;
+import org.aksw.spab.structures.CandidateVertex;
 import org.apache.jena.query.Query;
 
 /**
@@ -33,18 +34,20 @@ public abstract class SpabOneCandidate implements Candidate {
 	protected SpabOneCandidate parent;
 	protected Query query;
 	protected String regex;
+	protected CandidateVertex candidateVertex;
 
-	public SpabOneCandidate(SpabOneCandidate parent) {
-		this.parent = parent;
+	public void setVertex(CandidateVertex candidateVertex) {
+		this.candidateVertex = candidateVertex;
 	}
 
-	public SpabOneCandidate(SpabOneCandidate parent, Query query) {
-		this.parent = parent;
+	public SpabOneCandidate() {
+	}
+
+	public SpabOneCandidate(Query query) {
 		this.query = query;
 	}
 
-	public SpabOneCandidate(SpabOneCandidate parent, String regex) {
-		this.parent = parent;
+	public SpabOneCandidate(String regex) {
 		this.regex = regex;
 	}
 

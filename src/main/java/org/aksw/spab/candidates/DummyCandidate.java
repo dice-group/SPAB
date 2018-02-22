@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
 import org.aksw.spab.exceptions.CandidateRuntimeException;
+import org.aksw.spab.structures.CandidateVertex;
 
 /**
  * Non-deterministic and non-realistic candidate implementation.
@@ -65,5 +66,9 @@ public class DummyCandidate implements Candidate {
 		} catch (Exception e) {
 			throw new CandidateRuntimeException(e);
 		}
+	}
+
+	public void setVertex(CandidateVertex candidateVertex) {
+		// Not used for dummy.
 	}
 }

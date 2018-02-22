@@ -1,7 +1,7 @@
 package org.aksw.spab.structures;
 
-import java.util.LinkedList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.aksw.spab.candidates.Candidate;
 import org.aksw.spab.exceptions.CandidateRuntimeException;
@@ -128,12 +128,12 @@ public class CandidateVertex {
 	 * @throws CandidateRuntimeException
 	 *             on Exceptions in {@link Candidate} implementations
 	 */
-	public List<CandidateVertex> generateChildren() throws CandidateRuntimeException {
-		List<CandidateVertex> list = new LinkedList<CandidateVertex>();
+	public Map<CandidateVertex, Candidate> generateChildren() throws CandidateRuntimeException {
+		Map<CandidateVertex, Candidate> map = new HashMap<CandidateVertex, Candidate>();
 		for (Candidate candidate : this.candidate.getChildren()) {
-			list.add(new CandidateVertex(this, candidate));
+			map.put(new CandidateVertex(this, candidate), candidate);
 		}
-		return list;
+		return map;
 	}
 
 	/**

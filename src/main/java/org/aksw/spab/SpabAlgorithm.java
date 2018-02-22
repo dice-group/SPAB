@@ -1,7 +1,9 @@
 package org.aksw.spab;
 
-import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 
+import org.aksw.spab.candidates.Candidate;
 import org.aksw.spab.candidates.DummyCandidate;
 import org.aksw.spab.candidates.one.SpabOneRootCandidate;
 import org.aksw.spab.exceptions.PerfectSolutionException;
@@ -71,7 +73,7 @@ public class SpabAlgorithm {
 				firstCandidate = new CandidateVertex(new DummyCandidate());
 				break;
 			case SPAB_ONE:
-				firstCandidate = new CandidateVertex(new SpabOneRootCandidate(null));
+				firstCandidate = new CandidateVertex(new SpabOneRootCandidate());
 				break;
 			default:
 				throw new SpabException("No candidate implementation set.");
@@ -89,8 +91,11 @@ public class SpabAlgorithm {
 					LOGGER.info("Candidate queue empty at iteration " + i);
 					break;
 				}
-				List<CandidateVertex> bestCandidateChildren = bestCandidate.generateChildren();
-				graph.addCandidates(bestCandidateChildren, bestCandidate);
+				Map<CandidateVertex, Candidate> bestCandidateChildren = bestCandidate.generateChildren();
+				graph.addCandidates(bestCandidateChildren.keySet(), bestCandidate);
+				for (Entry<CandidateVertex, Candidate> bestCandidateChild : bestCandidateChildren.entrySet()) {
+					bestCandidateChild.getValue().setVertex(bestCandidateChild.getKey());
+				}
 
 				// Graph depth increases by 1, as new children were generated and added.
 				// The graph depth influences score of all candidates.
@@ -103,7 +108,7 @@ public class SpabAlgorithm {
 				}
 
 				// Calculate scores of new children and add them to queue
-				for (CandidateVertex bestCandidateChild : bestCandidateChildren) {
+				for (CandidateVertex bestCandidateChild : bestCandidateChildren.keySet()) {
 					bestCandidateChild.calculateScore(input, configuration, graph.getDepth());
 					queue.add(bestCandidateChild);
 				}

@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.aksw.spab.SpabAlgorithm;
 import org.aksw.spab.exceptions.CandidateRuntimeException;
+import org.aksw.spab.structures.CandidateVertex;
 
 /**
  * Interface for candidate implementations.
@@ -15,6 +16,11 @@ import org.aksw.spab.exceptions.CandidateRuntimeException;
  * @author Adrian Wilke
  */
 public interface Candidate {
+
+	/**
+	 * Sets the related vertex in the candidate graph.
+	 */
+	public void setVertex(CandidateVertex candidateVertex);
 
 	/**
 	 * Returns generated children.

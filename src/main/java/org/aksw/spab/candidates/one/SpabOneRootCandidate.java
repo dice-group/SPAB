@@ -16,10 +16,6 @@ import org.aksw.spab.exceptions.CandidateRuntimeException;
  */
 public class SpabOneRootCandidate extends SpabOneCandidate {
 
-	public SpabOneRootCandidate(SpabOneCandidate parent) {
-		super(parent);
-	}
-
 	/**
 	 * Returns generated children.
 	 */
@@ -43,7 +39,7 @@ public class SpabOneRootCandidate extends SpabOneCandidate {
 		// Generate children
 		for (String queryStart : prefixes) {
 			// TODO: These are no SELECTs.
-			children.add(new SpabOneSelectCandidate(this, queryStart + ".*"));
+			children.add(new SpabOneSelectCandidate(queryStart + ".*"));
 		}
 
 		// TODO: Refine SELECT in children.

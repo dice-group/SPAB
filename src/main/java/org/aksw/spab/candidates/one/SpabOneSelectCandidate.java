@@ -5,7 +5,6 @@ import java.util.List;
 
 import org.aksw.spab.candidates.Candidate;
 import org.aksw.spab.exceptions.CandidateRuntimeException;
-import org.apache.jena.query.Query;
 
 /**
  * First implementation of Candidate, type: SELECT.
@@ -13,18 +12,9 @@ import org.apache.jena.query.Query;
  * @author Adrian Wilke
  */
 public class SpabOneSelectCandidate extends SpabOneCandidate {
-
-	public SpabOneSelectCandidate(SpabOneCandidate parent) {
-		super(parent);
-		this.parent = parent;
-	}
-
-	public SpabOneSelectCandidate(SpabOneCandidate parent, Query query) {
-		super(parent, query);
-	}
-
-	public SpabOneSelectCandidate(SpabOneCandidate parent, String regex) {
-		super(parent, regex);
+	
+	public SpabOneSelectCandidate(String regex) {
+		super(regex);
 	}
 
 	/**
