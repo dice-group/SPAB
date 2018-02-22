@@ -26,6 +26,14 @@ public class DummyCandidateTest extends TestCase {
 
 		spab.addPositive(query);
 		spab.addPositive(query);
+		spab.addPositive(query);
+		spab.addPositive(query);
+		spab.addPositive(query);
+
+		spab.addNegative(query);
+		spab.addNegative(query);
+		spab.addNegative(query);
+		spab.addNegative(query);
 		spab.addNegative(query);
 
 		spab.setLambda(.5f);

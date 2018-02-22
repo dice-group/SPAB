@@ -7,6 +7,7 @@ import org.apache.jena.query.Query;
 import org.apache.jena.query.QueryFactory;
 import org.apache.jena.query.QueryParseException;
 import org.apache.jena.sparql.core.Prologue;
+import org.apache.jena.update.UpdateFactory;
 
 /**
  * Representations for a single SPARQL query.
@@ -69,8 +70,18 @@ public class SparqlQuery {
 		// Create query
 		try {
 			query = QueryFactory.parse(new Query(queryPrologue), getOriginalString(), null, null);
-		} catch (QueryParseException e) {
-			throw new InputRuntimeException(e);
+		} catch (QueryParseException originalException) {
+
+			// Check for SPARQL update queries. Add information, if exception occurred
+			// because of an update instead of a query. Will not work, if no namespaces are
+			// defined in original query.
+			try {
+				UpdateFactory.create(getOriginalString()).toString();
+			} catch (QueryParseException notUsedException) {
+				throw new InputRuntimeException(originalException);
+			}
+			throw new InputRuntimeException("SPARQL updates are not supported. Please use SPARQL queries.",
+					originalException);
 		}
 	}
 

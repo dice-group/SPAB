@@ -20,9 +20,9 @@ public class SpabOneRootCandidate extends SpabOneCandidate {
 	public List<Candidate> getChildren() throws CandidateRuntimeException {
 
 		// Get all prefixes except SELECT
+		// SPARQL update-prefixes are not added, as they are not supported in input.
 		List<String> prefixes = new LinkedList<String>();
 		prefixes.addAll(Arrays.asList(queryPrefixes));
-		prefixes.addAll(Arrays.asList(updatePrefixes));
 		boolean removed = false;
 		for (int i = 0; i < prefixes.size(); i++) {
 			if (prefixes.get(i).equals("SELECT")) {

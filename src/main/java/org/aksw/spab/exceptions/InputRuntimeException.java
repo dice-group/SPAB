@@ -13,7 +13,11 @@ public class InputRuntimeException extends RuntimeException {
 		super(message);
 	}
 
-    public InputRuntimeException(Throwable cause) {
-        super(cause);
-    }
+	public InputRuntimeException(String message, Throwable cause) {
+		super(message, cause);
+	}
+
+	public InputRuntimeException(Throwable cause) {
+		super(cause);
+	}
 }
