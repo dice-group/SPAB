@@ -1,4 +1,4 @@
-# SPAB: SPARQL Benchmark Query Generator
+# SPAB: SPARQL Benchmark Query Generalization
 
 The project is in progress.
 

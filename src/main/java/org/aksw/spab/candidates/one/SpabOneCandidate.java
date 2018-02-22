@@ -9,7 +9,7 @@ import org.aksw.spab.structures.CandidateVertex;
 import org.apache.jena.query.Query;
 
 /**
- * First implementation of Candidate.
+ * Abstract class with general data and methods for implementations.
  * 
  * @author Adrian Wilke
  */
@@ -30,15 +30,10 @@ public abstract class SpabOneCandidate implements Candidate {
 	protected static final String[] updatePrefixes = { "LOAD", "CLEAR", "DROP", "ADD", "MOVE", "COPY", "CREATE",
 			"INSERT DATA", "DELETE DATA", "DELETE WHERE" };
 
+	protected CandidateVertex candidateVertex;
 	protected List<Candidate> children = new LinkedList<Candidate>();
-	protected SpabOneCandidate parent;
 	protected Query query;
 	protected String regex;
-	protected CandidateVertex candidateVertex;
-
-	public void setVertex(CandidateVertex candidateVertex) {
-		this.candidateVertex = candidateVertex;
-	}
 
 	public SpabOneCandidate() {
 	}
@@ -61,18 +56,19 @@ public abstract class SpabOneCandidate implements Candidate {
 	/**
 	 * Returns a regular expression to match SPARQL queries.
 	 */
-	public String getRexEx() throws CandidateRuntimeException {
-		if (regex != null && !regex.isEmpty()) {
-			return regex;
-		} else {
-			throw new CandidateRuntimeException("No regular expression set. " + this.getClass().getName());
-		}
-	}
+	public abstract String getRexEx() throws CandidateRuntimeException;
 
 	/**
 	 * @deprecated
 	 */
 	public boolean matches(String query) throws CandidateRuntimeException {
 		return false;
+	}
+
+	/**
+	 * Sets the related vertex in the candidate graph.
+	 */
+	public void setVertex(CandidateVertex candidateVertex) {
+		this.candidateVertex = candidateVertex;
 	}
 }

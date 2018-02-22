@@ -17,7 +17,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * SPAB: SPARQL Benchmark Query Generator
+ * SPAB: SPARQL Benchmark Query Generalization
  * 
  * @author Adrian Wilke
  */

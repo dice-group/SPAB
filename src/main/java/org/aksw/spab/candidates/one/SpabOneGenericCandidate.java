@@ -7,13 +7,14 @@ import org.aksw.spab.candidates.Candidate;
 import org.aksw.spab.exceptions.CandidateRuntimeException;
 
 /**
- * Candidates of type SELECT.
+ * Generic implementation for SPARQL-queries and -updates without children.
  * 
  * @author Adrian Wilke
  */
-public class SpabOneSelectCandidate extends SpabOneCandidate {
+public class SpabOneGenericCandidate extends SpabOneCandidate {
 
-	public SpabOneSelectCandidate() {
+	public SpabOneGenericCandidate(String regex) {
+		super(regex);
 	}
 
 	/**
@@ -21,15 +22,18 @@ public class SpabOneSelectCandidate extends SpabOneCandidate {
 	 */
 	public List<Candidate> getChildren() throws CandidateRuntimeException {
 
-		// TODO
+		// No children for generic types
 		return new LinkedList<Candidate>();
 	}
 
 	/**
-	 * Returns a regular expression to match SPARQL queries.
+	 * Returns regular expression got from constructor.
 	 */
 	public String getRexEx() throws CandidateRuntimeException {
-		return ("SELECT.*");
+		if (regex != null && !regex.isEmpty()) {
+			return regex;
+		} else {
+			throw new CandidateRuntimeException("No regular expression set.");
+		}
 	}
-
 }

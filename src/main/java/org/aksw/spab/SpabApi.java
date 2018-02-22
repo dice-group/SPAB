@@ -9,7 +9,7 @@ import org.aksw.spab.structures.CandidateQueue;
 import org.aksw.spab.structures.CandidateVertex;
 
 /**
- * SPAB API: SPARQL Benchmark Query Generator
+ * SPAB API: SPARQL Benchmark Query Generalization
  * 
  * Configuration: Use the set-methods.
  * 

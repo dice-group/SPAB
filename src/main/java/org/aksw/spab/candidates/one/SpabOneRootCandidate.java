@@ -8,9 +8,7 @@ import org.aksw.spab.candidates.Candidate;
 import org.aksw.spab.exceptions.CandidateRuntimeException;
 
 /**
- * First implementation of Candidate, type: root.
- * 
- * Represents general SELECT.
+ * Root candidate. Generates children for SPARQL-queries and -updates.
  * 
  * @author Adrian Wilke
  */
@@ -36,13 +34,13 @@ public class SpabOneRootCandidate extends SpabOneCandidate {
 			throw new CandidateRuntimeException("Could not remove select.");
 		}
 
-		// Generate children
+		// Generate generic children children
 		for (String queryStart : prefixes) {
-			// TODO: These are no SELECTs.
-			children.add(new SpabOneSelectCandidate(queryStart + ".*"));
+			children.add(new SpabOneGenericCandidate(queryStart + ".*"));
 		}
 
-		// TODO: Refine SELECT in children.
+		// Create child for SELECT queries
+		children.add(new SpabOneSelectCandidate());
 
 		return children;
 	}
@@ -51,7 +49,8 @@ public class SpabOneRootCandidate extends SpabOneCandidate {
 	 * Returns a regular expression to match SPARQL queries.
 	 */
 	public String getRexEx() throws CandidateRuntimeException {
-		// TODO: Check.
-		return ("SELECT.*");
+
+		// Will not match any query
+		return "";
 	}
 }
