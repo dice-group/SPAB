@@ -19,11 +19,11 @@ public class CandidateVertex {
 
 	public final static int START_GENERATION = 0;
 
+	protected Candidate candidate;
 	protected Float fMeasure = null;
 	protected int generation;
-	protected Float score = null;
 
-	protected Candidate candidate;
+	protected Float score = null;
 
 	/**
 	 * Initializes candidate, which has no parent.
@@ -134,6 +134,13 @@ public class CandidateVertex {
 			list.add(new CandidateVertex(this, candidate));
 		}
 		return list;
+	}
+
+	/**
+	 * Gets related candidate.
+	 */
+	public Candidate getCandidate() {
+		return candidate;
 	}
 
 	/**

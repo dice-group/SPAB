@@ -3,6 +3,7 @@ package org.aksw.spab;
 import java.util.List;
 
 import org.aksw.spab.candidates.DummyCandidate;
+import org.aksw.spab.candidates.one.SpabOneRootCandidate;
 import org.aksw.spab.exceptions.PerfectSolutionException;
 import org.aksw.spab.exceptions.SpabException;
 import org.aksw.spab.input.Configuration;
@@ -10,6 +11,8 @@ import org.aksw.spab.input.Input;
 import org.aksw.spab.structures.CandidateGraph;
 import org.aksw.spab.structures.CandidateQueue;
 import org.aksw.spab.structures.CandidateVertex;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * SPAB: SPARQL Benchmark Query Generator
@@ -17,6 +20,8 @@ import org.aksw.spab.structures.CandidateVertex;
  * @author Adrian Wilke
  */
 public class SpabAlgorithm {
+
+	private static final Logger LOGGER = LoggerFactory.getLogger(SpabAlgorithm.class);
 
 	/**
 	 * Configuration container
@@ -65,6 +70,9 @@ public class SpabAlgorithm {
 			case DUMMY:
 				firstCandidate = new CandidateVertex(new DummyCandidate());
 				break;
+			case SPAB_ONE:
+				firstCandidate = new CandidateVertex(new SpabOneRootCandidate(null));
+				break;
 			default:
 				throw new SpabException("No candidate implementation set.");
 			}
@@ -77,6 +85,10 @@ public class SpabAlgorithm {
 
 				// Get best candidate, generate children, and add them into graph
 				CandidateVertex bestCandidate = queue.getBestCandidate();
+				if (bestCandidate == null) {
+					LOGGER.info("Candidate queue empty at iteration " + i);
+					break;
+				}
 				List<CandidateVertex> bestCandidateChildren = bestCandidate.generateChildren();
 				graph.addCandidates(bestCandidateChildren, bestCandidate);
 
@@ -110,6 +122,7 @@ public class SpabAlgorithm {
 
 			// Perfect candidate was found before reaching maximum number of iterations.
 			// A perfect candidate has no false positives or false negatives.
+			LOGGER.info("Perfect solution found!");
 			return e.getCandidate();
 
 		}

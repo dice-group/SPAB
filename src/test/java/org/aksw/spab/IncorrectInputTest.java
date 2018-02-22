@@ -5,6 +5,11 @@ import org.junit.Test;
 
 import junit.framework.TestCase;
 
+/**
+ * Tests for incorrect inputs of SPARQL queries.
+ * 
+ * @author Adrian Wilke
+ */
 public class IncorrectInputTest extends TestCase {
 
 	public static String incorrectQuery = "SELECT ?nonsense WHERE {?nonsense a}";

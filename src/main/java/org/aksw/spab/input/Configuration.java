@@ -1,5 +1,6 @@
 package org.aksw.spab.input;
 
+import org.aksw.spab.SpabApi;
 import org.aksw.spab.SpabApi.CandidateImplementation;
 import org.aksw.spab.exceptions.InputRuntimeException;
 
@@ -10,17 +11,10 @@ import org.aksw.spab.exceptions.InputRuntimeException;
  */
 public class Configuration {
 
-	// Default values
-	public static final CandidateImplementation CANDIDATE_IMPLEMENTATION = CandidateImplementation.DUMMY;
-	public static final boolean CHECK_PERFECT_SOLUTION = true;
-	public static final float LAMBDA = 0.2f;
-	public static final int MAX_ITERATIONS = 10;
-
-	// Configuration variables with default values
-	protected CandidateImplementation candidateImplementation = CANDIDATE_IMPLEMENTATION;
-	protected boolean checkPerfectSolution = CHECK_PERFECT_SOLUTION;
-	protected float lambda = LAMBDA;
-	protected int maxIterations = MAX_ITERATIONS;
+	protected CandidateImplementation candidateImplementation = SpabApi.CANDIDATE_IMPLEMENTATION;
+	protected boolean checkPerfectSolution = SpabApi.CHECK_PERFECT_SOLUTION;
+	protected float lambda = SpabApi.LAMBDA;
+	protected int maxIterations = SpabApi.MAX_ITERATIONS;
 
 	/**
 	 * Sets, if algorithm should stop on discovery of perfect solution. If true, the

@@ -4,13 +4,17 @@ import org.aksw.spab.exceptions.InputRuntimeException;
 import org.junit.Test;
 
 import junit.framework.TestCase;
-
+/**
+ * Tests for missing prefixes in SPARQL queries.
+ * 
+ * @author Adrian Wilke
+ */
 public class MissingPrefixTest extends TestCase {
 
 	public static String query = "SELECT ?x ?name\n" + "WHERE  { ?x foaf:name ?name }";
 
 	@Test
-	public void testIncorrectQueryInput() {
+	public void testMissingPrefixInput() {
 		try {
 			new SpabApi().addPositive(query);
 			fail("Missing namespace should throw Exception.");
@@ -19,7 +23,7 @@ public class MissingPrefixTest extends TestCase {
 	}
 
 	@Test
-	public void testCorrectQueryInput() {
+	public void testGivenPrefixInput() {
 		try {
 			SpabApi spab = new SpabApi();
 			spab.addNamespacePrefix("foaf", "<http://xmlns.com/foaf/0.1/>");

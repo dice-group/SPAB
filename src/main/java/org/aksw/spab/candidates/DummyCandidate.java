@@ -4,7 +4,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
-import org.aksw.spab.candidates.Candidate;
 import org.aksw.spab.exceptions.CandidateRuntimeException;
 
 /**
@@ -14,9 +13,9 @@ import org.aksw.spab.exceptions.CandidateRuntimeException;
  */
 public class DummyCandidate implements Candidate {
 
-	final public int CHILDREN_MAX = 3;
-	final public int CHILDREN_MIN = 1;
-	final public double MATCHING_PROBABILITY = .5;
+	final public static int CHILDREN_MAX = 3;
+	final public static int CHILDREN_MIN = 1;
+	final public static double MATCHING_PROBABILITY = .5;
 
 	/**
 	 * Generates dummy children between {@link CHILDREN_MIN} and
