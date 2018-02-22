@@ -88,7 +88,7 @@ public class SpabAlgorithm {
 				// Get best candidate, generate children, and add them into graph
 				CandidateVertex bestCandidate = queue.getBestCandidate();
 				if (bestCandidate == null) {
-					LOGGER.info("Candidate queue empty at iteration " + i);
+					LOGGER.info("All candidates visited at iteration " + i);
 					break;
 				}
 				Map<CandidateVertex, Candidate> bestCandidateChildren = bestCandidate.generateChildren();

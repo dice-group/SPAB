@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.aksw.spab.candidates.Candidate;
 import org.aksw.spab.exceptions.CandidateRuntimeException;
+import org.apache.jena.query.QueryFactory;
 
 /**
  * Candidates of type SELECT.
@@ -14,6 +15,9 @@ import org.aksw.spab.exceptions.CandidateRuntimeException;
 public class SpabOneSelectCandidate extends SpabOneCandidate {
 
 	public SpabOneSelectCandidate() {
+		query = QueryFactory.create();
+		query.setQuerySelectType();
+		query.setQueryResultStar(true);
 	}
 
 	/**
@@ -29,7 +33,7 @@ public class SpabOneSelectCandidate extends SpabOneCandidate {
 	 * Returns a regular expression to match SPARQL queries.
 	 */
 	public String getRexEx() throws CandidateRuntimeException {
-		return ("SELECT.*");
+		return (query.toString().replace("*", ".*").replace(" ", ""));
 	}
 
 }

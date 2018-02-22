@@ -26,7 +26,7 @@ public class SpabExample {
 		System.out.println(query1);
 
 		SpabApi spab = new SpabApi();
-		spab.addNamespacePrefix("foaf", "<http://xmlns.com/foaf/0.1/>");
+		spab.addNamespacePrefix("foaf", "http://xmlns.com/foaf/0.1/");
 
 		// spab.addPositive(query1);
 		// spab.addPositive(query2);
@@ -35,9 +35,10 @@ public class SpabExample {
 		// spab.addPositive(query1);
 		// spab.addPositive(query2);
 
-		spab.addNamespacePrefix("vcard", "<http://www.w3.org/2001/vcard-rdf/3.0#>");
+		spab.addNamespacePrefix("vcard", "http://www.w3.org/2001/vcard-rdf/3.0#");
 		spab.addPositive(construct);
 
+		// spab.addNamespacePrefix("dc", "http://purl.org/dc/elements/1.1/");
 		// spab.addPositive(insert);
 
 		spab.setLambda(.5f);
