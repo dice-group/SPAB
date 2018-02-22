@@ -7,7 +7,8 @@ import org.aksw.spab.candidates.Candidate;
 import org.aksw.spab.exceptions.CandidateRuntimeException;
 
 /**
- * Generic implementation for SPARQL-queries and -updates without children.
+ * Generic implementation for SPARQL-queries CONSTRUCT, DESCRIBE, and ASK
+ * without generating children.
  * 
  * @author Adrian Wilke
  */
