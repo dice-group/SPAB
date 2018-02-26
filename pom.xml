@@ -7,6 +7,7 @@
 	<name>SPAB</name>
 	<dependencies>
 
+		<!-- Graph data structure -->
 		<!-- https://mvnrepository.com/artifact/org.jgrapht/jgrapht-core -->
 		<dependency>
 			<groupId>org.jgrapht</groupId>
@@ -14,6 +15,7 @@
 			<version>1.1.0</version>
 		</dependency>
 
+		<!-- SPARQL query parsing -->
 		<!-- https://mvnrepository.com/artifact/org.apache.jena/jena-arq -->
 		<dependency>
 			<groupId>org.apache.jena</groupId>
@@ -21,14 +23,23 @@
 			<version>3.6.0</version>
 		</dependency>
 
-		<!-- https://mvnrepository.com/artifact/junit/junit -->
+		<!-- TDB for DBpedia ontology -->
+		<!-- https://mvnrepository.com/artifact/org.apache.jena/jena-tdb -->
 		<dependency>
-			<groupId>junit</groupId>
-			<artifactId>junit</artifactId>
-			<version>4.12</version>
-			<scope>test</scope>
+			<groupId>org.apache.jena</groupId>
+			<artifactId>jena-tdb</artifactId>
+			<version>3.6.0</version>
 		</dependency>
 
+		<!-- TDB easy queries -->
+		<!-- https://mvnrepository.com/artifact/org.apache.jena/jena-querybuilder -->
+		<dependency>
+			<groupId>org.apache.jena</groupId>
+			<artifactId>jena-querybuilder</artifactId>
+			<version>3.6.0</version>
+		</dependency>
+
+		<!-- Logging -->
 		<!-- https://mvnrepository.com/artifact/org.slf4j/slf4j-api -->
 		<dependency>
 			<groupId>org.slf4j</groupId>
@@ -36,11 +47,21 @@
 			<version>1.7.25</version>
 		</dependency>
 
+		<!-- Logging -->
 		<!-- https://mvnrepository.com/artifact/org.slf4j/slf4j-simple -->
 		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-simple</artifactId>
 			<version>1.7.25</version>
+		</dependency>
+
+		<!-- Tests -->
+		<!-- https://mvnrepository.com/artifact/junit/junit -->
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>4.12</version>
+			<scope>test</scope>
 		</dependency>
 
 	</dependencies>
