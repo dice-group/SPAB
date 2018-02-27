@@ -1,6 +1,7 @@
 package org.aksw.spab;
 
-import org.aksw.spab.exceptions.InputRuntimeException;
+import org.dice_research.spab.SpabApi;
+import org.dice_research.spab.exceptions.InputRuntimeException;
 import org.junit.Test;
 
 import junit.framework.TestCase;
@@ -29,7 +30,7 @@ public class IncorrectInputTest extends TestCase {
 		try {
 			new SpabApi().addPositive(correctQuery);
 		} catch (InputRuntimeException e) {
-			fail("Incorrect input should not throw Exception.");
+			fail("Correct input should not throw Exception.");
 		}
 	}
 }

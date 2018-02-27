@@ -1,9 +1,11 @@
 package org.aksw.spab;
 
-import org.aksw.spab.exceptions.InputRuntimeException;
+import org.dice_research.spab.SpabApi;
+import org.dice_research.spab.exceptions.InputRuntimeException;
 import org.junit.Test;
 
 import junit.framework.TestCase;
+
 /**
  * Tests for missing prefixes in SPARQL queries.
  * 
@@ -29,7 +31,7 @@ public class MissingPrefixTest extends TestCase {
 			spab.addNamespacePrefix("foaf", "<http://xmlns.com/foaf/0.1/>");
 			spab.addPositive(query);
 		} catch (InputRuntimeException e) {
-			fail("Missing namespace should not throw Exception.");
+			fail("Given namespace should not throw Exception.");
 		}
 	}
 }

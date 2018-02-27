@@ -1,9 +1,10 @@
 package org.aksw.spab;
 
-import org.aksw.spab.SpabApi.CandidateImplementation;
-import org.aksw.spab.candidates.one.SpabOneCandidate;
-import org.aksw.spab.exceptions.SpabException;
-import org.aksw.spab.structures.CandidateVertex;
+import org.dice_research.spab.SpabApi;
+import org.dice_research.spab.SpabApi.CandidateImplementation;
+import org.dice_research.spab.candidates.one.SpabOneCandidate;
+import org.dice_research.spab.exceptions.SpabException;
+import org.dice_research.spab.structures.CandidateVertex;
 import org.junit.Test;
 
 import junit.framework.TestCase;
