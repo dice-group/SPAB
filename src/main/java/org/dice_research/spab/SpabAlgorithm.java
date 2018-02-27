@@ -12,7 +12,6 @@ import org.dice_research.spab.input.Input;
 import org.dice_research.spab.structures.CandidateGraph;
 import org.dice_research.spab.structures.CandidateQueue;
 import org.dice_research.spab.structures.CandidateVertex;
-import org.dice_research.spab.structures.Matcher;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -84,7 +83,8 @@ public class SpabAlgorithm {
 		try {
 
 			// Generate first candidate
-			Candidate rootCandidate = CandidateFactory.createCandidate(configuration.getCandidateImplementation());
+			Candidate rootCandidate = CandidateFactory.createCandidate(configuration.getCandidateImplementation(),
+					matcher);
 			CandidateVertex firstCandidate = new CandidateVertex(rootCandidate);
 
 			// Set matcher

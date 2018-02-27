@@ -3,6 +3,7 @@ package org.dice_research.spab.structures;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.dice_research.spab.Matcher;
 import org.dice_research.spab.candidates.Candidate;
 import org.dice_research.spab.exceptions.CandidateRuntimeException;
 import org.dice_research.spab.exceptions.PerfectSolutionException;

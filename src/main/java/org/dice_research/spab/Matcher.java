@@ -1,4 +1,4 @@
-package org.dice_research.spab.structures;
+package org.dice_research.spab;
 
 import org.dice_research.spab.candidates.Candidate;
 import org.dice_research.spab.exceptions.CandidateRuntimeException;

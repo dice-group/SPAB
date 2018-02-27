@@ -4,14 +4,13 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
+import org.dice_research.spab.Matcher;
 import org.dice_research.spab.SpabApi;
 import org.dice_research.spab.SpabApi.CandidateImplementation;
 import org.dice_research.spab.candidates.Candidate;
-import org.dice_research.spab.candidates.CandidateFactory;
 import org.dice_research.spab.exceptions.CandidateRuntimeException;
 import org.dice_research.spab.exceptions.SpabException;
 import org.dice_research.spab.structures.CandidateVertex;
-import org.dice_research.spab.structures.Matcher;
 import org.junit.Test;
 
 import junit.framework.TestCase;
@@ -115,7 +114,6 @@ public class DummyTest extends TestCase implements Candidate, Matcher {
 		spab.setMaxIterations(30);
 		spab.setCheckPerfectSolution(true);
 		spab.setCandidateImplementation(CandidateImplementation.UNIT_TEST);
-		CandidateFactory.setUnitTestCandidate(new DummyTest()); 
 
 		CandidateVertex bestCandidate;
 		bestCandidate = spab.run(this);

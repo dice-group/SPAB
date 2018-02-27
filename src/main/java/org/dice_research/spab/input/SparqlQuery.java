@@ -1,5 +1,8 @@
 package org.dice_research.spab.input;
 
+import java.util.Collections;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map.Entry;
 
 import org.apache.jena.query.Query;
@@ -17,14 +20,24 @@ import org.dice_research.spab.exceptions.InputRuntimeException;
 public class SparqlQuery {
 
 	/**
+	 * List of 26 names for variables.
+	 */
+	static List<String> variableNames = new LinkedList<String>();
+
+	static {
+		for (int i = 10; i <= 35; i++) {
+			variableNames.add("?" + Character.forDigit(i, 36));
+		}
+	}
+	/**
 	 * The {@link Input} this query belongs to
 	 */
-	final protected Input input;
+	final protected Input INPUT;
 
 	/**
 	 * The original input string of the query
 	 */
-	final protected String originalString;
+	final protected String ORIGINAL_STRING;
 
 	/**
 	 * The parsed query
@@ -45,10 +58,35 @@ public class SparqlQuery {
 	 *             if query string could not be parsed
 	 */
 	public SparqlQuery(String sparqlQuery, Input input) {
-		this.originalString = sparqlQuery;
-		this.input = input;
+		this.ORIGINAL_STRING = sparqlQuery;
+		this.INPUT = input;
 
 		create();
+	}
+
+	/**
+	 * Creates query using given namespaces and query-string
+	 */
+	protected Query createJenaQuery(Prologue queryPrologue, String queryString) {
+		return QueryFactory.parse(new Query(queryPrologue), queryString, null, null);
+	}
+
+	/**
+	 * Replaces variables in SPARQL query
+	 */
+	protected String replaceVariables(Prologue queryPrologue, String queryString) {
+		Query tmpQuery = createJenaQuery(queryPrologue, queryString);
+		List<String> tmpResultVars = tmpQuery.getResultVars();
+		Collections.sort(tmpResultVars);
+		String tmpQueryString = tmpQuery.toString();
+		for (int i = 0; i < tmpResultVars.size(); i++) {
+			if (i > variableNames.size()) {
+				break;
+			} else {
+				tmpQueryString = tmpQueryString.replace("?" + tmpResultVars.get(i), variableNames.get(i));
+			}
+		}
+		return tmpQueryString;
 	}
 
 	/**
@@ -63,13 +101,14 @@ public class SparqlQuery {
 
 		// Add namespaces
 		Prologue queryPrologue = new Prologue();
-		for (Entry<String, String> namespace : input.getNamespaces().entrySet()) {
+		for (Entry<String, String> namespace : INPUT.getNamespaces().entrySet()) {
 			queryPrologue.setPrefix(namespace.getKey(), namespace.getValue());
 		}
 
 		// Create query
 		try {
-			query = QueryFactory.parse(new Query(queryPrologue), getOriginalString(), null, null);
+			String queryReplacedVars = replaceVariables(queryPrologue, getOriginalString());
+			query = createJenaQuery(queryPrologue, queryReplacedVars);
 		} catch (QueryParseException originalException) {
 
 			// Check for SPARQL update queries. Add information, if exception occurred
@@ -89,7 +128,7 @@ public class SparqlQuery {
 	 * Gets the original input string of the query.
 	 */
 	public String getOriginalString() {
-		return originalString;
+		return ORIGINAL_STRING;
 	}
 
 	/**

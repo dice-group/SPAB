@@ -8,7 +8,6 @@ import org.dice_research.spab.input.Input;
 import org.dice_research.spab.structures.CandidateGraph;
 import org.dice_research.spab.structures.CandidateQueue;
 import org.dice_research.spab.structures.CandidateVertex;
-import org.dice_research.spab.structures.Matcher;
 
 /**
  * SPAB API: SPARQL Benchmark Query Generalization
