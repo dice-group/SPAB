@@ -1,11 +1,9 @@
-package org.aksw.spab;
+package org.dice_research.spab;
 
 import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
-import org.dice_research.spab.Matcher;
-import org.dice_research.spab.SpabApi;
 import org.dice_research.spab.SpabApi.CandidateImplementation;
 import org.dice_research.spab.candidates.Candidate;
 import org.dice_research.spab.exceptions.CandidateRuntimeException;
@@ -13,14 +11,11 @@ import org.dice_research.spab.exceptions.SpabException;
 import org.dice_research.spab.structures.CandidateVertex;
 import org.junit.Test;
 
-import junit.framework.TestCase;
-
-public class DummyTest extends TestCase implements Candidate, Matcher {
+public class DummyTest extends SpabTestCase implements Candidate, Matcher {
 
 	final public static int CHILDREN_MAX = 3;
 	final public static int CHILDREN_MIN = 1;
 	final public static double MATCHING_PROBABILITY = .5;
-	final public static boolean PRINT_RESULT = false;
 
 	public static String query = "SELECT ?x ?name\n" + "WHERE  { ?x foaf:name ?name }";
 
@@ -131,7 +126,7 @@ public class DummyTest extends TestCase implements Candidate, Matcher {
 		assertTrue(bestCandidate.getScore() >= 0);
 
 		// If a human is interested in the results
-		if (PRINT_RESULT) {
+		if (PRINT) {
 			print(bestCandidate, spab);
 		}
 	}

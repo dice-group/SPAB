@@ -1,7 +1,7 @@
 package org.dice_research.spab.examples;
 
 import org.dice_research.spab.SpabApi;
-import org.dice_research.spab.input.SparqlQuery;
+import org.dice_research.spab.input.SparqlUnit;
 
 /**
  * Example shows different representations of input queries.
@@ -17,7 +17,7 @@ public class InputQueryExample {
 
 		SpabApi spab = new SpabApi();
 		spab.addPositive(exampleQuery);
-		SparqlQuery inputQuery = spab.getInput().getPositives().get(0);
+		SparqlUnit sparqlUnit = spab.getInput().getPositives().get(0);
 
 		System.out.println("Original query string:");
 		System.out.println();
@@ -28,13 +28,13 @@ public class InputQueryExample {
 
 		System.out.println("Parsed query representation:");
 		System.out.println();
-		System.out.println(inputQuery.getQuery());
+		System.out.println(sparqlUnit.getStringRepresentation());
 		System.out.println("----------------------------------------------------------------------------------------");
 		System.out.println();
 
 		System.out.println("Resulting string representation:");
 		System.out.println();
-		System.out.println(inputQuery.getStringRepresentation());
+		System.out.println(sparqlUnit.getLineRepresentation());
 		System.out.println();
 		System.out.println("----------------------------------------------------------------------------------------");
 		System.out.println();

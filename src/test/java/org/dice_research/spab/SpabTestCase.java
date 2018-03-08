@@ -1,4 +1,4 @@
-package org.aksw.spab;
+package org.dice_research.spab;
 
 import junit.framework.TestCase;
 

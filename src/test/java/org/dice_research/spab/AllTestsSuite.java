@@ -1,4 +1,4 @@
-package org.aksw.spab;
+package org.dice_research.spab;
 
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;

@@ -1,4 +1,4 @@
-package org.aksw.spab;
+package org.dice_research.spab;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -26,9 +26,9 @@ public class QueryFormatTest extends SpabTestCase {
 		}
 
 		// WHERE clause should be the same
-		String where0 = spabApi.getInput().getPositives().get(0).getStringRepresentation();
+		String where0 = spabApi.getInput().getPositives().get(0).getLineRepresentation();
 		where0 = where0.substring(where0.indexOf("WHERE"));
-		String where1 = spabApi.getInput().getPositives().get(1).getStringRepresentation();
+		String where1 = spabApi.getInput().getPositives().get(1).getLineRepresentation();
 		where1 = where1.substring(where1.indexOf("WHERE"));
 		assertTrue(where0.equals(where1));
 

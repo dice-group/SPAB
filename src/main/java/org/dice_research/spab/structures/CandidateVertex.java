@@ -9,7 +9,7 @@ import org.dice_research.spab.exceptions.CandidateRuntimeException;
 import org.dice_research.spab.exceptions.PerfectSolutionException;
 import org.dice_research.spab.input.Configuration;
 import org.dice_research.spab.input.Input;
-import org.dice_research.spab.input.SparqlQuery;
+import org.dice_research.spab.input.SparqlUnit;
 
 /**
  * Candidate for a comprehensive SPARQL query.
@@ -68,15 +68,15 @@ public class CandidateVertex implements Matcher {
 
 			firstCall = true;
 
-			for (SparqlQuery inputQuery : input.getPositives()) {
-				if (matcher.matches(candidate, inputQuery.getQuery().toString())) {
+			for (SparqlUnit sparqlUnit : input.getPositives()) {
+				if (matcher.matches(candidate, sparqlUnit.getLineRepresentation())) {
 					truePositives++;
 				} else {
 					falseNegatives++;
 				}
 			}
-			for (SparqlQuery inputQuery : input.getNegatives()) {
-				if (matcher.matches(candidate, inputQuery.getQuery().toString())) {
+			for (SparqlUnit sparqlUnit : input.getNegatives()) {
+				if (matcher.matches(candidate, sparqlUnit.getLineRepresentation())) {
 					falsePositives++;
 				}
 			}

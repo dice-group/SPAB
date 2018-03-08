@@ -1,4 +1,4 @@
-package org.aksw.spab;
+package org.dice_research.spab;
 
 import org.dice_research.spab.SpabApi;
 import org.dice_research.spab.exceptions.InputRuntimeException;
