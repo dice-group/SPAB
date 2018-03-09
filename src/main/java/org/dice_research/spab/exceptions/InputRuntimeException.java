@@ -9,6 +9,10 @@ public class InputRuntimeException extends RuntimeException {
 
 	protected static final long serialVersionUID = 1L;
 
+	public InputRuntimeException() {
+		super();
+	}
+
 	public InputRuntimeException(String message) {
 		super(message);
 	}

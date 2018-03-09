@@ -10,8 +10,9 @@ import org.dice_research.spab.input.SparqlUnit;
  */
 public class InputQueryExample {
 
-	public static String exampleQuery = "SELECT ?person\n" + "WHERE {\n" + " ?person a rdf:Person .\n"
-			+ " ?person rdf:age ?age .\n" + " FILTER (?age > 18) .\n" + "}";
+	public static String exampleQuery = "PREFIX  rdf:    <http://www.w3.org/1999/02/22-rdf-syntax-ns#> \n"
+			+ "PREFIX  foaf:   <http://xmlns.com/foaf/0.1/> \n" + "\n" + "SELECT ?person\n" + "WHERE \n" + "{\n"
+			+ "    ?person rdf:type  foaf:Person .\n" + "    FILTER NOT EXISTS { ?person foaf:name ?name }\n" + "}   ";
 
 	public static void main(String[] args) {
 

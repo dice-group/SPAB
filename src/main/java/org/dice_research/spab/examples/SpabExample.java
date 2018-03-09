@@ -12,43 +12,20 @@ import org.dice_research.spab.structures.CandidateVertex;
  */
 public class SpabExample {
 
-	public static String construct = "CONSTRUCT   { <http://example.org/person#Alice> vcard:FN ?name }\n"
-			+ "			WHERE       { ?x foaf:name ?name }";
-	/**
-	 * @see https://www.w3.org/TR/sparql11-update/#insertData
-	 */
-	public static String insertWithPrefix = "PREFIX dc: <http://purl.org/dc/elements/1.1/> "
-			+ "INSERT DATA { <http://example/book1> dc:title \"A new book\" ; dc:creator \"A.N.Other\" .}";
-	public static String insert = "INSERT DATA { <http://example/book1> dc:title \"A new book\" ; dc:creator \"A.N.Other\" .}";
-
-	public static String query1 = "SELECT ?x ?name\n" + "WHERE  { ?x foaf:name ?name }";
-	public static String query2 = "SELECT ?name ?mbox\n" + "WHERE\n" + "  { ?x foaf:name ?name .\n"
-			+ "    ?x foaf:mbox ?mbox }";
-
+	public static String query1 = "PREFIX foaf: <http://xmlns.com/foaf/0.1/> SELECT ?x ?name\n"
+			+ "WHERE  { ?x foaf:name ?name }";
+	public static String query2 = "PREFIX foaf: <http://xmlns.com/foaf/0.1/> SELECT ?name ?mbox\n" + "WHERE\n"
+			+ "  { ?x foaf:name ?name .\n" + "    ?x foaf:mbox ?mbox }";
 	public static String query3 = "SELECT ?title\n" + "WHERE\n" + "{\n"
 			+ "  <http://example.org/book/book1> <http://purl.org/dc/elements/1.1/title> ?title .\n" + "}";
 
 	public static void main(String[] args) throws SpabException {
 
 		SpabApi spab = new SpabApi();
-		spab.addNamespacePrefix("foaf", "http://xmlns.com/foaf/0.1/");
 
-		// spab.addPositive(query1);
-		// spab.addPositive(query2);
+		spab.addPositive(query1);
+		spab.addPositive(query2);
 		spab.addNegative(query3);
-
-		// spab.addPositive(query1);
-		// spab.addPositive(query2);
-
-		spab.addNamespacePrefix("vcard", "http://www.w3.org/2001/vcard-rdf/3.0#");
-		spab.addPositive(construct);
-
-		// Will not resolve prefix
-		// spab.addNamespacePrefix("dc", "http://purl.org/dc/elements/1.1/");
-		// spab.addPositive(insert);
-
-		// Will throw exception with info
-		// spab.addPositive(insertWithPrefix);
 
 		spab.setLambda(.5f);
 		spab.setMaxIterations(30);

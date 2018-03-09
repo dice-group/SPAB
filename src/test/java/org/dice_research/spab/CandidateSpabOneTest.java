@@ -11,16 +11,15 @@ import org.junit.Test;
  * 
  * @author Adrian Wilke
  */
-public class SpabOneCandidateTest extends SpabTestCase {
+public class CandidateSpabOneTest extends AbstractTestCase {
 
-	public static String query = "SELECT ?x ?name\n" + "WHERE  { ?x foaf:name ?name }";
+	public static String query = "PREFIX foaf: <http://xmlns.com/foaf/0.1/> SELECT ?x ?name\n"
+			+ "WHERE  { ?x foaf:name ?name }";
 
 	@Test
 	public void test() throws SpabException {
 
 		SpabApi spab = new SpabApi();
-
-		spab.addNamespacePrefix("foaf", "<http://xmlns.com/foaf/0.1/>");
 
 		spab.addPositive(query);
 		spab.addPositive(query);
@@ -37,5 +36,4 @@ public class SpabOneCandidateTest extends SpabTestCase {
 		// At least the root should be in graph
 		assertTrue(spab.getGraph().getAllCandidates().size() > 0);
 	}
-
 }

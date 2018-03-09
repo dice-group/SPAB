@@ -9,7 +9,7 @@ import org.junit.Test;
  * 
  * @author Adrian Wilke
  */
-public class UpdateRequestTest extends SpabTestCase {
+public class UpdateRequestTest extends AbstractTestCase {
 
 	public static String insert = "INSERT DATA { <http://example/book1> " + DC.title
 			+ " \"A new book\" ; dc:creator \"A.N.Other\" .}";

@@ -67,9 +67,9 @@ ASK
 WHERE
   { <http://dbpedia.org/resource/Aker%2BSolutions> ?y ?z }
 #-------------------------------------------------------
-ASK
-WHERE
-  { <http://dbpedia.org/resource/ÃÂÃÂ±ÃÂ¥ÃÂ³ÃÂªÃÂ°ÃÂ ÃÂ¿ÃÂ­ÃÂ±ÃÂ¼ÃÂªÃÂ¨ÃÂ©%2BÃÂ¯ÃÂ¥ÃÂ°ÃÂ¥ÃÂ¯ÃÂ¨ÃÂ±%2BÃÂ­ÃÂ ÃÂ±ÃÂ¥ÃÂ«ÃÂ¥ÃÂ­ÃÂ­ÃÂ¿%2B2001ÃÂ ÃÂ English%2BversionÃÂ ÃÂ Results%3A> ?y ?z }
+#ASK
+#WHERE
+#  { <http://dbpedia.org/resource/ÃÂÃÂ±ÃÂ¥ÃÂ³ÃÂªÃÂ°ÃÂ ÃÂ¿ÃÂ­ÃÂ±ÃÂ¼ÃÂªÃÂ¨ÃÂ©%2BÃÂ¯ÃÂ¥ÃÂ°ÃÂ¥ÃÂ¯ÃÂ¨ÃÂ±%2BÃÂ­ÃÂ ÃÂ±ÃÂ¥ÃÂ«ÃÂ¥ÃÂ­ÃÂ­ÃÂ¿%2B2001ÃÂ ÃÂ English%2BversionÃÂ ÃÂ Results%3A> ?y ?z }
 #-------------------------------------------------------
 ASK
 WHERE
@@ -99,9 +99,9 @@ ASK
 WHERE
   { <http://dbpedia.org/resource/David%2BO%27Brien> ?y ?z }
 #-------------------------------------------------------
-ASK
-WHERE
-  { <http://dbpedia.org/resource/GA%2BGraphic%3AÃÂ£ÃÂÃÂ¬ÃÂ£ÃÂÃÂ¼ÃÂ£ÃÂÃÂ¶ÃÂ£ÃÂÃÂ¼ÃÂ£ÃÂÃÂ¬ÃÂ£ÃÂÃÂ³ÃÂ£ÃÂÃÂÃÂ¥ÃÂ¤ÃÂ§ÃÂ¥ÃÂÃÂÃÂ£ÃÂÃÂ¬ÃÂ£ÃÂÃÂÃÂ£ÃÂÃÂ¼ÃÂ£ÃÂÃÂ ÃÂ¨ÃÂ£ÃÂÃÂ¥ÃÂÃÂÃÂ£ÃÂÃÂ®ÃÂ£ÃÂÃÂÃÂ£ÃÂÃÂ·ÃÂ£ÃÂÃÂ¼ÃÂ£ÃÂÃÂÃÂ£ÃÂÃÂ³ÃÂ£ÃÂÃÂ¯ÃÂ£ÃÂÃÂªÃÂ£ÃÂÃÂ¼ÃÂ£ÃÂÃÂ¬ÃÂ£ÃÂÃÂ¼ÃÂ£ÃÂÃÂ»ÃÂ£ÃÂÃÂÃÂ£ÃÂÃÂ¡ÃÂ£ÃÂÃÂ«ÃÂ£ÃÂÃÂ±ÃÂ¥ÃÂ¾ÃÂÃÂ¦ÃÂÃÂÃÂ¥ÃÂÃÂÃÂ©ÃÂÃÂÃÂ¥ÃÂ®ÃÂÃÂ§ÃÂÃÂºÃÂ¥ÃÂ£ÃÂ²> ?y ?z }
+#ASK
+#WHERE
+#  { <http://dbpedia.org/resource/GA%2BGraphic%3AÃÂ£ÃÂÃÂ¬ÃÂ£ÃÂÃÂ¼ÃÂ£ÃÂÃÂ¶ÃÂ£ÃÂÃÂ¼ÃÂ£ÃÂÃÂ¬ÃÂ£ÃÂÃÂ³ÃÂ£ÃÂÃÂÃÂ¥ÃÂ¤ÃÂ§ÃÂ¥ÃÂÃÂÃÂ£ÃÂÃÂ¬ÃÂ£ÃÂÃÂÃÂ£ÃÂÃÂ¼ÃÂ£ÃÂÃÂ ÃÂ¨ÃÂ£ÃÂÃÂ¥ÃÂÃÂÃÂ£ÃÂÃÂ®ÃÂ£ÃÂÃÂÃÂ£ÃÂÃÂ·ÃÂ£ÃÂÃÂ¼ÃÂ£ÃÂÃÂÃÂ£ÃÂÃÂ³ÃÂ£ÃÂÃÂ¯ÃÂ£ÃÂÃÂªÃÂ£ÃÂÃÂ¼ÃÂ£ÃÂÃÂ¬ÃÂ£ÃÂÃÂ¼ÃÂ£ÃÂÃÂ»ÃÂ£ÃÂÃÂÃÂ£ÃÂÃÂ¡ÃÂ£ÃÂÃÂ«ÃÂ£ÃÂÃÂ±ÃÂ¥ÃÂ¾ÃÂÃÂ¦ÃÂÃÂÃÂ¥ÃÂÃÂÃÂ©ÃÂÃÂÃÂ¥ÃÂ®ÃÂÃÂ§ÃÂÃÂºÃÂ¥ÃÂ£ÃÂ²> ?y ?z }
 #-------------------------------------------------------
 ASK
 WHERE
@@ -143,21 +143,21 @@ ASK
 WHERE
   { <http://dbpedia.org/resource/Dichiarazione%2Bdi%2BSuccessione%2B-%2BHome> ?y ?z }
 #-------------------------------------------------------
-ASK
-WHERE
-  { <http://dbpedia.org/resource/Jarekmrzyglod.com%2BÃ¢ÂÂ%2Bfotograf%2Bdla%2BCiebie%2BÃ¢ÂÂ%2Bfotografia%2BÃÂlubna%2C%2Breklamowa%2C%2BokolicznoÃÂciowa%2B%2BÃÂ»%2BArchiwum%2B%2BÃÂ»%2BKarlskrona> ?y ?z }
+#ASK
+#WHERE
+#  { <http://dbpedia.org/resource/Jarekmrzyglod.com%2BÃ¢ÂÂ%2Bfotograf%2Bdla%2BCiebie%2BÃ¢ÂÂ%2Bfotografia%2BÃÂlubna%2C%2Breklamowa%2C%2BokolicznoÃÂciowa%2B%2BÃÂ»%2BArchiwum%2B%2BÃÂ»%2BKarlskrona> ?y ?z }
 #-------------------------------------------------------
-ASK
-WHERE
-  { <http://dbpedia.org/resource/Problema%2Bno%2Bcasamento%2BÃÂ©%2Bestopim%2Bpara%2Bcrise%2Bde%2BMadson%2B%2Bgloboesporte.com> ?y ?z }
+#ASK
+#WHERE
+#  { <http://dbpedia.org/resource/Problema%2Bno%2Bcasamento%2BÃÂ©%2Bestopim%2Bpara%2Bcrise%2Bde%2BMadson%2B%2Bgloboesporte.com> ?y ?z }
 #-------------------------------------------------------
 ASK
 WHERE
   { <http://dbpedia.org/resource/Indira%2BGandhi%2BInternational%2BAirport> ?y ?z }
 #-------------------------------------------------------
-ASK
-WHERE
-  { <http://dbpedia.org/resource/ÃÂ¥ÃÂÃÂ¥ÃÂ«ÃÂ¥ÃÂ·ÃÂ¥ÃÂ§ÃÂ¡ÃÂ¢ÃÂÃÂ¼ÃÂ»ÃÂºÃÂ¤ÃÂÃÂÃÂÃÂ¤ÃÂªÃÂ¡ÃÂÃÂÃÂ³ÃÂÃÂÃÂ¤ÃÂ¢ÃÂ¡ÃÂ%2B-%2Bgoo%2BÃÂ¥ÃÂÃÂ¥ÃÂ¥ÃÂ¡ÃÂ¼ÃÂ¥ÃÂ¹> ?y ?z }
+#ASK
+#WHERE
+#  { <http://dbpedia.org/resource/ÃÂ¥ÃÂÃÂ¥ÃÂ«ÃÂ¥ÃÂ·ÃÂ¥ÃÂ§ÃÂ¡ÃÂ¢ÃÂÃÂ¼ÃÂ»ÃÂºÃÂ¤ÃÂÃÂÃÂÃÂ¤ÃÂªÃÂ¡ÃÂÃÂÃÂ³ÃÂÃÂÃÂ¤ÃÂ¢ÃÂ¡ÃÂ%2B-%2Bgoo%2BÃÂ¥ÃÂÃÂ¥ÃÂ¥ÃÂ¡ÃÂ¼ÃÂ¥ÃÂ¹> ?y ?z }
 #-------------------------------------------------------
 ASK
 WHERE
@@ -252,9 +252,9 @@ ASK
 WHERE
   { <http://dbpedia.org/resource/Philip%2BSclater> ?y ?z }
 #-------------------------------------------------------
-ASK
-WHERE
-  { <http://dbpedia.org/resource/RDF%2FOWL%2BRepresentation%2Bof%2BÃ¦ÂÂ¥Ã¦ÂÂ¬Ã¨ÂªÂWordNet%2B%3A%2Bword-eagerness> ?y ?z }
+#ASK
+#WHERE
+#  { <http://dbpedia.org/resource/RDF%2FOWL%2BRepresentation%2Bof%2BÃ¦ÂÂ¥Ã¦ÂÂ¬Ã¨ÂªÂWordNet%2B%3A%2Bword-eagerness> ?y ?z }
 #-------------------------------------------------------
 ASK
 WHERE

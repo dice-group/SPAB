@@ -21,7 +21,7 @@ public abstract class CandidateFactory {
 			return new SpabOneRootCandidate();
 
 		case UNIT_TEST:
-			// Unit tests of candidates also are matching
+			// Unit tests of candidates also are matchers
 			if (matcher instanceof Candidate) {
 				return (Candidate) matcher;
 			} else {

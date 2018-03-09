@@ -5,8 +5,8 @@ import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
 
 @RunWith(Suite.class)
-@SuiteClasses({ IncorrectInputTest.class, MissingPrefixTest.class, QueryFormatTest.class, UpdateRequestTest.class,DummyTest.class,
-		SpabOneCandidateTest.class, ImportExamplesTest.class })
+@SuiteClasses({ IncorrectInputTest.class, QueryHandlingTest.class, UpdateRequestTest.class, CandidateTestGeneral.class,
+		CandidateSpabOneTest.class, ImportFilesTest.class, QueryHandlingTest.class })
 
 /**
  * Suite for all tests.

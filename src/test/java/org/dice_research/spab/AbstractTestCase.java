@@ -7,7 +7,7 @@ import junit.framework.TestCase;
  * 
  * @author Adrian Wilke
  */
-public abstract class SpabTestCase extends TestCase {
+public abstract class AbstractTestCase extends TestCase {
 
 	final static public boolean PRINT = false;
 

@@ -2,7 +2,6 @@ package org.dice_research.spab.input;
 
 import java.util.Collections;
 import java.util.List;
-import java.util.Map.Entry;
 
 import org.apache.jena.query.Query;
 import org.apache.jena.query.QueryFactory;
@@ -20,7 +19,7 @@ public class SparqlQuery extends SparqlUnit {
 	/**
 	 * The parsed query
 	 */
-	protected Query query;
+	protected Query jenaQuery;
 
 	/**
 	 * Sets the passed parameters.
@@ -49,26 +48,37 @@ public class SparqlQuery extends SparqlUnit {
 	 */
 	protected void create() throws InputRuntimeException {
 
-		// Add namespaces
-		Prologue queryPrologue = new Prologue();
-		for (Entry<String, String> namespace : INPUT.getNamespaces().entrySet()) {
-			queryPrologue.setPrefix(namespace.getKey(), namespace.getValue());
-		}
-
 		// Create query
+		String queryReplacedVars = replaceVariables(getOriginalString());
+		jenaQuery = createJenaQuery(queryReplacedVars);
+	}
+
+	/**
+	 * Creates Jena query using given namespaces and query-string.
+	 * 
+	 * @throws InputRuntimeException
+	 *             if query string could not be parsed
+	 */
+	protected Query createJenaQuery(Prologue queryPrologue, String queryString) {
 		try {
-			String queryReplacedVars = replaceVariables(queryPrologue, getOriginalString());
-			query = createJenaQuery(queryPrologue, queryReplacedVars);
+			return QueryFactory.parse(new Query(queryPrologue), queryString, null, null);
 		} catch (QueryParseException e) {
-			throw new InputRuntimeException(e);
+			throw new InputRuntimeException("Could not parse " + getOriginalString(), e);
 		}
 	}
 
 	/**
-	 * Creates query using given namespaces and query-string
+	 * Creates Jena query.
+	 * 
+	 * @throws InputRuntimeException
+	 *             if query string could not be parsed
 	 */
-	protected Query createJenaQuery(Prologue queryPrologue, String queryString) {
-		return QueryFactory.parse(new Query(queryPrologue), queryString, null, null);
+	public static Query createJenaQuery(String queryString) {
+		try {
+			return QueryFactory.create(queryString);
+		} catch (QueryParseException e) {
+			throw new InputRuntimeException("Could not parse: " + queryString, e);
+		}
 	}
 
 	/**
@@ -78,8 +88,8 @@ public class SparqlQuery extends SparqlUnit {
 	 * 
 	 * Uses namespaces of {@link Input}.
 	 */
-	public Query getQuery() {
-		return getQuery(true);
+	public Query getJenaQuery() {
+		return getJenaQuery(true);
 	}
 
 	/**
@@ -87,11 +97,11 @@ public class SparqlQuery extends SparqlUnit {
 	 * 
 	 * Uses namespaces of {@link Input}.
 	 */
-	public Query getQuery(boolean useCache) {
+	public Query getJenaQuery(boolean useCache) {
 		if (!useCache) {
 			create();
 		}
-		return query;
+		return jenaQuery;
 	}
 
 	/**
@@ -105,19 +115,21 @@ public class SparqlQuery extends SparqlUnit {
 	 * Uses namespaces of {@link Input}.
 	 */
 	public String getLineRepresentation() {
-		return toOneLiner(getQuery(true).toString());
+		return toOneLiner(getJenaQuery(true).toString());
 	}
 
 	@Override
 	public String getStringRepresentation() {
-		return getQuery(true).toString();
+		return getJenaQuery(true).toString();
 	}
 
 	/**
 	 * Replaces variables in SPARQL query
+	 * 
+	 * TODO
 	 */
-	protected String replaceVariables(Prologue queryPrologue, String queryString) {
-		Query tmpQuery = createJenaQuery(queryPrologue, queryString);
+	protected String replaceVariables(String queryString) {
+		Query tmpQuery = createJenaQuery(queryString);
 		List<String> tmpResultVars = tmpQuery.getResultVars();
 		Collections.sort(tmpResultVars);
 		String tmpQueryString = tmpQuery.toString();

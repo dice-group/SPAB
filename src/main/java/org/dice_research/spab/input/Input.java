@@ -2,13 +2,8 @@ package org.dice_research.spab.input;
 
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 
 import org.apache.jena.query.QueryParseException;
-import org.apache.jena.rdf.model.Model;
-import org.apache.jena.rdf.model.ModelFactory;
-import org.apache.jena.vocabulary.RDF;
-import org.apache.jena.vocabulary.RDFS;
 import org.dice_research.spab.exceptions.InputRuntimeException;
 
 /**
@@ -18,7 +13,6 @@ import org.dice_research.spab.exceptions.InputRuntimeException;
  */
 public class Input {
 
-	protected Model model;
 	protected List<SparqlUnit> negatives;
 	protected List<SparqlUnit> positives;
 
@@ -28,17 +22,6 @@ public class Input {
 	public Input() {
 		positives = new LinkedList<SparqlUnit>();
 		negatives = new LinkedList<SparqlUnit>();
-
-		model = ModelFactory.createDefaultModel();
-		model.setNsPrefix("rdf", RDF.getURI());
-		model.setNsPrefix("rdfs", RDFS.getURI());
-	}
-
-	/**
-	 * Adds prefix for namespace
-	 */
-	public void addNamespacePrefix(String prefix, String uri) {
-		model.setNsPrefix(prefix, uri);
 	}
 
 	/**
@@ -47,8 +30,8 @@ public class Input {
 	 * @throws InputRuntimeException
 	 *             if query string could not be parsed
 	 */
-	public void addNegative(String sparqlQuery) {
-		negatives.add(new SparqlQuery(sparqlQuery, this));
+	public void addNegative(String sparqlQuery) throws InputRuntimeException {
+		addQuery(sparqlQuery, false);
 	}
 
 	/**
@@ -57,17 +40,36 @@ public class Input {
 	 * @throws InputRuntimeException
 	 *             if query string could not be parsed
 	 */
-	public void addPositive(String sparqlQuery) {
+	public void addPositive(String sparqlQuery) throws InputRuntimeException {
+		addQuery(sparqlQuery, true);
+	}
+
+	/**
+	 * Adds query to set of inputs.
+	 * 
+	 * TODO: Handle all types of inputs
+	 */
+	protected void addQuery(String sparqlQuery, boolean positive) {
 
 		// Try to add SPARQL query
 		try {
-			positives.add(new SparqlQuery(sparqlQuery, this));
+			SparqlQuery query = new SparqlQuery(sparqlQuery, this);
+			if (positive) {
+				positives.add(query);
+			} else {
+				negatives.add(query);
+			}
+
 		} catch (InputRuntimeException originalException) {
 
 			// Try to add SPARQL update request
 			if (originalException.getCause() != null && originalException.getCause() instanceof QueryParseException) {
 				try {
-					positives.add(new SparqlUpdate(sparqlQuery, this));
+					if (positive) {
+						positives.add(new SparqlUpdate(sparqlQuery, this));
+					} else {
+						negatives.add(new SparqlUpdate(sparqlQuery, this));
+					}
 				} catch (Exception e) {
 					throw originalException;
 				}
@@ -76,14 +78,6 @@ public class Input {
 				throw originalException;
 			}
 		}
-
-	}
-
-	/**
-	 * Gets prefixes for namespaces
-	 */
-	public Map<String, String> getNamespaces() {
-		return model.getNsPrefixMap();
 	}
 
 	/**

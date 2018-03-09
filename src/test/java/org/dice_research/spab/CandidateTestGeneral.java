@@ -11,13 +11,17 @@ import org.dice_research.spab.exceptions.SpabException;
 import org.dice_research.spab.structures.CandidateVertex;
 import org.junit.Test;
 
-public class DummyTest extends SpabTestCase implements Candidate, Matcher {
+/**
+ * General candidate test, using random solutions for {@link #getChildren()} and
+ * {@link #matches(Candidate, String)}
+ * 
+ * @author Adrian Wilke
+ */
+public class CandidateTestGeneral extends AbstractTestCase implements Candidate, Matcher {
 
 	final public static int CHILDREN_MAX = 3;
 	final public static int CHILDREN_MIN = 1;
 	final public static double MATCHING_PROBABILITY = .5;
-
-	public static String query = "SELECT ?x ?name\n" + "WHERE  { ?x foaf:name ?name }";
 
 	public boolean matcherUsed = false;
 
@@ -31,7 +35,7 @@ public class DummyTest extends SpabTestCase implements Candidate, Matcher {
 			List<Candidate> list = new LinkedList<Candidate>();
 			int numberOfCandidates = ThreadLocalRandom.current().nextInt(CHILDREN_MIN, CHILDREN_MAX + 1);
 			for (int i = 0; i < numberOfCandidates; i++) {
-				Candidate candidate = new DummyTest();
+				Candidate candidate = new CandidateTestGeneral();
 				list.add(candidate);
 			}
 			return list;
@@ -47,7 +51,7 @@ public class DummyTest extends SpabTestCase implements Candidate, Matcher {
 	public String getRegEx() throws CandidateRuntimeException {
 		try {
 
-			return DummyTest.class.getName();
+			return CandidateTestGeneral.class.getName();
 
 		} catch (Exception e) {
 			throw new CandidateRuntimeException(e);
@@ -84,26 +88,28 @@ public class DummyTest extends SpabTestCase implements Candidate, Matcher {
 	}
 
 	public void setVertex(CandidateVertex candidateVertex) {
-		new DummyTest();
+		new CandidateTestGeneral();
 	}
 
 	@Test
 	public void test() throws SpabException {
 		SpabApi spab = new SpabApi();
 
-		spab.addNamespacePrefix("foaf", "http://xmlns.com/foaf/0.1/");
+		List<String> selectQueries = new ImportFilesTest().getDbpediaSelectQueries();
+		int numberOfPositives = 60;
+		int numberOfNegatives = 40;
 
-		spab.addPositive(query);
-		spab.addPositive(query);
-		spab.addPositive(query);
-		spab.addPositive(query);
-		spab.addPositive(query);
-
-		spab.addNegative(query);
-		spab.addNegative(query);
-		spab.addNegative(query);
-		spab.addNegative(query);
-		spab.addNegative(query);
+		for (int i = 0; i < numberOfPositives; i++) {
+			try {
+				spab.addPositive(selectQueries.get(i));
+			} catch (RuntimeException e) {
+				System.out.println(i);
+				throw e;
+			}
+		}
+		for (int i = numberOfPositives; i < numberOfPositives + numberOfNegatives; i++) {
+			spab.addPositive(selectQueries.get(i));
+		}
 
 		spab.setLambda(.5f);
 		spab.setMaxIterations(30);

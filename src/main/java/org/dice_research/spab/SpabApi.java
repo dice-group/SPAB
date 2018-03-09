@@ -52,15 +52,10 @@ public class SpabApi {
 	 */
 	public static final int MAX_ITERATIONS = 10;
 
-	final protected SpabAlgorithm spab = new SpabAlgorithm();
-
 	/**
-	 * Ads a prefix for a namespace. Has to be called before input queries are
-	 * added.
+	 * SPAB instance
 	 */
-	public void addNamespacePrefix(String prefix, String uri) {
-		spab.getInput().addNamespacePrefix(prefix, uri);
-	}
+	final protected SpabAlgorithm spab = new SpabAlgorithm();
 
 	/**
 	 * Adds query to set of negative inputs.
@@ -68,7 +63,7 @@ public class SpabApi {
 	 * @throws InputRuntimeException
 	 *             if query string could not be parsed
 	 */
-	public void addNegative(String sparqlQuery) {
+	public void addNegative(String sparqlQuery) throws InputRuntimeException {
 		spab.getInput().addNegative(sparqlQuery);
 	}
 
@@ -78,7 +73,7 @@ public class SpabApi {
 	 * @throws InputRuntimeException
 	 *             if query string could not be parsed
 	 */
-	public void addPositive(String sparqlQuery) {
+	public void addPositive(String sparqlQuery) throws InputRuntimeException {
 		spab.getInput().addPositive(sparqlQuery);
 	}
 

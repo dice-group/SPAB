@@ -6,7 +6,12 @@ import java.util.List;
 import org.dice_research.spab.SpabApi;
 import org.junit.Test;
 
-public class QueryFormatTest extends SpabTestCase {
+/**
+ * Test correct rewriting of SPARQL queries.
+ * 
+ * @author Adrian Wilke
+ */
+public class QueryHandlingTest extends AbstractTestCase {
 
 	public static final String QUERY0 = "SELECT ?subject ?object WHERE {?subject ?predicate ?object}";
 	public static final String QUERY1 = "SELECT ?object ?subject WHERE {?subject ?predicate ?object}";

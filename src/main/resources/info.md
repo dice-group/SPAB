@@ -1,6 +1,11 @@
 # Sources
 
-## Article
+## DBpedia queries 
+
+* Query types: SELECT, CONSTRUCT, DESCRIBE, ASK
+* Commented out 6 ASK queries
+
+### Article
 
 * Publication:  
   Conrads F., Lehmann J., Saleem M., Morsey M., Ngonga Ngomo AC. (2017) Iguana: A Generic Framework for Benchmarking the Read-Write Performance of Triple Stores. In: d'Amato C. et al. (eds) The Semantic Web – ISWC 2017. ISWC 2017. Lecture Notes in Computer Science, vol 10588. Springer, Cham  
@@ -10,11 +15,11 @@
 * Results:  
   https://figshare.com/collections/Iguana_-_Benchmark_2016/3767501/1
 
-## Software
+### Software
 
 * http://iguana-benchmark.eu/
 * http://github.com/AKSW/Iguana
 
-## Original data
+### Original data
 
 * http://wiki.dbpedia.org/services-resources/datasets/data-set-35/data-set-351
