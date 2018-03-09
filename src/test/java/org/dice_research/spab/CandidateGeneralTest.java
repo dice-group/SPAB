@@ -17,7 +17,7 @@ import org.junit.Test;
  * 
  * @author Adrian Wilke
  */
-public class CandidateTestGeneral extends AbstractTestCase implements Candidate, Matcher {
+public class CandidateGeneralTest extends AbstractTestCase implements Candidate, Matcher {
 
 	final public static int CHILDREN_MAX = 3;
 	final public static int CHILDREN_MIN = 1;
@@ -35,7 +35,7 @@ public class CandidateTestGeneral extends AbstractTestCase implements Candidate,
 			List<Candidate> list = new LinkedList<Candidate>();
 			int numberOfCandidates = ThreadLocalRandom.current().nextInt(CHILDREN_MIN, CHILDREN_MAX + 1);
 			for (int i = 0; i < numberOfCandidates; i++) {
-				Candidate candidate = new CandidateTestGeneral();
+				Candidate candidate = new CandidateGeneralTest();
 				list.add(candidate);
 			}
 			return list;
@@ -51,7 +51,7 @@ public class CandidateTestGeneral extends AbstractTestCase implements Candidate,
 	public String getRegEx() throws CandidateRuntimeException {
 		try {
 
-			return CandidateTestGeneral.class.getName();
+			return CandidateGeneralTest.class.getName();
 
 		} catch (Exception e) {
 			throw new CandidateRuntimeException(e);
@@ -88,7 +88,7 @@ public class CandidateTestGeneral extends AbstractTestCase implements Candidate,
 	}
 
 	public void setVertex(CandidateVertex candidateVertex) {
-		new CandidateTestGeneral();
+		new CandidateGeneralTest();
 	}
 
 	@Test

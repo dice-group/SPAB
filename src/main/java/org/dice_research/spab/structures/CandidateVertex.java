@@ -23,6 +23,7 @@ public class CandidateVertex implements Matcher {
 	protected Candidate candidate;
 	protected Float fMeasure = null;
 	protected int generation;
+	private CandidateVertex parent;
 	protected Float score = null;
 
 	/**
@@ -46,6 +47,7 @@ public class CandidateVertex implements Matcher {
 			generation = parent.getGeneration() + 1;
 		}
 
+		this.parent = parent;
 		this.candidate = candidate;
 	}
 
@@ -156,6 +158,13 @@ public class CandidateVertex implements Matcher {
 	 */
 	public int getGeneration() {
 		return generation;
+	}
+
+	/**
+	 * Gets parent vertex.
+	 */
+	public CandidateVertex getParent() {
+		return parent;
 	}
 
 	/**
