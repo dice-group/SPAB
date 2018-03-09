@@ -1,0 +1,407 @@
+#-------------------------------------------------------
+ASK
+WHERE
+  { <http://dbpedia.org/resource/Society%2Bfor%2BPhilosophy%2Band%2BPsychology> ?y ?z }
+#-------------------------------------------------------
+ASK
+WHERE
+  { <http://dbpedia.org/resource/Tories%2B%28political%2Bfaction%29> ?y ?z }
+#-------------------------------------------------------
+ASK
+WHERE
+  { <http://dbpedia.org/resource/Connecticut> ?y ?z }
+#-------------------------------------------------------
+ASK
+WHERE
+  { <http://dbpedia.org/resource/Central%2BPolice%2BStation%2C%2BBristol> ?y ?z }
+#-------------------------------------------------------
+ASK
+WHERE
+  { <http://dbpedia.org/resource/DSG%2BInternational%2B%28retailer%29> ?y ?z }
+#-------------------------------------------------------
+ASK
+WHERE
+  { <http://dbpedia.org/resource/Santo%2BDomingo> ?y ?z }
+#-------------------------------------------------------
+ASK
+WHERE
+  { <http://dbpedia.org/resource/Franz%2BNicolay> ?y ?z }
+#-------------------------------------------------------
+ASK
+WHERE
+  { <http://dbpedia.org/resource/Gary%2BJohnson%2B%28footballer%29> ?y ?z }
+#-------------------------------------------------------
+ASK
+WHERE
+  { <http://dbpedia.org/resource/International%2BTransport%2BWorkers%27%2BFederation> ?y ?z }
+#-------------------------------------------------------
+ASK
+WHERE
+  { <http://dbpedia.org/resource/David%2BCarradine> ?y ?z }
+#-------------------------------------------------------
+ASK
+WHERE
+  { <http://dbpedia.org/resource/Kashima%2BAntlers> ?y ?z }
+#-------------------------------------------------------
+ASK
+WHERE
+  { <http://dbpedia.org/resource/New%2BYork%2C%2BTexas> ?y ?z }
+#-------------------------------------------------------
+ASK
+WHERE
+  { <http://dbpedia.org/resource/FTSE%2BGroup> ?y ?z }
+#-------------------------------------------------------
+ASK
+WHERE
+  { <http://dbpedia.org/resource/315th%2BAir%2BDivision> ?y ?z }
+#-------------------------------------------------------
+ASK
+WHERE
+  { <http://dbpedia.org/resource/Syria> ?y ?z }
+#-------------------------------------------------------
+ASK
+WHERE
+  { <http://dbpedia.org/resource/In%2BThe%2BRain> ?y ?z }
+#-------------------------------------------------------
+ASK
+WHERE
+  { <http://dbpedia.org/resource/Aker%2BSolutions> ?y ?z }
+#-------------------------------------------------------
+ASK
+WHERE
+  { <http://dbpedia.org/resource/ÃÂÃÂ±ÃÂ¥ÃÂ³ÃÂªÃÂ°ÃÂ ÃÂ¿ÃÂ­ÃÂ±ÃÂ¼ÃÂªÃÂ¨ÃÂ©%2BÃÂ¯ÃÂ¥ÃÂ°ÃÂ¥ÃÂ¯ÃÂ¨ÃÂ±%2BÃÂ­ÃÂ ÃÂ±ÃÂ¥ÃÂ«ÃÂ¥ÃÂ­ÃÂ­ÃÂ¿%2B2001ÃÂ ÃÂ English%2BversionÃÂ ÃÂ Results%3A> ?y ?z }
+#-------------------------------------------------------
+ASK
+WHERE
+  { <http://dbpedia.org/resource/Leo%2BBurnett> ?y ?z }
+#-------------------------------------------------------
+ASK
+WHERE
+  { <http://dbpedia.org/resource/Mike%2BAllison> ?y ?z }
+#-------------------------------------------------------
+ASK
+WHERE
+  { <http://dbpedia.org/resource/%3Cb%3ECristiano%3C%2Fb%3E%2B%3Cb%3ERonaldo%3C%2Fb%3E%2B%3Cb%3E7%3C%2Fb%3E%3Cb%3E.com%3C%2Fb%3E> ?y ?z }
+#-------------------------------------------------------
+ASK
+WHERE
+  { <http://dbpedia.org/resource/Statistics%2B%2BHuman%2BDevelopment%2BReports%2B%28HDR%29%2B%2BUnited%2BNations%2B...> ?y ?z }
+#-------------------------------------------------------
+ASK
+WHERE
+  { <http://dbpedia.org/resource/Eindhoven%2BAirport> ?y ?z }
+#-------------------------------------------------------
+ASK
+WHERE
+  { <http://dbpedia.org/resource/Robben%2BIsland> ?y ?z }
+#-------------------------------------------------------
+ASK
+WHERE
+  { <http://dbpedia.org/resource/David%2BO%27Brien> ?y ?z }
+#-------------------------------------------------------
+ASK
+WHERE
+  { <http://dbpedia.org/resource/GA%2BGraphic%3AÃÂ£ÃÂÃÂ¬ÃÂ£ÃÂÃÂ¼ÃÂ£ÃÂÃÂ¶ÃÂ£ÃÂÃÂ¼ÃÂ£ÃÂÃÂ¬ÃÂ£ÃÂÃÂ³ÃÂ£ÃÂÃÂÃÂ¥ÃÂ¤ÃÂ§ÃÂ¥ÃÂÃÂÃÂ£ÃÂÃÂ¬ÃÂ£ÃÂÃÂÃÂ£ÃÂÃÂ¼ÃÂ£ÃÂÃÂ ÃÂ¨ÃÂ£ÃÂÃÂ¥ÃÂÃÂÃÂ£ÃÂÃÂ®ÃÂ£ÃÂÃÂÃÂ£ÃÂÃÂ·ÃÂ£ÃÂÃÂ¼ÃÂ£ÃÂÃÂÃÂ£ÃÂÃÂ³ÃÂ£ÃÂÃÂ¯ÃÂ£ÃÂÃÂªÃÂ£ÃÂÃÂ¼ÃÂ£ÃÂÃÂ¬ÃÂ£ÃÂÃÂ¼ÃÂ£ÃÂÃÂ»ÃÂ£ÃÂÃÂÃÂ£ÃÂÃÂ¡ÃÂ£ÃÂÃÂ«ÃÂ£ÃÂÃÂ±ÃÂ¥ÃÂ¾ÃÂÃÂ¦ÃÂÃÂÃÂ¥ÃÂÃÂÃÂ©ÃÂÃÂÃÂ¥ÃÂ®ÃÂÃÂ§ÃÂÃÂºÃÂ¥ÃÂ£ÃÂ²> ?y ?z }
+#-------------------------------------------------------
+ASK
+WHERE
+  { <http://dbpedia.org/resource/Ali%2BPasha> ?y ?z }
+#-------------------------------------------------------
+ASK
+WHERE
+  { <http://dbpedia.org/resource/Backorder%2BDomain%2BAuction%2B-%2Bzebox.com> ?y ?z }
+#-------------------------------------------------------
+ASK
+WHERE
+  { <http://dbpedia.org/resource/Vijay%2BMallya> ?y ?z }
+#-------------------------------------------------------
+ASK
+WHERE
+  { <http://dbpedia.org/resource/David%2BVilla> ?y ?z }
+#-------------------------------------------------------
+ASK
+WHERE
+  { <http://dbpedia.org/resource/%3Cb%3EIlya%3C%2Fb%3E%2B%3Cb%3ERepin%27s%3C%2Fb%3E%2B%3Cb%3EMemorial%3C%2Fb%3E%2B%3Cb%3EHome%3C%2Fb%3E%2B%22%3Cb%3EPenates%3C%2Fb%3E%22> ?y ?z }
+#-------------------------------------------------------
+ASK
+WHERE
+  { <http://dbpedia.org/resource/Betonwerk%2BRieder%2B-%2BBauelemente%2Bfürs%2BLeben%2B-%2BFertigelemente%2B%26%2BLärmschutz> ?y ?z }
+#-------------------------------------------------------
+ASK
+WHERE
+  { <http://dbpedia.org/resource/VLDB%2B2009%2BYahoo%2BKeynote%2B%284%2Bof%2B5%29> ?y ?z }
+#-------------------------------------------------------
+ASK
+WHERE
+  { <http://dbpedia.org/resource/Joe%2BHenderson> ?y ?z }
+#-------------------------------------------------------
+ASK
+WHERE
+  { <http://dbpedia.org/resource/Michael%2BManley> ?y ?z }
+#-------------------------------------------------------
+ASK
+WHERE
+  { <http://dbpedia.org/resource/Dichiarazione%2Bdi%2BSuccessione%2B-%2BHome> ?y ?z }
+#-------------------------------------------------------
+ASK
+WHERE
+  { <http://dbpedia.org/resource/Jarekmrzyglod.com%2BÃ¢ÂÂ%2Bfotograf%2Bdla%2BCiebie%2BÃ¢ÂÂ%2Bfotografia%2BÃÂlubna%2C%2Breklamowa%2C%2BokolicznoÃÂciowa%2B%2BÃÂ»%2BArchiwum%2B%2BÃÂ»%2BKarlskrona> ?y ?z }
+#-------------------------------------------------------
+ASK
+WHERE
+  { <http://dbpedia.org/resource/Problema%2Bno%2Bcasamento%2BÃÂ©%2Bestopim%2Bpara%2Bcrise%2Bde%2BMadson%2B%2Bgloboesporte.com> ?y ?z }
+#-------------------------------------------------------
+ASK
+WHERE
+  { <http://dbpedia.org/resource/Indira%2BGandhi%2BInternational%2BAirport> ?y ?z }
+#-------------------------------------------------------
+ASK
+WHERE
+  { <http://dbpedia.org/resource/ÃÂ¥ÃÂÃÂ¥ÃÂ«ÃÂ¥ÃÂ·ÃÂ¥ÃÂ§ÃÂ¡ÃÂ¢ÃÂÃÂ¼ÃÂ»ÃÂºÃÂ¤ÃÂÃÂÃÂÃÂ¤ÃÂªÃÂ¡ÃÂÃÂÃÂ³ÃÂÃÂÃÂ¤ÃÂ¢ÃÂ¡ÃÂ%2B-%2Bgoo%2BÃÂ¥ÃÂÃÂ¥ÃÂ¥ÃÂ¡ÃÂ¼ÃÂ¥ÃÂ¹> ?y ?z }
+#-------------------------------------------------------
+ASK
+WHERE
+  { <http://dbpedia.org/resource/Conrad%2BSchumann> ?y ?z }
+#-------------------------------------------------------
+PREFIX  prop: <http://dbpedia.org/property/>
+
+ASK
+WHERE
+  { <http://dbpedia.org/resource/Amazon_River> prop:length ?amazon .
+    <http://dbpedia.org/resource/Nile> prop:length ?nile
+    FILTER ( ?amazon < ?nile )
+  }
+#-------------------------------------------------------
+ASK
+WHERE
+  { <http://dbpedia.org/resource/%3Cb%3EFredCavazza%3C%2Fb%3E.net> ?y ?z }
+#-------------------------------------------------------
+ASK
+WHERE
+  { <http://dbpedia.org/resource/%3Cb%3EBolzano%3C%2Fb%3E%2C%2Bgateway%2Bto%2Bthe%2BDolomites%2B-%2B%3Cb%3EBolzano%3C%2Fb%3E%2B%3Cb%3EBozen%3C%2Fb%3E> ?y ?z }
+#-------------------------------------------------------
+ASK
+WHERE
+  { <http://dbpedia.org/resource/Welcome%2Bto%2BJamieCullum.com%2B%2BJamieCullum.com> ?y ?z }
+#-------------------------------------------------------
+ASK
+WHERE
+  { <http://dbpedia.org/resource/冷血弒親殺妻兒-專輯-Yahoo%21奇摩新聞> ?y ?z }
+#-------------------------------------------------------
+ASK
+WHERE
+  { <http://dbpedia.org/resource/Madison%2C%2BWisconsin> ?y ?z }
+#-------------------------------------------------------
+ASK
+WHERE
+  { <http://dbpedia.org/resource/%3Cb%3EThe%3C%2Fb%3E%2B%3Cb%3EMackney%3C%2Fb%3E%2B%3Cb%3EWarriors%3C%2Fb%3E%2B%3Cb%3EBlog%3C%2Fb%3E> ?y ?z }
+#-------------------------------------------------------
+ASK
+WHERE
+  { <http://dbpedia.org/resource/Charlotte%2C%2BTexas> ?y ?z }
+#-------------------------------------------------------
+ASK
+WHERE
+  { <http://dbpedia.org/resource/Species%2BConcept%2BNesophontes%2Bsubmicrus%2Bse%3AbN3GA> ?y ?z }
+#-------------------------------------------------------
+ASK
+WHERE
+  { <http://dbpedia.org/resource/Cecil%2BTaylor> ?y ?z }
+#-------------------------------------------------------
+ASK
+WHERE
+  { <http://dbpedia.org/resource/Species%2BConcept%2BMesoplodon%2Blayardii%2Bse%3APctvb> ?y ?z }
+#-------------------------------------------------------
+ASK
+WHERE
+  { <http://dbpedia.org/resource/The%2BBest%2BDigital%2BCamera> ?y ?z }
+#-------------------------------------------------------
+ASK
+WHERE
+  { <http://dbpedia.org/resource/Uma%2BThurman> ?y ?z }
+#-------------------------------------------------------
+ASK
+WHERE
+  { <http://dbpedia.org/resource/Nampa%2C%2BIdaho> ?y ?z }
+#-------------------------------------------------------
+ASK
+WHERE
+  { <http://dbpedia.org/resource/Warren%2BBradley%2B%28politician%29> ?y ?z }
+#-------------------------------------------------------
+ASK
+WHERE
+  { <http://dbpedia.org/resource/Christopher%2BCox> ?y ?z }
+#-------------------------------------------------------
+ASK
+WHERE
+  { <http://dbpedia.org/resource/Viktor%2BEmanuel%2BII.%2B-%2BWikipedija> ?y ?z }
+#-------------------------------------------------------
+ASK
+WHERE
+  { <http://dbpedia.org/resource/Natural%2Blanguage%2Bprocessing%2B-%2BWikipedia%2C%2Bthe%2Bfree%2Bencyclopedia> ?y ?z }
+#-------------------------------------------------------
+ASK
+WHERE
+  { <http://dbpedia.org/resource/Play%2BVinyl> ?y ?z }
+#-------------------------------------------------------
+ASK
+WHERE
+  { <http://dbpedia.org/resource/%3Cb%3EBritish%3C%2Fb%3E%2B%3Cb%3ERuled%3C%2Fb%3E%2B%3Cb%3EIndia%3C%2Fb%3E%2B%3Cb%3EPrint%3C%2Fb%3E%2B%3Cb%3EBibliography%3C%2Fb%3E%2B%3Cb%3Eby%3C%2Fb%3E%2B%3Cb%3EDavid%3C%2Fb%3E%2B%3Cb%3ESteinberg%3C%2Fb%3E> ?y ?z }
+#-------------------------------------------------------
+ASK
+WHERE
+  { <http://dbpedia.org/resource/Philip%2BSclater> ?y ?z }
+#-------------------------------------------------------
+ASK
+WHERE
+  { <http://dbpedia.org/resource/RDF%2FOWL%2BRepresentation%2Bof%2BÃ¦ÂÂ¥Ã¦ÂÂ¬Ã¨ÂªÂWordNet%2B%3A%2Bword-eagerness> ?y ?z }
+#-------------------------------------------------------
+ASK
+WHERE
+  { <http://dbpedia.org/resource/Fred%2BRoberts%2B%28footballer%29> ?y ?z }
+#-------------------------------------------------------
+ASK
+WHERE
+  { <http://dbpedia.org/resource/Paul%2BKenny> ?y ?z }
+#-------------------------------------------------------
+ASK
+WHERE
+  { <http://dbpedia.org/resource/Antoine%2BLaumet%2Bde%2BLa%2BMothe%2C%2Bsieur%2Bde%2BCadillac> ?y ?z }
+#-------------------------------------------------------
+ASK
+WHERE
+  { <http://dbpedia.org/resource/Milford%2C%2BTexas> ?y ?z }
+#-------------------------------------------------------
+ASK
+WHERE
+  { <http://dbpedia.org/resource/Mike%2BScott%2B%28television%2Bpresenter%29> ?y ?z }
+#-------------------------------------------------------
+ASK
+WHERE
+  { <http://dbpedia.org/resource/SAP%2BAG> ?y ?z }
+#-------------------------------------------------------
+ASK
+WHERE
+  { <http://dbpedia.org/resource/Janette%2BBarber> ?y ?z }
+#-------------------------------------------------------
+ASK
+WHERE
+  { <http://dbpedia.org/resource/Helsinki> ?y ?z }
+#-------------------------------------------------------
+ASK
+WHERE
+  { <http://dbpedia.org/resource/Ian%2BPaisley> ?y ?z }
+#-------------------------------------------------------
+ASK
+WHERE
+  { <http://dbpedia.org/resource/Bolsena> ?y ?z }
+#-------------------------------------------------------
+ASK
+WHERE
+  { <http://dbpedia.org/page/Egypt> ?p <http://dbpedia.org/class/yago/AfricanCivilizations>
+    FILTER ( ?p = <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> )
+  }
+#-------------------------------------------------------
+ASK
+WHERE
+  { <http://dbpedia.org/resource/Matthew%2BEtherington> ?y ?z }
+#-------------------------------------------------------
+ASK
+WHERE
+  { <http://dbpedia.org/resource/Ottavio%2BFarnese%2C%2BDuke%2Bof%2BParma> ?y ?z }
+#-------------------------------------------------------
+ASK
+WHERE
+  { <http://dbpedia.org/resource/Peter%2BRicketts> ?y ?z }
+#-------------------------------------------------------
+ASK
+WHERE
+  { <http://dbpedia.org/resource/Ally%2BMcBeal> ?y ?z }
+#-------------------------------------------------------
+ASK
+WHERE
+  { <http://dbpedia.org/resource/California%2BDepartment%2Bof%2BFinance> ?y ?z }
+#-------------------------------------------------------
+ASK
+WHERE
+  { <http://dbpedia.org/resource/Madeira> ?y ?z }
+#-------------------------------------------------------
+ASK
+WHERE
+  { <http://dbpedia.org/resource/United%2BStates%2BCustoms%2BService> ?y ?z }
+#-------------------------------------------------------
+ASK
+WHERE
+  { <http://dbpedia.org/resource/Serpico> ?y ?z }
+#-------------------------------------------------------
+ASK
+WHERE
+  { <http://dbpedia.org/resource/Barnes%2B%26%2BNoble> ?y ?z }
+#-------------------------------------------------------
+ASK
+WHERE
+  { <http://dbpedia.org/resource/The%2BBook%2BDepository%2BLive> ?y ?z }
+#-------------------------------------------------------
+ASK
+WHERE
+  { <http://dbpedia.org/resource/Reggie%2BFils-Aime> ?y ?z }
+#-------------------------------------------------------
+ASK
+WHERE
+  { <http://dbpedia.org/resource/Star%2BJones> ?y ?z }
+#-------------------------------------------------------
+ASK
+WHERE
+  { <http://dbpedia.org/resource/Kingston%2C%2BJamaica> ?y ?z }
+#-------------------------------------------------------
+ASK
+WHERE
+  { <http://dbpedia.org/resource/WSB-TV> ?y ?z }
+#-------------------------------------------------------
+ASK
+WHERE
+  { <http://dbpedia.org/resource/Hong%2BKong> ?y ?z }
+#-------------------------------------------------------
+ASK
+WHERE
+  { <http://dbpedia.org/resource/Brian%2BJones> ?y ?z }
+#-------------------------------------------------------
+ASK
+WHERE
+  { <http://dbpedia.org/resource/Thaddeus%2BStevens> ?y ?z }
+#-------------------------------------------------------
+ASK
+WHERE
+  { <http://dbpedia.org/resource/Imran%2BKhan%2B%28actor%29> ?y ?z }
+#-------------------------------------------------------
+ASK
+WHERE
+  { <http://dbpedia.org/resource/Scott%2BSmith%2B%28musician%29> ?y ?z }
+#-------------------------------------------------------
+ASK
+WHERE
+  { <http://dbpedia.org/resource/Walther%2Bvon%2BBrauchitsch> ?y ?z }
+#-------------------------------------------------------
+ASK
+WHERE
+  { <http://dbpedia.org/resource/Bill%2BJohnson> ?y ?z }
+#-------------------------------------------------------
+ASK
+WHERE
+  { <http://dbpedia.org/resource/James%2BMangold> ?y ?z }
+#-------------------------------------------------------
+ASK
+WHERE
+  { <http://dbpedia.org/resource/%3Cb%3EFactoryCity%3C%2Fb%3E%2B%22%2B%3Cb%3EUnderstanding%3C%2Fb%3E%2B%3Cb%3Ethe%3C%2Fb%3E%2B%3Cb%3EOpen%3C%2Fb%3E%2B%3Cb%3EGraph%3C%2Fb%3E%2B%3Cb%3EProtocol%3C%2Fb%3E> ?y ?z }
+#-------------------------------------------------------
+ASK
+WHERE
+  { <http://dbpedia.org/resource/Doris%2BKearns%2BGoodwin> ?y ?z }
+#-------------------------------------------------------
+ASK
+WHERE
+  { <http://dbpedia.org/resource/Species%2BConcept%2BChaetodipus%2Blineatus%2Bse%3AdhEU5> ?y ?z }
+#-------------------------------------------------------
+ASK
+WHERE
+  { <http://dbpedia.org/resource/Sorry%2C%2Bno%2Bphotos%2Bfound%2Bfor%2BDBpedia.org%2Bresource%2BValue_engineering> ?y ?z }

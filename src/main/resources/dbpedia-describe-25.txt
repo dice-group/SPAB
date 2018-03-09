@@ -1,0 +1,231 @@
+#-------------------------------------------------------
+PREFIX  dc:   <http://purl.org/dc/elements/1.1/>
+PREFIX  :     <http://dbpedia.org/resource/>
+PREFIX  rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX  dbpedia2: <http://dbpedia.org/property/>
+PREFIX  foaf: <http://xmlns.com/foaf/0.1/>
+PREFIX  owl:  <http://www.w3.org/2002/07/owl#>
+PREFIX  xsd:  <http://www.w3.org/2001/XMLSchema#>
+PREFIX  dbpedia: <http://dbpedia.org/>
+PREFIX  rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX  skos: <http://www.w3.org/2004/02/skos/core#>
+
+DESCRIBE :Barack_Obama
+#-------------------------------------------------------
+PREFIX  dc:   <http://purl.org/dc/elements/1.1/>
+PREFIX  :     <http://dbpedia.org/resource/>
+PREFIX  rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX  dbpedia2: <http://dbpedia.org/property/>
+PREFIX  foaf: <http://xmlns.com/foaf/0.1/>
+PREFIX  owl:  <http://www.w3.org/2002/07/owl#>
+PREFIX  xsd:  <http://www.w3.org/2001/XMLSchema#>
+PREFIX  dbpedia: <http://dbpedia.org/>
+PREFIX  rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX  skos: <http://www.w3.org/2004/02/skos/core#>
+
+DESCRIBE :Yukio_Mishima
+#-------------------------------------------------------
+DESCRIBE <http://dbpedia.org/resource/Kilimanjaro>
+#-------------------------------------------------------
+DESCRIBE <http://dbpedia.org/resource/Wales>
+#-------------------------------------------------------
+PREFIX  dc:   <http://purl.org/dc/elements/1.1/>
+PREFIX  :     <http://dbpedia.org/resource/>
+PREFIX  rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX  dbpedia2: <http://dbpedia.org/property/>
+PREFIX  foaf: <http://xmlns.com/foaf/0.1/>
+PREFIX  owl:  <http://www.w3.org/2002/07/owl#>
+PREFIX  xsd:  <http://www.w3.org/2001/XMLSchema#>
+PREFIX  dbpedia: <http://dbpedia.org/>
+PREFIX  rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX  skos: <http://www.w3.org/2004/02/skos/core#>
+
+DESCRIBE ?ford
+WHERE
+  { ?ford foaf:page <http://en.wikipedia.org/wiki/Ford_Motor_Company> }
+#-------------------------------------------------------
+PREFIX  dc:   <http://purl.org/dc/elements/1.1/>
+PREFIX  :     <http://dbpedia.org/resource/>
+PREFIX  rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX  dbpedia2: <http://dbpedia.org/property/>
+PREFIX  foaf: <http://xmlns.com/foaf/0.1/>
+PREFIX  owl:  <http://www.w3.org/2002/07/owl#>
+PREFIX  xsd:  <http://www.w3.org/2001/XMLSchema#>
+PREFIX  dbpedia: <http://dbpedia.org/>
+PREFIX  rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX  skos: <http://www.w3.org/2004/02/skos/core#>
+
+DESCRIBE :TaylorSwift
+#-------------------------------------------------------
+DESCRIBE <http://dbpedia.org/resource/%22S%22_Bridge_II>
+#-------------------------------------------------------
+PREFIX  dc:   <http://purl.org/dc/elements/1.1/>
+PREFIX  :     <http://dbpedia.org/resource/>
+PREFIX  rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX  dbpedia2: <http://dbpedia.org/property/>
+PREFIX  foaf: <http://xmlns.com/foaf/0.1/>
+PREFIX  owl:  <http://www.w3.org/2002/07/owl#>
+PREFIX  xsd:  <http://www.w3.org/2001/XMLSchema#>
+PREFIX  dbpedia: <http://dbpedia.org/>
+PREFIX  rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX  skos: <http://www.w3.org/2004/02/skos/core#>
+
+DESCRIBE :Osamu_Dazai
+#-------------------------------------------------------
+PREFIX  foaf: <http://xmlns.com/foaf/0.1/>
+
+DESCRIBE ?person
+WHERE
+  { ?person <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> foaf:Person }
+OFFSET  0
+LIMIT   10
+#-------------------------------------------------------
+PREFIX  dc:   <http://purl.org/dc/elements/1.1/>
+PREFIX  :     <http://dbpedia.org/resource/>
+PREFIX  rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX  dbpedia2: <http://dbpedia.org/property/>
+PREFIX  foaf: <http://xmlns.com/foaf/0.1/>
+PREFIX  owl:  <http://www.w3.org/2002/07/owl#>
+PREFIX  xsd:  <http://www.w3.org/2001/XMLSchema#>
+PREFIX  dbpedia: <http://dbpedia.org/>
+PREFIX  rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX  skos: <http://www.w3.org/2004/02/skos/core#>
+
+DESCRIBE :Peugeot
+#-------------------------------------------------------
+PREFIX  dc:   <http://purl.org/dc/elements/1.1/>
+PREFIX  :     <http://dbpedia.org/resource/>
+PREFIX  rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX  dbpedia2: <http://dbpedia.org/property/>
+PREFIX  foaf: <http://xmlns.com/foaf/0.1/>
+PREFIX  owl:  <http://www.w3.org/2002/07/owl#>
+PREFIX  xsd:  <http://www.w3.org/2001/XMLSchema#>
+PREFIX  dbpedia: <http://dbpedia.org/>
+PREFIX  rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX  skos: <http://www.w3.org/2004/02/skos/core#>
+
+DESCRIBE :Roger_Norrington
+#-------------------------------------------------------
+PREFIX  dc:   <http://purl.org/dc/elements/1.1/>
+PREFIX  :     <http://dbpedia.org/resource/>
+PREFIX  rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX  dbpedia2: <http://dbpedia.org/property/>
+PREFIX  foaf: <http://xmlns.com/foaf/0.1/>
+PREFIX  owl:  <http://www.w3.org/2002/07/owl#>
+PREFIX  xsd:  <http://www.w3.org/2001/XMLSchema#>
+PREFIX  dbpedia: <http://dbpedia.org/>
+PREFIX  rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX  skos: <http://www.w3.org/2004/02/skos/core#>
+
+DESCRIBE owl:DatatypeProperty
+#-------------------------------------------------------
+DESCRIBE <http://dbpedia.org/resource/London>
+#-------------------------------------------------------
+DESCRIBE <http://dbpedia.org/resource/Mount_Kilimanjaro>
+#-------------------------------------------------------
+PREFIX  dc:   <http://purl.org/dc/elements/1.1/>
+PREFIX  :     <http://dbpedia.org/resource/>
+PREFIX  rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX  dbpedia2: <http://dbpedia.org/property/>
+PREFIX  foaf: <http://xmlns.com/foaf/0.1/>
+PREFIX  owl:  <http://www.w3.org/2002/07/owl#>
+PREFIX  xsd:  <http://www.w3.org/2001/XMLSchema#>
+PREFIX  dbpedia: <http://dbpedia.org/>
+PREFIX  rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX  skos: <http://www.w3.org/2004/02/skos/core#>
+
+DESCRIBE :Taylor_Swift
+#-------------------------------------------------------
+PREFIX  dc:   <http://purl.org/dc/elements/1.1/>
+PREFIX  :     <http://dbpedia.org/resource/>
+PREFIX  rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX  dbpedia2: <http://dbpedia.org/property/>
+PREFIX  foaf: <http://xmlns.com/foaf/0.1/>
+PREFIX  owl:  <http://www.w3.org/2002/07/owl#>
+PREFIX  xsd:  <http://www.w3.org/2001/XMLSchema#>
+PREFIX  dbpedia: <http://dbpedia.org/>
+PREFIX  rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX  skos: <http://www.w3.org/2004/02/skos/core#>
+
+DESCRIBE :RDF
+#-------------------------------------------------------
+PREFIX  dc:   <http://purl.org/dc/elements/1.1/>
+PREFIX  :     <http://dbpedia.org/resource/>
+PREFIX  rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX  dbpedia2: <http://dbpedia.org/property/>
+PREFIX  foaf: <http://xmlns.com/foaf/0.1/>
+PREFIX  owl:  <http://www.w3.org/2002/07/owl#>
+PREFIX  xsd:  <http://www.w3.org/2001/XMLSchema#>
+PREFIX  dbpedia: <http://dbpedia.org/>
+PREFIX  rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX  skos: <http://www.w3.org/2004/02/skos/core#>
+
+DESCRIBE :James_Dean
+#-------------------------------------------------------
+PREFIX  dbpedia: <http://dbpedia.org/resource/>
+PREFIX  rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+
+DESCRIBE dbpedia:George_Washington
+#-------------------------------------------------------
+DESCRIBE <http://xmlns.com/foaf/0.1/>
+#-------------------------------------------------------
+PREFIX  dc:   <http://purl.org/dc/elements/1.1/>
+PREFIX  :     <http://dbpedia.org/resource/>
+PREFIX  rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX  dbpedia2: <http://dbpedia.org/property/>
+PREFIX  foaf: <http://xmlns.com/foaf/0.1/>
+PREFIX  owl:  <http://www.w3.org/2002/07/owl#>
+PREFIX  xsd:  <http://www.w3.org/2001/XMLSchema#>
+PREFIX  dbpedia: <http://dbpedia.org/>
+PREFIX  rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX  skos: <http://www.w3.org/2004/02/skos/core#>
+
+DESCRIBE :Jennifer_Lopez
+#-------------------------------------------------------
+PREFIX  dc:   <http://purl.org/dc/elements/1.1/>
+PREFIX  :     <http://dbpedia.org/resource/>
+PREFIX  rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX  dbpedia2: <http://dbpedia.org/property/>
+PREFIX  foaf: <http://xmlns.com/foaf/0.1/>
+PREFIX  owl:  <http://www.w3.org/2002/07/owl#>
+PREFIX  xsd:  <http://www.w3.org/2001/XMLSchema#>
+PREFIX  dbpedia: <http://dbpedia.org/>
+PREFIX  rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX  skos: <http://www.w3.org/2004/02/skos/core#>
+
+DESCRIBE ?ford
+WHERE
+  { ?ford foaf:name "Peugeot S.A."@en }
+#-------------------------------------------------------
+DESCRIBE <http://dbpedia.org/resource/Holland>
+#-------------------------------------------------------
+DESCRIBE <http://dbpedia.org/resource/Bologna>
+#-------------------------------------------------------
+PREFIX  dc:   <http://purl.org/dc/elements/1.1/>
+PREFIX  :     <http://dbpedia.org/resource/>
+PREFIX  rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX  dbpedia2: <http://dbpedia.org/property/>
+PREFIX  foaf: <http://xmlns.com/foaf/0.1/>
+PREFIX  dbo:  <http://dbpedia.org/ontology/>
+PREFIX  owl:  <http://www.w3.org/2002/07/owl#>
+PREFIX  xsd:  <http://www.w3.org/2001/XMLSchema#>
+PREFIX  dbpedia: <http://dbpedia.org/>
+PREFIX  rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX  skos: <http://www.w3.org/2004/02/skos/core#>
+
+DESCRIBE :Berlin
+#-------------------------------------------------------
+PREFIX  dc:   <http://purl.org/dc/elements/1.1/>
+PREFIX  :     <http://dbpedia.org/resource/>
+PREFIX  rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX  dbpedia2: <http://dbpedia.org/property/>
+PREFIX  foaf: <http://xmlns.com/foaf/0.1/>
+PREFIX  owl:  <http://www.w3.org/2002/07/owl#>
+PREFIX  xsd:  <http://www.w3.org/2001/XMLSchema#>
+PREFIX  dbpedia: <http://dbpedia.org/>
+PREFIX  rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX  skos: <http://www.w3.org/2004/02/skos/core#>
+
+DESCRIBE ?ford
+WHERE
+  { ?ford foaf:name "Ford Motor Company"@en }

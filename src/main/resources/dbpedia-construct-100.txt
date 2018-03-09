@@ -1,0 +1,1608 @@
+#-------------------------------------------------------
+PREFIX  dc:   <http://purl.org/dc/elements/1.1/>
+PREFIX  :     <http://dbpedia.org/resource/>
+PREFIX  rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX  dbpedia2: <http://dbpedia.org/property/>
+PREFIX  foaf: <http://xmlns.com/foaf/0.1/>
+PREFIX  owl:  <http://www.w3.org/2002/07/owl#>
+PREFIX  xsd:  <http://www.w3.org/2001/XMLSchema#>
+PREFIX  dbpedia: <http://dbpedia.org/>
+PREFIX  rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX  skos: <http://www.w3.org/2004/02/skos/core#>
+
+CONSTRUCT 
+  { ?s rdf:foo owl:Class .}
+WHERE
+  { { ?s rdf:type owl:Class } }
+#-------------------------------------------------------
+PREFIX  o:    <http://dbpedia.org/ontology/>
+
+CONSTRUCT 
+  { ?x ?p ?y .
+    ?y ?q ?z .}
+WHERE
+  { FILTER ( ?y = <http://dbpedia.org/resource/Bibracte> )
+      { ?x ?p ?y }
+    UNION
+      { ?y ?q ?z }
+  }
+#-------------------------------------------------------
+PREFIX  r:    <http://dbpedia.org/resource/>
+PREFIX  p:    <http://dbpedia.org/property/>
+PREFIX  o:    <http://dbpedia.org/ontology/>
+
+CONSTRUCT 
+  { ?a ?p ?b .
+    ?c ?q ?a .
+    ?a p:redirect ?r .
+    ?x ?r1 ?r .
+    ?r ?r2 ?y .}
+WHERE
+  {   { ?a ?p ?b }
+    UNION
+      { ?c ?q ?a }
+    FILTER ( ?a = r:Messalina )
+    OPTIONAL
+      { ?a p:redirect ?r
+          { ?x ?r1 ?r }
+        UNION
+          { ?r ?r2 ?y }
+      }
+  }
+#-------------------------------------------------------
+PREFIX  dc:   <http://purl.org/dc/elements/1.1/>
+PREFIX  :     <http://dbpedia.org/resource/>
+PREFIX  rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX  dbpedia2: <http://dbpedia.org/property/>
+PREFIX  foaf: <http://xmlns.com/foaf/0.1/>
+PREFIX  owl:  <http://www.w3.org/2002/07/owl#>
+PREFIX  xsd:  <http://www.w3.org/2001/XMLSchema#>
+PREFIX  dbpedia: <http://dbpedia.org/>
+PREFIX  rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX  skos: <http://www.w3.org/2004/02/skos/core#>
+
+CONSTRUCT 
+  { ?film rdf:tipo rdf:pelicula .}
+WHERE
+  { ?film skos:subject <http://dbpedia.org/resource/Category:French_films> }
+#-------------------------------------------------------
+PREFIX  p:    <http://dbpedia.org/property/>
+
+CONSTRUCT 
+  { ?a ?p ?b .
+    ?c ?q ?a .
+    ?x ?r1 ?r .
+    ?r ?r2 ?y .}
+WHERE
+  {   { ?a ?p ?b }
+    UNION
+      { ?c ?q ?a }
+    OPTIONAL
+      { ?a p:redirect ?r
+          { ?x ?r1 ?r }
+        UNION
+          { ?r ?r2 ?y }
+      }
+    FILTER ( ?a = <http://dbpedia.org/resource/Domitia_Longina> )
+  }
+#-------------------------------------------------------
+CONSTRUCT 
+  { ?x ?p ?y .
+    ?y ?q ?t .}
+WHERE
+  {   { ?x ?p ?y }
+    UNION
+      { ?y ?q ?t }
+    FILTER ( ?y = <http://dbpedia.org/resource/Poppea_Sabina> )
+  }
+#-------------------------------------------------------
+PREFIX  dc:   <http://purl.org/dc/elements/1.1/>
+PREFIX  :     <http://dbpedia.org/resource/>
+PREFIX  rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX  dbpedia2: <http://dbpedia.org/property/>
+PREFIX  foaf: <http://xmlns.com/foaf/0.1/>
+PREFIX  owl:  <http://www.w3.org/2002/07/owl#>
+PREFIX  xsd:  <http://www.w3.org/2001/XMLSchema#>
+PREFIX  dbpedia: <http://dbpedia.org/>
+PREFIX  rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX  skos: <http://www.w3.org/2004/02/skos/core#>
+
+CONSTRUCT 
+  { :Peugeot ?rel ?obj .}
+WHERE
+  { :Peugeot ?rel ?obj
+    FILTER ( ( ( ?rel != rdfs:comment ) && ( ?rel != <http://dbpedia.org/ontology/abstract> ) ) && ( ?rel != rdfs:label ) )
+  }
+#-------------------------------------------------------
+CONSTRUCT 
+  { ?x ?p ?y .
+    ?y ?q ?t .}
+WHERE
+  {   { ?x ?p ?y }
+    UNION
+      { ?y ?q ?t }
+    FILTER ( ?y = <http://dbpedia.org/resource/Agrippina_the_Younger> )
+  }
+#-------------------------------------------------------
+CONSTRUCT 
+  { ?x ?p ?y .
+    ?y ?q ?t .}
+WHERE
+  {   { ?x ?p ?y }
+    UNION
+      { ?y ?q ?t }
+    FILTER ( ?y = <http://dbpedia.org/resource/Aelia_Paetina> )
+  }
+#-------------------------------------------------------
+PREFIX  dc:   <http://purl.org/dc/elements/1.1/>
+PREFIX  :     <http://dbpedia.org/resource/>
+PREFIX  dbpedia2: <http://dbpedia.org/property/>
+PREFIX  onto: <http://dbpedia.org/ontology/>
+PREFIX  foaf: <http://xmlns.com/foaf/0.1/>
+PREFIX  rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX  dbp:  <http://dbpedia.org/resource/>
+PREFIX  owl:  <http://www.w3.org/2002/07/owl#>
+PREFIX  xsd:  <http://www.w3.org/2001/XMLSchema#>
+PREFIX  dbpedia: <http://dbpedia.org/>
+PREFIX  rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX  skos: <http://www.w3.org/2004/02/skos/core#>
+
+CONSTRUCT 
+  { ?y dbpedia2:network :Animax .}
+WHERE
+  { ?y dbpedia2:studio :Gainax }
+#-------------------------------------------------------
+PREFIX  p:    <http://dbpedia.org/property/>
+
+CONSTRUCT 
+  { ?a ?p ?b .
+    ?c ?q ?a .
+    ?x ?r1 ?r .
+    ?r ?r2 ?y .}
+WHERE
+  {   { ?a ?p ?b }
+    UNION
+      { ?c ?q ?a }
+    OPTIONAL
+      { ?a p:redirect ?r
+          { ?x ?r1 ?r }
+        UNION
+          { ?r ?r2 ?y }
+      }
+    FILTER ( ?a = <http://dbpedia.org/resource/Afinia_Gemina_Baebiana> )
+  }
+#-------------------------------------------------------
+CONSTRUCT 
+  { ?X ?Y ?Z .}
+WHERE
+  { ?X ?Y ?Z }
+LIMIT   10
+#-------------------------------------------------------
+PREFIX  p:    <http://dbpedia.org/property/>
+
+CONSTRUCT 
+  { ?a ?p ?b .
+    ?c ?q ?a .
+    ?x ?r1 ?r .
+    ?r ?r2 ?y .}
+WHERE
+  {   { ?a ?p ?b }
+    UNION
+      { ?c ?q ?a }
+    OPTIONAL
+      { ?a p:redirect ?r
+          { ?x ?r1 ?r }
+        UNION
+          { ?r ?r2 ?y }
+      }
+    FILTER ( ?a = <http://dbpedia.org/resource/Marcia_Otacilia_Severa> )
+  }
+#-------------------------------------------------------
+PREFIX  p:    <http://dbpedia.org/property/>
+
+CONSTRUCT 
+  { ?a ?p ?b .
+    ?c ?q ?a .
+    ?x ?r1 ?r .
+    ?r ?r2 ?y .}
+WHERE
+  {   { ?a ?p ?b }
+    UNION
+      { ?c ?q ?a }
+    OPTIONAL
+      { ?a p:redirect ?r
+          { ?x ?r1 ?r }
+        UNION
+          { ?r ?r2 ?y }
+      }
+    FILTER ( ?a = <http://dbpedia.org/resource/Vipsania_Agrippina> )
+  }
+#-------------------------------------------------------
+PREFIX  p:    <http://dbpedia.org/property/>
+
+CONSTRUCT 
+  { ?a ?p ?b .
+    ?c ?q ?a .
+    ?x ?r1 ?r .
+    ?r ?r2 ?y .}
+WHERE
+  {   { ?a ?p ?b }
+    UNION
+      { ?c ?q ?a }
+    OPTIONAL
+      { ?a p:redirect ?r
+          { ?x ?r1 ?r }
+        UNION
+          { ?r ?r2 ?y }
+      }
+    FILTER ( ?a = <http://dbpedia.org/resource/Vibia_Sabina> )
+  }
+#-------------------------------------------------------
+PREFIX  dc:   <http://purl.org/dc/elements/1.1/>
+PREFIX  :     <http://dbpedia.org/resource/>
+PREFIX  rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX  dbpedia2: <http://dbpedia.org/property/>
+PREFIX  foaf: <http://xmlns.com/foaf/0.1/>
+PREFIX  owl:  <http://www.w3.org/2002/07/owl#>
+PREFIX  xsd:  <http://www.w3.org/2001/XMLSchema#>
+PREFIX  dbpedia: <http://dbpedia.org/>
+PREFIX  rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX  skos: <http://www.w3.org/2004/02/skos/core#>
+
+CONSTRUCT 
+  { ?Anime dbpedia2:studio :Gainax .}
+WHERE
+  { ?Anime dbpedia2:studio :Gainax .
+    ?Anime dbpedia2:genre :Mecha
+  }
+#-------------------------------------------------------
+PREFIX  p:    <http://dbpedia.org/property/>
+
+CONSTRUCT 
+  { ?a ?p ?b .
+    ?c ?q ?a .
+    ?x ?r1 ?r .
+    ?r ?r2 ?y .}
+WHERE
+  {   { ?a ?p ?b }
+    UNION
+      { ?c ?q ?a }
+    OPTIONAL
+      { ?a p:redirect ?r
+          { ?x ?r1 ?r }
+        UNION
+          { ?r ?r2 ?y }
+      }
+    FILTER ( ?a = <http://dbpedia.org/resource/Livia_Orestilla> )
+  }
+#-------------------------------------------------------
+CONSTRUCT 
+  { ?x ?p ?y .
+    ?y ?q ?t .}
+WHERE
+  {   { ?x ?p ?y }
+    UNION
+      { ?y ?q ?t }
+    FILTER ( ?y = <http://dbpedia.org/resource/Caenis> )
+  }
+#-------------------------------------------------------
+PREFIX  dc:   <http://purl.org/dc/elements/1.1/>
+PREFIX  :     <http://dbpedia.org/resource/>
+PREFIX  rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX  dbpedia2: <http://dbpedia.org/property/>
+PREFIX  foaf: <http://xmlns.com/foaf/0.1/>
+PREFIX  owl:  <http://www.w3.org/2002/07/owl#>
+PREFIX  xsd:  <http://www.w3.org/2001/XMLSchema#>
+PREFIX  dbpedia: <http://dbpedia.org/>
+PREFIX  rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX  skos: <http://www.w3.org/2004/02/skos/core#>
+
+CONSTRUCT 
+  { :Peugeot ?b ?c .}
+WHERE
+  { :Peugeot ?b ?c
+    FILTER ( ( ( ?b != rdfs:comment ) && ( ?b != <http://dbpedia.org/ontology/abstract> ) ) && ( ?b != rdfs:label ) )
+  }
+#-------------------------------------------------------
+PREFIX  p:    <http://dbpedia.org/property/>
+
+CONSTRUCT 
+  { ?a ?p ?b .
+    ?c ?q ?a .
+    ?x ?r1 ?r .
+    ?r ?r2 ?y .}
+WHERE
+  {   { ?a ?p ?b }
+    UNION
+      { ?c ?q ?a }
+    OPTIONAL
+      { ?a p:redirect ?r
+          { ?x ?r1 ?r }
+        UNION
+          { ?r ?r2 ?y }
+      }
+    FILTER ( ?a = <http://dbpedia.org/resource/Placidia> )
+  }
+#-------------------------------------------------------
+PREFIX  p:    <http://dbpedia.org/property/>
+
+CONSTRUCT 
+  { ?a ?p ?b .
+    ?c ?q ?a .
+    ?x ?r1 ?r .
+    ?r ?r2 ?y .}
+WHERE
+  {   { ?a ?p ?b }
+    UNION
+      { ?c ?q ?a }
+    OPTIONAL
+      { ?a p:redirect ?r
+          { ?x ?r1 ?r }
+        UNION
+          { ?r ?r2 ?y }
+      }
+    FILTER ( ?a = <http://dbpedia.org/resource/Agrippina_the_Younger> )
+  }
+#-------------------------------------------------------
+PREFIX  p:    <http://dbpedia.org/property/>
+
+CONSTRUCT 
+  { ?a ?p ?b .
+    ?c ?q ?a .
+    ?x ?r1 ?r .
+    ?r ?r2 ?y .}
+WHERE
+  {   { ?a ?p ?b }
+    UNION
+      { ?c ?q ?a }
+    OPTIONAL
+      { ?a p:redirect ?r
+          { ?x ?r1 ?r }
+        UNION
+          { ?r ?r2 ?y }
+      }
+    FILTER ( ?a = <http://dbpedia.org/resource/Valeria_Maximilla> )
+  }
+#-------------------------------------------------------
+PREFIX  p:    <http://dbpedia.org/property/>
+
+CONSTRUCT 
+  { ?a ?p ?b .
+    ?c ?q ?a .
+    ?x ?r1 ?r .
+    ?r ?r2 ?y .}
+WHERE
+  {   { ?a ?p ?b }
+    UNION
+      { ?c ?q ?a }
+    OPTIONAL
+      { ?a p:redirect ?r
+          { ?x ?r1 ?r }
+        UNION
+          { ?r ?r2 ?y }
+      }
+    FILTER ( ?a = <http://dbpedia.org/resource/Aelia_Flaccilla> )
+  }
+#-------------------------------------------------------
+PREFIX  dc:   <http://purl.org/dc/elements/1.1/>
+PREFIX  :     <http://dbpedia.org/resource/>
+PREFIX  rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX  dbpedia2: <http://dbpedia.org/property/>
+PREFIX  foaf: <http://xmlns.com/foaf/0.1/>
+PREFIX  owl:  <http://www.w3.org/2002/07/owl#>
+PREFIX  xsd:  <http://www.w3.org/2001/XMLSchema#>
+PREFIX  dbpedia: <http://dbpedia.org/>
+PREFIX  rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX  skos: <http://www.w3.org/2004/02/skos/core#>
+
+CONSTRUCT 
+  { ?X ?Y ?Z .}
+WHERE
+  { ?X ?Y ?Z }
+LIMIT   10
+#-------------------------------------------------------
+PREFIX  dc:   <http://purl.org/dc/elements/1.1/>
+PREFIX  :     <http://dbpedia.org/resource/>
+PREFIX  rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX  dbpedia2: <http://dbpedia.org/property/>
+PREFIX  foaf: <http://xmlns.com/foaf/0.1/>
+PREFIX  owl:  <http://www.w3.org/2002/07/owl#>
+PREFIX  xsd:  <http://www.w3.org/2001/XMLSchema#>
+PREFIX  dbpedia: <http://dbpedia.org/>
+PREFIX  rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX  skos: <http://www.w3.org/2004/02/skos/core#>
+
+CONSTRUCT 
+  { :Peugeot ?b ?c .}
+WHERE
+  { :Peugeot ?b ?c }
+#-------------------------------------------------------
+PREFIX  p:    <http://dbpedia.org/property/>
+
+CONSTRUCT 
+  { ?a ?p ?b .
+    ?c ?q ?a .
+    ?x ?r1 ?r .
+    ?r ?r2 ?y .}
+WHERE
+  {   { ?a ?p ?b }
+    UNION
+      { ?c ?q ?a }
+    FILTER ( ?a = <http://dbpedia.org/resource/Messalina> )
+    OPTIONAL
+      { ?a p:redirect ?r
+          { ?x ?r1 ?r }
+        UNION
+          { ?r ?r2 ?y }
+      }
+  }
+#-------------------------------------------------------
+PREFIX  dc:   <http://purl.org/dc/elements/1.1/>
+PREFIX  :     <http://dbpedia.org/resource/>
+PREFIX  rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX  dbpedia2: <http://dbpedia.org/property/>
+PREFIX  foaf: <http://xmlns.com/foaf/0.1/>
+PREFIX  owl:  <http://www.w3.org/2002/07/owl#>
+PREFIX  xsd:  <http://www.w3.org/2001/XMLSchema#>
+PREFIX  dbpedia: <http://dbpedia.org/>
+PREFIX  rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX  skos: <http://www.w3.org/2004/02/skos/core#>
+
+CONSTRUCT 
+  { :Peugeot ?b ?c .}
+WHERE
+  { :Peugeot ?b ?c
+    MINUS
+      { :Peugeot rdfs:comment ?c }
+  }
+#-------------------------------------------------------
+PREFIX  r:    <http://dbpedia.org/resource/>
+PREFIX  p:    <http://dbpedia.org/property/>
+PREFIX  o:    <http://dbpedia.org/ontology/>
+
+CONSTRUCT 
+  { r:Messalina p:redirect ?r .
+    ?x ?p ?r .
+    ?r ?q ?y .}
+WHERE
+  { r:Messalina p:redirect ?r
+      { ?x ?p ?r }
+    UNION
+      { ?r ?q ?Y }
+  }
+#-------------------------------------------------------
+PREFIX  p:    <http://dbpedia.org/property/>
+
+CONSTRUCT 
+  { ?a ?p ?b .
+    ?c ?q ?a .
+    ?x ?r1 ?r .
+    ?r ?r2 ?y .}
+WHERE
+  {   { ?a ?p ?b }
+    UNION
+      { ?c ?q ?a }
+    OPTIONAL
+      { ?a p:redirect ?r
+          { ?x ?r1 ?r }
+        UNION
+          { ?r ?r2 ?y }
+      }
+    FILTER ( ?a = <http://dbpedia.org/resource/Junia_Claudilla> )
+  }
+#-------------------------------------------------------
+PREFIX  dc:   <http://purl.org/dc/elements/1.1/>
+PREFIX  :     <http://dbpedia.org/resource/>
+PREFIX  rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX  dbpedia2: <http://dbpedia.org/property/>
+PREFIX  foaf: <http://xmlns.com/foaf/0.1/>
+PREFIX  owl:  <http://www.w3.org/2002/07/owl#>
+PREFIX  xsd:  <http://www.w3.org/2001/XMLSchema#>
+PREFIX  dbpedia: <http://dbpedia.org/>
+PREFIX  rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX  skos: <http://www.w3.org/2004/02/skos/core#>
+
+CONSTRUCT 
+  { <http://example.org/person#Alice> foaf:knows ?x .}
+WHERE
+  { ?x foaf:name ?name }
+ORDER BY DESC(?name)
+LIMIT   2
+#-------------------------------------------------------
+PREFIX  p:    <http://dbpedia.org/property/>
+
+CONSTRUCT 
+  { ?a ?p ?b .
+    ?c ?q ?a .
+    ?x ?r1 ?r .
+    ?r ?r2 ?y .}
+WHERE
+  {   { ?a ?p ?b }
+    UNION
+      { ?c ?q ?a }
+    OPTIONAL
+      { ?a p:redirect ?r
+          { ?x ?r1 ?r }
+        UNION
+          { ?r ?r2 ?y }
+      }
+    FILTER ( ?a = <http://dbpedia.org/resource/Mariniana> )
+  }
+#-------------------------------------------------------
+PREFIX  p:    <http://dbpedia.org/property/>
+
+CONSTRUCT 
+  { ?a ?p ?b .
+    ?c ?q ?a .
+    ?x ?r1 ?r .
+    ?r ?r2 ?y .}
+WHERE
+  {   { ?a ?p ?b }
+    UNION
+      { ?c ?q ?a }
+    OPTIONAL
+      { ?a p:redirect ?r
+          { ?x ?r1 ?r }
+        UNION
+          { ?r ?r2 ?y }
+      }
+    FILTER ( ?a = <http://dbpedia.org/resource/Licinia_Eudoxia> )
+  }
+#-------------------------------------------------------
+PREFIX  p:    <http://dbpedia.org/property/>
+
+CONSTRUCT 
+  { ?a ?p ?b .
+    ?c ?q ?a .
+    ?x ?r1 ?r .
+    ?r ?r2 ?y .}
+WHERE
+  {   { ?a ?p ?b }
+    UNION
+      { ?c ?q ?a }
+    OPTIONAL
+      { ?a p:redirect ?r
+          { ?x ?r1 ?r }
+        UNION
+          { ?r ?r2 ?y }
+      }
+    FILTER ( ?a = <http://dbpedia.org/resource/Poppaea_Sabina> )
+  }
+#-------------------------------------------------------
+PREFIX  p:    <http://dbpedia.org/property/>
+
+CONSTRUCT 
+  { ?a ?p ?b .
+    ?c ?q ?a .
+    ?x ?r1 ?r .
+    ?r ?r2 ?y .}
+WHERE
+  {   { ?a ?p ?b }
+    UNION
+      { ?c ?q ?a }
+    OPTIONAL
+      { ?a p:redirect ?r
+          { ?x ?r1 ?r }
+        UNION
+          { ?r ?r2 ?y }
+      }
+    FILTER ( ?a = <http://dbpedia.org/resource/Julia_Cornelia_Paula> )
+  }
+#-------------------------------------------------------
+PREFIX  p:    <http://dbpedia.org/property/>
+
+CONSTRUCT 
+  { ?a ?p ?b .
+    ?c ?q ?a .
+    ?x ?r1 ?r .
+    ?r ?r2 ?y .}
+WHERE
+  {   { ?a ?p ?b }
+    UNION
+      { ?c ?q ?a }
+    OPTIONAL
+      { ?a p:redirect ?r
+          { ?x ?r1 ?r }
+        UNION
+          { ?r ?r2 ?y }
+      }
+    FILTER ( ?a = <http://dbpedia.org/resource/Thermantia> )
+  }
+#-------------------------------------------------------
+PREFIX  dc:   <http://purl.org/dc/elements/1.1/>
+PREFIX  :     <http://dbpedia.org/resource/>
+PREFIX  dbpedia2: <http://dbpedia.org/property/>
+PREFIX  onto: <http://dbpedia.org/ontology/>
+PREFIX  foaf: <http://xmlns.com/foaf/0.1/>
+PREFIX  rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX  dbp:  <http://dbpedia.org/resource/>
+PREFIX  owl:  <http://www.w3.org/2002/07/owl#>
+PREFIX  xsd:  <http://www.w3.org/2001/XMLSchema#>
+PREFIX  dbpedia: <http://dbpedia.org/>
+PREFIX  rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX  skos: <http://www.w3.org/2004/02/skos/core#>
+
+CONSTRUCT 
+  { ?y dbpedia2:network :Animax .}
+WHERE
+  { ?y dbpedia2:network :Animax }
+#-------------------------------------------------------
+CONSTRUCT 
+  { ?x ?p ?y .
+    ?y ?q ?t .}
+WHERE
+  {   { ?x ?p ?y }
+    UNION
+      { ?y ?q ?t }
+    FILTER ( ?y = <http://dbpedia.org/resource/Caesonia> )
+  }
+#-------------------------------------------------------
+PREFIX  r:    <http://dbpedia.org/resource/>
+PREFIX  p:    <http://dbpedia.org/property/>
+PREFIX  o:    <http://dbpedia.org/ontology/>
+
+CONSTRUCT 
+  { ?a ?p ?b .
+    ?c ?q ?a .
+    ?x ?r1 ?r .
+    ?r ?r2 ?y .}
+WHERE
+  {   { ?a ?p ?b }
+    UNION
+      { ?c ?q ?a }
+    FILTER ( ?a = r:Messalina )
+    OPTIONAL
+      { ?a p:redirect ?r
+          { ?x ?r1 ?r }
+        UNION
+          { ?r ?r2 ?y }
+      }
+  }
+#-------------------------------------------------------
+CONSTRUCT 
+  { ?x ?p ?y .
+    ?y ?q ?t .}
+WHERE
+  {   { ?x ?p ?y }
+    UNION
+      { ?y ?q ?t }
+    FILTER ( ?y = <http://dbpedia.org/resource/Aemilia_Lepida> )
+  }
+#-------------------------------------------------------
+PREFIX  dc:   <http://purl.org/dc/elements/1.1/>
+PREFIX  :     <http://dbpedia.org/resource/>
+PREFIX  rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX  dbpedia2: <http://dbpedia.org/property/>
+PREFIX  foaf: <http://xmlns.com/foaf/0.1/>
+PREFIX  owl:  <http://www.w3.org/2002/07/owl#>
+PREFIX  xsd:  <http://www.w3.org/2001/XMLSchema#>
+PREFIX  dbpedia: <http://dbpedia.org/>
+PREFIX  rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX  skos: <http://www.w3.org/2004/02/skos/core#>
+
+CONSTRUCT 
+  { ?a ?b ?c .}
+WHERE
+  { :Peugeot ?b ?c .
+    ?a foaf:name "Peugeot S.A."@en
+    MINUS
+      { ?a rdfs:comment ?c }
+  }
+#-------------------------------------------------------
+PREFIX  dc:   <http://purl.org/dc/elements/1.1/>
+PREFIX  :     <http://dbpedia.org/resource/>
+PREFIX  rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX  dbpedia2: <http://dbpedia.org/property/>
+PREFIX  foaf: <http://xmlns.com/foaf/0.1/>
+PREFIX  owl:  <http://www.w3.org/2002/07/owl#>
+PREFIX  xsd:  <http://www.w3.org/2001/XMLSchema#>
+PREFIX  dbpedia: <http://dbpedia.org/>
+PREFIX  rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX  skos: <http://www.w3.org/2004/02/skos/core#>
+
+CONSTRUCT 
+  { :Peugeot ?b ?c .}
+WHERE
+  { :Peugeot ?b ?c
+    FILTER ( ( ?b != rdfs:comment ) && ( ?b != <http://dbpedia.org/ontology/abstract> ) )
+  }
+#-------------------------------------------------------
+PREFIX  p:    <http://dbpedia.org/property/>
+
+CONSTRUCT 
+  { ?a ?p ?b .
+    ?c ?q ?a .
+    ?x ?r1 ?r .
+    ?r ?r2 ?y .}
+WHERE
+  {   { ?a ?p ?b }
+    UNION
+      { ?c ?q ?a }
+    OPTIONAL
+      { ?a p:redirect ?r
+          { ?x ?r1 ?r }
+        UNION
+          { ?r ?r2 ?y }
+      }
+    FILTER ( ?a = <http://dbpedia.org/resource/Daughter_of_Julius_Constantius> )
+  }
+#-------------------------------------------------------
+PREFIX  xsd:  <http://www.w3.org/2001/XMLSchema>
+
+CONSTRUCT 
+  { ?airport xsd:label ?s .}
+WHERE
+  { ?airport <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://dbpedia.org/ontology/Airport> .
+    ?airport <http://dbpedia.org/ontology/iataLocationIdentifier> ?s
+  }
+#-------------------------------------------------------
+PREFIX  p:    <http://dbpedia.org/property/>
+
+CONSTRUCT 
+  { ?a ?p ?b .
+    ?c ?q ?a .
+    ?x ?r1 ?r .
+    ?r ?r2 ?y .}
+WHERE
+  {   { ?a ?p ?b }
+    UNION
+      { ?c ?q ?a }
+    OPTIONAL
+      { ?a p:redirect ?r
+          { ?x ?r1 ?r }
+        UNION
+          { ?r ?r2 ?y }
+      }
+    FILTER ( ?a = <http://dbpedia.org/resource/Messalina> )
+  }
+#-------------------------------------------------------
+PREFIX  p:    <http://dbpedia.org/property/>
+
+CONSTRUCT 
+  { ?a ?p ?b .
+    ?c ?q ?a .
+    ?x ?r1 ?r .
+    ?r ?r2 ?y .}
+WHERE
+  {   { ?a ?p ?b }
+    UNION
+      { ?c ?q ?a }
+    OPTIONAL
+      { ?a p:redirect ?r
+          { ?x ?r1 ?r }
+        UNION
+          { ?r ?r2 ?y }
+      }
+    FILTER ( ?a = <http://dbpedia.org/resource/Faustina_the_Elder> )
+  }
+#-------------------------------------------------------
+PREFIX  p:    <http://dbpedia.org/property/>
+
+CONSTRUCT 
+  { ?a ?p ?b .
+    ?c ?q ?a .
+    ?x ?r1 ?r .
+    ?r ?r2 ?y .}
+WHERE
+  {   { ?a ?p ?b }
+    UNION
+      { ?c ?q ?a }
+    OPTIONAL
+      { ?a p:redirect ?r
+          { ?x ?r1 ?r }
+        UNION
+          { ?r ?r2 ?y }
+      }
+    FILTER ( ?a = <http://dbpedia.org/resource/Aemilia_Lepida> )
+  }
+#-------------------------------------------------------
+PREFIX  p:    <http://dbpedia.org/property/>
+
+CONSTRUCT 
+  { ?a ?p ?b .
+    ?c ?q ?a .
+    ?x ?r1 ?r .
+    ?r ?r2 ?y .}
+WHERE
+  {   { ?a ?p ?b }
+    UNION
+      { ?c ?q ?a }
+    OPTIONAL
+      { ?a p:redirect ?r
+          { ?x ?r1 ?r }
+        UNION
+          { ?r ?r2 ?y }
+      }
+    FILTER ( ?a = <http://dbpedia.org/resource/Ulpia_Severina> )
+  }
+#-------------------------------------------------------
+PREFIX  r:    <http://dbpedia.org/resource/>
+PREFIX  p:    <http://dbpedia.org/property/>
+PREFIX  o:    <http://dbpedia.org/ontology/>
+
+CONSTRUCT 
+  { r:Messalina p:redirect ?r .
+    ?x ?p ?r .
+    ?r ?q ?y .}
+WHERE
+  { r:Messalina p:redirect ?r
+      { ?x ?p ?r }
+    UNION
+      { ?r ?q ?y }
+  }
+#-------------------------------------------------------
+PREFIX  p:    <http://dbpedia.org/property/>
+
+CONSTRUCT 
+  { ?a ?p ?b .
+    ?c ?q ?a .
+    ?x ?r1 ?r .
+    ?r ?r2 ?y .}
+WHERE
+  {   { ?a ?p ?b }
+    UNION
+      { ?c ?q ?a }
+    OPTIONAL
+      { ?a p:redirect ?r
+          { ?x ?r1 ?r }
+        UNION
+          { ?r ?r2 ?y }
+      }
+    FILTER ( ?a = <http://dbpedia.org/resource/Cornelia_Salonina> )
+  }
+#-------------------------------------------------------
+CONSTRUCT 
+  { ?x ?p ?y .
+    ?y ?q ?t .}
+WHERE
+  {   { ?x ?p ?y }
+    UNION
+      { ?y ?q ?t }
+    FILTER ( ?y = <http://dbpedia.org/resource/Plautia_Urgulanilla> )
+  }
+#-------------------------------------------------------
+PREFIX  dc:   <http://purl.org/dc/elements/1.1/>
+PREFIX  :     <http://dbpedia.org/resource/>
+PREFIX  rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX  dbpedia2: <http://dbpedia.org/property/>
+PREFIX  foaf: <http://xmlns.com/foaf/0.1/>
+PREFIX  owl:  <http://www.w3.org/2002/07/owl#>
+PREFIX  xsd:  <http://www.w3.org/2001/XMLSchema#>
+PREFIX  dbpedia: <http://dbpedia.org/>
+PREFIX  rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX  skos: <http://www.w3.org/2004/02/skos/core#>
+
+CONSTRUCT 
+  { ?Anime dbpedia2:studio :Gainax .}
+WHERE
+  { ?Anime dbpedia2:studio :Gainax }
+#-------------------------------------------------------
+PREFIX  rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+
+CONSTRUCT 
+  { <http://dbpedia.org/resource/Rouen> rdf:type ?class .}
+WHERE
+  { <http://dbpedia.org/resource/Rouen> rdf:type ?class }
+#-------------------------------------------------------
+PREFIX  p:    <http://dbpedia.org/property/>
+
+CONSTRUCT 
+  { ?a ?p ?b .
+    ?c ?q ?a .
+    ?x ?r1 ?r .
+    ?r ?r2 ?y .}
+WHERE
+  {   { ?a ?p ?b }
+    UNION
+      { ?c ?q ?a }
+    OPTIONAL
+      { ?a p:redirect ?r
+          { ?x ?r1 ?r }
+        UNION
+          { ?r ?r2 ?y }
+      }
+    FILTER ( ?a = <http://dbpedia.org/resource/Flavia_Titiana> )
+  }
+#-------------------------------------------------------
+CONSTRUCT 
+  { ?x ?p ?y .
+    ?y ?q ?t .}
+WHERE
+  {   { ?x ?p ?y }
+    UNION
+      { ?y ?q ?t }
+    FILTER ( ?y = <http://dbpedia.org/resource/Marcia_Furnilla> )
+  }
+#-------------------------------------------------------
+CONSTRUCT 
+  { ?link <http://xmlns.com/foaf/0.1/isprimaryTopicof> ?wiki .
+    ?link <http://www.w3.org/2000/01/rdf-schema#comment> ?descr .
+    ?link <http://www.w3.org/2000/01/rdf-schema#label> ?label .
+    ?link <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> ?type .}
+WHERE
+  { ?wiki <http://xmlns.com/foaf/0.1/primaryTopic> ?link .
+    ?link <http://www.w3.org/2000/01/rdf-schema#comment> ?descr .
+    ?link <http://www.w3.org/2000/01/rdf-schema#label> ?label .
+    ?link <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> ?type
+    FILTER ( ( ( ( ( ( ( ( ( ( ?wiki = <http://en.wikipedia.org/wiki/Fuzzy_Logic_EP> ) || ( ?wiki = <http://simple.wikipedia.org/wiki/Fuzzy_logic> ) ) || ( ?wiki = <http://en.wikipedia.org/wiki/Fuzzy_logic> ) ) || ( ?wiki = <http://en.wikipedia.org/wiki/Fuzzy_control_system> ) ) || ( ?wiki = <http://en.wikipedia.org/wiki/Fuzzy_set> ) ) || ( ?wiki = <http://en.wikipedia.org/wiki/Fuzzy_Logic_%28album%29> ) ) || ( ?wiki = <http://en.wikipedia.org/wiki/Multi-valued_logic> ) ) || ( ?wiki = <http://en.wikipedia.org/wiki/Category%3AFuzzy_logic> ) ) && ( regex(?descr, "@en$", "i") || ( lang(?descr) = "en" ) ) ) && ( regex(?label, "@en$", "i") || ( lang(?label) = "en" ) ) )
+  }
+#-------------------------------------------------------
+PREFIX  p:    <http://dbpedia.org/property/>
+
+CONSTRUCT 
+  { ?a ?p ?b .
+    ?c ?q ?a .
+    ?x ?r1 ?r .
+    ?r ?r2 ?y .}
+WHERE
+  {   { ?a ?p ?b }
+    UNION
+      { ?c ?q ?a }
+    OPTIONAL
+      { ?a p:redirect ?r
+          { ?x ?r1 ?r }
+        UNION
+          { ?r ?r2 ?y }
+      }
+    FILTER ( ?a = <http://dbpedia.org/resource/Fausta> )
+  }
+#-------------------------------------------------------
+PREFIX  p:    <http://dbpedia.org/property/>
+
+CONSTRUCT 
+  { ?a ?p ?b .
+    ?c ?q ?a .
+    ?x ?r1 ?r .
+    ?r ?r2 ?y .}
+WHERE
+  {   { ?a ?p ?b }
+    UNION
+      { ?c ?q ?a }
+    OPTIONAL
+      { ?a p:redirect ?r
+          { ?x ?r1 ?r }
+        UNION
+          { ?r ?r2 ?y }
+      }
+    FILTER ( ?a = <http://dbpedia.org/resource/Sallustia_Orbiana> )
+  }
+#-------------------------------------------------------
+PREFIX  o:    <http://dbpedia.org/ontology/>
+
+CONSTRUCT 
+  { ?x ?p ?y .
+    ?y ?q ?z .}
+WHERE
+  { FILTER ( ?y = <http://dbpedia.org/resource/Vercingetorix> )
+      { ?x ?p ?y }
+    UNION
+      { ?y ?q ?z }
+  }
+#-------------------------------------------------------
+CONSTRUCT 
+  { ?x ?p ?y .
+    ?y ?q ?t .}
+WHERE
+  {   { ?x ?p ?y }
+    UNION
+      { ?y ?q ?t }
+    FILTER ( ?y = <http://dbpedia.org/resource/Poppaea_Sabina> )
+  }
+#-------------------------------------------------------
+CONSTRUCT 
+  { ?s ?p ?o .}
+WHERE
+  { ?s ?p ?o }
+LIMIT   10
+#-------------------------------------------------------
+CONSTRUCT 
+  { ?x ?p ?y .
+    ?y ?q ?z .}
+WHERE
+  { FILTER ( ?y = <http://dbpedia.org/resource/Glycerius> )
+      { ?x ?p ?y }
+    UNION
+      { ?y ?q ?z }
+  }
+#-------------------------------------------------------
+PREFIX  dc:   <http://purl.org/dc/elements/1.1/>
+PREFIX  :     <http://dbpedia.org/resource/>
+PREFIX  rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX  dbpedia2: <http://dbpedia.org/property/>
+PREFIX  foaf: <http://xmlns.com/foaf/0.1/>
+PREFIX  owl:  <http://www.w3.org/2002/07/owl#>
+PREFIX  xsd:  <http://www.w3.org/2001/XMLSchema#>
+PREFIX  dbpedia: <http://dbpedia.org/>
+PREFIX  rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX  skos: <http://www.w3.org/2004/02/skos/core#>
+
+CONSTRUCT 
+  { :Peugeot ?b ?c .}
+WHERE
+  { :Peugeot ?b ?c
+    FILTER ( ?b != rdfs:comment )
+  }
+#-------------------------------------------------------
+CONSTRUCT 
+  { ?x ?p ?y .
+    ?y ?q ?t .}
+WHERE
+  {   { ?x ?p ?y }
+    UNION
+      { ?y ?q ?t }
+    FILTER ( ?y = <http://dbpedia.org/resource/Lollia_Paulina> )
+  }
+#-------------------------------------------------------
+PREFIX  p:    <http://dbpedia.org/property/>
+
+CONSTRUCT 
+  { ?a ?p ?b .
+    ?c ?q ?a .
+    ?x ?r1 ?r .
+    ?r ?r2 ?y .}
+WHERE
+  {   { ?a ?p ?b }
+    UNION
+      { ?c ?q ?a }
+    OPTIONAL
+      { ?a p:redirect ?r
+          { ?x ?r1 ?r }
+        UNION
+          { ?r ?r2 ?y }
+      }
+    FILTER ( ?a = <http://dbpedia.org/resource/Poppea_Sabina> )
+  }
+#-------------------------------------------------------
+CONSTRUCT 
+  { ?x ?p ?y .
+    ?y ?q ?t .}
+WHERE
+  {   { ?x ?p ?y }
+    UNION
+      { ?y ?q ?t }
+    FILTER ( ?y = <http://dbpedia.org/resource/Claudia_Octavia> )
+  }
+#-------------------------------------------------------
+PREFIX  dbp:  <http://dbpedia.org/resource/>
+PREFIX  dp:   <http://dbpedia.org/property/>
+PREFIX  skos: <http://www.w3.org/2004/02/skos/core/>
+
+CONSTRUCT 
+  { ?nichtgainax dp:studio dbp:Gainax .}
+WHERE
+  { ?nichtgainax dp:studio ?n
+    FILTER ( ?n != dbp:Gainax )
+  }
+#-------------------------------------------------------
+PREFIX  p:    <http://dbpedia.org/property/>
+
+CONSTRUCT 
+  { ?a ?p ?b .
+    ?c ?q ?a .
+    ?x ?r1 ?r .
+    ?r ?r2 ?y .}
+WHERE
+  {   { ?a ?p ?b }
+    UNION
+      { ?c ?q ?a }
+    OPTIONAL
+      { ?a p:redirect ?r
+          { ?x ?r1 ?r }
+        UNION
+          { ?r ?r2 ?y }
+      }
+    FILTER ( ?a = <http://dbpedia.org/resource/Aquilia_Severa> )
+  }
+#-------------------------------------------------------
+PREFIX  dc:   <http://purl.org/dc/elements/1.1/>
+PREFIX  :     <http://dbpedia.org/resource/>
+PREFIX  dbpedia2: <http://dbpedia.org/property/>
+PREFIX  onto: <http://dbpedia.org/ontology/>
+PREFIX  foaf: <http://xmlns.com/foaf/0.1/>
+PREFIX  rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX  dbp:  <http://dbpedia.org/resource/>
+PREFIX  owl:  <http://www.w3.org/2002/07/owl#>
+PREFIX  xsd:  <http://www.w3.org/2001/XMLSchema#>
+PREFIX  dbpedia: <http://dbpedia.org/>
+PREFIX  rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX  skos: <http://www.w3.org/2004/02/skos/core#>
+
+CONSTRUCT 
+  { ?y dbpedia2:studio :Gainax .}
+WHERE
+  { ?y dbpedia2:studio :Gainax }
+#-------------------------------------------------------
+PREFIX  dc:   <http://purl.org/dc/elements/1.1/>
+PREFIX  :     <http://dbpedia.org/resource/>
+PREFIX  dbpedia2: <http://dbpedia.org/property/>
+PREFIX  onto: <http://dbpedia.org/ontology/>
+PREFIX  foaf: <http://xmlns.com/foaf/0.1/>
+PREFIX  rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX  dbp:  <http://dbpedia.org/resource/>
+PREFIX  owl:  <http://www.w3.org/2002/07/owl#>
+PREFIX  xsd:  <http://www.w3.org/2001/XMLSchema#>
+PREFIX  dbpedia: <http://dbpedia.org/>
+PREFIX  rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX  skos: <http://www.w3.org/2004/02/skos/core#>
+
+CONSTRUCT 
+  { ?y onto:birthPlace :Berlin .}
+WHERE
+  { ?y onto:birthPlace :Berlin }
+#-------------------------------------------------------
+PREFIX  o:    <http://dbpedia.org/ontology/>
+
+CONSTRUCT 
+  { ?b o:commander ?y .
+    ?b o:partOf ?bb .
+    ?bb ?r ?v .}
+WHERE
+  { FILTER ( ?y = <http://dbpedia.org/resource/Julius_Caesar> )
+    ?b o:commander ?y .
+    ?b o:partOf ?bb .
+    ?bb ?r ?v
+  }
+#-------------------------------------------------------
+PREFIX  p:    <http://dbpedia.org/property/>
+
+CONSTRUCT 
+  { ?a ?p ?b .
+    ?c ?q ?a .
+    ?x ?r1 ?r .
+    ?r ?r2 ?y .}
+WHERE
+  {   { ?a ?p ?b }
+    UNION
+      { ?c ?q ?a }
+    OPTIONAL
+      { ?a p:redirect ?r
+          { ?x ?r1 ?r }
+        UNION
+          { ?r ?r2 ?y }
+      }
+    FILTER ( ?a = <http://dbpedia.org/resource/Manlia_Scantilla> )
+  }
+#-------------------------------------------------------
+PREFIX  r:    <http://dbpedia.org/resource/>
+PREFIX  p:    <http://dbpedia.org/property/>
+PREFIX  o:    <http://dbpedia.org/ontology/>
+
+CONSTRUCT 
+  { ?a p:redirect ?r .
+    ?x ?p ?r .
+    ?r ?q ?y .}
+WHERE
+  { ?a p:redirect ?r
+    FILTER ( ?a = r:Messalina )
+      { ?x ?p ?r }
+    UNION
+      { ?r ?q ?y }
+  }
+#-------------------------------------------------------
+PREFIX  p:    <http://dbpedia.org/property/>
+
+CONSTRUCT 
+  { ?a ?p ?b .
+    ?c ?q ?a .
+    ?x ?r1 ?r .
+    ?r ?r2 ?y .}
+WHERE
+  {   { ?a ?p ?b }
+    UNION
+      { ?c ?q ?a }
+    OPTIONAL
+      { ?a p:redirect ?r
+          { ?x ?r1 ?r }
+        UNION
+          { ?r ?r2 ?y }
+      }
+    FILTER ( ?a = <http://dbpedia.org/resource/Claudia_Octavia> )
+  }
+#-------------------------------------------------------
+PREFIX  dc:   <http://purl.org/dc/elements/1.1/>
+PREFIX  :     <http://dbpedia.org/resource/>
+PREFIX  rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX  dbpedia2: <http://dbpedia.org/property/>
+PREFIX  foaf: <http://xmlns.com/foaf/0.1/>
+PREFIX  owl:  <http://www.w3.org/2002/07/owl#>
+PREFIX  xsd:  <http://www.w3.org/2001/XMLSchema#>
+PREFIX  dbpedia: <http://dbpedia.org/>
+PREFIX  rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX  skos: <http://www.w3.org/2004/02/skos/core#>
+
+CONSTRUCT 
+  { ?a ?b ?c .}
+WHERE
+  { :Peugeot ?b ?c .
+    ?a foaf:name "Peugeot S.A."@en
+  }
+#-------------------------------------------------------
+PREFIX  o:    <http://dbpedia.org/ontology/>
+
+CONSTRUCT 
+  { ?b o:commander ?y .
+    ?b o:partOf ?bb .
+    ?bb ?r ?v .
+    ?b ?p ?z .}
+WHERE
+  { FILTER ( ?y = <http://dbpedia.org/resource/Julius_Caesar> )
+    ?b o:commander ?y .
+    ?b o:partOf ?bb .
+    ?bb ?r ?v .
+    ?b ?p ?z
+  }
+#-------------------------------------------------------
+PREFIX  p:    <http://dbpedia.org/property/>
+
+CONSTRUCT 
+  { ?a ?p ?b .
+    ?c ?q ?a .
+    ?x ?r1 ?r .
+    ?r ?r2 ?y .}
+WHERE
+  {   { ?a ?p ?b }
+    UNION
+      { ?c ?q ?a }
+    OPTIONAL
+      { ?a p:redirect ?r
+          { ?x ?r1 ?r }
+        UNION
+          { ?r ?r2 ?y }
+      }
+    FILTER ( ?a = <http://dbpedia.org/resource/Plautia_Urgulanilla> )
+  }
+#-------------------------------------------------------
+PREFIX  p:    <http://dbpedia.org/property/>
+
+CONSTRUCT 
+  { ?a ?p ?b .
+    ?c ?q ?a .
+    ?x ?r1 ?r .
+    ?r ?r2 ?y .}
+WHERE
+  {   { ?a ?p ?b }
+    UNION
+      { ?c ?q ?a }
+    OPTIONAL
+      { ?a p:redirect ?r
+          { ?x ?r1 ?r }
+        UNION
+          { ?r ?r2 ?y }
+      }
+    FILTER ( ?a = <http://dbpedia.org/resource/Helena_of_Constantinople> )
+  }
+#-------------------------------------------------------
+PREFIX  r:    <http://dbpedia.org/resource/>
+PREFIX  p:    <http://dbpedia.org/property/>
+PREFIX  o:    <http://dbpedia.org/ontology/>
+
+CONSTRUCT 
+  { ?a p:redirect ?r .
+    ?x ?p ?r .
+    ?r ?q ?y .}
+WHERE
+  { FILTER ( ?a = r:Messalina )
+    OPTIONAL
+      { ?a p:redirect ?r
+          { ?x ?p ?r }
+        UNION
+          { ?r ?q ?y }
+      }
+  }
+#-------------------------------------------------------
+CONSTRUCT 
+  { ?x ?p ?y .
+    ?y ?q ?t .}
+WHERE
+  {   { ?x ?p ?y }
+    UNION
+      { ?y ?q ?t }
+    FILTER ( ?y = <http://dbpedia.org/resource/Messalina> )
+  }
+#-------------------------------------------------------
+CONSTRUCT 
+  { <http://dbpedia.org/resource/Hercule_Poirot> ?p ?o .}
+WHERE
+  { <http://dbpedia.org/resource/Hercule_Poirot> ?p ?o
+    FILTER ( ( ( ( ( ( ( ( ( ( lang(?o) = "de" ) || ( lang(?o) = "zh" ) ) || ( lang(?o) = "pt" ) ) || ( lang(?o) = "fr" ) ) || ( lang(?o) = "en" ) ) || ( lang(?o) = "ru" ) ) || ( lang(?o) = "es" ) ) || ( lang(?o) = "ja" ) ) || ( lang(?o) = "" ) ) || isURI(?o) )
+  }
+#-------------------------------------------------------
+PREFIX  p:    <http://dbpedia.org/property/>
+
+CONSTRUCT 
+  { ?a ?p ?b .
+    ?c ?q ?a .
+    ?x ?r1 ?r .
+    ?r ?r2 ?y .}
+WHERE
+  {   { ?a ?p ?b }
+    UNION
+      { ?c ?q ?a }
+    OPTIONAL
+      { ?a p:redirect ?r
+          { ?x ?r1 ?r }
+        UNION
+          { ?r ?r2 ?y }
+      }
+    FILTER ( ?a = <http://dbpedia.org/resource/Domitilla_the_Elder> )
+  }
+#-------------------------------------------------------
+PREFIX  :     <http://dbpedia.org/resource/>
+PREFIX  onto: <http://dbpedia.org/ontology/>
+
+CONSTRUCT 
+  { :France onto:anthem ?x .}
+WHERE
+  { :France onto:anthem ?x }
+#-------------------------------------------------------
+PREFIX  dc:   <http://purl.org/dc/elements/1.1/>
+PREFIX  :     <http://dbpedia.org/resource/>
+PREFIX  dbpedia2: <http://dbpedia.org/property/>
+PREFIX  onto: <http://dbpedia.org/ontology/>
+PREFIX  foaf: <http://xmlns.com/foaf/0.1/>
+PREFIX  rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX  dbp:  <http://dbpedia.org/resource/>
+PREFIX  owl:  <http://www.w3.org/2002/07/owl#>
+PREFIX  xsd:  <http://www.w3.org/2001/XMLSchema#>
+PREFIX  dbpedia: <http://dbpedia.org/>
+PREFIX  rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX  skos: <http://www.w3.org/2004/02/skos/core#>
+
+CONSTRUCT 
+  { ?studio dbpedia2:studio :Gainax .}
+WHERE
+  { ?studio dbpedia2:studio :Gainax }
+#-------------------------------------------------------
+PREFIX  p:    <http://dbpedia.org/property/>
+
+CONSTRUCT 
+  { ?a ?p ?b .
+    ?c ?q ?a .
+    ?x ?r1 ?r .
+    ?r ?r2 ?y .}
+WHERE
+  {   { ?a ?p ?b }
+    UNION
+      { ?c ?q ?a }
+    OPTIONAL
+      { ?a p:redirect ?r
+          { ?x ?r1 ?r }
+        UNION
+          { ?r ?r2 ?y }
+      }
+    FILTER ( ?a = <http://dbpedia.org/resource/Caenis> )
+  }
+#-------------------------------------------------------
+PREFIX  p:    <http://dbpedia.org/property/>
+
+CONSTRUCT 
+  { ?a ?p ?b .
+    ?c ?q ?a .
+    ?x ?r1 ?r .
+    ?r ?r2 ?y .}
+WHERE
+  {   { ?a ?p ?b }
+    UNION
+      { ?c ?q ?a }
+    OPTIONAL
+      { ?a p:redirect ?r
+          { ?x ?r1 ?r }
+        UNION
+          { ?r ?r2 ?y }
+      }
+    FILTER ( ?a = <http://dbpedia.org/resource/Charito> )
+  }
+#-------------------------------------------------------
+CONSTRUCT 
+  { ?x ?p ?y .
+    ?y ?q ?t .}
+WHERE
+  {   { ?x ?p ?y }
+    UNION
+      { ?y ?q ?t }
+    FILTER ( ?y = <http://dbpedia.org/resource/Junia_Claudilla> )
+  }
+#-------------------------------------------------------
+PREFIX  p:    <http://dbpedia.org/property/>
+
+CONSTRUCT 
+  { ?a ?p ?b .
+    ?c ?q ?a .
+    ?x ?r1 ?r .
+    ?r ?r2 ?y .}
+WHERE
+  {   { ?a ?p ?b }
+    UNION
+      { ?c ?q ?a }
+    OPTIONAL
+      { ?a p:redirect ?r
+          { ?x ?r1 ?r }
+        UNION
+          { ?r ?r2 ?y }
+      }
+    FILTER ( ?a = <http://dbpedia.org/resource/Cornelia_Supera> )
+  }
+#-------------------------------------------------------
+PREFIX  dc:   <http://purl.org/dc/elements/1.1/>
+PREFIX  :     <http://dbpedia.org/resource/>
+PREFIX  rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX  dbpedia2: <http://dbpedia.org/property/>
+PREFIX  foaf: <http://xmlns.com/foaf/0.1/>
+PREFIX  owl:  <http://www.w3.org/2002/07/owl#>
+PREFIX  xsd:  <http://www.w3.org/2001/XMLSchema#>
+PREFIX  dbpedia: <http://dbpedia.org/>
+PREFIX  rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX  organik: <http://organik-project.eu/taxonomies#>
+PREFIX  skos: <http://www.w3.org/2004/02/skos/core#>
+
+CONSTRUCT 
+  { ?r ?p ?o .}
+WHERE
+  { ?r rdfs:label "Property"@en .
+    ?r ?p ?o
+  }
+#-------------------------------------------------------
+CONSTRUCT 
+  { ?x ?p ?y .
+    ?y ?q ?t .}
+WHERE
+  {   { ?x ?p ?y }
+    UNION
+      { ?y ?q ?t }
+    FILTER ( ?y = <http://dbpedia.org/resource/Domitia_Longina> )
+  }
+#-------------------------------------------------------
+CONSTRUCT 
+  { <http://dbpedia.org/resource/Klagenfurt> ?p ?o .}
+WHERE
+  { <http://dbpedia.org/resource/Klagenfurt> ?p ?o
+    FILTER ( ( ( ( ( ( ( ( ( ( lang(?o) = "de" ) || ( lang(?o) = "zh" ) ) || ( lang(?o) = "pt" ) ) || ( lang(?o) = "fr" ) ) || ( lang(?o) = "en" ) ) || ( lang(?o) = "ru" ) ) || ( lang(?o) = "es" ) ) || ( lang(?o) = "ja" ) ) || ( lang(?o) = "" ) ) || isURI(?o) )
+  }
+#-------------------------------------------------------
+PREFIX  p:    <http://dbpedia.org/property/>
+
+CONSTRUCT 
+  { ?a ?p ?b .
+    ?c ?q ?a .
+    ?x ?r1 ?r .
+    ?r ?r2 ?y .}
+WHERE
+  {   { ?a ?p ?b }
+    UNION
+      { ?c ?q ?a }
+    OPTIONAL
+      { ?a p:redirect ?r
+          { ?x ?r1 ?r }
+        UNION
+          { ?r ?r2 ?y }
+      }
+    FILTER ( ?a = <http://dbpedia.org/resource/Pompeia_Plotina> )
+  }
+#-------------------------------------------------------
+PREFIX  p:    <http://dbpedia.org/property/>
+
+CONSTRUCT 
+  { ?a ?p ?b .
+    ?c ?q ?a .
+    ?x ?r1 ?r .
+    ?r ?r2 ?y .}
+WHERE
+  {   { ?a ?p ?b }
+    UNION
+      { ?c ?q ?a }
+    OPTIONAL
+      { ?a p:redirect ?r
+          { ?x ?r1 ?r }
+        UNION
+          { ?r ?r2 ?y }
+      }
+    FILTER ( ?a = <http://dbpedia.org/resource/Marcia_Furnilla> )
+  }
+#-------------------------------------------------------
+CONSTRUCT 
+  { ?x ?p ?y .
+    ?y ?q ?t .}
+WHERE
+  {   { ?x ?p ?y }
+    UNION
+      { ?y ?q ?t }
+    FILTER ( ?y = <http://dbpedia.org/resource/Statilia_Messalina> )
+  }
+#-------------------------------------------------------
+CONSTRUCT 
+  { ?x ?p ?y .
+    ?y ?q ?z .}
+WHERE
+  { FILTER ( ?y = <http://dbpedia.org/resource/Licinia_Eudoxia> )
+      { ?x ?p ?y }
+    UNION
+      { ?y ?q ?z }
+  }
+#-------------------------------------------------------
+CONSTRUCT 
+  { ?x ?p ?y .
+    ?y ?q ?t .}
+WHERE
+  {   { ?x ?p ?y }
+    UNION
+      { ?y ?q ?t }
+    FILTER ( ?y = <http://dbpedia.org/resource/Livia_Orestilla> )
+  }
+#-------------------------------------------------------
+CONSTRUCT 
+  { ?x ?p ?y .
+    ?y ?q ?t .}
+WHERE
+  {   { ?x ?p ?y }
+    UNION
+      { ?y ?q ?t }
+    FILTER ( ?y = <http://dbpedia.org/resource/Domitilla_the_Elder> )
+  }
+#-------------------------------------------------------
+CONSTRUCT 
+  { ?x ?p ?y .
+    ?y ?q ?t .}
+WHERE
+  {   { ?x ?p ?y }
+    UNION
+      { ?y ?q ?t }
+    FILTER ( ?y = <http://dbpedia.org/resource/Vipsania_Agrippina> )
+  }
+#-------------------------------------------------------
+PREFIX  p:    <http://dbpedia.org/property/>
+
+CONSTRUCT 
+  { ?a ?p ?b .
+    ?c ?q ?a .
+    ?x ?r1 ?r .
+    ?r ?r2 ?y .}
+WHERE
+  {   { ?a ?p ?b }
+    UNION
+      { ?c ?q ?a }
+    OPTIONAL
+      { ?a p:redirect ?r
+          { ?x ?r1 ?r }
+        UNION
+          { ?r ?r2 ?y }
+      }
+    FILTER ( ?a = <http://dbpedia.org/resource/Marcia_Euphemia> )
+  }
+#-------------------------------------------------------
+PREFIX  p:    <http://dbpedia.org/property/>
+
+CONSTRUCT 
+  { ?a ?p ?b .
+    ?c ?q ?a .
+    ?x ?r1 ?r .
+    ?r ?r2 ?y .}
+WHERE
+  {   { ?a ?p ?b }
+    UNION
+      { ?c ?q ?a }
+    OPTIONAL
+      { ?a p:redirect ?r
+          { ?x ?r1 ?r }
+        UNION
+          { ?r ?r2 ?y }
+      }
+    FILTER ( ?a = <http://dbpedia.org/resource/Caecilia_Paulina> )
+  }
+#-------------------------------------------------------
+PREFIX  dc:   <http://purl.org/dc/elements/1.1/>
+PREFIX  :     <http://dbpedia.org/resource/>
+PREFIX  dbpedia2: <http://dbpedia.org/property/>
+PREFIX  foaf: <http://xmlns.com/foaf/0.1/>
+PREFIX  rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX  dbp:  <http://dbpedia.org/resource/>
+PREFIX  owl:  <http://www.w3.org/2002/07/owl#>
+PREFIX  xsd:  <http://www.w3.org/2001/XMLSchema#>
+PREFIX  dbpedia: <http://dbpedia.org/>
+PREFIX  rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX  dp:   <http://dbpedia.org/property/>
+PREFIX  skos: <http://www.w3.org/2004/02/skos/core/>
+
+CONSTRUCT 
+  { ?Anime dbpedia2:studio :Gainax .}
+WHERE
+  { ?Anime dbpedia2:studio :Gainax }
