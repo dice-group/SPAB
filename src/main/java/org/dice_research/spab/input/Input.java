@@ -47,17 +47,17 @@ public class Input {
 	/**
 	 * Adds query to set of inputs.
 	 * 
-	 * TODO: Handle all types of inputs
+	 * @throws InputRuntimeException
+	 *             if query string could not be parsed
 	 */
-	protected void addQuery(String sparqlQuery, boolean positive) {
+	protected void addQuery(String sparqlQuery, boolean positive) throws InputRuntimeException {
 
 		// Try to add SPARQL query
 		try {
-			SparqlQuery query = new SparqlQuery(sparqlQuery, this);
 			if (positive) {
-				positives.add(query);
+				positives.add(new SparqlQuery(sparqlQuery, this));
 			} else {
-				negatives.add(query);
+				negatives.add(new SparqlQuery(sparqlQuery, this));
 			}
 
 		} catch (InputRuntimeException originalException) {
@@ -70,11 +70,21 @@ public class Input {
 					} else {
 						negatives.add(new SparqlUpdate(sparqlQuery, this));
 					}
-				} catch (Exception e) {
-					throw originalException;
+
+				} catch (InputRuntimeException updateRequestException) {
+
+					// Query could not be parsed for two times. Use heuristics to pass exception
+					if (sparqlQuery.toUpperCase().contains("SELECT") || sparqlQuery.toUpperCase().contains("CONSTRUCT")
+							|| sparqlQuery.toUpperCase().contains("DESCRIBE")
+							|| sparqlQuery.toUpperCase().contains("ASK")) {
+						throw originalException;
+					} else {
+						throw updateRequestException;
+					}
 				}
 
 			} else {
+				// No QueryParseException, just pass original exception
 				throw originalException;
 			}
 		}

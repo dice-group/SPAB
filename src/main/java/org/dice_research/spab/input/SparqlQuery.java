@@ -34,22 +34,22 @@ public class SparqlQuery extends SparqlUnit {
 	 * @throws InputRuntimeException
 	 *             if query string could not be parsed
 	 */
-	public SparqlQuery(String sparqlQuery, Input input) {
+	public SparqlQuery(String sparqlQuery, Input input) throws InputRuntimeException {
 		super(sparqlQuery, input);
 	}
 
 	/**
 	 * Creates the query.
 	 * 
-	 * Uses namespaces of {@link Input}.
-	 * 
 	 * @throws InputRuntimeException
 	 *             if query string could not be parsed
 	 */
+	@Override
 	protected void create() throws InputRuntimeException {
 
-		// Create query
+		// TODO: Test meaningfulness
 		String queryReplacedVars = replaceVariables(getOriginalString());
+
 		jenaQuery = createJenaQuery(queryReplacedVars);
 	}
 
@@ -73,7 +73,7 @@ public class SparqlQuery extends SparqlUnit {
 	 * @throws InputRuntimeException
 	 *             if query string could not be parsed
 	 */
-	public static Query createJenaQuery(String queryString) {
+	protected Query createJenaQuery(String queryString) {
 		try {
 			return QueryFactory.create(queryString);
 		} catch (QueryParseException e) {
@@ -84,20 +84,16 @@ public class SparqlQuery extends SparqlUnit {
 	/**
 	 * Gets the SPARQL query.
 	 * 
-	 * Uses cache.
-	 * 
-	 * Uses namespaces of {@link Input}.
+	 * Uses cache. The original string is only parsed one time.
 	 */
-	public Query getJenaQuery() {
+	protected Query getJenaQuery() {
 		return getJenaQuery(true);
 	}
 
 	/**
 	 * Gets the SPARQL query.
-	 * 
-	 * Uses namespaces of {@link Input}.
 	 */
-	public Query getJenaQuery(boolean useCache) {
+	protected Query getJenaQuery(boolean useCache) {
 		if (!useCache) {
 			create();
 		}
@@ -105,28 +101,31 @@ public class SparqlQuery extends SparqlUnit {
 	}
 
 	/**
-	 * Gets a string representation of a SPARQL query.
+	 * Gets the string representation of the Jena SPARQL query.
 	 * 
-	 * Line breaks are substituted with blank spaces. Afterwards, multiple blank
-	 * spaces are reduced to one blank space.
-	 * 
-	 * Uses cache.
-	 * 
-	 * Uses namespaces of {@link Input}.
+	 * Uses cache. The original string is only parsed one time.
 	 */
-	public String getLineRepresentation() {
-		return toOneLiner(getJenaQuery(true).toString());
+	@Override
+	public String getJenaStringRepresentation() {
+		return getJenaQuery(true).toString();
 	}
 
+	/**
+	 * Gets a line representation of the SPARQL query.
+	 * 
+	 * Uses {@link SparqlUnit#toOneLiner(String)}.
+	 * 
+	 * Uses cache. The original string is only parsed one time.
+	 */
 	@Override
-	public String getStringRepresentation() {
-		return getJenaQuery(true).toString();
+	public String getLineRepresentation() {
+		return toOneLiner(getJenaQuery().toString());
 	}
 
 	/**
 	 * Replaces variables in SPARQL query
 	 * 
-	 * TODO
+	 * TODO: Test meaningfulness
 	 */
 	protected String replaceVariables(String queryString) {
 		Query tmpQuery = createJenaQuery(queryString);

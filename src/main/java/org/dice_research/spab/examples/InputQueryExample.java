@@ -29,7 +29,7 @@ public class InputQueryExample {
 
 		System.out.println("Parsed query representation:");
 		System.out.println();
-		System.out.println(sparqlUnit.getStringRepresentation());
+		System.out.println(sparqlUnit.getJenaStringRepresentation());
 		System.out.println("----------------------------------------------------------------------------------------");
 		System.out.println();
 
