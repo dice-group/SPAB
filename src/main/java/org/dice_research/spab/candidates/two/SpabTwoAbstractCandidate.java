@@ -41,6 +41,7 @@ public abstract class SpabTwoAbstractCandidate implements Candidate {
 	 * Returns generated children.
 	 */
 	public List<Candidate> getChildren() throws CandidateRuntimeException {
+		generateChildren();
 		return children;
 	}
 

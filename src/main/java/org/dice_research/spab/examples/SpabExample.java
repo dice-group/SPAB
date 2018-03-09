@@ -30,7 +30,7 @@ public class SpabExample {
 		spab.setLambda(.5f);
 		spab.setMaxIterations(30);
 		spab.setCheckPerfectSolution(true);
-		spab.setCandidateImplementation(CandidateImplementation.SPAB_ONE);
+		spab.setCandidateImplementation(CandidateImplementation.SPAB_TWO);
 
 		CandidateVertex bestCandidate = spab.run();
 
