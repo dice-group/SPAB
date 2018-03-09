@@ -9,14 +9,12 @@ import java.nio.charset.StandardCharsets;
 import java.util.LinkedList;
 import java.util.List;
 
-import junit.framework.TestCase;
-
 /**
  * Tests import of example queries
  * 
  * @author Adrian Wilke
  */
-public class ImportExamplesTest extends TestCase {
+public class ImportExamplesTest extends SpabTestCase {
 
 	protected final static String QUERIES_SELECT = "dbpedia-select-100.txt";
 	protected final static String SEPARATOR = "#---";

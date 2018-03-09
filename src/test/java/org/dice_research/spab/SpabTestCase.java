@@ -2,7 +2,12 @@ package org.dice_research.spab;
 
 import junit.framework.TestCase;
 
-public class SpabTestCase extends TestCase {
+/**
+ * Template for test cases.
+ * 
+ * @author Adrian Wilke
+ */
+public abstract class SpabTestCase extends TestCase {
 
 	final static public boolean PRINT = false;
 

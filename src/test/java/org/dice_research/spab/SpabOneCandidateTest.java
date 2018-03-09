@@ -1,20 +1,17 @@
 package org.dice_research.spab;
 
-import org.dice_research.spab.SpabApi;
 import org.dice_research.spab.SpabApi.CandidateImplementation;
 import org.dice_research.spab.candidates.one.SpabOneCandidate;
 import org.dice_research.spab.exceptions.SpabException;
 import org.dice_research.spab.structures.CandidateVertex;
 import org.junit.Test;
 
-import junit.framework.TestCase;
-
 /**
  * Tests for {@link SpabOneCandidate}.
  * 
  * @author Adrian Wilke
  */
-public class SpabOneCandidateTest extends TestCase {
+public class SpabOneCandidateTest extends SpabTestCase {
 
 	public static String query = "SELECT ?x ?name\n" + "WHERE  { ?x foaf:name ?name }";
 

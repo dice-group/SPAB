@@ -1,17 +1,14 @@
 package org.dice_research.spab;
 
-import org.dice_research.spab.SpabApi;
 import org.dice_research.spab.exceptions.InputRuntimeException;
 import org.junit.Test;
-
-import junit.framework.TestCase;
 
 /**
  * Tests for missing prefixes in SPARQL queries.
  * 
  * @author Adrian Wilke
  */
-public class MissingPrefixTest extends TestCase {
+public class MissingPrefixTest extends SpabTestCase {
 
 	public static String query = "SELECT ?x ?name\n" + "WHERE  { ?x foaf:name ?name }";
 

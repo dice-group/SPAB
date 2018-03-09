@@ -1,17 +1,14 @@
 package org.dice_research.spab;
 
-import org.dice_research.spab.SpabApi;
 import org.dice_research.spab.exceptions.InputRuntimeException;
 import org.junit.Test;
-
-import junit.framework.TestCase;
 
 /**
  * Tests for incorrect inputs of SPARQL queries.
  * 
  * @author Adrian Wilke
  */
-public class IncorrectInputTest extends TestCase {
+public class IncorrectInputTest extends SpabTestCase {
 
 	public static String incorrectQuery = "SELECT ?nonsense WHERE {?nonsense a}";
 	public static String correctQuery = "SELECT ?correct WHERE {?correct a ?workingQuery}";
