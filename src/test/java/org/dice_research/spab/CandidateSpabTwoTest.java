@@ -19,6 +19,8 @@ import org.junit.Test;
  */
 public class CandidateSpabTwoTest extends AbstractTestCase {
 
+	public static final boolean EXECUTE_LONG_RUN_TESTS = true;
+
 	static ImportFilesTest importFilesTest = new ImportFilesTest();
 	SpabApi spab;
 
@@ -114,6 +116,10 @@ public class CandidateSpabTwoTest extends AbstractTestCase {
 	@Test
 	public void test() throws SpabException {
 
+		if (!EXECUTE_LONG_RUN_TESTS) {
+			return;
+		}
+
 		List<String> selectQueries = ImportFilesTest.getDbpediaSelectQueries();
 		for (int i = 0; i < 30; i++) {
 			spab.addPositive(selectQueries.get(i));
@@ -152,6 +158,11 @@ public class CandidateSpabTwoTest extends AbstractTestCase {
 
 	@Test
 	public void testGroupBy() throws SpabException {
+
+		if (!EXECUTE_LONG_RUN_TESTS) {
+			return;
+		}
+
 		for (String query : ImportFilesTest.getDbpediaSelectQueries()) {
 			if (query.contains(Features._019_GROUP_CLAUSE) && Math.random() < 0.99
 					|| !query.contains(Features._019_GROUP_CLAUSE) && Math.random() < 0.01) {
@@ -186,6 +197,11 @@ public class CandidateSpabTwoTest extends AbstractTestCase {
 
 	@Test
 	public void testOrderBy() throws SpabException {
+
+		if (!EXECUTE_LONG_RUN_TESTS) {
+			return;
+		}
+
 		for (String query : ImportFilesTest.getDbpediaSelectQueries()) {
 			if (query.contains(Features._023_ORDER_CLAUSE) && Math.random() < 0.7
 					|| !query.contains(Features._023_ORDER_CLAUSE) && Math.random() < 0.2) {
