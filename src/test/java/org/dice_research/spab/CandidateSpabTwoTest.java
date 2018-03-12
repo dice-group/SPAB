@@ -1,10 +1,12 @@
 package org.dice_research.spab;
 
+import java.util.LinkedList;
 import java.util.List;
 
 import org.dice_research.spab.SpabApi.CandidateImplementation;
 import org.dice_research.spab.candidates.two.SpabTwoCandidate;
 import org.dice_research.spab.exceptions.SpabException;
+import org.dice_research.spab.input.SparqlUnit;
 import org.dice_research.spab.structures.CandidateVertex;
 import org.junit.Test;
 
@@ -52,6 +54,9 @@ public class CandidateSpabTwoTest extends AbstractTestCase {
 		if (PRINT) {
 			print(bestCandidate, spab);
 		}
+		if (PRINT) {
+			printMatches(bestCandidate, spab, 5);
+		}
 	}
 
 	public void print(CandidateVertex bestCandidate, SpabApi spabApi) {
@@ -67,5 +72,73 @@ public class CandidateSpabTwoTest extends AbstractTestCase {
 		System.out.println();
 		System.out.println("Number generated candidates: " + spabApi.getGraph().getAllCandidates().size());
 		System.out.println("RegEx of best candidate: " + bestCandidate.getCandidate().getRegEx());
+	}
+
+	public void printMatches(CandidateVertex bestCandidate, SpabApi spabApi, int maxEntries) {
+
+		List<String> truePositives = new LinkedList<String>();
+		List<String> falseNegatives = new LinkedList<String>();
+		List<String> trueNegatives = new LinkedList<String>();
+		List<String> falsePositives = new LinkedList<String>();
+
+		for (SparqlUnit sparqlUnit : spabApi.getInput().getPositives()) {
+			String queryLine = sparqlUnit.getLineRepresentation();
+			if (bestCandidate.matches(bestCandidate.getCandidate(), queryLine)) {
+				truePositives.add(queryLine);
+			} else {
+				falseNegatives.add(queryLine);
+			}
+		}
+
+		for (SparqlUnit sparqlUnit : spabApi.getInput().getNegatives()) {
+			String queryLine = sparqlUnit.getLineRepresentation();
+			if (bestCandidate.matches(bestCandidate.getCandidate(), queryLine)) {
+				falsePositives.add(queryLine);
+			} else {
+				trueNegatives.add(queryLine);
+			}
+		}
+
+		int counter;
+
+		counter = 0;
+		System.out.println("truePositives");
+		for (String queryLine : truePositives) {
+			if (++counter > maxEntries) {
+				break;
+			}
+			System.out.println(" " + queryLine);
+		}
+		System.out.println();
+
+		counter = 0;
+		System.out.println("falseNegatives");
+		for (String queryLine : falseNegatives) {
+			if (++counter > maxEntries) {
+				break;
+			}
+			System.out.println(" " + queryLine);
+		}
+		System.out.println();
+
+		counter = 0;
+		System.out.println("trueNegatives");
+		for (String queryLine : trueNegatives) {
+			if (++counter > maxEntries) {
+				break;
+			}
+			System.out.println(" " + queryLine);
+		}
+		System.out.println();
+
+		counter = 0;
+		System.out.println("falsePositives");
+		for (String queryLine : falsePositives) {
+			if (++counter > maxEntries) {
+				break;
+			}
+			System.out.println(" " + queryLine);
+		}
+		System.out.println();
 	}
 }
