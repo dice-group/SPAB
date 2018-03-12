@@ -46,6 +46,24 @@ public class SpabTwoCandidate extends SpabTwoAbstractCandidate {
 			childFeatures.featureMap.put(Feature.WHERE_CLAUSE, Features._017_WHERE_CLAUSE.toString());
 			children.add(new SpabTwoCandidate(childFeatures));
 		}
+
+		if (!getFeatures().featureMap.containsKey(Feature.GROUP_CLAUSE)) {
+			Features childFeatures = new Features(getFeatures());
+			childFeatures.featureMap.put(Feature.GROUP_CLAUSE, Features._019_GROUP_CLAUSE.toString());
+			children.add(new SpabTwoCandidate(childFeatures));
+		}
+
+		if (!getFeatures().featureMap.containsKey(Feature.HAVING_CLAUSE)) {
+			Features childFeatures = new Features(getFeatures());
+			childFeatures.featureMap.put(Feature.HAVING_CLAUSE, Features._021_HAVING_CLAUSE.toString());
+			children.add(new SpabTwoCandidate(childFeatures));
+		}
+
+		if (!getFeatures().featureMap.containsKey(Feature.ORDER_CLAUSE)) {
+			Features childFeatures = new Features(getFeatures());
+			childFeatures.featureMap.put(Feature.ORDER_CLAUSE, Features._023_ORDER_CLAUSE.toString());
+			children.add(new SpabTwoCandidate(childFeatures));
+		}
 	}
 
 	/**

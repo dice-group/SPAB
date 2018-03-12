@@ -27,13 +27,27 @@ public class RegEx {
 			regEx.append(".*");
 		}
 
-		// Where clause
 		if (featureMap.containsKey(Feature.WHERE_CLAUSE)) {
 			regEx.append(featureMap.get(Feature.WHERE_CLAUSE));
 			regEx.append(".*");
 			regEx.append("\\{");
 			regEx.append(".*");
 			regEx.append("\\}");
+			regEx.append(".*");
+		}
+
+		if (featureMap.containsKey(Feature.GROUP_CLAUSE)) {
+			regEx.append(featureMap.get(Feature.GROUP_CLAUSE));
+			regEx.append(".*");
+		}
+
+		if (featureMap.containsKey(Feature.HAVING_CLAUSE)) {
+			regEx.append(featureMap.get(Feature.HAVING_CLAUSE));
+			regEx.append(".*");
+		}
+
+		if (featureMap.containsKey(Feature.ORDER_CLAUSE)) {
+			regEx.append(featureMap.get(Feature.ORDER_CLAUSE));
 			regEx.append(".*");
 		}
 

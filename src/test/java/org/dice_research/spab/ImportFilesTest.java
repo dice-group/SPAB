@@ -18,38 +18,55 @@ import org.dice_research.spab.exceptions.UnitTestRuntimeException;
  */
 public class ImportFilesTest extends AbstractTestCase {
 
+	protected static List<String> dbpediaAskQueries;
+	protected static List<String> dbpediaConstructQueries;
+	protected static List<String> dbpediaDescribeQueries;
+	protected static List<String> dbpediaSelectQueries;
 	protected final static String QUERIES_ASK = "dbpedia-ask-100.txt";
+
 	protected final static String QUERIES_CONSTRUCT = "dbpedia-construct-100.txt";
 	protected final static String QUERIES_DESCRIBE = "dbpedia-describe-25.txt";
 	protected final static String QUERIES_SELECT = "dbpedia-select-100.txt";
 	protected final static String SEPARATOR = "#";
 
-	public List<String> getDbpediaAskQueries() {
-		File fileSelect = getResource(QUERIES_ASK);
-		return readFile(fileSelect.getPath(), StandardCharsets.UTF_8.name());
+	public static List<String> getDbpediaAskQueries() {
+		if (dbpediaAskQueries == null) {
+			File fileSelect = getResource(QUERIES_ASK);
+			dbpediaAskQueries = readFile(fileSelect.getPath(), StandardCharsets.UTF_8.name());
+		}
+		return dbpediaAskQueries;
 	}
 
-	public List<String> getDbpediaConstructQueries() {
-		File fileSelect = getResource(QUERIES_CONSTRUCT);
-		return readFile(fileSelect.getPath(), StandardCharsets.UTF_8.name());
+	public static List<String> getDbpediaConstructQueries() {
+		if (dbpediaConstructQueries == null) {
+			File fileSelect = getResource(QUERIES_CONSTRUCT);
+			dbpediaConstructQueries = readFile(fileSelect.getPath(), StandardCharsets.UTF_8.name());
+		}
+		return dbpediaConstructQueries;
 	}
 
-	public List<String> getDbpediaDescribeQueries() {
-		File fileSelect = getResource(QUERIES_DESCRIBE);
-		return readFile(fileSelect.getPath(), StandardCharsets.UTF_8.name());
+	public static List<String> getDbpediaDescribeQueries() {
+		if (dbpediaDescribeQueries == null) {
+			File fileSelect = getResource(QUERIES_DESCRIBE);
+			dbpediaDescribeQueries = readFile(fileSelect.getPath(), StandardCharsets.UTF_8.name());
+		}
+		return dbpediaDescribeQueries;
 	}
 
-	public List<String> getDbpediaSelectQueries() {
-		File fileSelect = getResource(QUERIES_SELECT);
-		return readFile(fileSelect.getPath(), StandardCharsets.UTF_8.name());
+	public static List<String> getDbpediaSelectQueries() {
+		if (dbpediaSelectQueries == null) {
+			File fileSelect = getResource(QUERIES_SELECT);
+			dbpediaSelectQueries = readFile(fileSelect.getPath(), StandardCharsets.UTF_8.name());
+		}
+		return dbpediaSelectQueries;
 	}
 
-	protected File getResource(String resourceName) {
-		ClassLoader classLoader = this.getClass().getClassLoader();
+	protected static File getResource(String resourceName) {
+		ClassLoader classLoader = ImportFilesTest.class.getClassLoader();
 		return new File(classLoader.getResource(resourceName).getFile());
 	}
 
-	protected List<String> readFile(String filePath, String charsetName) {
+	protected static List<String> readFile(String filePath, String charsetName) {
 		FileInputStream fileInputStream = null;
 		InputStreamReader inputStreamReader = null;
 		BufferedReader bufferedReader = null;

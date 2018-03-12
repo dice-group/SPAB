@@ -95,7 +95,7 @@ public class CandidateGeneralTest extends AbstractTestCase implements Candidate,
 	public void test() throws SpabException {
 		SpabApi spab = new SpabApi();
 
-		List<String> selectQueries = new ImportFilesTest().getDbpediaSelectQueries();
+		List<String> selectQueries = ImportFilesTest.getDbpediaSelectQueries();
 		int numberOfPositives = 60;
 		int numberOfNegatives = 40;
 

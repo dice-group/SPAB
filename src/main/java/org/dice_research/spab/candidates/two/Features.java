@@ -16,7 +16,7 @@ public class Features {
 	 * Feature identifiers
 	 */
 	public static enum Feature {
-		TYPE, WHERE_CLAUSE
+		TYPE, WHERE_CLAUSE, GROUP_CLAUSE, HAVING_CLAUSE, ORDER_CLAUSE
 	}
 
 	/**
@@ -26,12 +26,10 @@ public class Features {
 	 */
 	public static final String[] _002_QUERIES = { "SELECT", "CONSTRUCT", "DESCRIBE", "ASK" };
 
-	/**
-	 * SPARQL query prefixes
-	 * 
-	 * @see SPARQL grammar https://www.w3.org/TR/sparql11-query/#rQuery
-	 */
 	public static final String _017_WHERE_CLAUSE = "WHERE";
+	public static final String _019_GROUP_CLAUSE = "GROUP BY";
+	public static final String _021_HAVING_CLAUSE = "HAVING";
+	public static final String _023_ORDER_CLAUSE = "ORDER BY";
 
 	/**
 	 * SPARQL update prefixes
