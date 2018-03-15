@@ -1,8 +1,12 @@
 package org.dice_research.spab.examples;
 
+import java.util.List;
+
 import org.dice_research.spab.SpabApi;
 import org.dice_research.spab.SpabApi.CandidateImplementation;
 import org.dice_research.spab.exceptions.SpabException;
+import org.dice_research.spab.io.FileReader;
+import org.dice_research.spab.io.Resources;
 import org.dice_research.spab.structures.CandidateVertex;
 
 /**
@@ -12,22 +16,26 @@ import org.dice_research.spab.structures.CandidateVertex;
  */
 public class SpabExample {
 
-	public static String query1 = "PREFIX foaf: <http://xmlns.com/foaf/0.1/> SELECT ?x ?name\n"
-			+ "WHERE  { ?x foaf:name ?name }";
-	public static String query2 = "PREFIX foaf: <http://xmlns.com/foaf/0.1/> SELECT ?name ?mbox\n" + "WHERE\n"
-			+ "  { ?x foaf:name ?name .\n" + "    ?x foaf:mbox ?mbox }";
-	public static String query3 = "SELECT ?title\n" + "WHERE\n" + "{\n"
-			+ "  <http://example.org/book/book1> <http://purl.org/dc/elements/1.1/title> ?title .\n" + "}";
+	public static final String RESOURCE_IGUANA_NEGATIVE = "iguana-2018-01-20/Fuseki-negative.txt";
+	public static final String RESOURCE_IGUANA_POSITIVE = "iguana-2018-01-20/Fuseki-positive.txt";
 
 	public static void main(String[] args) throws SpabException {
 
+		List<String> negatives = FileReader.readFileToList(Resources.getResource(RESOURCE_IGUANA_NEGATIVE).getPath(),
+				true, FileReader.UTF8);
+		List<String> positives = FileReader.readFileToList(Resources.getResource(RESOURCE_IGUANA_POSITIVE).getPath(),
+				true, FileReader.UTF8);
+		
 		SpabApi spab = new SpabApi();
 
-		spab.addPositive(query1);
-		spab.addPositive(query2);
-		spab.addNegative(query3);
+		for (String query : negatives) {
+			spab.addNegative(query);
+		}
+		for (String query : positives) {
+			spab.addPositive(query);
+		}
 
-		spab.setLambda(.5f);
+		spab.setLambda(.2f);
 		spab.setMaxIterations(30);
 		spab.setCheckPerfectSolution(true);
 		spab.setCandidateImplementation(CandidateImplementation.SPAB_TWO);

@@ -54,6 +54,8 @@ public class Iguana {
 	 * {@link #FILENAME_DBPEDIA_NTRIPLES} and {@link #FILENAME_SWDF_NTRIPLES}
 	 * 
 	 * Argument 3 (optional): Directory for TDB files
+	 * 
+	 * Will write result files to directory given in args[0]
 	 */
 	public static void main(String[] args) {
 
@@ -203,9 +205,9 @@ public class Iguana {
 
 				// Filter positive/negative queries
 				for (QueriesPerSecond queriesPerSecond : qpsList) {
-					if (queriesPerSecond.getQueriesPerSecondValue() > mean * 1.1) {
+					if (queriesPerSecond.getQueriesPerSecondValue() > mean * 1.2) {
 						positive.get(queriesPerSecond.getConnection()).add(queriesPerSecond.getIndex());
-					} else if (queriesPerSecond.getQueriesPerSecondValue() < mean * 0.9) {
+					} else if (queriesPerSecond.getQueriesPerSecondValue() < mean * 0.8) {
 						negative.get(queriesPerSecond.getConnection()).add(queriesPerSecond.getIndex());
 					}
 				}
