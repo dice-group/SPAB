@@ -5,6 +5,10 @@
 	<artifactId>SPAB</artifactId>
 	<version>0.0.2-SNAPSHOT</version>
 	<name>SPAB</name>
+	<properties>
+		<maven.compiler.source>1.7</maven.compiler.source>
+		<maven.compiler.target>1.7</maven.compiler.target>
+	</properties>
 	<dependencies>
 
 		<!-- Graph data structure -->

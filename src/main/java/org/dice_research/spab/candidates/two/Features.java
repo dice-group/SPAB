@@ -26,7 +26,10 @@ public class Features {
 	 */
 	public static final String[] _002_QUERIES = { "SELECT", "CONSTRUCT", "DESCRIBE", "ASK" };
 
-	public static final String _017_WHERE_CLAUSE = "WHERE";
+	public static enum WhereClause {
+		WHERE, WHERE_2_TRIPLES, WHERE_3_TRIPLES, WHERE_4_TRIPLES
+	}
+
 	public static final String _019_GROUP_CLAUSE = "GROUP BY";
 	public static final String _021_HAVING_CLAUSE = "HAVING";
 	public static final String _023_ORDER_CLAUSE = "ORDER BY";

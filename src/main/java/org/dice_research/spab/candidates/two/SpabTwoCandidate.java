@@ -1,6 +1,7 @@
 package org.dice_research.spab.candidates.two;
 
 import org.dice_research.spab.candidates.two.Features.Feature;
+import org.dice_research.spab.candidates.two.Features.WhereClause;
 import org.dice_research.spab.exceptions.CandidateRuntimeException;
 
 /**
@@ -27,13 +28,11 @@ public class SpabTwoCandidate extends SpabTwoAbstractCandidate {
 	protected void generateChildren() {
 
 		if (!getFeatures().featureMap.containsKey(Feature.TYPE)) {
-
 			for (String query : Features._002_QUERIES) {
 				Features childFeatures = new Features(getFeatures());
 				childFeatures.featureMap.put(Feature.TYPE, query);
 				children.add(new SpabTwoCandidate(childFeatures));
 			}
-
 			for (String updateRequest : Features._30_UPDATES) {
 				Features childFeatures = new Features(getFeatures());
 				childFeatures.featureMap.put(Feature.TYPE, updateRequest);
@@ -42,9 +41,11 @@ public class SpabTwoCandidate extends SpabTwoAbstractCandidate {
 		}
 
 		if (!getFeatures().featureMap.containsKey(Feature.WHERE_CLAUSE)) {
-			Features childFeatures = new Features(getFeatures());
-			childFeatures.featureMap.put(Feature.WHERE_CLAUSE, Features._017_WHERE_CLAUSE.toString());
-			children.add(new SpabTwoCandidate(childFeatures));
+			for (WhereClause whereClause : Features.WhereClause.values()) {
+				Features childFeatures = new Features(getFeatures());
+				childFeatures.featureMap.put(Feature.WHERE_CLAUSE, whereClause.toString());
+				children.add(new SpabTwoCandidate(childFeatures));
+			}
 		}
 
 		if (!getFeatures().featureMap.containsKey(Feature.GROUP_CLAUSE)) {
