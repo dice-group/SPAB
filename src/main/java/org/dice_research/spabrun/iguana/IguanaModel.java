@@ -1,4 +1,4 @@
-package org.dice_research.spab.iguana;
+package org.dice_research.spabrun.iguana;
 
 import java.io.File;
 import java.util.LinkedList;
