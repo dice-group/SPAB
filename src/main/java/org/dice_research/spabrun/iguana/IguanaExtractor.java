@@ -13,7 +13,7 @@ import java.util.Set;
 import org.dice_research.spab.io.FileWriter;
 
 /**
- * Extracts Iguana queries.
+ * Extracts Iguana query indexes.
  * 
  * @see https://figshare.com/s/01a0dad8427c463f2b25
  * @see https://figshare.com/s/790f9441a36f15015252
