@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.dice_research.spab.candidates.Candidate;
 import org.dice_research.spab.exceptions.CandidateRuntimeException;
+import org.dice_research.spab.input.Input;
 import org.dice_research.spab.structures.CandidateVertex;
 
 /**
@@ -35,13 +36,13 @@ public abstract class SpabTwoAbstractCandidate implements Candidate {
 	/**
 	 * Adds children to {@link #children}.
 	 */
-	protected abstract void generateChildren();
+	protected abstract void generateChildren(Input input);
 
 	/**
 	 * Returns generated children.
 	 */
-	public List<Candidate> getChildren() throws CandidateRuntimeException {
-		generateChildren();
+	public List<Candidate> getChildren(Input input) throws CandidateRuntimeException {
+		generateChildren(input);
 		return children;
 	}
 

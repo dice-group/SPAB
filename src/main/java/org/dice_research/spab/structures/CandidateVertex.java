@@ -35,7 +35,7 @@ public class CandidateVertex implements Matcher {
 	public CandidateVertex(Candidate candidate, Input input) {
 		this(null, candidate, input);
 	}
-
+	
 	/**
 	 * Initializes candidate by setting generation depending on parent.
 	 * 
@@ -135,7 +135,7 @@ public class CandidateVertex implements Matcher {
 	 */
 	public Map<CandidateVertex, Candidate> generateChildren() throws CandidateRuntimeException {
 		Map<CandidateVertex, Candidate> map = new HashMap<CandidateVertex, Candidate>();
-		for (Candidate candidate : this.candidate.getChildren()) {
+		for (Candidate candidate : this.candidate.getChildren(getInput())) {
 			map.put(new CandidateVertex(this, candidate, input), candidate);
 		}
 		return map;
@@ -160,6 +160,13 @@ public class CandidateVertex implements Matcher {
 	 */
 	public int getGeneration() {
 		return generation;
+	}
+
+	/**
+	 * Gets input of SPAB run.
+	 */
+	public Input getInput() {
+		return this.input;
 	}
 
 	/**

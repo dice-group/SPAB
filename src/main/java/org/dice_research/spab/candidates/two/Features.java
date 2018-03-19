@@ -1,5 +1,6 @@
 package org.dice_research.spab.candidates.two;
 
+import java.util.List;
 import java.util.SortedMap;
 import java.util.TreeMap;
 
@@ -16,36 +17,29 @@ public class Features {
 	 * Feature identifiers
 	 */
 	public static enum Feature {
-		TYPE, WHERE_CLAUSE, GROUP_CLAUSE, HAVING_CLAUSE, ORDER_CLAUSE
+		GROUP_CLAUSE, HAVING_CLAUSE, ORDER_CLAUSE, TYPE, WHERE_CLAUSE
 	}
-
-	/**
-	 * SPARQL query prefixes
-	 * 
-	 * @see SPARQL grammar https://www.w3.org/TR/sparql11-query/#rQuery
-	 */
-	public static final String[] _002_QUERIES = { "SELECT", "CONSTRUCT", "DESCRIBE", "ASK" };
 
 	public static enum WhereClause {
-		WHERE, WHERE_2_TRIPLES, WHERE_3_TRIPLES, WHERE_4_TRIPLES
+		WHERE, WHERE_2_TRIPLES, WHERE_3_TRIPLES, WHERE_4_TRIPLES, WHERE_RESOURCES
 	}
 
-	public static final String _019_GROUP_CLAUSE = "GROUP BY";
-	public static final String _021_HAVING_CLAUSE = "HAVING";
-	public static final String _023_ORDER_CLAUSE = "ORDER BY";
-
-	/**
-	 * SPARQL update prefixes
-	 * 
-	 * @see SPARQL grammar https://www.w3.org/TR/sparql11-query/#rUpdate1
-	 */
-	public static final String[] _30_UPDATES = { "LOAD", "CLEAR", "DROP", "ADD", "MOVE", "COPY", "CREATE",
-			"INSERT DATA", "DELETE DATA", "DELETE WHERE" };;
+	public static final String GROUP_CLAUSE = "GROUP BY";
+	public static final String HAVING_CLAUSE = "HAVING";
+	public static final String ORDER_CLAUSE = "ORDER BY";
+	public static final String[] TYPE_QUERIES = { "SELECT", "CONSTRUCT", "DESCRIBE", "ASK" };
+	public static final String[] UPDATES = { "LOAD", "CLEAR", "DROP", "ADD", "MOVE", "COPY", "CREATE", "INSERT DATA",
+			"DELETE DATA", "DELETE WHERE" };
 
 	/**
 	 * Map of features.
 	 */
 	public SortedMap<Feature, String> featureMap = new TreeMap<Feature, String>();
+
+	/**
+	 * Resources used in WHERE clause.
+	 */
+	private List<String> resourcesWhereClause;
 
 	/**
 	 * Creates empty set of Features.
@@ -58,5 +52,19 @@ public class Features {
 	 */
 	public Features(Features features) {
 		this.featureMap.putAll(features.featureMap);
+	}
+
+	/**
+	 * Gets resources used in WHERE clause.
+	 */
+	public List<String> getResources() {
+		return resourcesWhereClause;
+	}
+
+	/**
+	 * Sets resources used in WHERE clause.
+	 */
+	public void setResources(List<String> resources) {
+		this.resourcesWhereClause = resources;
 	}
 }

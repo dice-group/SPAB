@@ -30,6 +30,17 @@ public class QueryHandlingTest extends AbstractTestCase {
 			+ "SELECT ?s ?o WHERE { ?s dbpedia-owl:pubchem ?o . ?o dbpedia-owl:Person ?s }";
 
 	@Test
+	public void testResourceHandling() {
+		SpabApi spabApi = new SpabApi();
+		spabApi.addPositive(SELECT3);
+		spabApi.addNegative(DESCRIBE);
+		spabApi.addNegative(SELECT);
+		assertTrue(spabApi.getInput().getResources()
+				.size() == spabApi.getInput().getPositives().get(0).getResources().size()
+						+ spabApi.getInput().getNegatives().get(0).getResources().size());
+	}
+
+	@Test
 	public void testPrefixReplacement() {
 
 		SpabApi spabApi = new SpabApi();

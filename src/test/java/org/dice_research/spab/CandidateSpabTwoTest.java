@@ -164,16 +164,16 @@ public class CandidateSpabTwoTest extends AbstractTestCase {
 		}
 
 		for (String query : ImportFilesTest.getDbpediaSelectQueries()) {
-			if (query.contains(Features._019_GROUP_CLAUSE) && Math.random() < 0.99
-					|| !query.contains(Features._019_GROUP_CLAUSE) && Math.random() < 0.01) {
+			if (query.contains(Features.GROUP_CLAUSE) && Math.random() < 0.99
+					|| !query.contains(Features.GROUP_CLAUSE) && Math.random() < 0.01) {
 				spab.addPositive(query);
 			} else {
 				spab.addNegative(query);
 			}
 		}
 		for (String query : ImportFilesTest.getDbpediaAskQueries()) {
-			if (query.contains(Features._019_GROUP_CLAUSE) && Math.random() < 0.99
-					|| !query.contains(Features._019_GROUP_CLAUSE) && Math.random() < 0.01) {
+			if (query.contains(Features.GROUP_CLAUSE) && Math.random() < 0.99
+					|| !query.contains(Features.GROUP_CLAUSE) && Math.random() < 0.01) {
 				spab.addPositive(query);
 			} else {
 				spab.addNegative(query);
@@ -203,16 +203,16 @@ public class CandidateSpabTwoTest extends AbstractTestCase {
 		}
 
 		for (String query : ImportFilesTest.getDbpediaSelectQueries()) {
-			if (query.contains(Features._023_ORDER_CLAUSE) && Math.random() < 0.7
-					|| !query.contains(Features._023_ORDER_CLAUSE) && Math.random() < 0.2) {
+			if (query.contains(Features.ORDER_CLAUSE) && Math.random() < 0.7
+					|| !query.contains(Features.ORDER_CLAUSE) && Math.random() < 0.2) {
 				spab.addPositive(query);
 			} else {
 				spab.addNegative(query);
 			}
 		}
 		for (String query : ImportFilesTest.getDbpediaAskQueries()) {
-			if (query.contains(Features._023_ORDER_CLAUSE) && Math.random() < 0.7
-					|| !query.contains(Features._023_ORDER_CLAUSE) && Math.random() < 0.2) {
+			if (query.contains(Features.ORDER_CLAUSE) && Math.random() < 0.7
+					|| !query.contains(Features.ORDER_CLAUSE) && Math.random() < 0.2) {
 				spab.addPositive(query);
 			} else {
 				spab.addNegative(query);

@@ -55,7 +55,7 @@ public class RegExTest extends AbstractTestCase {
 		assertTrue(selectWhere.matches(regEx.generate()));
 
 		// add SELECT
-		features.featureMap.put(Feature.TYPE, Features._002_QUERIES[0]);
+		features.featureMap.put(Feature.TYPE, Features.TYPE_QUERIES[0]);
 		regEx = new RegEx(features);
 		if (PRINT) {
 			System.out.println(regEx.generate());

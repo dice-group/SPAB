@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.dice_research.spab.SpabApi;
 import org.dice_research.spab.exceptions.CandidateRuntimeException;
+import org.dice_research.spab.input.Input;
 import org.dice_research.spab.structures.CandidateVertex;
 
 /**
@@ -19,7 +20,7 @@ public interface Candidate {
 	/**
 	 * Returns generated children.
 	 */
-	public List<Candidate> getChildren() throws CandidateRuntimeException;
+	public List<Candidate> getChildren(Input input) throws CandidateRuntimeException;
 
 	/**
 	 * Returns a regular expression to match SPARQL queries.

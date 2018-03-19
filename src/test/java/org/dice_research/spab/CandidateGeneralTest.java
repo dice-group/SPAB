@@ -8,6 +8,7 @@ import org.dice_research.spab.SpabApi.CandidateImplementation;
 import org.dice_research.spab.candidates.Candidate;
 import org.dice_research.spab.exceptions.CandidateRuntimeException;
 import org.dice_research.spab.exceptions.SpabException;
+import org.dice_research.spab.input.Input;
 import org.dice_research.spab.structures.CandidateVertex;
 import org.junit.Test;
 
@@ -29,7 +30,7 @@ public class CandidateGeneralTest extends AbstractTestCase implements Candidate,
 	 * Generates dummy children between {@link CHILDREN_MIN} and
 	 * {@link CHILDREN_MAX}
 	 */
-	public List<Candidate> getChildren() throws CandidateRuntimeException {
+	public List<Candidate> getChildren(Input input) throws CandidateRuntimeException {
 		try {
 
 			List<Candidate> list = new LinkedList<Candidate>();
