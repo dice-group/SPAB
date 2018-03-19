@@ -23,6 +23,11 @@ public class SparqlUpdate extends SparqlUnit {
 	protected UpdateRequest jenaUpdateRequest;
 
 	/**
+	 * Cache for line representation.
+	 */
+	protected String lineRepresentation;
+
+	/**
 	 * Sets the passed parameters.
 	 * 
 	 * Parses the SPARQL update-request.
@@ -94,10 +99,12 @@ public class SparqlUpdate extends SparqlUnit {
 	 */
 	@Override
 	public String getLineRepresentation() {
-		return toOneLiner(replacePrefixes(getJenaUpdateRequest().toString(),
-				getJenaUpdateRequest().getPrefixMapping().getNsPrefixMap()));
+		if (lineRepresentation == null) {
+			lineRepresentation = toOneLiner(replacePrefixes(getJenaUpdateRequest().toString(),
+					getJenaUpdateRequest().getPrefixMapping().getNsPrefixMap()));
+		}
+		return lineRepresentation;
 	}
-
 
 	/**
 	 * Gets resources used in query.

@@ -26,6 +26,11 @@ public class SparqlQuery extends SparqlUnit {
 	protected Query jenaQuery;
 
 	/**
+	 * Cache for line representation.
+	 */
+	protected String lineRepresentation;
+
+	/**
 	 * Sets the passed parameters.
 	 * 
 	 * Parses the SPARQL query.
@@ -50,10 +55,7 @@ public class SparqlQuery extends SparqlUnit {
 	 */
 	@Override
 	protected void create() throws InputRuntimeException {
-
-		// TODO: Test meaningfulness
 		String queryReplacedVars = replaceVariables(getOriginalString());
-
 		jenaQuery = createJenaQuery(queryReplacedVars);
 	}
 
@@ -121,18 +123,19 @@ public class SparqlQuery extends SparqlUnit {
 	 * 
 	 * Namespace prefixes are replaced.
 	 * 
-	 * Uses cache. The original string is only parsed one time.
+	 * Uses cache.
 	 */
 	@Override
 	public String getLineRepresentation() {
-		return toOneLiner(replacePrefixes(getJenaQuery().toString(),
-				getJenaQuery().getPrefixMapping().getNsPrefixMap()));
+		if (lineRepresentation == null) {
+			lineRepresentation = toOneLiner(
+					replacePrefixes(getJenaQuery().toString(), getJenaQuery().getPrefixMapping().getNsPrefixMap()));
+		}
+		return lineRepresentation;
 	}
 
 	/**
 	 * Replaces variables in SPARQL query
-	 * 
-	 * TODO: Test meaningfulness
 	 */
 	protected String replaceVariables(String queryString) {
 		Query tmpQuery = createJenaQuery(queryString);
@@ -158,6 +161,12 @@ public class SparqlQuery extends SparqlUnit {
 		if (jenaQuery.getQueryPattern() != null) {
 			Pattern pattern = Pattern.compile("<(.*?)>");
 			Matcher matcher = pattern.matcher(jenaQuery.getQueryPattern().toString());
+			while (matcher.find()) {
+				resources.add(matcher.group(1));
+			}
+		} else {
+			Pattern pattern = Pattern.compile("<(.*?)>");
+			Matcher matcher = pattern.matcher(getLineRepresentation());
 			while (matcher.find()) {
 				resources.add(matcher.group(1));
 			}

@@ -4,7 +4,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
-import org.dice_research.spab.SpabApi;
 import org.junit.Test;
 
 /**
@@ -14,15 +13,15 @@ import org.junit.Test;
  */
 public class QueryHandlingTest extends AbstractTestCase {
 
-	public static final String CONSTRUCT = "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> "
-			+ "PREFIX skos: <http://www.w3.org/2004/02/skos/core#> CONSTRUCT { ?film rdf:tipo rdf:pelicula } "
-			+ "WHERE { ?film skos:subject <http://dbpedia.org/resource/Category:French_films> }";
-	public static final String DESCRIBE = "PREFIX owl: <http://www.w3.org/2002/07/owl#> "
+	public static final String CONSTRUCT = "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> \n"
+			+ "PREFIX skos: <http://www.w3.org/2004/02/skos/core#> \n" + "CONSTRUCT { ?film rdf:tipo rdf:pelicula } \n"
+			+ "WHERE { ?film skos:subject <http://dbpedia.org/resource/Category:French_films> }\n";
+	public static final String DESCRIBE = "PREFIX owl: <http://www.w3.org/2002/07/owl#> \n"
 			+ "DESCRIBE owl:DatatypeProperty";
 
 	public static final String QUERY0 = "SELECT ?subject ?object WHERE {?subject ?predicate ?object}";
 	public static final String QUERY1 = "SELECT ?object ?subject WHERE {?subject ?predicate ?object}";
-	
+
 	public static final String SELECT = "PREFIX dbpedia-owl: <http://dbpedia.org/ontology/> "
 			+ "SELECT ?s ?o WHERE { ?s dbpedia-owl:pubchem ?o }";
 	public static final String SELECT2 = "PREFIX dbpedia-owl: <http://dbpedia.org/ontology/> "
@@ -77,15 +76,14 @@ public class QueryHandlingTest extends AbstractTestCase {
 
 		assertTrue(spabApi.getInput().getPositives().get(4).getLineRepresentation()
 				.contains("<http://www.w3.org/1999/02/22-rdf-syntax-ns#tipo>"));
-		// TODO: Bug. Second is not replaced.
-		assertFalse(spabApi.getInput().getPositives().get(4).getLineRepresentation()
+		assertTrue(spabApi.getInput().getPositives().get(4).getLineRepresentation()
 				.contains("<http://www.w3.org/1999/02/22-rdf-syntax-ns#pelicula>"));
 		assertTrue(spabApi.getInput().getPositives().get(4).getLineRepresentation()
 				.contains("<http://www.w3.org/2004/02/skos/core#subject>"));
 		assertTrue(spabApi.getInput().getPositives().get(4).getLineRepresentation()
 				.contains("<http://dbpedia.org/resource/Category:French_films>"));
 	}
-	
+
 	@Test
 	public void testResourceExtraction() {
 
@@ -109,14 +107,9 @@ public class QueryHandlingTest extends AbstractTestCase {
 		assertTrue(selectResources.contains("http://dbpedia.org/ontology/pubchem"));
 		assertTrue(selectResources.contains("http://dbpedia.org/ontology/Person"));
 
-		if (PRINT) {
-			System.out.println(spabApi.getInput().getPositives().get(3).getLineRepresentation());
-		}
-
 		selectResources = spabApi.getInput().getPositives().get(3).getResources();
-		// TODO: Bugs. Not correct.
-		assertFalse(selectResources.size() == 1);
-		assertFalse(selectResources.contains("http://www.w3.org/2002/07/owl#DatatypeProperty"));
+		assertTrue(selectResources.size() == 1);
+		assertTrue(selectResources.contains("http://www.w3.org/2002/07/owl#DatatypeProperty"));
 
 	}
 

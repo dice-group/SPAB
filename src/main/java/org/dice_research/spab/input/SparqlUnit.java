@@ -79,7 +79,7 @@ public abstract class SparqlUnit {
 	 * 
 	 * Uses {@link SparqlUnit#toOneLiner(String)}.
 	 * 
-	 * Uses cache. The original string is only parsed one time.
+	 * Uses cache.
 	 */
 	public abstract String getLineRepresentation();
 
@@ -113,11 +113,11 @@ public abstract class SparqlUnit {
 		String replacedPrefixes = removedPrefixes.toString();
 		StringBuffer sb = new StringBuffer();
 		for (Entry<String, String> entry : namespaces.entrySet()) {
-			Pattern pattern = Pattern.compile("(" + entry.getKey() + ":)(.+?)(^|\\s)(.*)");
+			Pattern pattern = Pattern.compile("(" + entry.getKey() + ":)(.+?)(^|\\s)");
 			Matcher matcher = pattern.matcher(replacedPrefixes);
 			while (matcher.find()) {
 				matcher.appendReplacement(sb,
-						"<" + entry.getValue() + matcher.group(2) + ">" + matcher.group(3) + matcher.group(4));
+						"<" + entry.getValue() + matcher.group(2) + ">" + matcher.group(3));
 			}
 			matcher.appendTail(sb);
 		}
