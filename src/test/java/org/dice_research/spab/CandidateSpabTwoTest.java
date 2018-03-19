@@ -15,13 +15,11 @@ import org.junit.Test;
 /**
  * Tests for {@link SpabTwoCandidate}.
  * 
- * TODO: Uses many ressources, bug inserted while adding getResources and replacePrefixes?
- * 
  * @author Adrian Wilke
  */
 public class CandidateSpabTwoTest extends AbstractTestCase {
 
-	public static final boolean EXECUTE_LONG_RUN_TESTS = true;
+	public static final boolean EXECUTE_LONG_RUN_TESTS = false;
 
 	static ImportFilesTest importFilesTest = new ImportFilesTest();
 	SpabApi spab;
