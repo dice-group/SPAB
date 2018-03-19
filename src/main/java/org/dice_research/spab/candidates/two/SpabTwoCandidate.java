@@ -17,6 +17,8 @@ public class SpabTwoCandidate extends SpabTwoAbstractCandidate {
 
 	protected static final boolean TMP_GENERATE_WHERE_RESOURCE_CHILDREN = false;
 
+	protected RegEx regExCache;
+
 	/**
 	 * Constructs candidate with features.
 	 * 
@@ -99,6 +101,9 @@ public class SpabTwoCandidate extends SpabTwoAbstractCandidate {
 	 */
 	@Override
 	public String getRegEx() throws CandidateRuntimeException {
-		return new RegEx(getFeatures()).generate();
+		if (regExCache == null) {
+			regExCache = new RegEx(getFeatures());
+		}
+		return regExCache.generate();
 	}
 }

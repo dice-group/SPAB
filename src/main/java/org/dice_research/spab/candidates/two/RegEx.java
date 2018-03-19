@@ -2,6 +2,7 @@ package org.dice_research.spab.candidates.two;
 
 import java.util.SortedMap;
 
+import org.dice_research.spab.Statistics;
 import org.dice_research.spab.candidates.two.Features.Feature;
 
 /**
@@ -21,6 +22,8 @@ public class RegEx {
 
 	public String generate() {
 		if (this.regExCache == null) {
+			long time = System.currentTimeMillis();
+
 			StringBuilder regEx = new StringBuilder();
 			regEx.append(".*");
 
@@ -73,6 +76,8 @@ public class RegEx {
 				regEx.append(".*");
 			}
 			this.regExCache = regEx.toString();
+			
+			Statistics.addRegExStats(time, System.currentTimeMillis());
 		}
 
 		return this.regExCache;

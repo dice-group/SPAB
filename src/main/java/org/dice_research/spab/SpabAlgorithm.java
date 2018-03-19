@@ -80,6 +80,10 @@ public class SpabAlgorithm {
 	 *             on errors in SPAB algorithm.
 	 */
 	public CandidateVertex execute(Matcher matcher) throws SpabException {
+		Statistics.timeBegin = System.currentTimeMillis();
+		LOGGER.info("SPAB run with " + getInput().getPositives().size() + " positives and "
+				+ getInput().getNegatives().size() + " negatives");
+
 		try {
 
 			// Generate first candidate
@@ -111,6 +115,8 @@ public class SpabAlgorithm {
 				for (Entry<CandidateVertex, Candidate> bestCandidateChild : bestCandidateChildren.entrySet()) {
 					bestCandidateChild.getValue().setVertex(bestCandidateChild.getKey());
 				}
+				LOGGER.info("Iteration " + i + ". Generated " + bestCandidateChildren.size() + " children. Graph size: "
+						+ graph.getAllCandidates().size());
 
 				// Graph depth increases by 1, as new children were generated and added.
 				// The graph depth influences score of all candidates.
@@ -120,13 +126,18 @@ public class SpabAlgorithm {
 				for (CandidateVertex queueCandidate : queue.reset()) {
 					queueCandidate.calculateScore(configuration, graph.getDepth(), matcher);
 					queue.add(queueCandidate);
+
+					Statistics.info();
 				}
 
 				// Calculate scores of new children and add them to queue
 				for (CandidateVertex bestCandidateChild : bestCandidateChildren.keySet()) {
 					bestCandidateChild.calculateScore(configuration, graph.getDepth(), matcher);
 					queue.add(bestCandidateChild);
+
+					Statistics.info();
 				}
+				LOGGER.info("Iteration " + i + ". Queue size: " + queue.getQueue().size());
 			}
 
 			// Return best candidate

@@ -19,7 +19,7 @@ import org.junit.Test;
  */
 public class CandidateSpabTwoTest extends AbstractTestCase {
 
-	public static final boolean EXECUTE_LONG_RUN_TESTS = false;
+	public static final boolean EXECUTE_LONG_RUN_TESTS = true;
 
 	static ImportFilesTest importFilesTest = new ImportFilesTest();
 	SpabApi spab;

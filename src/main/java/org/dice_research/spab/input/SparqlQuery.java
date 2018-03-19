@@ -11,6 +11,7 @@ import org.apache.jena.query.Query;
 import org.apache.jena.query.QueryFactory;
 import org.apache.jena.query.QueryParseException;
 import org.apache.jena.sparql.core.Prologue;
+import org.dice_research.spab.Statistics;
 import org.dice_research.spab.exceptions.InputRuntimeException;
 
 /**
@@ -128,8 +129,10 @@ public class SparqlQuery extends SparqlUnit {
 	@Override
 	public String getLineRepresentation() {
 		if (lineRepresentation == null) {
+			long time = System.currentTimeMillis();
 			lineRepresentation = toOneLiner(
 					replacePrefixes(getJenaQuery().toString(), getJenaQuery().getPrefixMapping().getNsPrefixMap()));
+			Statistics.addQueryLineStats(time, System.currentTimeMillis());
 		}
 		return lineRepresentation;
 	}

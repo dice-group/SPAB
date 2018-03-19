@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.dice_research.spab.Matcher;
+import org.dice_research.spab.Statistics;
 import org.dice_research.spab.candidates.Candidate;
 import org.dice_research.spab.exceptions.CandidateRuntimeException;
 import org.dice_research.spab.exceptions.PerfectSolutionException;
@@ -61,6 +62,7 @@ public class CandidateVertex implements Matcher {
 	 */
 	public void calculateScore(Configuration configuration, int maxDepth, Matcher matcher)
 			throws PerfectSolutionException {
+		long time = System.currentTimeMillis();
 
 		boolean firstCall = false;
 		int truePositives = 0;
@@ -72,6 +74,7 @@ public class CandidateVertex implements Matcher {
 
 			firstCall = true;
 
+			long timeMatching = System.currentTimeMillis();
 			for (SparqlUnit sparqlUnit : input.getPositives()) {
 				if (matcher.matches(candidate, sparqlUnit.getLineRepresentation())) {
 					truePositives++;
@@ -84,6 +87,7 @@ public class CandidateVertex implements Matcher {
 					falsePositives++;
 				}
 			}
+			Statistics.addMatchingStats(timeMatching, System.currentTimeMillis());
 
 			float precision;
 			float precisionDenomiator = truePositives + falsePositives;
@@ -125,6 +129,8 @@ public class CandidateVertex implements Matcher {
 		if (configuration.isPerfectSolutionChecked() && firstCall && falsePositives == 0 && falseNegatives == 0) {
 			throw new PerfectSolutionException(this);
 		}
+
+		Statistics.addCalcScoreStats(time, System.currentTimeMillis());
 	}
 
 	/**
