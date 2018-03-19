@@ -2,6 +2,11 @@ package org.dice_research.spab.input;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.dice_research.spab.exceptions.InputRuntimeException;
 
@@ -14,8 +19,6 @@ public abstract class SparqlUnit {
 
 	/**
 	 * List of 26 names for variables.
-	 * 
-	 * TODO: Test meaningfulness
 	 */
 	static List<String> variableNames = new LinkedList<String>();
 
@@ -72,6 +75,8 @@ public abstract class SparqlUnit {
 	/**
 	 * Gets a line representation of a SPARQL query / update-request.
 	 * 
+	 * Namespace prefixes are replaced.
+	 * 
 	 * Uses {@link SparqlUnit#toOneLiner(String)}.
 	 * 
 	 * Uses cache. The original string is only parsed one time.
@@ -83,6 +88,44 @@ public abstract class SparqlUnit {
 	 */
 	public String getOriginalString() {
 		return ORIGINAL_STRING;
+	}
+
+	/**
+	 * Gets resources used in query.
+	 */
+	public abstract Set<String> getResources();
+
+	/**
+	 * Replaces namespace prefixes.
+	 */
+	protected String replacePrefixes(String jenaString, Map<String, String> namespaces) {
+
+		// Remove prefixes
+		StringBuilder removedPrefixes = new StringBuilder();
+		for (String line : jenaString.split("\\r?\\n")) {
+			if (!line.startsWith("PREFIX ") && !line.isEmpty()) {
+				removedPrefixes.append(line);
+				removedPrefixes.append(System.lineSeparator());
+			}
+		}
+
+		// Replace prefixes
+		String replacedPrefixes = removedPrefixes.toString();
+		StringBuffer sb = new StringBuffer();
+		for (Entry<String, String> entry : namespaces.entrySet()) {
+			Pattern pattern = Pattern.compile("(" + entry.getKey() + ":)(.+?)(^|\\s)(.*)");
+			Matcher matcher = pattern.matcher(replacedPrefixes);
+			while (matcher.find()) {
+				matcher.appendReplacement(sb,
+						"<" + entry.getValue() + matcher.group(2) + ">" + matcher.group(3) + matcher.group(4));
+			}
+			matcher.appendTail(sb);
+		}
+		if (sb.length() == 0) {
+			return replacedPrefixes;
+		} else {
+			return sb.toString();
+		}
 	}
 
 	/**

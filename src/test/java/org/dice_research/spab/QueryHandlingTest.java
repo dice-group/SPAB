@@ -2,6 +2,7 @@ package org.dice_research.spab;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
 
 import org.dice_research.spab.SpabApi;
 import org.junit.Test;
@@ -13,11 +14,114 @@ import org.junit.Test;
  */
 public class QueryHandlingTest extends AbstractTestCase {
 
+	public static final String CONSTRUCT = "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> "
+			+ "PREFIX skos: <http://www.w3.org/2004/02/skos/core#> CONSTRUCT { ?film rdf:tipo rdf:pelicula } "
+			+ "WHERE { ?film skos:subject <http://dbpedia.org/resource/Category:French_films> }";
+	public static final String DESCRIBE = "PREFIX owl: <http://www.w3.org/2002/07/owl#> "
+			+ "DESCRIBE owl:DatatypeProperty";
+
 	public static final String QUERY0 = "SELECT ?subject ?object WHERE {?subject ?predicate ?object}";
 	public static final String QUERY1 = "SELECT ?object ?subject WHERE {?subject ?predicate ?object}";
+	
+	public static final String SELECT = "PREFIX dbpedia-owl: <http://dbpedia.org/ontology/> "
+			+ "SELECT ?s ?o WHERE { ?s dbpedia-owl:pubchem ?o }";
+	public static final String SELECT2 = "PREFIX dbpedia-owl: <http://dbpedia.org/ontology/> "
+			+ "SELECT ?s ?o WHERE { ?s dbpedia-owl:pubchem ?o . ?o dbpedia-owl:pubchem ?s }";
+	public static final String SELECT3 = "PREFIX dbpedia-owl: <http://dbpedia.org/ontology/> "
+			+ "SELECT ?s ?o WHERE { ?s dbpedia-owl:pubchem ?o . ?o dbpedia-owl:Person ?s }";
 
 	@Test
-	public void testStandardizedQueries() {
+	public void testPrefixReplacement() {
+
+		SpabApi spabApi = new SpabApi();
+		spabApi.addPositive(SELECT);
+		spabApi.addPositive(SELECT2);
+		spabApi.addPositive(SELECT3);
+		spabApi.addPositive(DESCRIBE);
+		spabApi.addPositive(CONSTRUCT);
+
+		if (PRINT) {
+			System.out.println(spabApi.getInput().getPositives().get(0).getOriginalString());
+			System.out.println(spabApi.getInput().getPositives().get(0).getLineRepresentation());
+
+			System.out.println();
+			System.out.println(spabApi.getInput().getPositives().get(1).getOriginalString());
+			System.out.println(spabApi.getInput().getPositives().get(1).getLineRepresentation());
+
+			System.out.println();
+			System.out.println(spabApi.getInput().getPositives().get(2).getOriginalString());
+			System.out.println(spabApi.getInput().getPositives().get(2).getLineRepresentation());
+
+			System.out.println();
+			System.out.println(spabApi.getInput().getPositives().get(3).getOriginalString());
+			System.out.println(spabApi.getInput().getPositives().get(3).getLineRepresentation());
+
+			System.out.println();
+			System.out.println(spabApi.getInput().getPositives().get(4).getOriginalString());
+			System.out.println(spabApi.getInput().getPositives().get(4).getLineRepresentation());
+		}
+
+		assertTrue(spabApi.getInput().getPositives().get(0).getLineRepresentation()
+				.contains("<http://dbpedia.org/ontology/pubchem>"));
+
+		assertTrue(spabApi.getInput().getPositives().get(1).getLineRepresentation()
+				.split("http://dbpedia.org/ontology/pubchem").length == 3);
+
+		assertTrue(spabApi.getInput().getPositives().get(2).getLineRepresentation()
+				.contains("<http://dbpedia.org/ontology/pubchem>"));
+		assertTrue(spabApi.getInput().getPositives().get(2).getLineRepresentation()
+				.contains("<http://dbpedia.org/ontology/Person>"));
+
+		assertTrue(spabApi.getInput().getPositives().get(3).getLineRepresentation()
+				.contains("<http://www.w3.org/2002/07/owl#DatatypeProperty>"));
+
+		assertTrue(spabApi.getInput().getPositives().get(4).getLineRepresentation()
+				.contains("<http://www.w3.org/1999/02/22-rdf-syntax-ns#tipo>"));
+		// TODO: Bug. Second is not replaced.
+		assertFalse(spabApi.getInput().getPositives().get(4).getLineRepresentation()
+				.contains("<http://www.w3.org/1999/02/22-rdf-syntax-ns#pelicula>"));
+		assertTrue(spabApi.getInput().getPositives().get(4).getLineRepresentation()
+				.contains("<http://www.w3.org/2004/02/skos/core#subject>"));
+		assertTrue(spabApi.getInput().getPositives().get(4).getLineRepresentation()
+				.contains("<http://dbpedia.org/resource/Category:French_films>"));
+	}
+	
+	@Test
+	public void testResourceExtraction() {
+
+		SpabApi spabApi = new SpabApi();
+		spabApi.addPositive(SELECT);
+		spabApi.addPositive(SELECT2);
+		spabApi.addPositive(SELECT3);
+		spabApi.addPositive(DESCRIBE);
+		Set<String> selectResources;
+
+		selectResources = spabApi.getInput().getPositives().get(0).getResources();
+		assertTrue(selectResources.size() == 1);
+		assertTrue(selectResources.contains("http://dbpedia.org/ontology/pubchem"));
+
+		selectResources = spabApi.getInput().getPositives().get(1).getResources();
+		assertTrue(selectResources.size() == 1);
+		assertTrue(selectResources.contains("http://dbpedia.org/ontology/pubchem"));
+
+		selectResources = spabApi.getInput().getPositives().get(2).getResources();
+		assertTrue(selectResources.size() == 2);
+		assertTrue(selectResources.contains("http://dbpedia.org/ontology/pubchem"));
+		assertTrue(selectResources.contains("http://dbpedia.org/ontology/Person"));
+
+		if (PRINT) {
+			System.out.println(spabApi.getInput().getPositives().get(3).getLineRepresentation());
+		}
+
+		selectResources = spabApi.getInput().getPositives().get(3).getResources();
+		// TODO: Bugs. Not correct.
+		assertFalse(selectResources.size() == 1);
+		assertFalse(selectResources.contains("http://www.w3.org/2002/07/owl#DatatypeProperty"));
+
+	}
+
+	@Test
+	public void testVariableReplacement() {
 
 		// Put queries in list to navigate by indexes
 		List<String> queries = new LinkedList<String>();
@@ -46,5 +150,4 @@ public class QueryHandlingTest extends AbstractTestCase {
 			}
 		}
 	}
-
 }

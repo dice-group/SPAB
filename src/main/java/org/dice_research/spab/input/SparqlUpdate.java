@@ -1,5 +1,10 @@
 package org.dice_research.spab.input;
 
+import java.util.HashSet;
+import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import org.apache.jena.query.QueryException;
 import org.apache.jena.update.UpdateFactory;
 import org.apache.jena.update.UpdateRequest;
@@ -83,10 +88,28 @@ public class SparqlUpdate extends SparqlUnit {
 	 * 
 	 * Uses {@link SparqlUnit#toOneLiner(String)}.
 	 * 
+	 * Namespace prefixes are replaced.
+	 * 
 	 * Uses cache. The original string is only parsed one time.
 	 */
 	@Override
 	public String getLineRepresentation() {
-		return toOneLiner(getJenaUpdateRequest().toString());
+		return toOneLiner(replacePrefixes(getJenaUpdateRequest().toString(),
+				getJenaUpdateRequest().getPrefixMapping().getNsPrefixMap()));
+	}
+
+
+	/**
+	 * Gets resources used in query.
+	 */
+	@Override
+	public Set<String> getResources() {
+		Set<String> resources = new HashSet<String>();
+		Pattern pattern = Pattern.compile("<(.*?)>");
+		Matcher matcher = pattern.matcher(getLineRepresentation());
+		while (matcher.find()) {
+			resources.add(matcher.group(1));
+		}
+		return resources;
 	}
 }
