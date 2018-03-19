@@ -85,7 +85,7 @@ public class SpabAlgorithm {
 			// Generate first candidate
 			Candidate rootCandidate = CandidateFactory.createCandidate(configuration.getCandidateImplementation(),
 					matcher);
-			CandidateVertex firstCandidate = new CandidateVertex(rootCandidate);
+			CandidateVertex firstCandidate = new CandidateVertex(rootCandidate, getInput());
 
 			// Set matcher
 			if (matcher == null) {
@@ -94,7 +94,7 @@ public class SpabAlgorithm {
 
 			// Add first candidate
 			graph.addCandidate(firstCandidate);
-			firstCandidate.calculateScore(input, configuration, graph.getDepth(), matcher);
+			firstCandidate.calculateScore(configuration, graph.getDepth(), matcher);
 			queue.add(firstCandidate);
 
 			// For specified number of iterations run algorithm
@@ -118,13 +118,13 @@ public class SpabAlgorithm {
 				// A reset of the priority queue is needed to maintain changed
 				// priorities, represented by scores.
 				for (CandidateVertex queueCandidate : queue.reset()) {
-					queueCandidate.calculateScore(input, configuration, graph.getDepth(), matcher);
+					queueCandidate.calculateScore(configuration, graph.getDepth(), matcher);
 					queue.add(queueCandidate);
 				}
 
 				// Calculate scores of new children and add them to queue
 				for (CandidateVertex bestCandidateChild : bestCandidateChildren.keySet()) {
-					bestCandidateChild.calculateScore(input, configuration, graph.getDepth(), matcher);
+					bestCandidateChild.calculateScore(configuration, graph.getDepth(), matcher);
 					queue.add(bestCandidateChild);
 				}
 			}

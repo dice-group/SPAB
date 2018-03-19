@@ -23,7 +23,8 @@ public class CandidateVertex implements Matcher {
 	protected Candidate candidate;
 	protected Float fMeasure = null;
 	protected int generation;
-	private CandidateVertex parent;
+	protected Input input;
+	protected CandidateVertex parent;
 	protected Float score = null;
 
 	/**
@@ -31,8 +32,8 @@ public class CandidateVertex implements Matcher {
 	 * 
 	 * Stores the {@link Candidate}.
 	 */
-	public CandidateVertex(Candidate candidate) {
-		this(null, candidate);
+	public CandidateVertex(Candidate candidate, Input input) {
+		this(null, candidate, input);
 	}
 
 	/**
@@ -40,7 +41,7 @@ public class CandidateVertex implements Matcher {
 	 * 
 	 * Stores the {@link Candidate}.
 	 */
-	public CandidateVertex(CandidateVertex parent, Candidate candidate) {
+	public CandidateVertex(CandidateVertex parent, Candidate candidate, Input input) {
 		if (parent == null) {
 			generation = START_GENERATION;
 		} else {
@@ -49,6 +50,7 @@ public class CandidateVertex implements Matcher {
 
 		this.parent = parent;
 		this.candidate = candidate;
+		this.input = input;
 	}
 
 	/**
@@ -57,7 +59,7 @@ public class CandidateVertex implements Matcher {
 	 * @throws PerfectSolutionException
 	 *             if candidate has no false positives or false negatives
 	 */
-	public void calculateScore(Input input, Configuration configuration, int maxDepth, Matcher matcher)
+	public void calculateScore(Configuration configuration, int maxDepth, Matcher matcher)
 			throws PerfectSolutionException {
 
 		boolean firstCall = false;
@@ -134,7 +136,7 @@ public class CandidateVertex implements Matcher {
 	public Map<CandidateVertex, Candidate> generateChildren() throws CandidateRuntimeException {
 		Map<CandidateVertex, Candidate> map = new HashMap<CandidateVertex, Candidate>();
 		for (Candidate candidate : this.candidate.getChildren()) {
-			map.put(new CandidateVertex(this, candidate), candidate);
+			map.put(new CandidateVertex(this, candidate, input), candidate);
 		}
 		return map;
 	}
