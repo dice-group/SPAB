@@ -29,6 +29,11 @@ public class CandidateVertex implements Matcher {
 	protected Float score = null;
 
 	/**
+	 * Cache: Query matches regular expression of this candidate
+	 */
+	protected Map<String, Boolean> matcherCache = new HashMap<String, Boolean>();
+
+	/**
 	 * Initializes candidate, which has no parent.
 	 * 
 	 * Stores the {@link Candidate}.
@@ -36,7 +41,7 @@ public class CandidateVertex implements Matcher {
 	public CandidateVertex(Candidate candidate, Input input) {
 		this(null, candidate, input);
 	}
-	
+
 	/**
 	 * Initializes candidate by setting generation depending on parent.
 	 * 
@@ -192,8 +197,13 @@ public class CandidateVertex implements Matcher {
 
 	/**
 	 * Checks, if the candidates regular expression and the query are matching.
+	 * 
+	 * Uses cache. Assumes that regular expression of candidates never change.
 	 */
 	public boolean matches(Candidate candidate, String query) throws CandidateRuntimeException {
-		return query.matches(candidate.getRegEx());
+		if (!matcherCache.containsKey(query)) {
+			matcherCache.put(query, query.matches(candidate.getRegEx()));
+		}
+		return matcherCache.get(query);
 	}
 }
