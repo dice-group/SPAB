@@ -131,7 +131,10 @@ public class SpabRun {
 			}
 		}
 
-		CandidateVertex bestCandidate = spabApi.run();
+		spabApi.setLambda(0.1f);
+		CandidateVertex bestCandidate;
+
+		bestCandidate = spabApi.run();
 		System.out.println(bestCandidate.getCandidate().getRegEx());
 		System.out.println(bestCandidate.getScore());
 

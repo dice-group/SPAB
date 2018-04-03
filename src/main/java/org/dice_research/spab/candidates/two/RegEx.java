@@ -41,7 +41,6 @@ public class RegEx {
 					regEx.append("WHERE.*");
 					regEx.append("\\{.*");
 					for (String resource : whereResources) {
-						// TODO: Check if escaping necessary
 						regEx.append(resource);
 					}
 					regEx.append("\\}.*");

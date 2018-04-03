@@ -47,27 +47,27 @@ public class SpabTwoCandidate extends SpabTwoAbstractCandidate {
 
 		// Where
 
-		// TODO: Handle multiple resources
 		if (!getFeatures().featureMap.containsKey(Feature.WHERE_CLAUSE)) {
 			for (WhereClause whereClause : Features.WhereClause.values()) {
-
-				if (whereClause.equals(Features.WhereClause.WHERE_RESOURCES)) {
-					// Handle resources in WHERE clause
-					for (String resource : input.getResources()) {
-						if (getFeatures().resourcesWhereClause.contains(resource)) {
-							continue;
-						} else {
-							Features childFeatures = new Features(getFeatures());
-							childFeatures.featureMap.put(Feature.WHERE_CLAUSE, whereClause.toString());
-							childFeatures.resourcesWhereClause.add(resource);
-							children.add(new SpabTwoCandidate(childFeatures));
-						}
-					}
-
-				} else {
-					// Other WHERE variations
+				if (!whereClause.equals(Features.WhereClause.WHERE_RESOURCES)) {
 					Features childFeatures = new Features(getFeatures());
 					childFeatures.featureMap.put(Feature.WHERE_CLAUSE, whereClause.toString());
+					children.add(new SpabTwoCandidate(childFeatures));
+				}
+			}
+		}
+
+		// Where resources
+
+		if (!getFeatures().featureMap.containsKey(Feature.WHERE_CLAUSE) || getFeatures().featureMap
+				.get(Feature.WHERE_CLAUSE).equals(Features.WhereClause.WHERE_RESOURCES.toString())) {
+			for (String resource : input.getResources()) {
+				if (getFeatures().resourcesWhereClause.contains(resource)) {
+					continue;
+				} else {
+					Features childFeatures = new Features(getFeatures());
+					childFeatures.featureMap.put(Feature.WHERE_CLAUSE, Features.WhereClause.WHERE_RESOURCES.toString());
+					childFeatures.resourcesWhereClause.add(resource);
 					children.add(new SpabTwoCandidate(childFeatures));
 				}
 			}

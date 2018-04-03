@@ -137,7 +137,7 @@ public class CandidateSpabTwoTest extends AbstractTestCase {
 		}
 
 		spab.setLambda(.5f);
-		spab.setMaxIterations(500);
+		spab.setMaxIterations(100);
 		spab.setCheckPerfectSolution(true);
 		spab.setCandidateImplementation(CandidateImplementation.SPAB_TWO);
 

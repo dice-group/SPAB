@@ -39,7 +39,7 @@ public class SpabExample {
 		}
 
 		spab.setLambda(.2f);
-		spab.setMaxIterations(10000);
+		spab.setMaxIterations(1000);
 		spab.setCheckPerfectSolution(true);
 		spab.setCandidateImplementation(CandidateImplementation.SPAB_TWO);
 

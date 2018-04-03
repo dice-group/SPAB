@@ -54,6 +54,7 @@ public class Features {
 	 */
 	public Features(Features features) {
 		this.featureMap.putAll(features.featureMap);
+		this.resourcesWhereClause.addAll(features.resourcesWhereClause);
 	}
 
 	/**
