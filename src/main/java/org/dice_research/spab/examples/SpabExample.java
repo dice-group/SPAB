@@ -19,13 +19,16 @@ public class SpabExample {
 	public static final String RESOURCE_IGUANA_NEGATIVE = "iguana-2018-01-20/Fuseki-negative.txt";
 	public static final String RESOURCE_IGUANA_POSITIVE = "iguana-2018-01-20/Fuseki-positive.txt";
 
+	public static final String RESOURCE_IGUANA_VIRTUOSO_NEGATIVE = "iguana-2018-01-20/Virtuoso-negative.txt";
+	public static final String RESOURCE_IGUANA_VIRTUOSO_POSITIVE = "iguana-2018-01-20/Virtuoso-positive.txt";
+
 	public static void main(String[] args) throws SpabException {
 
 		List<String> negatives = FileReader.readFileToList(Resources.getResource(RESOURCE_IGUANA_NEGATIVE).getPath(),
 				true, FileReader.UTF8);
 		List<String> positives = FileReader.readFileToList(Resources.getResource(RESOURCE_IGUANA_POSITIVE).getPath(),
 				true, FileReader.UTF8);
-		
+
 		SpabApi spab = new SpabApi();
 
 		for (String query : negatives) {
@@ -36,7 +39,7 @@ public class SpabExample {
 		}
 
 		spab.setLambda(.2f);
-		spab.setMaxIterations(30);
+		spab.setMaxIterations(10000);
 		spab.setCheckPerfectSolution(true);
 		spab.setCandidateImplementation(CandidateImplementation.SPAB_TWO);
 
@@ -48,7 +51,8 @@ public class SpabExample {
 		System.out.println("Generated generations:        " + spab.getGraph().getDepth());
 		System.out.println("Number of remaining candidates in queue: " + spab.getQueue().getQueue().size());
 		System.out.print("Next best scores: ");
-		while (!spab.getQueue().getQueue().isEmpty()) {
+		int numberOfBestScores = 100;
+		while (!spab.getQueue().getQueue().isEmpty() && numberOfBestScores-- > 0) {
 			System.out.print(spab.getQueue().getBestCandidate().getScore() + " ");
 		}
 		System.out.println();

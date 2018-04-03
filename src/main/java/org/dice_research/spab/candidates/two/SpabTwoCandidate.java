@@ -1,8 +1,5 @@
 package org.dice_research.spab.candidates.two;
 
-import java.util.LinkedList;
-import java.util.List;
-
 import org.dice_research.spab.candidates.two.Features.Feature;
 import org.dice_research.spab.candidates.two.Features.WhereClause;
 import org.dice_research.spab.exceptions.CandidateRuntimeException;
@@ -14,8 +11,6 @@ import org.dice_research.spab.input.Input;
  * @author Adrian Wilke
  */
 public class SpabTwoCandidate extends SpabTwoAbstractCandidate {
-
-	protected static final boolean TMP_GENERATE_WHERE_RESOURCE_CHILDREN = false;
 
 	protected RegEx regExCache;
 
@@ -35,6 +30,8 @@ public class SpabTwoCandidate extends SpabTwoAbstractCandidate {
 	@Override
 	protected void generateChildren(Input input) {
 
+		// Type
+
 		if (!getFeatures().featureMap.containsKey(Feature.TYPE)) {
 			for (String query : Features.TYPE_QUERIES) {
 				Features childFeatures = new Features(getFeatures());
@@ -48,24 +45,23 @@ public class SpabTwoCandidate extends SpabTwoAbstractCandidate {
 			}
 		}
 
+		// Where
+
+		// TODO: Handle multiple resources
 		if (!getFeatures().featureMap.containsKey(Feature.WHERE_CLAUSE)) {
 			for (WhereClause whereClause : Features.WhereClause.values()) {
 
 				if (whereClause.equals(Features.WhereClause.WHERE_RESOURCES)) {
-
-					// TODO: Integrate and create RegEx
-					if (TMP_GENERATE_WHERE_RESOURCE_CHILDREN) {
-						continue;
-					}
-
 					// Handle resources in WHERE clause
 					for (String resource : input.getResources()) {
-						Features childFeatures = new Features(getFeatures());
-						childFeatures.featureMap.put(Feature.WHERE_CLAUSE, whereClause.toString());
-						children.add(new SpabTwoCandidate(childFeatures));
-						List<String> resourcesList = new LinkedList<String>();
-						resourcesList.add(resource);
-						childFeatures.setResources(resourcesList);
+						if (getFeatures().resourcesWhereClause.contains(resource)) {
+							continue;
+						} else {
+							Features childFeatures = new Features(getFeatures());
+							childFeatures.featureMap.put(Feature.WHERE_CLAUSE, whereClause.toString());
+							childFeatures.resourcesWhereClause.add(resource);
+							children.add(new SpabTwoCandidate(childFeatures));
+						}
 					}
 
 				} else {
@@ -77,17 +73,23 @@ public class SpabTwoCandidate extends SpabTwoAbstractCandidate {
 			}
 		}
 
+		// Group
+
 		if (!getFeatures().featureMap.containsKey(Feature.GROUP_CLAUSE)) {
 			Features childFeatures = new Features(getFeatures());
 			childFeatures.featureMap.put(Feature.GROUP_CLAUSE, Features.GROUP_CLAUSE.toString());
 			children.add(new SpabTwoCandidate(childFeatures));
 		}
 
+		// Having
+
 		if (!getFeatures().featureMap.containsKey(Feature.HAVING_CLAUSE)) {
 			Features childFeatures = new Features(getFeatures());
 			childFeatures.featureMap.put(Feature.HAVING_CLAUSE, Features.HAVING_CLAUSE.toString());
 			children.add(new SpabTwoCandidate(childFeatures));
 		}
+
+		// Order
 
 		if (!getFeatures().featureMap.containsKey(Feature.ORDER_CLAUSE)) {
 			Features childFeatures = new Features(getFeatures());

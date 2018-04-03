@@ -36,14 +36,14 @@ public class SpabRun {
 		spabRun.createIguanaExtractor(tdbs, 0.5);
 
 		// SPAB runs
-		System.out.println(spabRun.run(Task.CONNECTION_FUSEKI, dbpediaQueries, false).getCandidate().getRegEx());
-		System.out.println(spabRun.run(Task.CONNECTION_TNT, dbpediaQueries, false).getCandidate().getRegEx());
-		System.out.println(spabRun.run(Task.CONNECTION_VIRTUOSO, dbpediaQueries, false).getCandidate().getRegEx());
+		spabRun.run(Task.CONNECTION_FUSEKI, dbpediaQueries, false);
+		spabRun.run(Task.CONNECTION_TNT, dbpediaQueries, false);
+		spabRun.run(Task.CONNECTION_VIRTUOSO, dbpediaQueries, false);
 
 		// SPAB runs with inverted positives and negatives
-		System.out.println(spabRun.run(Task.CONNECTION_FUSEKI, dbpediaQueries, true).getCandidate().getRegEx());
-		System.out.println(spabRun.run(Task.CONNECTION_TNT, dbpediaQueries, true).getCandidate().getRegEx());
-		System.out.println(spabRun.run(Task.CONNECTION_VIRTUOSO, dbpediaQueries, true).getCandidate().getRegEx());
+		spabRun.run(Task.CONNECTION_FUSEKI, dbpediaQueries, true);
+		spabRun.run(Task.CONNECTION_TNT, dbpediaQueries, true);
+		spabRun.run(Task.CONNECTION_VIRTUOSO, dbpediaQueries, true);
 	}
 
 	protected Configuration configuration;
@@ -113,7 +113,7 @@ public class SpabRun {
 		return FileReader.readFileToList(getFile(key).getPath(), true, StandardCharsets.UTF_8.name());
 	}
 
-	public CandidateVertex run(String tdb, List<String> queries, boolean invert) throws SpabException {
+	public void run(String tdb, List<String> queries, boolean invert) throws SpabException {
 		SpabApi spabApi = new SpabApi();
 		if (invert) {
 			for (String query : iguana.getPositives(tdb, queries)) {
@@ -130,6 +130,37 @@ public class SpabRun {
 				spabApi.addNegative(query);
 			}
 		}
-		return spabApi.run();
+
+		CandidateVertex bestCandidate = spabApi.run();
+		System.out.println(bestCandidate.getCandidate().getRegEx());
+		System.out.println(bestCandidate.getScore());
+
+		bestCandidate = spabApi.getQueue().getBestCandidate();
+		System.out.println(bestCandidate.getCandidate().getRegEx());
+		System.out.println(bestCandidate.getScore());
+
+		bestCandidate = spabApi.getQueue().getBestCandidate();
+		System.out.println(bestCandidate.getCandidate().getRegEx());
+		System.out.println(bestCandidate.getScore());
+
+		bestCandidate = spabApi.getQueue().getBestCandidate();
+		System.out.println(bestCandidate.getCandidate().getRegEx());
+		System.out.println(bestCandidate.getScore());
+
+		bestCandidate = spabApi.getQueue().getBestCandidate();
+		System.out.println(bestCandidate.getCandidate().getRegEx());
+		System.out.println(bestCandidate.getScore());
+
+		bestCandidate = spabApi.getQueue().getBestCandidate();
+		System.out.println(bestCandidate.getCandidate().getRegEx());
+		System.out.println(bestCandidate.getScore());
+
+		bestCandidate = spabApi.getQueue().getBestCandidate();
+		System.out.println(bestCandidate.getCandidate().getRegEx());
+		System.out.println(bestCandidate.getScore());
+
+		bestCandidate = spabApi.getQueue().getBestCandidate();
+		System.out.println(bestCandidate.getCandidate().getRegEx());
+		System.out.println(bestCandidate.getScore());
 	}
 }

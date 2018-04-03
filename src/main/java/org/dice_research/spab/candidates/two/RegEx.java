@@ -1,5 +1,6 @@
 package org.dice_research.spab.candidates.two;
 
+import java.util.List;
 import java.util.SortedMap;
 
 import org.dice_research.spab.Statistics;
@@ -13,11 +14,13 @@ import org.dice_research.spab.candidates.two.Features.Feature;
 public class RegEx {
 
 	protected SortedMap<Feature, String> featureMap;
+	protected List<String> whereResources;
 
 	protected String regExCache;
 
 	public RegEx(Features features) {
 		featureMap = features.featureMap;
+		whereResources = features.resourcesWhereClause;
 	}
 
 	public String generate() {
@@ -34,7 +37,16 @@ public class RegEx {
 			}
 
 			if (featureMap.containsKey(Feature.WHERE_CLAUSE)) {
-				if (featureMap.get(Feature.WHERE_CLAUSE).equals(Features.WhereClause.WHERE_2_TRIPLES.toString())) {
+				if (featureMap.get(Feature.WHERE_CLAUSE).equals(Features.WhereClause.WHERE_RESOURCES.toString())) {
+					regEx.append("WHERE.*");
+					regEx.append("\\{.*");
+					for (String resource : whereResources) {
+						// TODO: Check if escaping necessary
+						regEx.append(resource);
+					}
+					regEx.append("\\}.*");
+				} else if (featureMap.get(Feature.WHERE_CLAUSE)
+						.equals(Features.WhereClause.WHERE_2_TRIPLES.toString())) {
 					regEx.append("WHERE.*");
 					regEx.append("\\{.*");
 					regEx.append("\\ \\.\\ .*");
@@ -75,8 +87,8 @@ public class RegEx {
 				regEx.append(featureMap.get(Feature.ORDER_CLAUSE));
 				regEx.append(".*");
 			}
+
 			this.regExCache = regEx.toString();
-			
 			Statistics.addRegExStats(time, System.currentTimeMillis());
 		}
 

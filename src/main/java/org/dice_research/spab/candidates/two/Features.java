@@ -1,5 +1,6 @@
 package org.dice_research.spab.candidates.two;
 
+import java.util.LinkedList;
 import java.util.List;
 import java.util.SortedMap;
 import java.util.TreeMap;
@@ -20,6 +21,20 @@ public class Features {
 		GROUP_CLAUSE, HAVING_CLAUSE, ORDER_CLAUSE, TYPE, WHERE_CLAUSE
 	}
 
+	/**
+	 * SPAQL unit: Query
+	 */
+	public static final String[] TYPE_QUERIES = { "SELECT", "CONSTRUCT", "DESCRIBE", "ASK" };
+
+	/**
+	 * SPAQL unit: Update
+	 */
+	public static final String[] UPDATES = { "LOAD", "CLEAR", "DROP", "ADD", "MOVE", "COPY", "CREATE", "INSERT DATA",
+			"DELETE DATA", "DELETE WHERE" };
+
+	/**
+	 * Where features
+	 */
 	public static enum WhereClause {
 		WHERE, WHERE_2_TRIPLES, WHERE_3_TRIPLES, WHERE_4_TRIPLES, WHERE_RESOURCES
 	}
@@ -27,19 +42,6 @@ public class Features {
 	public static final String GROUP_CLAUSE = "GROUP BY";
 	public static final String HAVING_CLAUSE = "HAVING";
 	public static final String ORDER_CLAUSE = "ORDER BY";
-	public static final String[] TYPE_QUERIES = { "SELECT", "CONSTRUCT", "DESCRIBE", "ASK" };
-	public static final String[] UPDATES = { "LOAD", "CLEAR", "DROP", "ADD", "MOVE", "COPY", "CREATE", "INSERT DATA",
-			"DELETE DATA", "DELETE WHERE" };
-
-	/**
-	 * Map of features.
-	 */
-	public SortedMap<Feature, String> featureMap = new TreeMap<Feature, String>();
-
-	/**
-	 * Resources used in WHERE clause.
-	 */
-	private List<String> resourcesWhereClause;
 
 	/**
 	 * Creates empty set of Features.
@@ -55,16 +57,12 @@ public class Features {
 	}
 
 	/**
-	 * Gets resources used in WHERE clause.
+	 * Map of features.
 	 */
-	public List<String> getResources() {
-		return resourcesWhereClause;
-	}
+	public SortedMap<Feature, String> featureMap = new TreeMap<Feature, String>();
 
 	/**
-	 * Sets resources used in WHERE clause.
+	 * Resources used in WHERE clause.
 	 */
-	public void setResources(List<String> resources) {
-		this.resourcesWhereClause = resources;
-	}
+	public List<String> resourcesWhereClause = new LinkedList<String>();
 }

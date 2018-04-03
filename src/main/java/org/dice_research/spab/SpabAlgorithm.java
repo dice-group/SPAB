@@ -115,8 +115,10 @@ public class SpabAlgorithm {
 				for (Entry<CandidateVertex, Candidate> bestCandidateChild : bestCandidateChildren.entrySet()) {
 					bestCandidateChild.getValue().setVertex(bestCandidateChild.getKey());
 				}
-				LOGGER.info("Iteration " + i + ". Generated " + bestCandidateChildren.size() + " children. Graph size: "
-						+ graph.getAllCandidates().size());
+				if (i <= 10 || i % 100 == 0) {
+					LOGGER.info("Iteration " + i + ". Generated " + bestCandidateChildren.size()
+							+ " children. Graph size: " + graph.getAllCandidates().size());
+				}
 
 				// Graph depth increases by 1, as new children were generated and added.
 				// The graph depth influences score of all candidates.
@@ -137,7 +139,9 @@ public class SpabAlgorithm {
 
 					Statistics.info();
 				}
-				LOGGER.info("Iteration " + i + ". Queue size: " + queue.getQueue().size());
+				if (i <= 10 || i % 100 == 0) {
+					LOGGER.info("Iteration " + i + ". Queue size: " + queue.getQueue().size());
+				}
 			}
 
 			// Return best candidate
