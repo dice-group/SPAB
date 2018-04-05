@@ -17,6 +17,8 @@ import org.dice_research.spab.structures.CandidateVertex;
  */
 public class SpabExample {
 
+	public static final int MAX_ITERATIONS = 1000;
+
 	public static final String RESOURCE_IGUANA_NEGATIVE = "iguana-2018-01-20/Fuseki-negative.txt";
 	public static final String RESOURCE_IGUANA_POSITIVE = "iguana-2018-01-20/Fuseki-positive.txt";
 
@@ -59,7 +61,7 @@ public class SpabExample {
 		}
 
 		spab.setLambda(.2f);
-		spab.setMaxIterations(70);
+		spab.setMaxIterations(MAX_ITERATIONS);
 		spab.setCheckPerfectSolution(true);
 		spab.setCandidateImplementation(CandidateImplementation.SPAB_TWO);
 

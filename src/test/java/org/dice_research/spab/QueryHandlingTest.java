@@ -29,6 +29,14 @@ public class QueryHandlingTest extends AbstractTestCase {
 	public static final String SELECT3 = "PREFIX dbpedia-owl: <http://dbpedia.org/ontology/> "
 			+ "SELECT ?s ?o WHERE { ?s dbpedia-owl:pubchem ?o . ?o dbpedia-owl:Person ?s }";
 
+	public static final String IGUANA_FUSEKI = "PREFIX  dc:   <http://purl.org/dc/elements/1.1/>  "
+			+ "PREFIX  :     <http://dbpedia.org/resource/>  PREFIX  rdfs: <http://www.w3.org/2000/01/rdf-schema#>  "
+			+ "PREFIX  dbpedia2: <http://dbpedia.org/property/>  PREFIX  foaf: <http://xmlns.com/foaf/0.1/>  "
+			+ "PREFIX  owl:  <http://www.w3.org/2002/07/owl#>  PREFIX  xsd:  <http://www.w3.org/2001/XMLSchema#>  "
+			+ "PREFIX  dbpedia: <http://dbpedia.org/>  PREFIX  rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#>  "
+			+ "PREFIX  skos: <http://www.w3.org/2004/02/skos/core#>   "
+			+ "SELECT  *  WHERE    { ?data rdf:type <http://dbpedia.org/ontology/FormulaOneRacer> .      ?wins <http://dbpedia.org/ontology/wins> 10    }";
+
 	@Test
 	public void testResourceHandling() {
 		SpabApi spabApi = new SpabApi();
@@ -49,6 +57,7 @@ public class QueryHandlingTest extends AbstractTestCase {
 		spabApi.addPositive(SELECT3);
 		spabApi.addPositive(DESCRIBE);
 		spabApi.addPositive(CONSTRUCT);
+		spabApi.addPositive(IGUANA_FUSEKI);
 
 		if (PRINT) {
 			System.out.println(spabApi.getInput().getPositives().get(0).getOriginalString());
@@ -69,6 +78,10 @@ public class QueryHandlingTest extends AbstractTestCase {
 			System.out.println();
 			System.out.println(spabApi.getInput().getPositives().get(4).getOriginalString());
 			System.out.println(spabApi.getInput().getPositives().get(4).getLineRepresentation());
+
+			System.out.println();
+			System.out.println(spabApi.getInput().getPositives().get(5).getOriginalString());
+			System.out.println(spabApi.getInput().getPositives().get(5).getLineRepresentation());
 		}
 
 		assertTrue(spabApi.getInput().getPositives().get(0).getLineRepresentation()

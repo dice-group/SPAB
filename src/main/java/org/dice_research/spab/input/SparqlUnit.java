@@ -109,6 +109,9 @@ public abstract class SparqlUnit {
 			}
 		}
 
+		// TODO: Replacement of prefixes is buggy.
+		// @link{QueryHandlingTest#IGUANA_FUSEKI}
+
 		// Replace prefixes
 		String replacedPrefixes = removedPrefixes.toString();
 		StringBuffer sb = new StringBuffer();
@@ -116,8 +119,7 @@ public abstract class SparqlUnit {
 			Pattern pattern = Pattern.compile("(" + entry.getKey() + ":)(.+?)(^|\\s)");
 			Matcher matcher = pattern.matcher(replacedPrefixes);
 			while (matcher.find()) {
-				matcher.appendReplacement(sb,
-						"<" + entry.getValue() + matcher.group(2) + ">" + matcher.group(3));
+				matcher.appendReplacement(sb, "<" + entry.getValue() + matcher.group(2) + ">" + matcher.group(3));
 			}
 			matcher.appendTail(sb);
 		}

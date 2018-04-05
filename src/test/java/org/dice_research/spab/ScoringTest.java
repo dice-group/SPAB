@@ -59,7 +59,7 @@ public class ScoringTest extends AbstractTestCase implements Candidate, Matcher 
 
 		CandidateVertex candidateVertex = new CandidateVertex(this, input);
 		candidateVertex.calculateScore(new Configuration(), 0, this);
-		if (!PRINT) {
+		if (PRINT) {
 			System.out.println("TP " + candidateVertex.getNumberOfTruePositives());
 			System.out.println("TN " + candidateVertex.getNumberOfTrueNegatives());
 			System.out.println("FP " + candidateVertex.getNumberOfFalsePositives());
