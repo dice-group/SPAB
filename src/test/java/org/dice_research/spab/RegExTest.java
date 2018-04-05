@@ -15,6 +15,7 @@ public class RegExTest extends AbstractTestCase {
 
 	final static public boolean PRINT = false;
 
+	protected String resourceConnecticut = "http://dbpedia.org/resource/Connecticut";
 	protected String askWhere = "ASK WHERE { <http://dbpedia.org/resource/Connecticut> ?y ?z }";
 	protected String selectWhere = "SELECT ?subject ?object WHERE {?subject ?predicate ?object}";
 	protected String selectWhere2Triples = "SELECT ?subject ?object WHERE {?subject ?predicate ?object . ?object ?predicate ?subject}";
@@ -44,6 +45,17 @@ public class RegExTest extends AbstractTestCase {
 			System.out.println(selectWhere);
 			System.out.println(selectWhere2Triples);
 		}
+	}
+
+	@Test
+	public void testResources() {
+		Features features = new Features();
+		features.featureMap.put(Feature.WHERE_CLAUSE, Features.WhereClause.WHERE_RESOURCES.toString());
+		features.resourcesWhereClause.add(resourceConnecticut);
+		RegEx regEx = new RegEx(features);
+		System.out.println(regEx.generate());
+		assertTrue(askWhere.matches(regEx.generate()));
+		assertFalse(selectWhere.matches(regEx.generate()));
 	}
 
 	@Test

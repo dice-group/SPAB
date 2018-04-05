@@ -28,10 +28,15 @@ public class CandidateVertex implements Matcher {
 	protected CandidateVertex parent;
 	protected Float score = null;
 
+	protected int truePositives = 0;
+	protected int trueNegatives = 0;
+	protected int falsePositives = 0;
+	protected int falseNegatives = 0;
+
 	/**
 	 * Cache: Query matches regular expression of this candidate
 	 */
-	protected Map<String, Boolean> matcherCache = new HashMap<String, Boolean>();
+	// protected Map<String, Boolean> matcherCache = new HashMap<String, Boolean>();
 
 	/**
 	 * Initializes candidate, which has no parent.
@@ -70,9 +75,6 @@ public class CandidateVertex implements Matcher {
 		long time = System.currentTimeMillis();
 
 		boolean firstCall = false;
-		int truePositives = 0;
-		int falsePositives = 0;
-		int falseNegatives = 0;
 
 		// Input and matching-method never changes. f-Measure can be cached.
 		if (fMeasure == null) {
@@ -90,6 +92,8 @@ public class CandidateVertex implements Matcher {
 			for (SparqlUnit sparqlUnit : input.getNegatives()) {
 				if (matcher.matches(candidate, sparqlUnit.getLineRepresentation())) {
 					falsePositives++;
+				} else {
+					trueNegatives++;
 				}
 			}
 			Statistics.addMatchingStats(timeMatching, System.currentTimeMillis());
@@ -201,9 +205,27 @@ public class CandidateVertex implements Matcher {
 	 * Uses cache. Assumes that regular expression of candidates never change.
 	 */
 	public boolean matches(Candidate candidate, String query) throws CandidateRuntimeException {
-		if (!matcherCache.containsKey(query)) {
-			matcherCache.put(query, query.matches(candidate.getRegEx()));
-		}
-		return matcherCache.get(query);
+		// TODO: With cache, there are not enough calls for regex generation
+		// if (!matcherCache.containsKey(query)) {
+		// matcherCache.put(query, query.matches(candidate.getRegEx()));
+		// }
+		// return matcherCache.get(query);
+		return query.matches(candidate.getRegEx());
+	}
+
+	public int getNumberOfTruePositives() {
+		return truePositives;
+	}
+
+	public int getNumberOfFalsePositives() {
+		return falsePositives;
+	}
+
+	public int getNumberOfFalseNegatives() {
+		return falseNegatives;
+	}
+
+	public int getNumberOfTrueNegatives() {
+		return trueNegatives;
 	}
 }

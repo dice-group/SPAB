@@ -1,5 +1,8 @@
 package org.dice_research.spab;
 
+import org.dice_research.spab.candidates.two.RegEx;
+import org.dice_research.spab.input.SparqlQuery;
+import org.dice_research.spab.structures.CandidateVertex;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -26,8 +29,13 @@ public abstract class Statistics {
 	public static double regexRuntime = 0;
 	public static int queryLineCalls = 0;
 	public static double queryLineRuntime = 0;
+
 	public static long timeBegin;
 	public static long timeEnd;
+
+	/**
+	 * Calculate duration until next logging interval
+	 */
 	public static long timeInfo = 0;
 
 	static {
@@ -38,21 +46,33 @@ public abstract class Statistics {
 		}
 	}
 
+	/**
+	 * {@link CandidateVertex#calculateScore()}
+	 */
 	public static void addCalcScoreStats(long timeBegin, long timeEnd) {
 		calcScoreRuntime += (timeEnd - timeBegin) / 1000d;
 		calcScoreCalls++;
 	}
 
+	/**
+	 * {@link CandidateVertex#calculateScore()}
+	 */
 	public static void addMatchingStats(long timeBegin, long timeEnd) {
 		matchingRuntime += (timeEnd - timeBegin) / 1000d;
 		matchingCalls++;
 	}
 
+	/**
+	 * {@link SparqlQuery#getLineRepresentation()}
+	 */
 	public static void addQueryLineStats(long timeBegin, long timeEnd) {
 		queryLineRuntime += (timeEnd - timeBegin) / 1000d;
 		queryLineCalls++;
 	}
 
+	/**
+	 * {@link RegEx#generate()}
+	 */
 	public static void addRegExStats(long timeBegin, long timeEnd) {
 		regexRuntime += (timeEnd - timeBegin) / 1000d;
 		regexCalls++;
@@ -66,5 +86,10 @@ public abstract class Statistics {
 			LOGGER.info("Matching: " + matchingCalls + " calls, " + matchingRuntime + " sec");
 			LOGGER.info("Score calculations: " + calcScoreCalls + " calls, " + calcScoreRuntime + " sec");
 		}
+	}
+
+	public static double getRuntime() {
+		timeEnd = System.currentTimeMillis();
+		return (timeEnd - timeBegin) / 1000d;
 	}
 }

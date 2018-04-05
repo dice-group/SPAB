@@ -31,15 +31,24 @@ public class SpabExample {
 
 		SpabApi spab = new SpabApi();
 
+		int n = 3;
 		for (String query : negatives) {
 			spab.addNegative(query);
+			if (--n == 0) {
+				break;
+			}
 		}
+
+		int p = 3;
 		for (String query : positives) {
 			spab.addPositive(query);
+			if (--p == 0) {
+				break;
+			}
 		}
 
 		spab.setLambda(.2f);
-		spab.setMaxIterations(500);
+		spab.setMaxIterations(100);
 		spab.setCheckPerfectSolution(true);
 		spab.setCandidateImplementation(CandidateImplementation.SPAB_TWO);
 
@@ -49,12 +58,22 @@ public class SpabExample {
 		System.out.println("F-measure of best candidate:   " + bestCandidate.getfMeasure());
 		System.out.println("RegEx of best candidate:       " + bestCandidate.getCandidate().getRegEx());
 		System.out.println("Generation of best candidate:  " + bestCandidate.getGeneration());
+		System.out.print("TP " + bestCandidate.getNumberOfTruePositives());
+		System.out.print(", TN " + bestCandidate.getNumberOfTrueNegatives());
+		System.out.print(", FP " + bestCandidate.getNumberOfFalsePositives());
+		System.out.println(", FN " + bestCandidate.getNumberOfFalseNegatives());
 		System.out.println("Next best candidates: ");
 		int i = 0;
 		while (i <= 4) {
 			CandidateVertex candidate = spab.getQueue().peekBestCandidate(i);
 			System.out.print(candidate.getScore() + " ");
-			System.out.println(candidate.getCandidate().getRegEx());
+			System.out.print(candidate.getCandidate().getRegEx() + " ");
+			System.out.print(candidate.getGeneration());
+			System.out.print(", TP " + candidate.getNumberOfTruePositives());
+			System.out.print(", TN " + candidate.getNumberOfTrueNegatives());
+			System.out.print(", FP " + candidate.getNumberOfFalsePositives());
+			System.out.print(", FN " + candidate.getNumberOfFalseNegatives());
+			System.out.println();
 			i++;
 		}
 		System.out.println("Generated generations:                   " + spab.getGraph().getDepth());

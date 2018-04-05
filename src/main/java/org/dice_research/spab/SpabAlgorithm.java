@@ -151,6 +151,8 @@ public class SpabAlgorithm {
 					bestCandidate = candidate;
 				}
 			}
+
+			LOGGER.info("Runtime: " + Statistics.getRuntime() + " seconds");
 			return bestCandidate;
 
 		} catch (PerfectSolutionException e) {
@@ -158,8 +160,9 @@ public class SpabAlgorithm {
 			// Perfect candidate was found before reaching maximum number of iterations.
 			// A perfect candidate has no false positives or false negatives.
 			LOGGER.info("Perfect solution found!");
+			LOGGER.info("Runtime: " + Statistics.getRuntime() + " seconds");
+			
 			return e.getCandidate();
-
 		}
 	}
 

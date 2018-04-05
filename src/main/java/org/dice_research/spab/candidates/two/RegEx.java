@@ -2,6 +2,7 @@ package org.dice_research.spab.candidates.two;
 
 import java.util.List;
 import java.util.SortedMap;
+import java.util.regex.Pattern;
 
 import org.dice_research.spab.Statistics;
 import org.dice_research.spab.candidates.two.Features.Feature;
@@ -38,7 +39,11 @@ public class RegEx {
 				regEx.append("WHERE.*");
 				regEx.append("\\{.*");
 				for (String resource : whereResources) {
-					regEx.append(resource);
+					// TODO: Build an AND
+					// regEx.append("(?=");
+					regEx.append(Pattern.quote(resource));
+					// regEx.append(")");
+					regEx.append(".*");
 				}
 				regEx.append("\\}.*");
 			} else if (featureMap.get(Feature.WHERE_CLAUSE).equals(Features.WhereClause.WHERE_2_TRIPLES.toString())) {

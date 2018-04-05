@@ -18,8 +18,10 @@ import org.junit.Test;
  * @author Adrian Wilke
  */
 public class CandidateSpabTwoTest extends AbstractTestCase {
+
+	public static final boolean EXECUTE_LONG_RUN_TESTS = false;
 	
-	public static final boolean EXECUTE_LONG_RUN_TESTS = true;
+	public static final int ITERATIONS = 10;
 
 	static ImportFilesTest importFilesTest = new ImportFilesTest();
 	SpabApi spab;
@@ -137,7 +139,7 @@ public class CandidateSpabTwoTest extends AbstractTestCase {
 		}
 
 		spab.setLambda(.5f);
-		spab.setMaxIterations(100);
+		spab.setMaxIterations(ITERATIONS);
 		spab.setCheckPerfectSolution(true);
 		spab.setCandidateImplementation(CandidateImplementation.SPAB_TWO);
 
