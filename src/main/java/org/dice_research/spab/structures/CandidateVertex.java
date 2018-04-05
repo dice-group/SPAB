@@ -22,7 +22,7 @@ public class CandidateVertex implements Matcher {
 	public final static int START_GENERATION = 0;
 
 	protected Candidate candidate;
-	protected Float fMeasure = null;
+	protected Float fMeasureCache = null;
 	protected int generation;
 	protected Input input;
 	protected CandidateVertex parent;
@@ -36,7 +36,7 @@ public class CandidateVertex implements Matcher {
 	/**
 	 * Cache: Query matches regular expression of this candidate
 	 */
-	// protected Map<String, Boolean> matcherCache = new HashMap<String, Boolean>();
+	protected Map<String, Boolean> matcherCache = new HashMap<String, Boolean>();
 
 	/**
 	 * Initializes candidate, which has no parent.
@@ -77,7 +77,7 @@ public class CandidateVertex implements Matcher {
 		boolean firstCall = false;
 
 		// Input and matching-method never changes. f-Measure can be cached.
-		if (fMeasure == null) {
+		if (fMeasureCache == null) {
 
 			firstCall = true;
 
@@ -118,9 +118,9 @@ public class CandidateVertex implements Matcher {
 
 			// If no precision and no recall given, set F-measure to 0
 			if (precision == 0f && recall == 0f) {
-				fMeasure = 0f;
+				fMeasureCache = 0f;
 			} else {
-				fMeasure = 2f * ((precision * recall) / (precision + recall));
+				fMeasureCache = 2f * ((precision * recall) / (precision + recall));
 			}
 		}
 
@@ -132,7 +132,7 @@ public class CandidateVertex implements Matcher {
 		} else {
 			lengthRelation = getGeneration() / maxDepth;
 		}
-		score = (1f - configuration.getLambda()) * fMeasure + configuration.getLambda() * (1f - lengthRelation);
+		score = (1f - configuration.getLambda()) * fMeasureCache + configuration.getLambda() * (1f - lengthRelation);
 
 		// At first call of this method: Check for perfect solution
 		if (configuration.isPerfectSolutionChecked() && firstCall && falsePositives == 0 && falseNegatives == 0) {
@@ -167,7 +167,7 @@ public class CandidateVertex implements Matcher {
 	 * Gets the F-measure (F-score, F1 score) of candidate
 	 */
 	public Float getfMeasure() {
-		return fMeasure;
+		return fMeasureCache;
 	}
 
 	/**
@@ -205,12 +205,11 @@ public class CandidateVertex implements Matcher {
 	 * Uses cache. Assumes that regular expression of candidates never change.
 	 */
 	public boolean matches(Candidate candidate, String query) throws CandidateRuntimeException {
-		// TODO: With cache, there are not enough calls for regex generation
-		// if (!matcherCache.containsKey(query)) {
-		// matcherCache.put(query, query.matches(candidate.getRegEx()));
-		// }
-		// return matcherCache.get(query);
-		return query.matches(candidate.getRegEx());
+		String cachingKey = candidate.getRegEx() + "|" + query;
+		if (!matcherCache.containsKey(cachingKey)) {
+			matcherCache.put(cachingKey, query.matches(candidate.getRegEx()));
+		}
+		return matcherCache.get(cachingKey);
 	}
 
 	public int getNumberOfTruePositives() {

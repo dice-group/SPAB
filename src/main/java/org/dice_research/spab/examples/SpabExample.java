@@ -5,6 +5,7 @@ import java.util.List;
 import org.dice_research.spab.SpabApi;
 import org.dice_research.spab.SpabApi.CandidateImplementation;
 import org.dice_research.spab.exceptions.SpabException;
+import org.dice_research.spab.input.SparqlUnit;
 import org.dice_research.spab.io.FileReader;
 import org.dice_research.spab.io.Resources;
 import org.dice_research.spab.structures.CandidateVertex;
@@ -47,8 +48,18 @@ public class SpabExample {
 			}
 		}
 
+		System.out.println("Positives:");
+		for (SparqlUnit unit : spab.getInput().getPositives()) {
+			System.out.println(" " + unit.getLineRepresentation());
+		}
+
+		System.out.println("Negatives:");
+		for (SparqlUnit unit : spab.getInput().getNegatives()) {
+			System.out.println(" " + unit.getLineRepresentation());
+		}
+
 		spab.setLambda(.2f);
-		spab.setMaxIterations(100);
+		spab.setMaxIterations(70);
 		spab.setCheckPerfectSolution(true);
 		spab.setCandidateImplementation(CandidateImplementation.SPAB_TWO);
 
@@ -66,13 +77,14 @@ public class SpabExample {
 		int i = 0;
 		while (i <= 4) {
 			CandidateVertex candidate = spab.getQueue().peekBestCandidate(i);
-			System.out.print(candidate.getScore() + " ");
-			System.out.print(candidate.getCandidate().getRegEx() + " ");
-			System.out.print(candidate.getGeneration());
+			System.out.print("S " + candidate.getScore());
+			System.out.print(", fM " + candidate.getfMeasure());
+			System.out.print(", G " + candidate.getGeneration());
 			System.out.print(", TP " + candidate.getNumberOfTruePositives());
 			System.out.print(", TN " + candidate.getNumberOfTrueNegatives());
 			System.out.print(", FP " + candidate.getNumberOfFalsePositives());
 			System.out.print(", FN " + candidate.getNumberOfFalseNegatives());
+			System.out.print(", " + candidate.getCandidate().getRegEx());
 			System.out.println();
 			i++;
 		}
