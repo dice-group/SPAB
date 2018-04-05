@@ -1,6 +1,7 @@
 package org.dice_research.spab.structures;
 
 import java.util.Comparator;
+import java.util.Iterator;
 import java.util.PriorityQueue;
 
 /**
@@ -33,10 +34,36 @@ public class CandidateQueue {
 
 	/**
 	 * Gets best candidate (which is the head of the underlying priority queue) and
-	 * removes it from queue, or returns null if queue is empty.
+	 * REMOVES IT from queue, or returns null if queue is empty.
 	 */
-	public CandidateVertex getBestCandidate() {
+	public CandidateVertex pollBestCandidate() {
 		return queue.poll();
+	}
+
+	/**
+	 * Gets best candidate (which is the head of the underlying priority queue).
+	 * Returns null if queue is empty.
+	 */
+	public CandidateVertex peekBestCandidate() {
+		return queue.peek();
+	}
+
+	/**
+	 * Gets best candidate with specified index out of queue. An index of 0 will
+	 * return the next best candidate. Returns null, if index is not in queue.
+	 */
+	public CandidateVertex peekBestCandidate(int index) {
+		if (queue.size() < index + 1) {
+			return null;
+		} else {
+			CandidateVertex candidate = null;
+			Iterator<CandidateVertex> it = queue.iterator();
+			while (index >= 0) {
+				candidate = it.next();
+				index--;
+			}
+			return candidate;
+		}
 	}
 
 	/**

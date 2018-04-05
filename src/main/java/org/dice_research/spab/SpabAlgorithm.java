@@ -82,7 +82,7 @@ public class SpabAlgorithm {
 	public CandidateVertex execute(Matcher matcher) throws SpabException {
 		Statistics.timeBegin = System.currentTimeMillis();
 		LOGGER.info("SPAB run with " + getInput().getPositives().size() + " positives and "
-				+ getInput().getNegatives().size() + " negatives");
+				+ getInput().getNegatives().size() + " negatives. Max iterations: " + configuration.getMaxIterations());
 
 		try {
 
@@ -105,7 +105,7 @@ public class SpabAlgorithm {
 			for (int i = 1; i <= configuration.getMaxIterations(); i++) {
 
 				// Get best candidate, generate children, and add them into graph
-				CandidateVertex bestCandidate = queue.getBestCandidate();
+				CandidateVertex bestCandidate = queue.pollBestCandidate();
 				if (bestCandidate == null) {
 					LOGGER.info("All candidates visited at iteration " + i);
 					break;

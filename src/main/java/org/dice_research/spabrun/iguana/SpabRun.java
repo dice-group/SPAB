@@ -138,31 +138,31 @@ public class SpabRun {
 		System.out.println(bestCandidate.getCandidate().getRegEx());
 		System.out.println(bestCandidate.getScore());
 
-		bestCandidate = spabApi.getQueue().getBestCandidate();
+		bestCandidate = spabApi.getQueue().pollBestCandidate();
 		System.out.println(bestCandidate.getCandidate().getRegEx());
 		System.out.println(bestCandidate.getScore());
 
-		bestCandidate = spabApi.getQueue().getBestCandidate();
+		bestCandidate = spabApi.getQueue().pollBestCandidate();
 		System.out.println(bestCandidate.getCandidate().getRegEx());
 		System.out.println(bestCandidate.getScore());
 
-		bestCandidate = spabApi.getQueue().getBestCandidate();
+		bestCandidate = spabApi.getQueue().pollBestCandidate();
 		System.out.println(bestCandidate.getCandidate().getRegEx());
 		System.out.println(bestCandidate.getScore());
 
-		bestCandidate = spabApi.getQueue().getBestCandidate();
+		bestCandidate = spabApi.getQueue().pollBestCandidate();
 		System.out.println(bestCandidate.getCandidate().getRegEx());
 		System.out.println(bestCandidate.getScore());
 
-		bestCandidate = spabApi.getQueue().getBestCandidate();
+		bestCandidate = spabApi.getQueue().pollBestCandidate();
 		System.out.println(bestCandidate.getCandidate().getRegEx());
 		System.out.println(bestCandidate.getScore());
 
-		bestCandidate = spabApi.getQueue().getBestCandidate();
+		bestCandidate = spabApi.getQueue().pollBestCandidate();
 		System.out.println(bestCandidate.getCandidate().getRegEx());
 		System.out.println(bestCandidate.getScore());
 
-		bestCandidate = spabApi.getQueue().getBestCandidate();
+		bestCandidate = spabApi.getQueue().pollBestCandidate();
 		System.out.println(bestCandidate.getCandidate().getRegEx());
 		System.out.println(bestCandidate.getScore());
 	}

@@ -39,7 +39,7 @@ public class SpabExample {
 		}
 
 		spab.setLambda(.2f);
-		spab.setMaxIterations(1000);
+		spab.setMaxIterations(500);
 		spab.setCheckPerfectSolution(true);
 		spab.setCandidateImplementation(CandidateImplementation.SPAB_TWO);
 
@@ -47,16 +47,18 @@ public class SpabExample {
 
 		System.out.println("Final score of best candidate: " + bestCandidate.getScore());
 		System.out.println("F-measure of best candidate:   " + bestCandidate.getfMeasure());
-		System.out.println("Generation of best candidate: " + bestCandidate.getGeneration());
-		System.out.println("Generated generations:        " + spab.getGraph().getDepth());
-		System.out.println("Number of remaining candidates in queue: " + spab.getQueue().getQueue().size());
-		System.out.print("Next best scores: ");
-		int numberOfBestScores = 100;
-		while (!spab.getQueue().getQueue().isEmpty() && numberOfBestScores-- > 0) {
-			System.out.print(spab.getQueue().getBestCandidate().getScore() + " ");
+		System.out.println("RegEx of best candidate:       " + bestCandidate.getCandidate().getRegEx());
+		System.out.println("Generation of best candidate:  " + bestCandidate.getGeneration());
+		System.out.println("Next best candidates: ");
+		int i = 0;
+		while (i <= 4) {
+			CandidateVertex candidate = spab.getQueue().peekBestCandidate(i);
+			System.out.print(candidate.getScore() + " ");
+			System.out.println(candidate.getCandidate().getRegEx());
+			i++;
 		}
-		System.out.println();
-		System.out.println("Number generated candidates: " + spab.getGraph().getAllCandidates().size());
-		System.out.println("RegEx of best candidate: " + bestCandidate.getCandidate().getRegEx());
+		System.out.println("Generated generations:                   " + spab.getGraph().getDepth());
+		System.out.println("Number generated candidates:             " + spab.getGraph().getAllCandidates().size());
+		System.out.println("Number of remaining candidates in queue: " + spab.getQueue().getQueue().size());
 	}
 }

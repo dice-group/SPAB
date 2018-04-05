@@ -6,12 +6,17 @@ import org.slf4j.LoggerFactory;
 /**
  * Runtime statistics.
  * 
+ * Use system environment variable {@link Statistics#SPAB_STATISTICS_INTERVAL}
+ * to define logging interval in ms. To disable use default value 0.
+ * 
  * @author Adrian Wilke
  */
 public abstract class Statistics {
 
-	private static final int infoInterval = 5000;
 	private static final Logger LOGGER = LoggerFactory.getLogger(Statistics.class);
+
+	private static final String SPAB_STATISTICS_INTERVAL = "SPAB_STATISTICS_INTERVAL";
+	private static int infoInterval = 0;
 
 	public static int calcScoreCalls = 0;
 	public static double calcScoreRuntime = 0;
@@ -24,6 +29,14 @@ public abstract class Statistics {
 	public static long timeBegin;
 	public static long timeEnd;
 	public static long timeInfo = 0;
+
+	static {
+		String interval = System.getenv(SPAB_STATISTICS_INTERVAL);
+		if (interval != null) {
+			LOGGER.info("Setting statistics info interval to " + interval);
+			infoInterval = Integer.parseInt(interval);
+		}
+	}
 
 	public static void addCalcScoreStats(long timeBegin, long timeEnd) {
 		calcScoreRuntime += (timeEnd - timeBegin) / 1000d;
@@ -46,13 +59,12 @@ public abstract class Statistics {
 	}
 
 	public static void info() {
-		if (System.currentTimeMillis() - timeInfo > infoInterval) {
+		if (System.currentTimeMillis() - timeInfo > infoInterval && infoInterval != 0) {
 			timeInfo = System.currentTimeMillis();
 			LOGGER.info("RegEx generation: " + regexCalls + " calls, " + regexRuntime + " sec");
 			LOGGER.info("Query generation: " + queryLineCalls + " calls, " + queryLineRuntime + " sec");
 			LOGGER.info("Matching: " + matchingCalls + " calls, " + matchingRuntime + " sec");
 			LOGGER.info("Score calculations: " + calcScoreCalls + " calls, " + calcScoreRuntime + " sec");
 		}
-
 	}
 }

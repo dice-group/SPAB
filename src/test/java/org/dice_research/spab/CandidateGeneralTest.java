@@ -81,7 +81,7 @@ public class CandidateGeneralTest extends AbstractTestCase implements Candidate,
 		System.out.println("Number of remaining candidates in queue: " + spabApi.getQueue().getQueue().size());
 		System.out.print("Next best scores: ");
 		while (!spabApi.getQueue().getQueue().isEmpty()) {
-			System.out.print(spabApi.getQueue().getBestCandidate().getScore() + " ");
+			System.out.print(spabApi.getQueue().pollBestCandidate().getScore() + " ");
 		}
 		System.out.println();
 		System.out.println("Number generated candidates: " + spabApi.getGraph().getAllCandidates().size());
