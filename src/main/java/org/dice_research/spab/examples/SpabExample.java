@@ -17,6 +17,9 @@ import org.dice_research.spab.structures.CandidateVertex;
  */
 public class SpabExample {
 
+	/**
+	 * Test run with 1000 iterations took 85 seconds
+	 */
 	public static final int MAX_ITERATIONS = 1000;
 
 	public static final String RESOURCE_IGUANA_NEGATIVE = "iguana-2018-01-20/Fuseki-negative.txt";

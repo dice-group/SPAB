@@ -194,9 +194,15 @@ public class CandidateVertex implements Matcher {
 	/**
 	 * Gets score of candidate. Score has to be calculated by
 	 * {@link CandidateVertex#calculateScore(Input)}.
+	 * 
+	 * If score was not calculated, -1 is returned.
 	 */
 	public float getScore() {
-		return score;
+		if (score == null) {
+			return -1;
+		} else {
+			return score;
+		}
 	}
 
 	/**
