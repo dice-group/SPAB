@@ -36,7 +36,7 @@ public class QueryHandlingTest extends AbstractTestCase {
 			+ "PREFIX  dbpedia: <http://dbpedia.org/>  PREFIX  rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#>  "
 			+ "PREFIX  skos: <http://www.w3.org/2004/02/skos/core#>   "
 			+ "SELECT  *  WHERE    { ?data rdf:type <http://dbpedia.org/ontology/FormulaOneRacer> .      ?wins <http://dbpedia.org/ontology/wins> 10    }";
-
+	
 	@Test
 	public void testResourceHandling() {
 		SpabApi spabApi = new SpabApi();
@@ -47,6 +47,7 @@ public class QueryHandlingTest extends AbstractTestCase {
 				.size() == spabApi.getInput().getPositives().get(0).getResources().size()
 						+ spabApi.getInput().getNegatives().get(0).getResources().size());
 	}
+
 
 	@Test
 	public void testPrefixReplacement() {

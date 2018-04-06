@@ -53,13 +53,12 @@ public class RegExTest extends AbstractTestCase {
 		features.featureMap.put(Feature.WHERE_CLAUSE, Features.WhereClause.WHERE_RESOURCES.toString());
 		features.resourcesWhereClause.add(resourceConnecticut);
 		RegEx regEx = new RegEx(features);
-		System.out.println(regEx.generate());
 		assertTrue(askWhere.matches(regEx.generate()));
 		assertFalse(selectWhere.matches(regEx.generate()));
 	}
 
 	@Test
-	public void test() {
+	public void testWhere() {
 
 		// Root candidate, should match all queries
 		Features features = new Features();

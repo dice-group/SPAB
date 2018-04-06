@@ -1,10 +1,13 @@
 package org.dice_research.spab.input;
 
+import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
+import java.util.SortedMap;
+import java.util.TreeMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -100,7 +103,7 @@ public abstract class SparqlUnit {
 	 */
 	protected String replacePrefixes(String jenaString, Map<String, String> namespaces) {
 
-		// Remove prefixes
+		// Remove prefix lines
 		StringBuilder removedPrefixes = new StringBuilder();
 		for (String line : jenaString.split("\\r?\\n")) {
 			if (!line.startsWith("PREFIX ") && !line.isEmpty()) {
@@ -109,13 +112,25 @@ public abstract class SparqlUnit {
 			}
 		}
 
-		// TODO: Replacement of prefixes is buggy.
-		// @link{QueryHandlingTest#IGUANA_FUSEKI}
+		// Prepend replacing wrong namespaces: Start with longer ones
+		SortedMap<String, String> orderedNamespaces = new TreeMap<String, String>(new Comparator<String>() {
+			@Override
+			public int compare(String a, String b) {
+				return b.compareTo(a);
+			}
+		});
+		orderedNamespaces.putAll(namespaces);
 
 		// Replace prefixes
 		String replacedPrefixes = removedPrefixes.toString();
 		StringBuffer sb = new StringBuffer();
-		for (Entry<String, String> entry : namespaces.entrySet()) {
+
+		for (Entry<String, String> entry : orderedNamespaces.entrySet()) {
+			if (entry.getKey().isEmpty()) {
+				// Empty namespace prefixes ":" not used in this version.
+				continue;
+			}
+
 			Pattern pattern = Pattern.compile("(" + entry.getKey() + ":)(.+?)(^|\\s)");
 			Matcher matcher = pattern.matcher(replacedPrefixes);
 			while (matcher.find()) {
@@ -123,9 +138,12 @@ public abstract class SparqlUnit {
 			}
 			matcher.appendTail(sb);
 		}
+
 		if (sb.length() == 0) {
+			// No prefix replaced
 			return replacedPrefixes;
 		} else {
+			// RegEx result
 			return sb.toString();
 		}
 	}
