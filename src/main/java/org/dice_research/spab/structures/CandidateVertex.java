@@ -233,4 +233,17 @@ public class CandidateVertex implements Matcher {
 	public int getNumberOfTrueNegatives() {
 		return trueNegatives;
 	}
+
+	public String getInfoLine() {
+		StringBuilder sb = new StringBuilder();
+		sb.append("S:" + (Math.round(getScore() * 1000)) / 1000d);
+		sb.append(" fM:" + (Math.round(getfMeasure() * 1000)) / 1000d);
+		sb.append(" TP:" + getNumberOfTruePositives());
+		sb.append(" TN:" + getNumberOfTrueNegatives());
+		sb.append(" FP:" + getNumberOfFalsePositives());
+		sb.append(" FN:" + getNumberOfFalseNegatives());
+		sb.append(" G:" + getGeneration());
+		sb.append(" RegEx:" + getCandidate().getRegEx());
+		return sb.toString();
+	}
 }

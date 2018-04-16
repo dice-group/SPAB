@@ -135,35 +135,18 @@ public class SpabRun {
 		CandidateVertex bestCandidate;
 
 		bestCandidate = spabApi.run();
-		System.out.println(bestCandidate.getCandidate().getRegEx());
-		System.out.println(bestCandidate.getScore());
+		System.out.println("Best candidate: ");
+		System.out.println(bestCandidate.getInfoLine());
 
-		bestCandidate = spabApi.getQueue().pollBestCandidate();
-		System.out.println(bestCandidate.getCandidate().getRegEx());
-		System.out.println(bestCandidate.getScore());
+		System.out.println();
+		System.out.println("Stack size: " + spabApi.getStack().size());
+		for (int i = 0; i < 10; i++) {
+			if (spabApi.getStack().size() < i + 1) {
+				break;
+			} else {
+				System.out.println(spabApi.getStack().get(i).getInfoLine());
+			}
+		}
 
-		bestCandidate = spabApi.getQueue().pollBestCandidate();
-		System.out.println(bestCandidate.getCandidate().getRegEx());
-		System.out.println(bestCandidate.getScore());
-
-		bestCandidate = spabApi.getQueue().pollBestCandidate();
-		System.out.println(bestCandidate.getCandidate().getRegEx());
-		System.out.println(bestCandidate.getScore());
-
-		bestCandidate = spabApi.getQueue().pollBestCandidate();
-		System.out.println(bestCandidate.getCandidate().getRegEx());
-		System.out.println(bestCandidate.getScore());
-
-		bestCandidate = spabApi.getQueue().pollBestCandidate();
-		System.out.println(bestCandidate.getCandidate().getRegEx());
-		System.out.println(bestCandidate.getScore());
-
-		bestCandidate = spabApi.getQueue().pollBestCandidate();
-		System.out.println(bestCandidate.getCandidate().getRegEx());
-		System.out.println(bestCandidate.getScore());
-
-		bestCandidate = spabApi.getQueue().pollBestCandidate();
-		System.out.println(bestCandidate.getCandidate().getRegEx());
-		System.out.println(bestCandidate.getScore());
 	}
 }

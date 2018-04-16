@@ -1,6 +1,5 @@
 package org.dice_research.spab;
 
-import java.util.List;
 import java.util.Set;
 
 import org.dice_research.spab.exceptions.SpabException;
@@ -98,15 +97,7 @@ public class CandidateGenerationTest extends AbstractTestCase {
 	public void printCandidateVertex(CandidateVertex candidateVertex, String info, boolean print) {
 		if (print) {
 			System.out.print(info);
-			System.out.print(" S:"
-					+ (candidateVertex.getScore() == -1 ? "-" : Math.round(candidateVertex.getScore() * 100) / 100d));
-			System.out.print(" TP:" + candidateVertex.getNumberOfTruePositives());
-			System.out.print(" TN:" + candidateVertex.getNumberOfTrueNegatives());
-			System.out.print(" FP:" + candidateVertex.getNumberOfFalsePositives());
-			System.out.print(" FN:" + candidateVertex.getNumberOfFalseNegatives());
-			System.out.print(" G:" + candidateVertex.getGeneration());
-			System.out.print(" " + candidateVertex.getCandidate().getRegEx());
-			System.out.println();
+			System.out.println(candidateVertex.getInfoLine());
 		}
 	}
 
