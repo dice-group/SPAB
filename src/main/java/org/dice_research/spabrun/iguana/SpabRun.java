@@ -8,6 +8,7 @@ import java.util.List;
 import org.dice_research.spab.SpabApi;
 import org.dice_research.spab.exceptions.IoRuntimeException;
 import org.dice_research.spab.exceptions.SpabException;
+import org.dice_research.spab.input.SparqlUnit;
 import org.dice_research.spab.io.FileReader;
 import org.dice_research.spab.structures.CandidateVertex;
 
@@ -45,6 +46,8 @@ public class SpabRun {
 		spabRun.run(Task.CONNECTION_TNT, dbpediaQueries, true);
 		spabRun.run(Task.CONNECTION_VIRTUOSO, dbpediaQueries, true);
 	}
+
+	final static public boolean PRINT_INPUTS = false;
 
 	protected Configuration configuration;
 	protected IguanaExtractor iguana;
@@ -114,6 +117,9 @@ public class SpabRun {
 	}
 
 	public void run(String tdb, List<String> queries, boolean invert) throws SpabException {
+
+		System.out.println("Running " + tdb + " (inverted:" + (invert ? "yes)" : "no)"));
+
 		SpabApi spabApi = new SpabApi();
 		if (invert) {
 			for (String query : iguana.getPositives(tdb, queries)) {
@@ -128,6 +134,17 @@ public class SpabRun {
 			}
 			for (String query : iguana.getNegatives(tdb, queries)) {
 				spabApi.addNegative(query);
+			}
+		}
+
+		if (PRINT_INPUTS) {
+			System.out.println("Positives:");
+			for (SparqlUnit sparqlUnit : spabApi.getInput().getPositives()) {
+				System.out.println(" " + sparqlUnit.getLineRepresentation());
+			}
+			System.out.println("Negatives:");
+			for (SparqlUnit sparqlUnit : spabApi.getInput().getNegatives()) {
+				System.out.println(" " + sparqlUnit.getLineRepresentation());
 			}
 		}
 
