@@ -1,8 +1,10 @@
 package org.dice_research.spab;
 
+import java.util.List;
 import java.util.Set;
 
 import org.dice_research.spab.exceptions.SpabException;
+import org.dice_research.spab.input.SparqlUnit;
 import org.dice_research.spab.structures.CandidateGraph;
 import org.dice_research.spab.structures.CandidateVertex;
 import org.jgrapht.Graph;
@@ -26,6 +28,8 @@ public class CandidateGenerationTest extends AbstractTestCase {
 			+ "SELECT ?s ?o WHERE { ?s dbpedia-owl:pubchem ?o . ?o dbpedia-owl:Person ?s }";
 	public static final String SELECT4 = "PREFIX dbpedia-owl: <http://dbpedia.org/ontology/> "
 			+ "SELECT ?s ?o WHERE { ?s dbpedia-owl:pubchem ?o . ?o dbpedia-owl:JavaDeveloper ?s }";
+	public static final String SELECT5 = "PREFIX dbpedia-owl: <http://dbpedia.org/ontology/> "
+			+ "SELECT ?s ?o WHERE { ?o dbpedia-owl:Person ?s }";
 
 	@Test
 	public void test() throws SpabException {
@@ -39,6 +43,18 @@ public class CandidateGenerationTest extends AbstractTestCase {
 
 		spabApi.addNegative(SELECT3);
 		spabApi.addNegative(SELECT4);
+		spabApi.addNegative(SELECT5);
+
+		if (PRINT) {
+			System.out.println("Positives:");
+			for (SparqlUnit sparqlUnit : spabApi.getInput().getPositives()) {
+				System.out.println(" " + sparqlUnit.getLineRepresentation());
+			}
+			System.out.println("Negatives:");
+			for (SparqlUnit sparqlUnit : spabApi.getInput().getNegatives()) {
+				System.out.println(" " + sparqlUnit.getLineRepresentation());
+			}
+		}
 
 		// Run
 		CandidateVertex bestCandidate = spabApi.run();
@@ -73,6 +89,10 @@ public class CandidateGenerationTest extends AbstractTestCase {
 		for (CandidateVertex candidateVertex : spabApi.getStack()) {
 			printCandidateVertex(candidateVertex, "Stack" + i++, PRINT);
 		}
+
+		// Test: There is one negative input without dbpedia-owl:pubchem. Therefore, the
+		// best candidate should include dbpedia-owl:pubchem.
+		assertTrue(bestCandidate.getCandidate().getRegEx().contains("http://dbpedia.org/ontology/pubchem"));
 	}
 
 	public void printCandidateVertex(CandidateVertex candidateVertex, String info, boolean print) {
