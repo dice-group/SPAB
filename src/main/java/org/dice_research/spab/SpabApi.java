@@ -1,5 +1,7 @@
 package org.dice_research.spab;
 
+import java.util.List;
+
 import org.dice_research.spab.candidates.Candidate;
 import org.dice_research.spab.exceptions.CandidateRuntimeException;
 import org.dice_research.spab.exceptions.InputRuntimeException;
@@ -96,6 +98,13 @@ public class SpabApi {
 	 */
 	public CandidateQueue getQueue() {
 		return spab.getQueue();
+	}
+
+	/**
+	 * Gets stack of visited candidates.
+	 */
+	public List<CandidateVertex> getStack() {
+		return spab.getStack();
 	}
 
 	/**

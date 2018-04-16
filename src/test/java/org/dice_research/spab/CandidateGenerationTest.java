@@ -24,31 +24,54 @@ public class CandidateGenerationTest extends AbstractTestCase {
 			+ "SELECT ?s ?o WHERE { ?s dbpedia-owl:pubchem ?o . ?o dbpedia-owl:pubchem ?s }";
 	public static final String SELECT3 = "PREFIX dbpedia-owl: <http://dbpedia.org/ontology/> "
 			+ "SELECT ?s ?o WHERE { ?s dbpedia-owl:pubchem ?o . ?o dbpedia-owl:Person ?s }";
+	public static final String SELECT4 = "PREFIX dbpedia-owl: <http://dbpedia.org/ontology/> "
+			+ "SELECT ?s ?o WHERE { ?s dbpedia-owl:pubchem ?o . ?o dbpedia-owl:JavaDeveloper ?s }";
 
 	@Test
 	public void test() throws SpabException {
 
 		// Input
 		SpabApi spabApi = new SpabApi();
+		spabApi.setLambda(0.2f);
+
 		spabApi.addPositive(SELECT1);
 		spabApi.addPositive(SELECT2);
+
 		spabApi.addNegative(SELECT3);
+		spabApi.addNegative(SELECT4);
 
 		// Run
 		CandidateVertex bestCandidate = spabApi.run();
-		printCandidateVertex(bestCandidate, "best", PRINT);
+		printCandidateVertex(bestCandidate, "Best", PRINT);
 
-		// Best
+		// Root
 		CandidateGraph candidateGraph = spabApi.getGraph();
 		CandidateVertex root = candidateGraph.getRoot();
-		printCandidateVertex(root, "root", PRINT);
+		printCandidateVertex(root, "Root", PRINT);
 
-		// Children of best
+		// Children of root
+		System.out.println();
 		Graph<CandidateVertex, DefaultEdge> graph = candidateGraph.getGraph();
 		Set<DefaultEdge> rootEdges = graph.edgesOf(root);
 		for (DefaultEdge rootEdge : rootEdges) {
 			CandidateVertex rootChild = graph.getEdgeTarget(rootEdge);
-			printCandidateVertex(rootChild, "rchi", PRINT);
+			printCandidateVertex(rootChild, "RootChild", PRINT);
+		}
+
+		// Next candidates in queue
+		System.out.println();
+		CandidateVertex nextCandidate = bestCandidate;
+		int i = 0;
+		while (nextCandidate != null) {
+			printCandidateVertex(nextCandidate, "Queue" + i, PRINT);
+			nextCandidate = spabApi.getQueue().peekBestCandidate(i++);
+		}
+
+		// Visited candidates
+		System.out.println();
+		i = 0;
+		for (CandidateVertex candidateVertex : spabApi.getStack()) {
+			printCandidateVertex(candidateVertex, "Stack" + i++, PRINT);
 		}
 	}
 

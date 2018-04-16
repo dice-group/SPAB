@@ -1,5 +1,7 @@
 package org.dice_research.spab;
 
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
@@ -45,6 +47,11 @@ public class SpabAlgorithm {
 	protected CandidateQueue queue;
 
 	/**
+	 * Candidate stack of visited candidates
+	 */
+	protected List<CandidateVertex> stack = new LinkedList<CandidateVertex>();
+
+	/**
 	 * Initializes data structures.
 	 */
 	public SpabAlgorithm() {
@@ -82,8 +89,8 @@ public class SpabAlgorithm {
 	public CandidateVertex execute(Matcher matcher) throws SpabException {
 		Statistics.timeBegin = System.currentTimeMillis();
 		LOGGER.info("SPAB run with " + getInput().getPositives().size() + " positives and "
-				+ getInput().getNegatives().size() + " negatives. Max iterations: " + configuration.getMaxIterations());
-
+				+ getInput().getNegatives().size() + " negatives. Max iterations: " + configuration.getMaxIterations()
+				+ ". Lambda: " + getConfiguration().getLambda());
 		try {
 
 			// Generate first candidate
@@ -110,6 +117,7 @@ public class SpabAlgorithm {
 					LOGGER.info("All candidates visited at iteration " + i);
 					break;
 				}
+				stack.add(bestCandidate);
 				Map<CandidateVertex, Candidate> bestCandidateChildren = bestCandidate.generateChildren();
 				graph.addCandidates(bestCandidateChildren.keySet(), bestCandidate);
 				for (Entry<CandidateVertex, Candidate> bestCandidateChild : bestCandidateChildren.entrySet()) {
@@ -161,7 +169,7 @@ public class SpabAlgorithm {
 			// A perfect candidate has no false positives or false negatives.
 			LOGGER.info("Perfect solution found!");
 			LOGGER.info("Runtime: " + Statistics.getRuntime() + " seconds");
-			
+
 			return e.getCandidate();
 		}
 	}
@@ -192,5 +200,12 @@ public class SpabAlgorithm {
 	 */
 	public CandidateQueue getQueue() {
 		return queue;
+	}
+
+	/**
+	 * Gets stack of visited candidates.
+	 */
+	public List<CandidateVertex> getStack() {
+		return stack;
 	}
 }
