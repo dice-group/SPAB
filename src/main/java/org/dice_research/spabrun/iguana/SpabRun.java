@@ -20,6 +20,10 @@ import org.dice_research.spab.structures.CandidateVertex;
  */
 public class SpabRun {
 
+	final static public boolean PRINT_INPUTS = true;
+	final static public int MAX_ITERATIONS = 100;
+	final static public float LAMBDA = 0.1f;
+
 	public static void main(String[] args) throws SpabException {
 
 		SpabRun spabRun = new SpabRun();
@@ -46,8 +50,6 @@ public class SpabRun {
 		spabRun.run(Task.CONNECTION_TNT, dbpediaQueries, true);
 		spabRun.run(Task.CONNECTION_VIRTUOSO, dbpediaQueries, true);
 	}
-
-	final static public boolean PRINT_INPUTS = false;
 
 	protected Configuration configuration;
 	protected IguanaExtractor iguana;
@@ -148,7 +150,8 @@ public class SpabRun {
 			}
 		}
 
-		spabApi.setLambda(0.1f);
+		spabApi.setLambda(LAMBDA);
+		spabApi.setMaxIterations(MAX_ITERATIONS);
 		CandidateVertex bestCandidate;
 
 		bestCandidate = spabApi.run();
