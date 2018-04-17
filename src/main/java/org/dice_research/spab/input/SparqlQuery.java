@@ -168,12 +168,9 @@ public class SparqlQuery extends SparqlUnit {
 		if (resourcesCache == null) {
 			resourcesCache = new HashSet<String>();
 			Pattern pattern = Pattern.compile("<(.*?)>");
-			Matcher matcher = null;
-			if (jenaQuery.getQueryPattern() != null) {
-				matcher = pattern.matcher(jenaQuery.getQueryPattern().toString());
-			} else {
-				matcher = pattern.matcher(getLineRepresentation());
-			}
+			// Formerly jenaQuery.getQueryPattern().toString().
+			// But this contains e.g. 'a' instead of rdf:type.
+			Matcher matcher = pattern.matcher(getLineRepresentation());
 			while (matcher.find()) {
 				resourcesCache.add(matcher.group(1));
 			}

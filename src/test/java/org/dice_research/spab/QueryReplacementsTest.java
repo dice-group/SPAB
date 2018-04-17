@@ -52,23 +52,29 @@ public class QueryReplacementsTest extends AbstractTestCase {
 			+ "SELECT  *  WHERE    { ?data rdf:type <http://dbpedia.org/ontology/FormulaOneRacer> .      ?wins <http://dbpedia.org/ontology/wins> 10    }";
 
 	/**
-	 * TODO
+	 * Tests, if prefixes, including the empty prefix, are replaced correctly.
 	 */
 	@Test
 	public void testEmptyPrefix() {
 		SpabApi spabApi = new SpabApi();
 		spabApi.addPositive(EMPTY_PREFIX);
 		SparqlUnit sparqlUnit = spabApi.getInput().getPositives().get(0);
-		Set<String> resources = sparqlUnit.getResources();
 
+		Set<String> resources = sparqlUnit.getResources();
 		assertTrue(resources.contains("http://xmlns.com/foaf/0.1/name"));
-		// assertTrue(resources.contains("http://www.w3.org/1999/02/22-rdf-syntax-ns#type"));
 		assertTrue(resources.contains("http://dbpedia.org/ontology/Artist"));
 		assertTrue(resources.contains("http://dbpedia.org/ontology/nationality"));
 		assertTrue(resources.contains("http://dbpedia.org/resource/Spain"));
 		assertTrue(resources.contains("http://dbpedia.org/ontology/birthDate"));
+		assertTrue(resources.contains("http://www.w3.org/1999/02/22-rdf-syntax-ns#type"));
 
-		// TODO: Test, if final string contains all resources, too
+		String line = sparqlUnit.getLineRepresentation();
+		assertTrue(line.contains("http://xmlns.com/foaf/0.1/name"));
+		assertTrue(line.contains("http://dbpedia.org/ontology/Artist"));
+		assertTrue(line.contains("http://dbpedia.org/ontology/nationality"));
+		assertTrue(line.contains("http://dbpedia.org/resource/Spain"));
+		assertTrue(line.contains("http://dbpedia.org/ontology/birthDate"));
+		assertTrue(line.contains("http://www.w3.org/1999/02/22-rdf-syntax-ns#type"));
 	}
 
 	/**

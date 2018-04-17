@@ -133,8 +133,13 @@ public abstract class SparqlUnit {
 			String workingString = sb.toString();
 			sb = new StringBuffer();
 			if (entry.getKey().isEmpty()) {
-				sb.append(workingString);
-				// TODO: Handle empty prefixes
+				// Will be last called prefix, as comparator sorts by length.
+				Pattern pattern = Pattern.compile("( :)(.+?)(^|\\s)");
+				Matcher matcher = pattern.matcher(workingString);
+				while (matcher.find()) {
+					matcher.appendReplacement(sb, "<" + entry.getValue() + matcher.group(2) + ">" + matcher.group(3));
+				}
+				matcher.appendTail(sb);
 			} else {
 				Pattern pattern = Pattern.compile("(" + entry.getKey() + ":)(.+?)(^|\\s)");
 				Matcher matcher = pattern.matcher(workingString);
