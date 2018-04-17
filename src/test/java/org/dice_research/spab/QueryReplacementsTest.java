@@ -11,7 +11,7 @@ import org.junit.Test;
  * 
  * @author Adrian Wilke
  */
-public class QueryHandlingTest extends AbstractTestCase {
+public class QueryReplacementsTest extends AbstractTestCase {
 
 	public static final String CONSTRUCT = "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> \n"
 			+ "PREFIX skos: <http://www.w3.org/2004/02/skos/core#> \n" + "CONSTRUCT { ?film rdf:tipo rdf:pelicula } \n"
@@ -36,18 +36,40 @@ public class QueryHandlingTest extends AbstractTestCase {
 			+ "PREFIX  dbpedia: <http://dbpedia.org/>  PREFIX  rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#>  "
 			+ "PREFIX  skos: <http://www.w3.org/2004/02/skos/core#>   "
 			+ "SELECT  *  WHERE    { ?data rdf:type <http://dbpedia.org/ontology/FormulaOneRacer> .      ?wins <http://dbpedia.org/ontology/wins> 10    }";
-	
-	@Test
-	public void testResourceHandling() {
-		SpabApi spabApi = new SpabApi();
-		spabApi.addPositive(SELECT3);
-		spabApi.addNegative(DESCRIBE);
-		spabApi.addNegative(SELECT);
-		assertTrue(spabApi.getInput().getResources()
-				.size() == spabApi.getInput().getPositives().get(0).getResources().size()
-						+ spabApi.getInput().getNegatives().get(0).getResources().size());
-	}
 
+	/**
+	 * Tests, if resources of both, positive and negative inputs are extracted.
+	 */
+	@Test
+	public void testResourceSets() {
+		SpabApi spabApi = new SpabApi();
+
+		// dbpedia-owl:pubchem
+		// dbpedia-owl:Person
+		spabApi.addPositive(SELECT3);
+
+		// owl:DatatypeProperty
+		spabApi.addNegative(DESCRIBE);
+
+		// dbpedia-owl:pubchem
+		spabApi.addNegative(SELECT);
+
+		Set<String> extractedResources = spabApi.getInput().getResources();
+		Set<String> positiveResources = spabApi.getInput().getPositives().get(0).getResources();
+		Set<String> negativeResources = spabApi.getInput().getNegatives().get(0).getResources();
+		negativeResources.addAll(spabApi.getInput().getNegatives().get(1).getResources());
+		Set<String> posNegResources = positiveResources;
+		posNegResources.addAll(negativeResources);
+
+		// Check existence of replaced strings, contained in pos+neg
+		assertTrue(extractedResources.contains("http://dbpedia.org/ontology/pubchem"));
+		assertTrue(extractedResources.contains("http://dbpedia.org/ontology/Person"));
+		assertTrue(extractedResources.contains("http://www.w3.org/2002/07/owl#DatatypeProperty"));
+
+		// Compare extracted and pos+neg
+		assertTrue(extractedResources.containsAll(posNegResources));
+		assertTrue(posNegResources.containsAll(extractedResources));
+	}
 
 	@Test
 	public void testPrefixReplacement() {

@@ -5,8 +5,8 @@ import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
 
 @RunWith(Suite.class)
-@SuiteClasses({ IncorrectInputTest.class, QueryHandlingTest.class, CandidateGeneralTest.class,
-		CandidateSpabTwoTest.class, ImportFilesTest.class, QueryHandlingTest.class, RegExTest.class, ScoringTest.class,
+@SuiteClasses({ IncorrectInputTest.class, QueryReplacementsTest.class, CandidateGeneralTest.class,
+		CandidateSpabTwoTest.class, ImportFilesTest.class, QueryReplacementsTest.class, RegExTest.class, ScoringTest.class,
 		CandidateGenerationTest.class })
 
 /**

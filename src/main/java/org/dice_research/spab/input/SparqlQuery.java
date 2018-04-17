@@ -32,6 +32,11 @@ public class SparqlQuery extends SparqlUnit {
 	protected String lineRepresentation;
 
 	/**
+	 * Cache for resource URIs
+	 */
+	protected Set<String> resourcesCache;
+
+	/**
 	 * Sets the passed parameters.
 	 * 
 	 * Parses the SPARQL query.
@@ -160,21 +165,20 @@ public class SparqlQuery extends SparqlUnit {
 	 */
 	@Override
 	public Set<String> getResources() {
-		Set<String> resources = new HashSet<String>();
-		if (jenaQuery.getQueryPattern() != null) {
+		if (resourcesCache == null) {
+			resourcesCache = new HashSet<String>();
 			Pattern pattern = Pattern.compile("<(.*?)>");
-			Matcher matcher = pattern.matcher(jenaQuery.getQueryPattern().toString());
-			while (matcher.find()) {
-				resources.add(matcher.group(1));
+			Matcher matcher = null;
+			if (jenaQuery.getQueryPattern() != null) {
+				matcher = pattern.matcher(jenaQuery.getQueryPattern().toString());
+			} else {
+				matcher = pattern.matcher(getLineRepresentation());
 			}
-		} else {
-			Pattern pattern = Pattern.compile("<(.*?)>");
-			Matcher matcher = pattern.matcher(getLineRepresentation());
 			while (matcher.find()) {
-				resources.add(matcher.group(1));
+				resourcesCache.add(matcher.group(1));
 			}
 		}
-		return resources;
+		return resourcesCache;
 	}
 
 }
