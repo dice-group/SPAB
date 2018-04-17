@@ -116,32 +116,38 @@ public abstract class SparqlUnit {
 		SortedMap<String, String> orderedNamespaces = new TreeMap<String, String>(new Comparator<String>() {
 			@Override
 			public int compare(String a, String b) {
-				return b.compareTo(a);
+				if (a.length() > b.length()) {
+					return -1;
+				} else if (a.length() < b.length()) {
+					return 1;
+				} else {
+					return b.compareTo(a);
+				}
 			}
 		});
 		orderedNamespaces.putAll(namespaces);
 
 		// Replace prefixes
-		String replacedPrefixes = removedPrefixes.toString();
-		StringBuffer sb = new StringBuffer();
-
+		StringBuffer sb = new StringBuffer(removedPrefixes.toString());
 		for (Entry<String, String> entry : orderedNamespaces.entrySet()) {
+			String workingString = sb.toString();
+			sb = new StringBuffer();
 			if (entry.getKey().isEmpty()) {
-				// Empty namespace prefixes ":" not used in this version.
-				continue;
+				sb.append(workingString);
+				// TODO: Handle empty prefixes
+			} else {
+				Pattern pattern = Pattern.compile("(" + entry.getKey() + ":)(.+?)(^|\\s)");
+				Matcher matcher = pattern.matcher(workingString);
+				while (matcher.find()) {
+					matcher.appendReplacement(sb, "<" + entry.getValue() + matcher.group(2) + ">" + matcher.group(3));
+				}
+				matcher.appendTail(sb);
 			}
-
-			Pattern pattern = Pattern.compile("(" + entry.getKey() + ":)(.+?)(^|\\s)");
-			Matcher matcher = pattern.matcher(replacedPrefixes);
-			while (matcher.find()) {
-				matcher.appendReplacement(sb, "<" + entry.getValue() + matcher.group(2) + ">" + matcher.group(3));
-			}
-			matcher.appendTail(sb);
 		}
 
 		if (sb.length() == 0) {
 			// No prefix replaced
-			return replacedPrefixes;
+			return removedPrefixes.toString();
 		} else {
 			// RegEx result
 			return sb.toString();

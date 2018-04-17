@@ -4,6 +4,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
+import org.dice_research.spab.input.SparqlUnit;
 import org.junit.Test;
 
 /**
@@ -29,6 +30,19 @@ public class QueryReplacementsTest extends AbstractTestCase {
 	public static final String SELECT3 = "PREFIX dbpedia-owl: <http://dbpedia.org/ontology/> "
 			+ "SELECT ?s ?o WHERE { ?s dbpedia-owl:pubchem ?o . ?o dbpedia-owl:Person ?s }";
 
+	public static final String EMPTY_PREFIX = "PREFIX : <http://dbpedia.org/resource/> "
+			+ "PREFIX dc: <http://purl.org/dc/elements/1.1/> " + "PREFIX dbpedia2: <http://dbpedia.org/property/> "
+			+ "PREFIX dbpedia3: <http://dbpedia.org/resource/> " + "PREFIX dbpedia-owl: <http://dbpedia.org/ontology/> "
+			+ "PREFIX foaf: <http://xmlns.com/foaf/0.1/> " + "PREFIX yago: <http://dbpedia.org/class/yago/> "
+			+ "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> "
+			+ "PREFIX category: <http://dbpedia.org/resource/Category:> "
+			+ "PREFIX dbo: <http://dbpedia.org/property/> " + "PREFIX dbpedia: <http://dbpedia.org/> "
+			+ "PREFIX xsd: <http://www.w3.org/2001/XMLSchema#> " + "PREFIX owl: <http://www.w3.org/2002/07/owl#> "
+			+ "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> "
+			+ "PREFIX dbpprop: <http://dbpedia.org/property/> " + "PREFIX skos: <http://www.w3.org/2004/02/skos/core#> "
+			+ "SELECT * WHERE { ?x foaf:name ?name . ?x rdf:type dbpedia-owl:Artist . "
+			+ "?x dbpedia-owl:nationality :Spain . ?x dbpedia-owl:birthDate ?nacimiento }";
+
 	public static final String IGUANA_FUSEKI = "PREFIX  dc:   <http://purl.org/dc/elements/1.1/>  "
 			+ "PREFIX  :     <http://dbpedia.org/resource/>  PREFIX  rdfs: <http://www.w3.org/2000/01/rdf-schema#>  "
 			+ "PREFIX  dbpedia2: <http://dbpedia.org/property/>  PREFIX  foaf: <http://xmlns.com/foaf/0.1/>  "
@@ -36,6 +50,26 @@ public class QueryReplacementsTest extends AbstractTestCase {
 			+ "PREFIX  dbpedia: <http://dbpedia.org/>  PREFIX  rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#>  "
 			+ "PREFIX  skos: <http://www.w3.org/2004/02/skos/core#>   "
 			+ "SELECT  *  WHERE    { ?data rdf:type <http://dbpedia.org/ontology/FormulaOneRacer> .      ?wins <http://dbpedia.org/ontology/wins> 10    }";
+
+	/**
+	 * TODO
+	 */
+	@Test
+	public void testEmptyPrefix() {
+		SpabApi spabApi = new SpabApi();
+		spabApi.addPositive(EMPTY_PREFIX);
+		SparqlUnit sparqlUnit = spabApi.getInput().getPositives().get(0);
+		Set<String> resources = sparqlUnit.getResources();
+
+		assertTrue(resources.contains("http://xmlns.com/foaf/0.1/name"));
+		// assertTrue(resources.contains("http://www.w3.org/1999/02/22-rdf-syntax-ns#type"));
+		assertTrue(resources.contains("http://dbpedia.org/ontology/Artist"));
+		assertTrue(resources.contains("http://dbpedia.org/ontology/nationality"));
+		assertTrue(resources.contains("http://dbpedia.org/resource/Spain"));
+		assertTrue(resources.contains("http://dbpedia.org/ontology/birthDate"));
+
+		// TODO: Test, if final string contains all resources, too
+	}
 
 	/**
 	 * Tests, if resources of both, positive and negative inputs are extracted.
