@@ -90,7 +90,8 @@ public class SpabAlgorithm {
 		Statistics.timeBegin = System.currentTimeMillis();
 		LOGGER.info("SPAB run with " + getInput().getPositives().size() + " positives and "
 				+ getInput().getNegatives().size() + " negatives. Max iterations: " + configuration.getMaxIterations()
-				+ ". Lambda: " + getConfiguration().getLambda());
+				+ ". Lambda: " + getConfiguration().getLambda() + ". Resource URIs: "
+				+ getInput().getResources().size());
 		try {
 
 			// Generate first candidate

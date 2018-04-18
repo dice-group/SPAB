@@ -18,26 +18,49 @@ import org.dice_research.spab.structures.CandidateVertex;
 public class SpabExample {
 
 	/**
-	 * Test run with 1000 iterations took 85 seconds
+	 * Configuration: Number of iterations. Test run with 1000 iterations took about
+	 * 9 seconds
 	 */
 	public static final int MAX_ITERATIONS = 1000;
 
-	public static final String RESOURCE_IGUANA_NEGATIVE = "iguana-2018-01-20/Fuseki-negative.txt";
-	public static final String RESOURCE_IGUANA_POSITIVE = "iguana-2018-01-20/Fuseki-positive.txt";
+	/**
+	 * Configuration: Use Fuseki or Virtuoso file.
+	 */
+	public static final boolean USE_FUSEKI = true;
+
+	/**
+	 * Configuration: Number of SPARQL queries added to set of negative examples.
+	 */
+	public static final int NUMBER_OF_NEGATIVES = 10;
+
+	/**
+	 * Configuration: Number of SPARQL queries added to set of positives examples.
+	 */
+	public static final int NUMBER_OF_POSITIVES = 10;
+
+	public static final String RESOURCE_IGUANA_FUSEKI_NEGATIVE = "iguana-2018-01-20/Fuseki-negative.txt";
+	public static final String RESOURCE_IGUANA_FUSEKI_POSITIVE = "iguana-2018-01-20/Fuseki-positive.txt";
 
 	public static final String RESOURCE_IGUANA_VIRTUOSO_NEGATIVE = "iguana-2018-01-20/Virtuoso-negative.txt";
 	public static final String RESOURCE_IGUANA_VIRTUOSO_POSITIVE = "iguana-2018-01-20/Virtuoso-positive.txt";
 
 	public static void main(String[] args) throws SpabException {
 
-		List<String> negatives = FileReader.readFileToList(Resources.getResource(RESOURCE_IGUANA_NEGATIVE).getPath(),
-				true, FileReader.UTF8);
-		List<String> positives = FileReader.readFileToList(Resources.getResource(RESOURCE_IGUANA_POSITIVE).getPath(),
-				true, FileReader.UTF8);
+		String negFile = RESOURCE_IGUANA_VIRTUOSO_NEGATIVE;
+		String posFile = RESOURCE_IGUANA_VIRTUOSO_POSITIVE;
+		if (USE_FUSEKI) {
+			negFile = RESOURCE_IGUANA_FUSEKI_NEGATIVE;
+			posFile = RESOURCE_IGUANA_FUSEKI_POSITIVE;
+		}
+
+		List<String> negatives = FileReader.readFileToList(Resources.getResource(negFile).getPath(), true,
+				FileReader.UTF8);
+		List<String> positives = FileReader.readFileToList(Resources.getResource(posFile).getPath(), true,
+				FileReader.UTF8);
 
 		SpabApi spab = new SpabApi();
 
-		int n = 3;
+		int n = NUMBER_OF_NEGATIVES;
 		for (String query : negatives) {
 			spab.addNegative(query);
 			if (--n == 0) {
@@ -45,7 +68,7 @@ public class SpabExample {
 			}
 		}
 
-		int p = 3;
+		int p = NUMBER_OF_POSITIVES;
 		for (String query : positives) {
 			spab.addPositive(query);
 			if (--p == 0) {
@@ -63,36 +86,22 @@ public class SpabExample {
 			System.out.println(" " + unit.getLineRepresentation());
 		}
 
-		spab.setLambda(.2f);
+		spab.setLambda(.1f);
 		spab.setMaxIterations(MAX_ITERATIONS);
 		spab.setCheckPerfectSolution(true);
 		spab.setCandidateImplementation(CandidateImplementation.SPAB_TWO);
 
 		CandidateVertex bestCandidate = spab.run();
+		System.out.println(bestCandidate.getInfoLine());
 
-		System.out.println("Final score of best candidate: " + bestCandidate.getScore());
-		System.out.println("F-measure of best candidate:   " + bestCandidate.getfMeasure());
-		System.out.println("RegEx of best candidate:       " + bestCandidate.getCandidate().getRegEx());
-		System.out.println("Generation of best candidate:  " + bestCandidate.getGeneration());
-		System.out.print("TP " + bestCandidate.getNumberOfTruePositives());
-		System.out.print(", TN " + bestCandidate.getNumberOfTrueNegatives());
-		System.out.print(", FP " + bestCandidate.getNumberOfFalsePositives());
-		System.out.println(", FN " + bestCandidate.getNumberOfFalseNegatives());
-		System.out.println("Next best candidates: ");
-		int i = 0;
-		while (i <= 4) {
-			CandidateVertex candidate = spab.getQueue().peekBestCandidate(i);
-			System.out.print("S " + candidate.getScore());
-			System.out.print(", fM " + candidate.getfMeasure());
-			System.out.print(", G " + candidate.getGeneration());
-			System.out.print(", TP " + candidate.getNumberOfTruePositives());
-			System.out.print(", TN " + candidate.getNumberOfTrueNegatives());
-			System.out.print(", FP " + candidate.getNumberOfFalsePositives());
-			System.out.print(", FN " + candidate.getNumberOfFalseNegatives());
-			System.out.print(", " + candidate.getCandidate().getRegEx());
-			System.out.println();
-			i++;
+		System.out.println();
+		int noOfPrintBest = 30;
+		System.out.println("First " + noOfPrintBest + " best candidates: ");
+		for (int i = 0; i < Math.min(noOfPrintBest, spab.getStack().size()); i++) {
+			System.out.println(spab.getStack().get(i).getInfoLine());
 		}
+
+		System.out.println();
 		System.out.println("Generated generations:                   " + spab.getGraph().getDepth());
 		System.out.println("Number generated candidates:             " + spab.getGraph().getAllCandidates().size());
 		System.out.println("Number of remaining candidates in queue: " + spab.getQueue().getQueue().size());

@@ -45,7 +45,7 @@ public class SpabTwoCandidate extends SpabTwoAbstractCandidate {
 			}
 		}
 
-		// Where
+		// Where: Numbers of triples
 
 		if (!getFeatures().featureMap.containsKey(Feature.WHERE_CLAUSE)) {
 			for (WhereClause whereClause : Features.WhereClause.values()) {
@@ -57,12 +57,14 @@ public class SpabTwoCandidate extends SpabTwoAbstractCandidate {
 			}
 		}
 
-		// Where resources
+		// Where: Resources
 
+		// No where-feature set or where-resource-featrue set
 		if (!getFeatures().featureMap.containsKey(Feature.WHERE_CLAUSE) || getFeatures().featureMap
 				.get(Feature.WHERE_CLAUSE).equals(Features.WhereClause.WHERE_RESOURCES.toString())) {
 			for (String resource : input.getResources()) {
 				if (getFeatures().resourcesWhereClause.contains(resource)) {
+					// Do not add same resource again
 					continue;
 				} else {
 					Features childFeatures = new Features(getFeatures());
