@@ -6,6 +6,7 @@ import org.dice_research.spab.candidates.Candidate;
 import org.dice_research.spab.exceptions.CandidateRuntimeException;
 import org.dice_research.spab.exceptions.InputRuntimeException;
 import org.dice_research.spab.exceptions.SpabException;
+import org.dice_research.spab.input.Configuration;
 import org.dice_research.spab.input.Input;
 import org.dice_research.spab.structures.CandidateGraph;
 import org.dice_research.spab.structures.CandidateQueue;
@@ -94,6 +95,13 @@ public class SpabApi {
 	}
 
 	/**
+	 * Gets configuration.
+	 */
+	public Configuration getConfiguration() {
+		return spab.getConfiguration();
+	}
+
+	/**
 	 * Gets candidate priority queue.
 	 */
 	public CandidateQueue getQueue() {
@@ -102,6 +110,10 @@ public class SpabApi {
 
 	/**
 	 * Gets stack of visited candidates.
+	 * 
+	 * The contained scores rely on the state of the candidate-graph when the
+	 * respective candidates were generated. As the graph can become deeper
+	 * afterwards, a re-calculation may produce better scores.
 	 */
 	public List<CandidateVertex> getStack() {
 		return spab.getStack();

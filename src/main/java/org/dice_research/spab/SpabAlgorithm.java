@@ -1,9 +1,11 @@
 package org.dice_research.spab;
 
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Set;
 
 import org.dice_research.spab.candidates.Candidate;
 import org.dice_research.spab.candidates.CandidateFactory;
@@ -50,6 +52,11 @@ public class SpabAlgorithm {
 	 * Candidate stack of visited candidates
 	 */
 	protected List<CandidateVertex> stack = new LinkedList<CandidateVertex>();
+
+	/**
+	 * Collection of existing regular expressions to prevent duplicates.
+	 */
+	protected Set<String> regExCheckSet = new HashSet<String>();
 
 	/**
 	 * Initializes data structures.
@@ -120,6 +127,7 @@ public class SpabAlgorithm {
 				}
 				stack.add(bestCandidate);
 				Map<CandidateVertex, Candidate> bestCandidateChildren = bestCandidate.generateChildren();
+				removeDuplicates(bestCandidateChildren);
 				graph.addCandidates(bestCandidateChildren.keySet(), bestCandidate);
 				for (Entry<CandidateVertex, Candidate> bestCandidateChild : bestCandidateChildren.entrySet()) {
 					bestCandidateChild.getValue().setVertex(bestCandidateChild.getKey());
@@ -172,6 +180,30 @@ public class SpabAlgorithm {
 			LOGGER.info("Runtime: " + Statistics.getRuntime() + " seconds");
 
 			return e.getCandidate();
+		}
+	}
+
+	/**
+	 * Checks, if regular expression of candidate is already known. If so, the
+	 * candidate is removed from map.
+	 */
+	protected void removeDuplicates(Map<CandidateVertex, Candidate> candidateMap) {
+		Set<CandidateVertex> candidatesToRemove = new HashSet<CandidateVertex>();
+
+		// Check regular expression of all candidates
+		for (Entry<CandidateVertex, Candidate> candidateEntry : candidateMap.entrySet()) {
+			if (regExCheckSet.contains(candidateEntry.getValue().getRegEx())) {
+				// If regular expression already is used, the candidate can be removed
+				candidatesToRemove.add(candidateEntry.getKey());
+			} else {
+				// The regular expression was unknown, but is known now.
+				regExCheckSet.add(candidateEntry.getValue().getRegEx());
+			}
+		}
+
+		// Remove
+		for (CandidateVertex candidateVertexToRemove : candidatesToRemove) {
+			candidateMap.remove(candidateVertexToRemove);
 		}
 	}
 
