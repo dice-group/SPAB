@@ -39,8 +39,8 @@ public class SimpleScenarioBasedTest {
         testConfigs.add(new Object[] {
                 new String[] {
                         "SELECT ?a ?b ?l WHERE { ?a <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> ?b . ?b <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2000/01/rdf-schema#Class> . ?b <http://www.w3.org/2000/01/rdf-schema#label> ?l . }",
-                        "SELECT ?v1 ?v2 ?v3 WHERE { ?v1 <http://www.w3.org/2000/01/rdf-schema#label> ?v2 . ?v1 <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2000/01/rdf-schema#Class> . ?v3 <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> ?v1 . }", },
-                new String[] { "SELECT ?a WHERE { ?a <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> ?b . }" },
+                        "SELECT ?v1 ?v3 ?v2 WHERE { ?v1 <http://www.w3.org/2000/01/rdf-schema#label> ?v2 . ?v1 <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2000/01/rdf-schema#Class> . ?v3 <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> ?v1 . }", },
+                new String[] { "SELECT ?a WHERE { ?a <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> ?b . ?b <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2000/01/rdf-schema#Class> . }" },
                 1.0 });
         // Two positive examples that have two triples in their WHERE clause
         // while the negative example has only one (although it is the same as
