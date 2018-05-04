@@ -51,6 +51,26 @@ public class QueryReplacementsTest extends AbstractTestCase {
 			+ "PREFIX  skos: <http://www.w3.org/2004/02/skos/core#>   "
 			+ "SELECT  *  WHERE    { ?data rdf:type <http://dbpedia.org/ontology/FormulaOneRacer> .      ?wins <http://dbpedia.org/ontology/wins> 10    }";
 
+	public static final String ABBREVIATED_NOTATION = "SELECT ?a WHERE { ?a  a <http://example.org#X> ; a <http://example.org#Y> ; a <http://example.org#Z> }";
+
+	/**
+	 * Tests, if "a" is replaced with RDF type and ";" notation is also replaced.
+	 */
+	@Test
+	public void testAbbreviatedNotationReplacement() {
+		SpabApi spabApi = new SpabApi();
+		spabApi.addPositive(ABBREVIATED_NOTATION);
+		SparqlUnit sparqlUnit = spabApi.getInput().getPositives().get(0);
+		String line = sparqlUnit.getLineRepresentation();
+
+		assert (line.contains("<http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://example.org#X>"));
+		assert (line.contains("<http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://example.org#Y>"));
+		assert (line.contains("<http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://example.org#Z>"));
+		assert (!line.contains(" a "));
+		assert (!line.contains(" ; "));
+		assert (line.contains(" . "));
+	}
+
 	/**
 	 * Tests, if prefixes, including the empty prefix, are replaced correctly.
 	 */

@@ -3,6 +3,7 @@ package org.dice_research.spab.input;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -29,7 +30,7 @@ public class SparqlQuery extends SparqlUnit {
 	/**
 	 * Cache for line representation.
 	 */
-	protected String lineRepresentation;
+	protected String lineRepresentationCache;
 
 	/**
 	 * Cache for resource URIs
@@ -41,20 +42,20 @@ public class SparqlQuery extends SparqlUnit {
 	 * 
 	 * Parses the SPARQL query.
 	 * 
-	 * @param sparqlUnit
-	 *            A SPARQL query
+	 * @param originalString
+	 *            A SPARQL query, given by user
 	 * @param input
 	 *            The {@link Input} this query belongs to
 	 * 
 	 * @throws InputRuntimeException
 	 *             if query string could not be parsed
 	 */
-	public SparqlQuery(String sparqlQuery, Input input) throws InputRuntimeException {
-		super(sparqlQuery, input);
+	public SparqlQuery(String originalString, Input input) throws InputRuntimeException {
+		super(originalString, input);
 	}
 
 	/**
-	 * Creates the query.
+	 * Replaces variables and parses query using Jena.
 	 * 
 	 * @throws InputRuntimeException
 	 *             if query string could not be parsed
@@ -123,23 +124,24 @@ public class SparqlQuery extends SparqlUnit {
 	}
 
 	/**
-	 * Gets a line representation of the SPARQL query.
+	 * Gets a line representation of the SPARQL query. Namespace prefixes,
+	 * abbreviated notation ("a", ";"), and line breaks are replaced.
 	 * 
-	 * Uses {@link SparqlUnit#toOneLiner(String)}.
-	 * 
-	 * Namespace prefixes are replaced.
+	 * Uses {@link SparqlUnit#replacePrefixes(String, Map)},
+	 * {@link SparqlUnit#replaceAbbreviatedNotation(String)}, and
+	 * {@link SparqlUnit#toOneLiner(String)}.
 	 * 
 	 * Uses cache.
 	 */
 	@Override
 	public String getLineRepresentation() {
-		if (lineRepresentation == null) {
+		if (lineRepresentationCache == null) {
 			long time = System.currentTimeMillis();
-			lineRepresentation = toOneLiner(
-					replacePrefixes(getJenaQuery().toString(), getJenaQuery().getPrefixMapping().getNsPrefixMap()));
+			lineRepresentationCache = replaceAbbreviatedNotation(toOneLiner(
+					replacePrefixes(getJenaQuery().toString(), getJenaQuery().getPrefixMapping().getNsPrefixMap())));
 			Statistics.addQueryLineStats(time, System.currentTimeMillis());
 		}
-		return lineRepresentation;
+		return lineRepresentationCache;
 	}
 
 	/**

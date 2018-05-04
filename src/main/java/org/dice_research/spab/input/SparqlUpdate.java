@@ -1,6 +1,7 @@
 package org.dice_research.spab.input;
 
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -25,27 +26,27 @@ public class SparqlUpdate extends SparqlUnit {
 	/**
 	 * Cache for line representation.
 	 */
-	protected String lineRepresentation;
+	protected String lineRepresentationCache;
 
 	/**
 	 * Sets the passed parameters.
 	 * 
 	 * Parses the SPARQL update-request.
 	 * 
-	 * @param sparqlUnit
-	 *            A SPARQL unit (query or update-request).
+	 * @param originalString
+	 *            A SPARQL update-request, given by user
 	 * @param input
 	 *            The {@link Input} this unit belongs to
 	 * 
 	 * @throws InputRuntimeException
 	 *             if unit string could not be parsed
 	 */
-	public SparqlUpdate(String sparqlUpdateRequest, Input input) throws InputRuntimeException {
-		super(sparqlUpdateRequest, input);
+	public SparqlUpdate(String originalString, Input input) throws InputRuntimeException {
+		super(originalString, input);
 	}
 
 	/**
-	 * Creates the update-request.
+	 * Parses update-request by using Jena.
 	 * 
 	 * @throws InputRuntimeException
 	 *             if update-request string could not be parsed
@@ -89,21 +90,22 @@ public class SparqlUpdate extends SparqlUnit {
 	}
 
 	/**
-	 * Gets a line representation of the update-request.
+	 * Gets a line representation of the update-request. Namespace prefixes,
+	 * abbreviated notation ("a", ";"), and line breaks are replaced.
 	 * 
-	 * Uses {@link SparqlUnit#toOneLiner(String)}.
+	 * Uses {@link SparqlUnit#replacePrefixes(String, Map)},
+	 * {@link SparqlUnit#replaceAbbreviatedNotation(String)}, and
+	 * {@link SparqlUnit#toOneLiner(String)}.
 	 * 
-	 * Namespace prefixes are replaced.
-	 * 
-	 * Uses cache. The original string is only parsed one time.
+	 * Uses cache.
 	 */
 	@Override
 	public String getLineRepresentation() {
-		if (lineRepresentation == null) {
-			lineRepresentation = toOneLiner(replacePrefixes(getJenaUpdateRequest().toString(),
-					getJenaUpdateRequest().getPrefixMapping().getNsPrefixMap()));
+		if (lineRepresentationCache == null) {
+			lineRepresentationCache = replaceAbbreviatedNotation(toOneLiner(replacePrefixes(
+					getJenaUpdateRequest().toString(), getJenaUpdateRequest().getPrefixMapping().getNsPrefixMap())));
 		}
-		return lineRepresentation;
+		return lineRepresentationCache;
 	}
 
 	/**

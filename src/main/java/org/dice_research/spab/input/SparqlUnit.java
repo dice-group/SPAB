@@ -1,5 +1,7 @@
 package org.dice_research.spab.input;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.List;
@@ -7,6 +9,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 import java.util.SortedMap;
+import java.util.StringJoiner;
 import java.util.TreeMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -46,16 +49,16 @@ public abstract class SparqlUnit {
 	 * 
 	 * Parses the SPARQL unit.
 	 * 
-	 * @param sparqlUnit
-	 *            A SPARQL unit (query or update-request).
+	 * @param originalString
+	 *            A SPARQL unit (query or update-request), given by user
 	 * @param input
 	 *            The {@link Input} this unit belongs to
 	 * 
 	 * @throws InputRuntimeException
 	 *             if unit string could not be parsed
 	 */
-	public SparqlUnit(String sparqlUnit, Input input) throws InputRuntimeException {
-		this.ORIGINAL_STRING = sparqlUnit;
+	public SparqlUnit(String originalString, Input input) throws InputRuntimeException {
+		this.ORIGINAL_STRING = originalString;
 		this.INPUT = input;
 		create();
 	}
@@ -76,11 +79,12 @@ public abstract class SparqlUnit {
 	public abstract String getJenaStringRepresentation();
 
 	/**
-	 * Gets a line representation of a SPARQL query / update-request.
+	 * Gets a line representation of a SPARQL query / update-request. Namespace
+	 * prefixes, abbreviated notation ("a", ";"), and line breaks are replaced.
 	 * 
-	 * Namespace prefixes are replaced.
-	 * 
-	 * Uses {@link SparqlUnit#toOneLiner(String)}.
+	 * Uses {@link SparqlUnit#replacePrefixes(String, Map)},
+	 * {@link SparqlUnit#replaceAbbreviatedNotation(String)}, and
+	 * {@link SparqlUnit#toOneLiner(String)}.
 	 * 
 	 * Uses cache.
 	 */
@@ -157,6 +161,30 @@ public abstract class SparqlUnit {
 			// RegEx result
 			return sb.toString();
 		}
+	}
+
+	/**
+	 * Replaces "a" with RDF type and replaces ";" notation.
+	 */
+	protected String replaceAbbreviatedNotation(String abbreviatedNotation) {
+		
+		List<String> parts = new ArrayList<String>(Arrays.asList(abbreviatedNotation.split(" ")));
+		for (int i = 0; i < parts.size(); i++) {
+			
+			if (parts.get(i).equals("a")) {
+				parts.set(i, "<http://www.w3.org/1999/02/22-rdf-syntax-ns#type>");
+				
+			} else if (parts.get(i).equals(";")) {
+				parts.set(i, ".");
+				parts.add(i + 1, parts.get(i - 3));
+			}
+		}
+
+		StringJoiner stringJoiner = new StringJoiner(" ");
+		for (String part : parts) {
+			stringJoiner.add(part);
+		}
+		return stringJoiner.toString();
 	}
 
 	/**
