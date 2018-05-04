@@ -18,6 +18,8 @@ import org.dice_research.spab.exceptions.InputRuntimeException;
 /**
  * Representations for a single SPARQL query.
  * 
+ * @see https://www.w3.org/TR/2013/REC-sparql11-query-20130321/#rQuery
+ * 
  * @author Adrian Wilke
  */
 public class SparqlQuery extends SparqlUnit {
@@ -137,8 +139,8 @@ public class SparqlQuery extends SparqlUnit {
 	public String getLineRepresentation() {
 		if (lineRepresentationCache == null) {
 			long time = System.currentTimeMillis();
-			lineRepresentationCache = replaceAbbreviatedNotation(toOneLiner(
-					replacePrefixes(getJenaQuery().toString(), getJenaQuery().getPrefixMapping().getNsPrefixMap())));
+			lineRepresentationCache = sortTriples(replaceAbbreviatedNotation(toOneLiner(
+					replacePrefixes(getJenaQuery().toString(), getJenaQuery().getPrefixMapping().getNsPrefixMap()))));
 			Statistics.addQueryLineStats(time, System.currentTimeMillis());
 		}
 		return lineRepresentationCache;

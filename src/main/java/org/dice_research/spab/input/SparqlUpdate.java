@@ -14,6 +14,8 @@ import org.dice_research.spab.exceptions.InputRuntimeException;
 /**
  * Representations for a single SPARQL update-request.
  * 
+ * @see https://www.w3.org/TR/2013/REC-sparql11-query-20130321/#rUpdate
+ * 
  * @author Adrian Wilke
  */
 public class SparqlUpdate extends SparqlUnit {
@@ -102,8 +104,9 @@ public class SparqlUpdate extends SparqlUnit {
 	@Override
 	public String getLineRepresentation() {
 		if (lineRepresentationCache == null) {
-			lineRepresentationCache = replaceAbbreviatedNotation(toOneLiner(replacePrefixes(
-					getJenaUpdateRequest().toString(), getJenaUpdateRequest().getPrefixMapping().getNsPrefixMap())));
+			lineRepresentationCache = sortTriples(
+					replaceAbbreviatedNotation(toOneLiner(replacePrefixes(getJenaUpdateRequest().toString(),
+							getJenaUpdateRequest().getPrefixMapping().getNsPrefixMap()))));
 		}
 		return lineRepresentationCache;
 	}

@@ -54,6 +54,29 @@ public class QueryReplacementsTest extends AbstractTestCase {
 	public static final String ABBREVIATED_NOTATION = "SELECT ?a WHERE { ?a  a <http://example.org#X> ; a <http://example.org#Y> ; a <http://example.org#Z> }";
 
 	/**
+	 * Tests triple sorting
+	 */
+	@Test
+	public void testTripleSorting() {
+		SpabApi spabApi = new SpabApi();
+
+		// variables before resources in subject
+		spabApi.addPositive(
+				"SELECT ?a WHERE { <http://example.org#X> a <http://example.org#Y> . ?a  a <http://example.org#X> }");
+		SparqlUnit sparqlUnit = spabApi.getInput().getPositives().get(0);
+		String line = sparqlUnit.getLineRepresentation();
+		String where = line.substring(line.indexOf("WHERE"));
+		assert (where.indexOf("?") < where.indexOf("#X"));
+
+		// resources before literals in object
+		spabApi.addPositive("SELECT ?s WHERE { ?s ?p \"42\" . ?s ?p <http://example.org#X> }");
+		sparqlUnit = spabApi.getInput().getPositives().get(1);
+		line = sparqlUnit.getLineRepresentation();
+		where = line.substring(line.indexOf("WHERE"));
+		assert (where.indexOf("#X") < where.indexOf("42"));
+	}
+
+	/**
 	 * Tests, if "a" is replaced with RDF type and ";" notation is also replaced.
 	 */
 	@Test

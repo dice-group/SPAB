@@ -15,6 +15,8 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.dice_research.spab.exceptions.InputRuntimeException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Representations for a single SPARQL unit (queries and update-requests).
@@ -22,6 +24,8 @@ import org.dice_research.spab.exceptions.InputRuntimeException;
  * @author Adrian Wilke
  */
 public abstract class SparqlUnit {
+
+	private static final Logger LOGGER = LoggerFactory.getLogger(SparqlUnit.class);
 
 	/**
 	 * List of 26 names for variables.
@@ -164,16 +168,146 @@ public abstract class SparqlUnit {
 	}
 
 	/**
-	 * Replaces "a" with RDF type and replaces ";" notation.
+	 * Sorts triples by sort order: Subject, predicate, object. Every s,p,o sorted
+	 * by: Variable, resource, literal.
+	 */
+	protected String sortTriples(String sparqlLine) {
+
+		// Container for triples
+		class Triple {
+			String s;
+			String p;
+			String o;
+
+			public Triple(String s, String p, String o) {
+				this.s = s;
+				this.p = p;
+				this.o = o;
+			}
+
+			@Override
+			public String toString() {
+				return s + " " + p + " " + o;
+			}
+		}
+
+		// Aim of this method: Sort triples
+		Comparator<Triple> tripleComparator = new Comparator<Triple>() {
+			@Override
+			public int compare(Triple a, Triple b) {
+				try {
+					if (compare(a.s, b.s) != 0) {
+						return compare(a.s, b.s);
+					} else if (compare(a.p, b.p) != 0) {
+						return compare(a.p, b.p);
+					} else {
+						return compare(a.o, b.o);
+					}
+				} catch (Exception e) {
+					LOGGER.warn("Unsupported SPARQL format (" + e.getMessage() + ", " + a + " | " + b);
+					return 0;
+				}
+			}
+
+			/**
+			 * 1. Variables: '?' or '$'
+			 * 
+			 * 2. Resources: '<'
+			 * 
+			 * 3. Literals: '"' or "'"
+			 */
+			private int compare(String a, String b) throws Exception {
+				int prioA = 0;
+				int prioB = 0;
+				a = a.substring(0, 1);
+				b = b.substring(0, 1);
+				if (a.equals("?") || a.equals("$")) {
+					prioA = 3;
+				} else if (a.equals("<")) {
+					prioA = 2;
+				} else if (a.equals("'") || a.equals("\"")) {
+					prioA = 1;
+				} else {
+					throw new Exception(a);
+				}
+				if (b.equals("?") || b.equals("$")) {
+					prioB = 3;
+				} else if (b.equals("<")) {
+					prioB = 2;
+				} else if (b.equals("'") || b.equals("\"")) {
+					prioB = 1;
+				} else {
+					throw new Exception(b);
+				}
+				return prioB - prioA;
+			}
+		};
+
+		StringJoiner stringJoiner = new StringJoiner(" ");
+		boolean searchTriples = false;
+		LinkedList<Triple> triples = new LinkedList<Triple>();
+		String[] parts = sparqlLine.split(" ");
+		for (int i = 0; i < parts.length; i++) {
+			if (searchTriples) {
+
+				// Remember triples
+				if (parts[i + 3].equals(".") || parts[i + 3].equals("}")) {
+					triples.add(new Triple(parts[i], parts[i + 1], parts[i + 2]));
+					i += 3;
+				} else {
+
+					// Triple sould only end with ',' or '}'
+					LOGGER.warn(
+							"Unsupported SPARQL format [index " + (i + 3) + ": " + parts[i + 3] + "]: " + sparqlLine);
+					return sparqlLine;
+				}
+
+				// Add triples to return string
+				if (parts[i].equals("}")) {
+					searchTriples = false;
+					triples.sort(tripleComparator);
+					boolean firstTriple = true;
+					for (Triple triple : triples) {
+						if (firstTriple) {
+							firstTriple = false;
+						} else {
+							stringJoiner.add(".");
+						}
+						stringJoiner.add(triple.toString());
+					}
+					triples.clear();
+					stringJoiner.add("}");
+				}
+
+				// Control flow; add miscellaneous characters
+			} else {
+				if (parts[i].equals("{")) {
+					stringJoiner.add("{");
+					searchTriples = true;
+				} else {
+					stringJoiner.add(parts[i]);
+				}
+			}
+		}
+
+		return stringJoiner.toString();
+	}
+
+	/**
+	 * Replaces "a" with RDF type.
+	 * 
+	 * Replaces ";" notation.
+	 * 
+	 * Replaces ". }"
 	 */
 	protected String replaceAbbreviatedNotation(String abbreviatedNotation) {
-		
+
 		List<String> parts = new ArrayList<String>(Arrays.asList(abbreviatedNotation.split(" ")));
 		for (int i = 0; i < parts.size(); i++) {
-			
+
 			if (parts.get(i).equals("a")) {
 				parts.set(i, "<http://www.w3.org/1999/02/22-rdf-syntax-ns#type>");
-				
+
 			} else if (parts.get(i).equals(";")) {
 				parts.set(i, ".");
 				parts.add(i + 1, parts.get(i - 3));
@@ -184,7 +318,9 @@ public abstract class SparqlUnit {
 		for (String part : parts) {
 			stringJoiner.add(part);
 		}
-		return stringJoiner.toString();
+		String query = stringJoiner.toString();
+
+		return query.replaceAll("\\. }", "}");
 	}
 
 	/**
