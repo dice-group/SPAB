@@ -219,27 +219,35 @@ public abstract class SparqlUnit {
 			private int compare(String a, String b) throws Exception {
 				int prioA = 0;
 				int prioB = 0;
-				a = a.substring(0, 1);
-				b = b.substring(0, 1);
-				if (a.equals("?") || a.equals("$")) {
+				String preA = a.substring(0, 1);
+				String preB = b.substring(0, 1);
+
+				if (preA.equals("?") || preA.equals("$")) {
 					prioA = 3;
-				} else if (a.equals("<")) {
+				} else if (preA.equals("<")) {
 					prioA = 2;
-				} else if (a.equals("'") || a.equals("\"")) {
+				} else if (preA.equals("'") || preA.equals("\"")) {
 					prioA = 1;
 				} else {
-					throw new Exception(a);
+					throw new Exception(preA);
 				}
-				if (b.equals("?") || b.equals("$")) {
+
+				if (preB.equals("?") || preB.equals("$")) {
 					prioB = 3;
-				} else if (b.equals("<")) {
+				} else if (preB.equals("<")) {
 					prioB = 2;
-				} else if (b.equals("'") || b.equals("\"")) {
+				} else if (preB.equals("'") || preB.equals("\"")) {
 					prioB = 1;
 				} else {
-					throw new Exception(b);
+					throw new Exception(preB);
 				}
-				return prioB - prioA;
+
+				int prio = prioB - prioA;
+				if (prio != 0) {
+					return prio;
+				} else {
+					return a.compareTo(b);
+				}
 			}
 		};
 

@@ -35,7 +35,7 @@ public class CandidateGenerationTest extends AbstractTestCase {
 
 		// Input
 		SpabApi spabApi = new SpabApi();
-		spabApi.setLambda(0.2f);
+		spabApi.setLambda(0.0f);
 
 		spabApi.addPositive(SELECT1);
 		spabApi.addPositive(SELECT2);
