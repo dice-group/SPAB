@@ -62,11 +62,15 @@ public class QueryReplacementsTest extends AbstractTestCase {
 
 		// variables before resources in subject
 		spabApi.addPositive(
-				"SELECT ?a WHERE { <http://example.org#X> a <http://example.org#Y> . ?a  a <http://example.org#X> }");
+				"SELECT ?x WHERE { <http://example.org#X> a <http://example.org#Y> . ?x  a <http://example.org#X> }");
 		SparqlUnit sparqlUnit = spabApi.getInput().getPositives().get(0);
 		String line = sparqlUnit.getLineRepresentation();
 		String where = line.substring(line.indexOf("WHERE"));
 		assert (where.indexOf("?") < where.indexOf("#X"));
+		
+		if(!PRINT) {
+			System.out.println(line);
+		}
 
 		// resources before literals in object
 		spabApi.addPositive("SELECT ?s WHERE { ?s ?p \"42\" . ?s ?p <http://example.org#X> }");
@@ -74,6 +78,10 @@ public class QueryReplacementsTest extends AbstractTestCase {
 		line = sparqlUnit.getLineRepresentation();
 		where = line.substring(line.indexOf("WHERE"));
 		assert (where.indexOf("#X") < where.indexOf("42"));
+		
+		if(!PRINT) {
+			System.out.println(line);
+		}
 	}
 
 	/**

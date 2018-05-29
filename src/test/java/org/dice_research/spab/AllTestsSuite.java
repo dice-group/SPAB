@@ -7,7 +7,7 @@ import org.junit.runners.Suite.SuiteClasses;
 @RunWith(Suite.class)
 @SuiteClasses({ IncorrectInputTest.class, QueryReplacementsTest.class, CandidateGeneralTest.class,
 		CandidateSpabTwoTest.class, ImportFilesTest.class, QueryReplacementsTest.class, RegExTest.class,
-		ScoringTest.class, CandidateGenerationTest.class, SimpleScenarioBasedTest.class })
+		ScoringTest.class, CandidateGenerationTest.class, SimpleScenarioBasedTest.class, SpabThreeTest.class })
 
 /**
  * Suite for all tests.
