@@ -66,6 +66,55 @@ public class SimpleScenarioBasedTest {
                         "SELECT ?a WHERE { ?a <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> ?b . }" },
                 0.8 });
 
+        // An example where the two positive examples can not be selected
+        // without selecting the first negative example (it shares the first
+        // triple of the WHERE clause with the first positive example and the
+        // second triple with the second positive example. However, the second
+        // negative example should be excluded which should lead to a Recall of 1.0 and a precision of 0.666.
+        testConfigs.add(new Object[] {
+                new String[] {
+                        "SELECT ?a WHERE { ?a <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> ?b . ?a <http://www.w3.org/2000/01/rdf-schema#label> \"Literal\" . }",
+                        "SELECT ?v1 WHERE { ?a <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2000/01/rdf-schema#Class> . ?a <http://www.w3.org/2000/01/rdf-schema#comment> \"Literal\" . }", },
+                new String[] {
+                        "SELECT ?a WHERE { ?a <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> ?b . ?a <http://www.w3.org/2000/01/rdf-schema#comment> \"Literal\" . }",
+                        "SELECT ?a WHERE { ?a <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> ?b . }" },
+                0.8 });
+
+        // an example of two queries which are exactly the same but have swapped sub WHERE clauses connected by a UNION. 
+        testConfigs.add(new Object[] {
+                new String[] {
+                        "SELECT ?a WHERE { { ?a <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://example.org/Class> . } UNION { ?a <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2000/01/rdf-schema#Class> . } }",
+                        "SELECT ?a WHERE { { ?a <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2000/01/rdf-schema#Class> . } UNION { ?a <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://example.org/Class> . } }"},
+                new String[] { "SELECT ?a WHERE { ?a <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://example.org/Class> . }",
+                        "SELECT ?a WHERE { ?a <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2000/01/rdf-schema#Class> . }"},
+                1.0 });
+
+        // an example of queries which have UNION statements with different triple patterns. 
+        testConfigs.add(new Object[] {
+                new String[] {
+                        "SELECT ?a WHERE { { ?a <http://example.org/prop1> <http://example.org/Entity1> . } UNION { ?a <http://example.org/prop2> <http://example.org/Entity2> . } }",
+                        "SELECT ?a WHERE { { ?a <http://example.org/prop3> <http://example.org/Entity3> . } UNION { ?a <http://example.org/prop4> <http://example.org/Entity4> . ?a <http://example.org/prop5> <http://example.org/Entity5> . } }",
+                        "SELECT ?a WHERE { { ?a <http://example.org/prop6> <http://example.org/Entity6> . } UNION { ?a <http://example.org/prop7> <http://example.org/Entity7> . } UNION { ?a <http://example.org/prop8> <http://example.org/Entity8> . } }"},
+                new String[] { "SELECT ?a WHERE { ?a <http://example.org/prop1> <http://example.org/Entity1> . }", 
+                        "SELECT ?a WHERE { ?a <http://example.org/prop2> <http://example.org/Entity2> . }", 
+                        "SELECT ?a WHERE { ?a <http://example.org/prop3> <http://example.org/Entity3> . }", 
+                        "SELECT ?a WHERE { ?a <http://example.org/prop4> <http://example.org/Entity4> . }", 
+                        "SELECT ?a WHERE { ?a <http://example.org/prop5> <http://example.org/Entity5> . }", 
+                        "SELECT ?a WHERE { ?a <http://example.org/prop6> <http://example.org/Entity6> . }", 
+                        "SELECT ?a WHERE { ?a <http://example.org/prop7> <http://example.org/Entity7> . }", 
+                        "SELECT ?a WHERE { ?a <http://example.org/prop8> <http://example.org/Entity8> . }" },
+                1.0 });
+
+        // Two queries that have one pattern in common but one has a UNION statement while the negative example has a UNION as well. 
+        testConfigs.add(new Object[] {
+                new String[] {
+                        "SELECT ?a WHERE { { ?a <http://example.org/prop1> <http://example.org/Entity1> . } UNION { ?a <http://example.org/prop2> <http://example.org/Entity2> . } }",
+                        "SELECT ?a WHERE { ?a <http://example.org/prop1> <http://example.org/Entity1> . }"},
+                new String[] {
+                        "SELECT ?a WHERE { { ?a <http://example.org/prop3> <http://example.org/Entity3> . } UNION { ?a <http://example.org/prop4> <http://example.org/Entity4> . ?a <http://example.org/prop5> <http://example.org/Entity5> . } }",
+                        "SELECT ?a WHERE { ?a <http://example.org/prop2> <http://example.org/Entity2> . }"},
+                1.0 });
+
         return testConfigs;
     }
 
