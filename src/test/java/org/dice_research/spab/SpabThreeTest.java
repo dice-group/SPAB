@@ -140,8 +140,8 @@ public class SpabThreeTest extends AbstractTestCase {
 				System.out.println(subFeatureRegexToStringBuilder(whereFeature));
 			}
 		}
-		// Current implementation: Only one additional feature: empty replaced with res
-		assertEquals(subWhereFeatures.size(), numberOfResources);
+		// 1x empty replaced with resource and 3x resource at triple positions s,p,o
+		assertEquals(subWhereFeatures.size(), numberOfResources * 4);
 	}
 
 	@Test

@@ -49,12 +49,21 @@ public class WhereFeature extends SubFeature {
 		for (int t = 0; t < triples.size(); t++) {
 			TripleFeature triple = triples.get(t);
 
-			if (triple.getTripleType() == TripleType.EMPTY) {
+			if (triple.getTripleType().equals(TripleType.EMPTY)) {
 				// Empty triples have to be replaced by resources
 
 				for (String resource : input.getResources()) {
 					whereSubFeatures.add(createNewWhereFeatureExchangeTriple(new TripleFeature(resource), t));
 				}
+
+			} else if (triple.getTripleType().equals(TripleType.RESOURCE)) {
+				// Resources have to be refinded
+
+				String resource = triple.getResource();
+				whereSubFeatures.add(createNewWhereFeatureExchangeTriple(new TripleFeature(resource, null, null), t));
+				whereSubFeatures.add(createNewWhereFeatureExchangeTriple(new TripleFeature(null, resource, null), t));
+				whereSubFeatures.add(createNewWhereFeatureExchangeTriple(new TripleFeature(null, null, resource), t));
+				allTriplesEmpty = false;
 
 			} else {
 				allTriplesEmpty = false;
