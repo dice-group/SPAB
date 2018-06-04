@@ -1,7 +1,9 @@
 package org.dice_research.spab.candidates.three;
 
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 import org.dice_research.spab.input.Input;
 
@@ -14,6 +16,7 @@ public class Features {
 
 	protected TypeFeature typeFeature;
 	protected WhereFeature whereFeature;
+	protected Map<String, SolutionModifierFeature> solutionModifierFeatures = new HashMap<String, SolutionModifierFeature>();
 
 	/**
 	 * Creates new, empty features.
@@ -27,6 +30,7 @@ public class Features {
 	public Features(Features features) {
 		this.typeFeature = features.typeFeature;
 		this.whereFeature = features.whereFeature;
+		this.solutionModifierFeatures = new HashMap<String, SolutionModifierFeature>(features.solutionModifierFeatures);
 	}
 
 	/**
@@ -46,6 +50,12 @@ public class Features {
 
 		if (whereFeature != null) {
 			whereFeature.appendRegex(stringBuilder);
+		}
+		
+		// SOLUTION MODIFIER
+		
+		for (SolutionModifierFeature solutionModifierFeature : solutionModifierFeatures.values()) {
+			solutionModifierFeature.appendRegex(stringBuilder);
 		}
 
 		// Build and return
@@ -90,6 +100,17 @@ public class Features {
 			for (WhereFeature newWhereFeature : whereFeature.generateSubFeatures(input)) {
 				Features newFeatures = new Features(this);
 				newFeatures.whereFeature = newWhereFeature;
+				subFeatures.add(newFeatures);
+			}
+		}
+
+		// SOLUTION MODIFIERS
+
+		for (String solutionModifier : SolutionModifierFeature.getAllTypes()) {
+			if (!solutionModifierFeatures.containsKey(solutionModifier)) {
+				Features newFeatures = new Features(this);
+				newFeatures.solutionModifierFeatures.put(solutionModifier,
+						new SolutionModifierFeature(solutionModifier));
 				subFeatures.add(newFeatures);
 			}
 		}
