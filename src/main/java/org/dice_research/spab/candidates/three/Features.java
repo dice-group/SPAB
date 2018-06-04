@@ -51,9 +51,9 @@ public class Features {
 		if (whereFeature != null) {
 			whereFeature.appendRegex(stringBuilder);
 		}
-		
+
 		// SOLUTION MODIFIER
-		
+
 		for (SolutionModifierFeature solutionModifierFeature : solutionModifierFeatures.values()) {
 			solutionModifierFeature.appendRegex(stringBuilder);
 		}
@@ -62,7 +62,9 @@ public class Features {
 
 		if (stringBuilder.length() > 0) {
 			// Build regular expression
-			return stringBuilder.toString();
+			String regex = stringBuilder.toString();
+			// Replace double .*
+			return regex.replaceAll("\\.\\*\\.\\*", ".*");
 
 		} else {
 			// No features specified. Return most generic regular expression, matching
