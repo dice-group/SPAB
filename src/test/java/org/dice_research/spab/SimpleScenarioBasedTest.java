@@ -82,7 +82,7 @@ public class SimpleScenarioBasedTest {
     @Test
     public void test() throws SpabException {
         SpabApi spab = new SpabApi();
-        spab.setMaxIterations(10000);
+        spab.setMaxIterations(100);
         for (int i = 0; i < posExamples.length; ++i) {
             spab.addPositive(posExamples[i]);
         }

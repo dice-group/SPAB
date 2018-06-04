@@ -32,13 +32,13 @@ public class SpabApi {
 	 * inputs.
 	 */
 	public static enum CandidateImplementation {
-		SPAB_ONE, SPAB_TWO, UNIT_TEST
+		SPAB_ONE, SPAB_TWO, SPAB_THREE, UNIT_TEST
 	}
 
 	/**
 	 * Default candidate implementation.
 	 */
-	public static final CandidateImplementation CANDIDATE_IMPLEMENTATION = CandidateImplementation.SPAB_TWO;
+	public static final CandidateImplementation CANDIDATE_IMPLEMENTATION = CandidateImplementation.SPAB_THREE;
 
 	/**
 	 * Default setting for stopping on discovery of perfect solution.
