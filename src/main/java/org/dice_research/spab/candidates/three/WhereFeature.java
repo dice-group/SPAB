@@ -56,13 +56,23 @@ public class WhereFeature extends SubFeature {
 					whereSubFeatures.add(createNewWhereFeatureExchangeTriple(new TripleFeature(resource), t));
 				}
 
-			} else if (triple.getTripleType().equals(TripleType.RESOURCE)) {
-				// Resources have to be refinded
+			} else if (triple.getTripleType().equals(TripleType.GENERIC)) {
+				// Resources are moved to S or P or O
 
 				String resource = triple.getResource();
 				whereSubFeatures.add(createNewWhereFeatureExchangeTriple(new TripleFeature(resource, null, null), t));
 				whereSubFeatures.add(createNewWhereFeatureExchangeTriple(new TripleFeature(null, resource, null), t));
 				whereSubFeatures.add(createNewWhereFeatureExchangeTriple(new TripleFeature(null, null, resource), t));
+				allTriplesEmpty = false;
+
+			} else if (triple.getTripleType().equals(TripleType.FULL)) {
+				// Adding resources at empty positions
+
+				if (triple.getSubject() == null || triple.getPredicate() == null || triple.getObject() == null) {
+					for (TripleFeature newTriple : extendFullTriples(triple, input)) {
+						whereSubFeatures.add(createNewWhereFeatureExchangeTriple(newTriple, t));
+					}
+				}
 				allTriplesEmpty = false;
 
 			} else {
@@ -103,6 +113,32 @@ public class WhereFeature extends SubFeature {
 
 		stringBuilder.append("\\}");
 		stringBuilder.append(".*");
+	}
+
+	/**
+	 * Checks S, P, O of full triples, if they are null. If so, new triples with
+	 * resources are generated. The resulting collection is returned.
+	 */
+	protected List<TripleFeature> extendFullTriples(TripleFeature tripleFeature, Input input) {
+		List<TripleFeature> newTriples = new LinkedList<TripleFeature>();
+		for (String resource : input.getResources()) {
+			if (tripleFeature.getSubject() == null) {
+				TripleFeature newTripleFeature = new TripleFeature(tripleFeature);
+				newTripleFeature.setSubject(resource);
+				newTriples.add(newTripleFeature);
+			}
+			if (tripleFeature.getPredicate() == null) {
+				TripleFeature newTripleFeature = new TripleFeature(tripleFeature);
+				newTripleFeature.setPredicate(resource);
+				newTriples.add(newTripleFeature);
+			}
+			if (tripleFeature.getObject() == null) {
+				TripleFeature newTripleFeature = new TripleFeature(tripleFeature);
+				newTripleFeature.setObject(resource);
+				newTriples.add(newTripleFeature);
+			}
+		}
+		return newTriples;
 	}
 
 	/**

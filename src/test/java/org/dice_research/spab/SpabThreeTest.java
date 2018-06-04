@@ -57,7 +57,7 @@ public class SpabThreeTest extends AbstractTestCase {
 		stringBuilder = new StringBuilder();
 		tripleFeature.appendRegex(stringBuilder);
 		assertEquals(stringBuilder.toString(), resourceTripleRegEx);
-		assertTrue(tripleFeature.getTripleType().equals(TripleFeature.TripleType.RESOURCE));
+		assertTrue(tripleFeature.getTripleType().equals(TripleFeature.TripleType.GENERIC));
 	}
 
 	@Test
@@ -215,13 +215,56 @@ public class SpabThreeTest extends AbstractTestCase {
 
 		// Human test
 		if (PRINT) {
+			String resource = "http://dbpedia.org/ontology/pubchem";
+			Candidate candidatewithResource = null;
+
+			// Print all children of root node
 			for (Candidate rootChild : rootChildren) {
-				System.out.println(rootChild.getRegEx());
+				System.out.println(">" + rootChild.getRegEx());
 				List<Candidate> children = rootChild.getChildren(input);
 				for (Candidate child : children) {
 					System.out.println(child.getRegEx());
+					if (child.getRegEx().contains(resource)) {
+						candidatewithResource = child;
+					}
 				}
 				System.out.println();
+			}
+
+			// Get candidate, which contains the resource and print its children
+			List<Candidate> sparseCandidates = new LinkedList<Candidate>();
+			if (candidatewithResource != null) {
+				System.out.println(">>" + candidatewithResource.getRegEx());
+				List<Candidate> children = candidatewithResource.getChildren(input);
+				for (Candidate child : children) {
+					System.out.println(child.getRegEx());
+					if (child.getRegEx().contains(resource) && child.getRegEx().contains(" .*")) {
+						sparseCandidates.add(child);
+					}
+				}
+			}
+
+			// Get candidates, which contains the resource in S or P or O and print their
+			// children
+			Candidate lastGeneratedChild = null;
+			for (Candidate sparseCandidate : sparseCandidates) {
+				System.out.println();
+				System.out.println(">>>" + sparseCandidate.getRegEx());
+				List<Candidate> children = sparseCandidate.getChildren(input);
+				for (Candidate child : children) {
+					System.out.println(child.getRegEx());
+					lastGeneratedChild = child;
+				}
+			}
+
+			// Print children of last generated child
+			if (lastGeneratedChild != null) {
+				System.out.println();
+				System.out.println(">>>>" + lastGeneratedChild.getRegEx());
+				List<Candidate> children = lastGeneratedChild.getChildren(input);
+				for (Candidate child : children) {
+					System.out.println(child.getRegEx());
+				}
 			}
 		}
 
