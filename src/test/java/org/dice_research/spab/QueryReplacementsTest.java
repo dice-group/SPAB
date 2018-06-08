@@ -68,7 +68,7 @@ public class QueryReplacementsTest extends AbstractTestCase {
 		String where = line.substring(line.indexOf("WHERE"));
 		assert (where.indexOf("?") < where.indexOf("#X"));
 		
-		if(!PRINT) {
+		if(PRINT) {
 			System.out.println(line);
 		}
 
@@ -79,7 +79,7 @@ public class QueryReplacementsTest extends AbstractTestCase {
 		where = line.substring(line.indexOf("WHERE"));
 		assert (where.indexOf("#X") < where.indexOf("42"));
 		
-		if(!PRINT) {
+		if(PRINT) {
 			System.out.println(line);
 		}
 	}

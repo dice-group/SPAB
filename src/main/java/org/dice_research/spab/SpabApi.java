@@ -3,6 +3,7 @@ package org.dice_research.spab;
 import java.util.List;
 
 import org.dice_research.spab.candidates.Candidate;
+import org.dice_research.spab.candidates.CandidateFactory;
 import org.dice_research.spab.exceptions.CandidateRuntimeException;
 import org.dice_research.spab.exceptions.InputRuntimeException;
 import org.dice_research.spab.exceptions.SpabException;
@@ -30,9 +31,12 @@ public class SpabApi {
 	 * Available implementations for SPARQL query candidates. These candidates
 	 * represent general SPARQL queries, which are compared with SPARQL query
 	 * inputs.
+	 * 
+	 * New implementations of candidates must be added to the enumeration
+	 * CandidateImplementation in {@link SpabApi} and to {@link CandidateFactory}.
 	 */
 	public static enum CandidateImplementation {
-		SPAB_ONE, SPAB_TWO, SPAB_THREE, UNIT_TEST
+		SPAB_ONE, SPAB_TWO, SPAB_THREE, SPAB_FOUR, UNIT_TEST
 	}
 
 	/**
@@ -184,7 +188,7 @@ public class SpabApi {
 	 * inputs.
 	 * 
 	 * 
-	 * Default value: {@link SpabApi#MAX_ITERATIONS}
+	 * Default value: {@link #CANDIDATE_IMPLEMENTATION}
 	 */
 	public void setCandidateImplementation(CandidateImplementation candidateImplementation) {
 		spab.getConfiguration().setCandidateImplementation(candidateImplementation);

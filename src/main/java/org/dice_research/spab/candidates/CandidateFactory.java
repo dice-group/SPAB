@@ -1,13 +1,18 @@
 package org.dice_research.spab.candidates;
 
 import org.dice_research.spab.Matcher;
+import org.dice_research.spab.SpabApi;
 import org.dice_research.spab.SpabApi.CandidateImplementation;
+import org.dice_research.spab.candidates.four.SpabFourCandidate;
 import org.dice_research.spab.candidates.three.SpabThreeCandidate;
 import org.dice_research.spab.candidates.two.SpabTwoCandidate;
 import org.dice_research.spab.exceptions.SpabException;
 
 /**
  * Returns root instance of respective {@link Candidate} implementation.
+ * 
+ * New implementations of candidates must be added to the enumeration
+ * CandidateImplementation in {@link SpabApi} and to {@link CandidateFactory}.F
  * 
  * @author Adrian Wilke
  */
@@ -18,12 +23,13 @@ public abstract class CandidateFactory {
 		switch (candidateImplementation) {
 
 		case SPAB_TWO:
-			// The default implementation
 			return new SpabTwoCandidate(null);
 
 		case SPAB_THREE:
-			// The default implementation
 			return new SpabThreeCandidate(null);
+
+		case SPAB_FOUR:
+			return new SpabFourCandidate();
 
 		case UNIT_TEST:
 			// Unit tests of candidates also are matchers
