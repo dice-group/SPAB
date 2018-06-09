@@ -73,21 +73,6 @@ public class CandidateGeneralTest extends AbstractTestCase implements Candidate,
 		}
 	}
 
-	public void print(CandidateVertex bestCandidate, SpabApi spabApi) {
-		System.out.println("Final score of best candidate: " + bestCandidate.getScore());
-		System.out.println("F-measure of best candidate:   " + bestCandidate.getfMeasure());
-		System.out.println("Generation of best candidate: " + bestCandidate.getGeneration());
-		System.out.println("Generated generations:        " + spabApi.getGraph().getDepth());
-		System.out.println("Number of remaining candidates in queue: " + spabApi.getQueue().getQueue().size());
-		System.out.print("Next best scores: ");
-		while (!spabApi.getQueue().getQueue().isEmpty()) {
-			System.out.print(spabApi.getQueue().pollBestCandidate().getScore() + " ");
-		}
-		System.out.println();
-		System.out.println("Number generated candidates: " + spabApi.getGraph().getAllCandidates().size());
-		System.out.println("RegEx of best candidate: " + bestCandidate.getCandidate().getRegEx());
-	}
-
 	public void setVertex(CandidateVertex candidateVertex) {
 		new CandidateGeneralTest();
 	}
@@ -134,7 +119,7 @@ public class CandidateGeneralTest extends AbstractTestCase implements Candidate,
 
 		// If a human is interested in the results
 		if (PRINT) {
-			print(bestCandidate, spab);
+			printResult(bestCandidate, spab, "", PRINT);
 		}
 	}
 }

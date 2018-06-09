@@ -46,12 +46,12 @@ public class SpabFourCandidate implements Candidate {
 			}
 
 			@Override
-			public void addLeftHandSide(StringBuilder stringBuilder) {
+			public void addPrefix(StringBuilder stringBuilder) {
 				stringBuilder.append(".*");
 			}
 
 			@Override
-			public void addRightHandSide(StringBuilder stringBuilder) {
+			public void addSuffix(StringBuilder stringBuilder) {
 			}
 		};
 	}
@@ -81,8 +81,8 @@ public class SpabFourCandidate implements Candidate {
 	@Override
 	public String getRegEx() throws CandidateRuntimeException {
 		StringBuilder stringBuilder = new StringBuilder();
-		expression.addLeftHandSide(stringBuilder);
-		expression.addRightHandSide(stringBuilder);
+		expression.addPrefix(stringBuilder);
+		expression.addSuffix(stringBuilder);
 		return stringBuilder.toString();
 	}
 

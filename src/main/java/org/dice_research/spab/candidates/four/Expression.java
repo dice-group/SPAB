@@ -36,21 +36,21 @@ public abstract class Expression {
 	public abstract List<Expression> getChildren(Input input);
 
 	/**
-	 * Adds left hand side of regular expression (e.g. opening brackets).
+	 * Adds prefix of regular expression (e.g. opening brackets).
 	 */
-	public abstract void addLeftHandSide(StringBuilder stringBuilder);
+	public abstract void addPrefix(StringBuilder stringBuilder);
 
 	/**
-	 * Appends right hand side of regular expression (default).
+	 * Appends suffix of regular expression (e.g. closing brackets).
 	 */
-	public abstract void addRightHandSide(StringBuilder stringBuilder);
+	public abstract void addSuffix(StringBuilder stringBuilder);
 
 	/**
-	 * Adds LHS of parent expression. Adds wild-card.
+	 * Adds prefix of parent expression. Adds wild-card.
 	 */
-	protected void addParentLeftHandSide(StringBuilder stringBuilder) {
+	protected void addParentPrefix(StringBuilder stringBuilder) {
 		if (parent != null) {
-			parent.addLeftHandSide(stringBuilder);
+			parent.addPrefix(stringBuilder);
 			if (!stringBuilder.substring(stringBuilder.length() - 2).equals(".*")) {
 				stringBuilder.append(".*");
 			}
@@ -58,14 +58,14 @@ public abstract class Expression {
 	}
 
 	/**
-	 * Adds wild-card. Adds RHS of parent expression.
+	 * Adds wild-card. Adds suffix of parent expression.
 	 */
-	protected void addParentRightHandSide(StringBuilder stringBuilder) {
+	protected void addParentSuffix(StringBuilder stringBuilder) {
 		if (parent != null) {
 			if (!stringBuilder.substring(stringBuilder.length() - 2).equals(".*")) {
 				stringBuilder.append(".*");
 			}
-			parent.addRightHandSide(stringBuilder);
+			parent.addSuffix(stringBuilder);
 		}
 	}
 }

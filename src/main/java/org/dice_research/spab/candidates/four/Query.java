@@ -34,15 +34,15 @@ public class Query extends Expression {
 	}
 
 	@Override
-	public void addLeftHandSide(StringBuilder stringBuilder) {
-		addParentLeftHandSide(stringBuilder);
+	public void addPrefix(StringBuilder stringBuilder) {
+		addParentPrefix(stringBuilder);
 		stringBuilder.append(type.toString());
 		stringBuilder.append(".*");
 	}
 
 	@Override
-	public void addRightHandSide(StringBuilder stringBuilder) {
-		addParentRightHandSide(stringBuilder);
+	public void addSuffix(StringBuilder stringBuilder) {
+		addParentSuffix(stringBuilder);
 	}
 
 }

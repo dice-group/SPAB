@@ -20,11 +20,11 @@ public class Triple extends Expression {
 	 * 
 	 * FULL: S, P, O can contain resources.
 	 */
-	public static enum TripleType {
+	public static enum Type {
 		EMPTY, GENERIC, FULL
 	}
 
-	protected TripleType tripleType;
+	protected Type type;
 	protected String resource;
 	protected String subject;
 	protected String predicate;
@@ -33,9 +33,17 @@ public class Triple extends Expression {
 	/**
 	 * Empty triple.
 	 */
+	public Triple() {
+		super();
+		this.type = Type.EMPTY;
+	}
+
+	/**
+	 * Empty triple.
+	 */
 	public Triple(Expression parent) {
 		super(parent);
-		this.tripleType = TripleType.EMPTY;
+		this.type = Type.EMPTY;
 	}
 
 	/**
@@ -43,7 +51,7 @@ public class Triple extends Expression {
 	 */
 	public Triple(Expression parent, String resource) {
 		super(parent);
-		this.tripleType = TripleType.GENERIC;
+		this.type = Type.GENERIC;
 		this.resource = resource;
 	}
 
@@ -52,7 +60,7 @@ public class Triple extends Expression {
 	 */
 	public Triple(Expression parent, String subject, String predicate, String object) {
 		super(parent);
-		this.tripleType = TripleType.FULL;
+		this.type = Type.FULL;
 		this.subject = subject;
 		this.predicate = predicate;
 		this.object = object;
@@ -62,19 +70,19 @@ public class Triple extends Expression {
 	public List<Expression> getChildren(Input input) {
 		List<Expression> children = new LinkedList<Expression>();
 
-		if (tripleType.equals(TripleType.EMPTY)) {
+		if (type.equals(Type.EMPTY)) {
 			// Empty triples have to be replaced by resources
 			for (String resource : input.getResources()) {
 				children.add(new Triple(this, resource));
 			}
 
-		} else if (tripleType.equals(TripleType.GENERIC)) {
+		} else if (type.equals(Type.GENERIC)) {
 			// Resources are moved to S, P, O
 			children.add(new Triple(this, resource, null, null));
 			children.add(new Triple(this, null, resource, null));
 			children.add(new Triple(this, null, null, resource));
 
-		} else if (tripleType.equals(TripleType.FULL)) {
+		} else if (type.equals(Type.FULL)) {
 			// Adding resources at empty positions
 
 			for (String resource : input.getResources()) {
@@ -94,14 +102,16 @@ public class Triple extends Expression {
 	}
 
 	@Override
-	public void addLeftHandSide(StringBuilder stringBuilder) {
+	public void addPrefix(StringBuilder stringBuilder) {
 
-		// Add LHS for non-triples
+		// Add prefix for non-triples
 		Expression parentExpression = parent;
 		while (parentExpression instanceof Triple) {
 			parentExpression = parentExpression.parent;
 		}
-		parentExpression.addLeftHandSide(stringBuilder);
+		if (parentExpression != null) {
+			parentExpression.addPrefix(stringBuilder);
+		}
 
 		// Add wild-card
 		if (stringBuilder.length() >= 2) {
@@ -112,17 +122,17 @@ public class Triple extends Expression {
 			stringBuilder.append(".*");
 		}
 
-		if (tripleType.equals(TripleType.EMPTY)) {
+		if (type.equals(Type.EMPTY)) {
 			// Empty triple represented by wild-card
 			if (stringBuilder.length() >= 2 && !stringBuilder.substring(stringBuilder.length() - 2).equals(".*")) {
 				stringBuilder.append(".*");
 			}
 
-		} else if (tripleType.equals(TripleType.GENERIC)) {
+		} else if (type.equals(Type.GENERIC)) {
 			// Generic triple represented by resource
 			stringBuilder.append(Pattern.quote("<" + resource + ">"));
 
-		} else if (tripleType.equals(TripleType.FULL)) {
+		} else if (type.equals(Type.FULL)) {
 			// Fill triple represented by resources and wild-cards
 			if (subject != null) {
 				stringBuilder.append(Pattern.quote("<" + subject + ">"));
@@ -145,18 +155,20 @@ public class Triple extends Expression {
 	}
 
 	@Override
-	public void addRightHandSide(StringBuilder stringBuilder) {
+	public void addSuffix(StringBuilder stringBuilder) {
 
 		// Add wild-card
 		if (!stringBuilder.substring(stringBuilder.length() - 2).equals(".*")) {
 			stringBuilder.append(".*");
 		}
 
-		// Add RHS for non-triples
+		// Add suffix for non-triples
 		Expression parentExpression = parent;
 		while (parentExpression instanceof Triple) {
 			parentExpression = parentExpression.parent;
 		}
-		parentExpression.addRightHandSide(stringBuilder);
+		if (parentExpression != null) {
+			parentExpression.addSuffix(stringBuilder);
+		}
 	}
 }

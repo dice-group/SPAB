@@ -12,7 +12,7 @@ import org.dice_research.spab.exceptions.SpabException;
  * Returns root instance of respective {@link Candidate} implementation.
  * 
  * New implementations of candidates must be added to the enumeration
- * CandidateImplementation in {@link SpabApi} and to {@link CandidateFactory}.F
+ * CandidateImplementation in {@link SpabApi} and to {@link CandidateFactory}.
  * 
  * @author Adrian Wilke
  */

@@ -65,7 +65,6 @@ public class CandidateGenerationTest extends AbstractTestCase {
 		printCandidateVertex(root, "Root", PRINT);
 
 		// Children of root
-		System.out.println();
 		Graph<CandidateVertex, DefaultEdge> graph = candidateGraph.getGraph();
 		Set<DefaultEdge> rootEdges = graph.edgesOf(root);
 		for (DefaultEdge rootEdge : rootEdges) {
@@ -74,31 +73,22 @@ public class CandidateGenerationTest extends AbstractTestCase {
 		}
 
 		// Next candidates in queue
-		System.out.println();
 		CandidateVertex nextCandidate = bestCandidate;
 		int i = 0;
 		while (nextCandidate != null) {
-			printCandidateVertex(nextCandidate, "Queue" + i, PRINT);
+			printCandidateVertex(nextCandidate, "Queue-" + i, PRINT);
 			nextCandidate = spabApi.getQueue().peekBestCandidate(i++);
 		}
 
 		// Visited candidates
-		System.out.println();
 		i = 0;
 		for (CandidateVertex candidateVertex : spabApi.getStack()) {
-			printCandidateVertex(candidateVertex, "Stack" + i++, PRINT);
+			printCandidateVertex(candidateVertex, "Stack-" + i++, !PRINT);
 		}
 
 		// Test: There is one negative input without dbpedia-owl:pubchem. Therefore, the
 		// best candidate should include dbpedia-owl:pubchem.
 		assertTrue(bestCandidate.getCandidate().getRegEx().contains("http://dbpedia.org/ontology/pubchem"));
-	}
-
-	public void printCandidateVertex(CandidateVertex candidateVertex, String info, boolean print) {
-		if (print) {
-			System.out.print(info);
-			System.out.println(candidateVertex.getInfoLine());
-		}
 	}
 
 }

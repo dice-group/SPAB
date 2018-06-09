@@ -20,26 +20,11 @@ import org.junit.Test;
 public class CandidateSpabTwoTest extends AbstractTestCase {
 
 	public static final boolean EXECUTE_LONG_RUN_TESTS = false;
-	
+
 	public static final int ITERATIONS = 10;
 
 	static ImportFilesTest importFilesTest = new ImportFilesTest();
 	SpabApi spab;
-
-	public void print(CandidateVertex bestCandidate, SpabApi spabApi) {
-		System.out.println("Final score of best candidate: " + bestCandidate.getScore());
-		System.out.println("F-measure of best candidate:   " + bestCandidate.getfMeasure());
-		System.out.println("Generation of best candidate: " + bestCandidate.getGeneration());
-		System.out.println("Generated generations:        " + spabApi.getGraph().getDepth());
-		System.out.println("Number of remaining candidates in queue: " + spabApi.getQueue().getQueue().size());
-		System.out.print("Next best scores: ");
-		while (!spabApi.getQueue().getQueue().isEmpty()) {
-			System.out.print(spabApi.getQueue().pollBestCandidate().getScore() + " ");
-		}
-		System.out.println();
-		System.out.println("Number generated candidates: " + spabApi.getGraph().getAllCandidates().size());
-		System.out.println("RegEx of best candidate: " + bestCandidate.getCandidate().getRegEx());
-	}
 
 	public void printMatches(CandidateVertex bestCandidate, SpabApi spabApi, int maxEntries) {
 
@@ -150,9 +135,7 @@ public class CandidateSpabTwoTest extends AbstractTestCase {
 		assertTrue(spab.getGraph().getAllCandidates().size() > 0);
 
 		// If a human is interested in the results
-		if (PRINT) {
-			print(bestCandidate, spab);
-		}
+		printResult(bestCandidate, spab, "", PRINT);
 		if (PRINT) {
 			printMatches(bestCandidate, spab, 5);
 		}
@@ -184,9 +167,8 @@ public class CandidateSpabTwoTest extends AbstractTestCase {
 
 		CandidateVertex bestCandidate = spab.run();
 
-		if (PRINT) {
-			print(bestCandidate, spab);
-		}
+		printResult(bestCandidate, spab, "", PRINT);
+
 		if (PRINT) {
 			printMatches(bestCandidate, spab, 5);
 		}
@@ -223,9 +205,8 @@ public class CandidateSpabTwoTest extends AbstractTestCase {
 
 		CandidateVertex bestCandidate = spab.run();
 
-		if (PRINT) {
-			print(bestCandidate, spab);
-		}
+		printResult(bestCandidate, spab, "", PRINT);
+
 		if (PRINT) {
 			printMatches(bestCandidate, spab, 5);
 		}
