@@ -7,6 +7,8 @@ import java.util.regex.Pattern;
 import org.dice_research.spab.input.Input;
 
 /**
+ * Triple refining itself based on input resources.
+ * 
  * @see https://www.w3.org/TR/sparql11-query/#rTriplesBlock
  * 
  * @author Adrian Wilke
@@ -104,24 +106,6 @@ public class Triple extends Expression {
 	@Override
 	public void addPrefix(StringBuilder stringBuilder) {
 
-		// Add prefix for non-triples
-		Expression parentExpression = parent;
-		while (parentExpression instanceof Triple) {
-			parentExpression = parentExpression.parent;
-		}
-		if (parentExpression != null) {
-			parentExpression.addPrefix(stringBuilder);
-		}
-
-		// Add wild-card
-		if (stringBuilder.length() >= 2) {
-			if (!stringBuilder.substring(stringBuilder.length() - 2).equals(".*")) {
-				stringBuilder.append(".*");
-			}
-		} else {
-			stringBuilder.append(".*");
-		}
-
 		if (type.equals(Type.EMPTY)) {
 			// Empty triple represented by wild-card
 			if (stringBuilder.length() >= 2 && !stringBuilder.substring(stringBuilder.length() - 2).equals(".*")) {
@@ -130,7 +114,9 @@ public class Triple extends Expression {
 
 		} else if (type.equals(Type.GENERIC)) {
 			// Generic triple represented by resource
+			stringBuilder.append(".*");
 			stringBuilder.append(Pattern.quote("<" + resource + ">"));
+			stringBuilder.append(".*");
 
 		} else if (type.equals(Type.FULL)) {
 			// Fill triple represented by resources and wild-cards
@@ -156,19 +142,5 @@ public class Triple extends Expression {
 
 	@Override
 	public void addSuffix(StringBuilder stringBuilder) {
-
-		// Add wild-card
-		if (!stringBuilder.substring(stringBuilder.length() - 2).equals(".*")) {
-			stringBuilder.append(".*");
-		}
-
-		// Add suffix for non-triples
-		Expression parentExpression = parent;
-		while (parentExpression instanceof Triple) {
-			parentExpression = parentExpression.parent;
-		}
-		if (parentExpression != null) {
-			parentExpression.addSuffix(stringBuilder);
-		}
 	}
 }

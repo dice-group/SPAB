@@ -19,6 +19,7 @@ public class Query extends Expression {
 	protected Type type;
 
 	public Query(Type type) {
+		super();
 		this.type = type;
 	}
 
@@ -29,20 +30,20 @@ public class Query extends Expression {
 
 	@Override
 	public List<Expression> getChildren(Input input) {
-		// TODO Generate children
-		return  new LinkedList<Expression>();
+		List<Expression> children = new LinkedList<Expression>();
+		children.add(new Where(this));
+		return children;
 	}
 
 	@Override
 	public void addPrefix(StringBuilder stringBuilder) {
-		addParentPrefix(stringBuilder);
+		addParentPrefix(stringBuilder, null, true);
 		stringBuilder.append(type.toString());
 		stringBuilder.append(".*");
 	}
 
 	@Override
 	public void addSuffix(StringBuilder stringBuilder) {
-		addParentSuffix(stringBuilder);
+		addParentSuffix(stringBuilder, null, true);
 	}
-
 }

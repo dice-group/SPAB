@@ -46,13 +46,57 @@ public abstract class Expression {
 	public abstract void addSuffix(StringBuilder stringBuilder);
 
 	/**
+	 * If all parents are instances of the class to check, a wild-card is added.
+	 */
+	protected void addWildcardIfRootClass(StringBuilder stringBuilder, Class<?> classToCheck) {
+		Expression parentExpression = parent;
+		while (classToCheck.isInstance(parentExpression)) {
+			parentExpression = parentExpression.parent;
+		}
+		if (parentExpression == null) {
+			stringBuilder.append(".*");
+		}
+	}
+
+	/**
 	 * Adds prefix of parent expression. Adds wild-card.
 	 */
-	protected void addParentPrefix(StringBuilder stringBuilder) {
+	protected void addParentPrefix(StringBuilder stringBuilder, Class<?> parentClassToOmit, boolean addWildCard) {
+
+		// If parent is null do nothing
 		if (parent != null) {
-			parent.addPrefix(stringBuilder);
-			if (!stringBuilder.substring(stringBuilder.length() - 2).equals(".*")) {
-				stringBuilder.append(".*");
+
+			if (parentClassToOmit == null) {
+				// If nothing to omit, add parent
+
+				parent.addPrefix(stringBuilder);
+
+				if (addWildCard) {
+					if (stringBuilder.length() >= 2) {
+						if (!stringBuilder.substring(stringBuilder.length() - 2).equals(".*")) {
+							stringBuilder.append(".*");
+						}
+					}
+				}
+
+			} else {
+				// Add first parent, which should not be omitted
+
+				Expression parentExpression = parent;
+				while (parentClassToOmit.isInstance(parentExpression)) {
+					parentExpression = parentExpression.parent;
+				}
+				if (parentExpression != null) {
+					parentExpression.addPrefix(stringBuilder);
+				}
+
+				if (addWildCard) {
+					if (stringBuilder.length() >= 2) {
+						if (!stringBuilder.substring(stringBuilder.length() - 2).equals(".*")) {
+							stringBuilder.append(".*");
+						}
+					}
+				}
 			}
 		}
 	}
@@ -60,12 +104,44 @@ public abstract class Expression {
 	/**
 	 * Adds wild-card. Adds suffix of parent expression.
 	 */
-	protected void addParentSuffix(StringBuilder stringBuilder) {
+	protected void addParentSuffix(StringBuilder stringBuilder, Class<?> parentClassToOmit, boolean addWildCard) {
+
+		// If parent is null do nothing
 		if (parent != null) {
-			if (!stringBuilder.substring(stringBuilder.length() - 2).equals(".*")) {
-				stringBuilder.append(".*");
+
+			if (parentClassToOmit == null) {
+				// If nothing to omit, add parent
+
+				if (addWildCard) {
+					if (stringBuilder.length() >= 2) {
+						if (!stringBuilder.substring(stringBuilder.length() - 2).equals(".*")) {
+							stringBuilder.append(".*");
+						}
+					}
+				}
+
+				parent.addSuffix(stringBuilder);
+
+			} else {
+				// Add first parent, which should not be omitted
+
+				Expression parentExpression = parent;
+				while (parentClassToOmit.isInstance(parentExpression)) {
+					parentExpression = parentExpression.parent;
+				}
+				if (parentExpression != null) {
+
+					if (addWildCard) {
+						if (stringBuilder.length() >= 2) {
+							if (!stringBuilder.substring(stringBuilder.length() - 2).equals(".*")) {
+								stringBuilder.append(".*");
+							}
+						}
+					}
+
+					parentExpression.addSuffix(stringBuilder);
+				}
 			}
-			parent.addSuffix(stringBuilder);
 		}
 	}
 }

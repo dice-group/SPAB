@@ -33,7 +33,7 @@ public class SpabFourCandidate implements Candidate {
 			public List<Expression> getChildren(Input input) {
 				List<Expression> children = new LinkedList<Expression>();
 
-				// TODO
+				// TODO: Should simple existence of triples be checked?
 				// children.add(new Triple(null));
 
 				children.add(new Where());

@@ -3,6 +3,7 @@ package org.dice_research.spab.candidates.four;
 import java.util.LinkedList;
 import java.util.List;
 
+import org.apache.jena.ext.com.google.common.collect.Lists;
 import org.dice_research.spab.input.Input;
 
 /**
@@ -19,16 +20,26 @@ public class Where extends Expression {
 
 	public Where() {
 		super();
-		triples.add(new Triple());
+
+		// Add empty triple
+		triples.add(new Triple(this));
 	}
 
 	public Where(Expression parent) {
 		super(parent);
+
+		// TODO: Check if necessary
 		if (parent instanceof Where) {
-			Where parentWhere = (Where) parent;
-			triples.addAll(parentWhere.triples);
-			triples.add(new Triple());
+			triples.addAll(((Where) parent).triples);
 		}
+
+		// Add empty triple
+		triples.add(new Triple(this));
+	}
+
+	public Where(Expression parent, List<Triple> triples) {
+		super(parent);
+		this.triples = triples;
 	}
 
 	@Override
@@ -41,29 +52,26 @@ public class Where extends Expression {
 		}
 
 		// Refine existing triples
-		for (Triple triple : triples) {
-			children.addAll(triple.getChildren(input));
+		for (int t = 0; t < triples.size(); t++) {
+			for (Expression expressionToInsert : triples.get(t).getChildren(input)) {
+				LinkedList<Triple> newTriples = Lists.newLinkedList(triples);
+				newTriples.set(t, (Triple) expressionToInsert);
+				children.add(new Where(this, newTriples));
+			}
 		}
-		
+
 		return children;
 	}
 
 	@Override
 	public void addPrefix(StringBuilder stringBuilder) {
 
-		// Add prefix for non-where
-		Expression parentExpression = parent;
-		while (parentExpression instanceof Where) {
-			parentExpression = parentExpression.parent;
-		}
-		if (parentExpression != null) {
-			parentExpression.addPrefix(stringBuilder);
-		}
+		addWildcardIfRootClass(stringBuilder, Where.class);
 
-		if (parentExpression == null) {
-			stringBuilder.append(".*");
-		}
-		stringBuilder.append("WHERE \\{");
+		addParentPrefix(stringBuilder, Where.class, true);
+
+		stringBuilder.append("WHERE \\{ ");
+
 		for (int t = 0; t < triples.size(); t++) {
 			if (t > 0) {
 				stringBuilder.append(" \\. ");
@@ -76,16 +84,8 @@ public class Where extends Expression {
 	@Override
 	public void addSuffix(StringBuilder stringBuilder) {
 		stringBuilder.append(" \\}");
-		stringBuilder.append(".*");
 
-		// Add suffix for non-where
-		Expression parentExpression = parent;
-		while (parentExpression instanceof Where) {
-			parentExpression = parentExpression.parent;
-		}
-		if (parentExpression != null) {
-			parentExpression.addSuffix(stringBuilder);
-		}
+		addParentSuffix(stringBuilder, Where.class, true);
 	}
 
 }

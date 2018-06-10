@@ -42,7 +42,7 @@ public class SpabApi {
 	/**
 	 * Default candidate implementation.
 	 */
-	public static final CandidateImplementation CANDIDATE_IMPLEMENTATION = CandidateImplementation.SPAB_THREE;
+	public static final CandidateImplementation CANDIDATE_IMPLEMENTATION = CandidateImplementation.SPAB_FOUR;
 
 	/**
 	 * Default setting for stopping on discovery of perfect solution.

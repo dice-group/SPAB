@@ -53,6 +53,10 @@ public class CandidateGenerationTest extends AbstractTestCase {
 			for (SparqlUnit sparqlUnit : spabApi.getInput().getNegatives()) {
 				System.out.println(" " + sparqlUnit.getLineRepresentation());
 			}
+			System.out.println("Resources:");
+			for (String resource : spabApi.getInput().getResources()) {
+				System.out.println(" " + resource);
+			}
 		}
 
 		// Run
@@ -83,7 +87,7 @@ public class CandidateGenerationTest extends AbstractTestCase {
 		// Visited candidates
 		i = 0;
 		for (CandidateVertex candidateVertex : spabApi.getStack()) {
-			printCandidateVertex(candidateVertex, "Stack-" + i++, !PRINT);
+			printCandidateVertex(candidateVertex, "Stack-" + i++, PRINT);
 		}
 
 		// Test: There is one negative input without dbpedia-owl:pubchem. Therefore, the
