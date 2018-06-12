@@ -22,8 +22,9 @@ public abstract class Utils {
 	}
 
 	public static void main(String[] args) {
-		System.out.println("Input                    " + args[0]);
-		System.out.println("JenaStringRepresentation " + getJenaStringRepresentation(args[0]));
-		System.out.println("StringRepresentation     " + getStringRepresentation(args[0]));
+		String string = args[0];
+		System.out.println("Input                    " + string);
+		System.out.println("JenaStringRepresentation " + getJenaStringRepresentation(string));
+		System.out.println("StringRepresentation     " + getStringRepresentation(string));
 	}
 }
