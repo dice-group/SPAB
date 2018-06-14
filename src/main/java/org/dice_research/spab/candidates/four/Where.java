@@ -71,7 +71,10 @@ public class Where extends Expression {
 		addParentPrefix(stringBuilder, Where.class, true);
 
 		stringBuilder.append("WHERE \\{ ");
+	}
 
+	@Override
+	public void addString(StringBuilder stringBuilder) {
 		for (int t = 0; t < triples.size(); t++) {
 			if (t > 0) {
 				stringBuilder.append(" \\. ");

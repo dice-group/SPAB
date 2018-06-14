@@ -5,6 +5,12 @@ import java.util.List;
 
 import org.apache.jena.ext.com.google.common.collect.Lists;
 
+/**
+ * A feature can be represented as regular expression. It represents a SPARQL
+ * part.
+ * 
+ * @author Adrian Wilke
+ */
 public abstract class Expression {
 
 	/**
@@ -27,7 +33,8 @@ public abstract class Expression {
 	}
 
 	/**
-	 * Adds children of the current expression.
+	 * Adds children of the current expression. Typically, these are of the same
+	 * class (e.g. WHERE objects produce WHERE objects).
 	 */
 	protected abstract void addChildren(List<Expression> children);
 
@@ -56,7 +63,7 @@ public abstract class Expression {
 	 * Walks through sequence and builds regular expression by calling
 	 * {@link #addRegex(StringBuilder)}.
 	 */
-	protected void addSequenceRegex(StringBuilder stringBuilder) {
+	protected void addSequenceToRegex(StringBuilder stringBuilder) {
 		for (Expression expression : sequence) {
 			expression.addRegex(stringBuilder);
 		}
@@ -75,7 +82,7 @@ public abstract class Expression {
 	 * Walks through current sequence of expressions, checks each entry for possible
 	 * refinements, and adds them to children.
 	 */
-	protected void refineSequence(List<Expression> children) {
+	protected void addRefinedSequenceTo(List<Expression> children) {
 		// Get through sequence of expressions
 		for (int i = 0; i < sequence.size(); i++) {
 			Expression expression = sequence.get(i);
@@ -83,6 +90,12 @@ public abstract class Expression {
 			// Create new sequence containing child and add instance to list of generated
 			// children
 			for (Expression child : expression.getChildren()) {
+
+				// TODO
+				if (!expression.getClass().isInstance(child)) {
+					System.err.println("Expression addRefinedSequenceTo");
+				}
+
 				Expression newExpression = getNewInstance(this);
 				newExpression.sequence.set(i, child);
 				children.add(newExpression);

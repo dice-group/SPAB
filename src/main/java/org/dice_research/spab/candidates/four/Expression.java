@@ -41,6 +41,11 @@ public abstract class Expression {
 	public abstract void addPrefix(StringBuilder stringBuilder);
 
 	/**
+	 * Adds main content of regular expression.
+	 */
+	public abstract void addString(StringBuilder stringBuilder);
+
+	/**
 	 * Appends suffix of regular expression (e.g. closing brackets).
 	 */
 	public abstract void addSuffix(StringBuilder stringBuilder);

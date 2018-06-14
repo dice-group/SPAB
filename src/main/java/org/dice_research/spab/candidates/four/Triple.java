@@ -105,6 +105,10 @@ public class Triple extends Expression {
 
 	@Override
 	public void addPrefix(StringBuilder stringBuilder) {
+	}
+
+	@Override
+	public void addString(StringBuilder stringBuilder) {
 
 		if (type.equals(Type.EMPTY)) {
 			// Empty triple represented by wild-card

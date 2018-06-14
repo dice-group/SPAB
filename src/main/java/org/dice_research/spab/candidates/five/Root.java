@@ -24,11 +24,13 @@ public class Root extends Expression {
 
 	@Override
 	protected void addChildren(List<Expression> children) {
+		// All children are more specific
 		new Query().addChildren(children);
 	}
 
 	@Override
 	protected void addRegex(StringBuilder stringBuilder) {
+		// Most general expression.
 		stringBuilder.append(".*");
 	}
 }

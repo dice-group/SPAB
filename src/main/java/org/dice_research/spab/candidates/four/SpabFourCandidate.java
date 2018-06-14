@@ -47,6 +47,10 @@ public class SpabFourCandidate implements Candidate {
 
 			@Override
 			public void addPrefix(StringBuilder stringBuilder) {
+			}
+
+			@Override
+			public void addString(StringBuilder stringBuilder) {
 				stringBuilder.append(".*");
 			}
 
@@ -82,6 +86,7 @@ public class SpabFourCandidate implements Candidate {
 	public String getRegEx() throws CandidateRuntimeException {
 		StringBuilder stringBuilder = new StringBuilder();
 		expression.addPrefix(stringBuilder);
+		expression.addString(stringBuilder);
 		expression.addSuffix(stringBuilder);
 		return stringBuilder.toString();
 	}

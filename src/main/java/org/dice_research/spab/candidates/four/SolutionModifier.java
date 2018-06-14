@@ -6,41 +6,27 @@ import java.util.List;
 import org.dice_research.spab.input.Input;
 
 /**
- * @see https://www.w3.org/TR/sparql11-query/#rQuery
+ * @see https://www.w3.org/TR/sparql11-query/#rSolutionModifier
  * 
  * @author Adrian Wilke
  */
-public class Query extends Expression {
-
-	public static enum Type {
-		SELECT, CONSTRUCT, DESCRIBE, ASK
-	}
-
-	protected Type type;
-
-	public Query(Type type) {
-		super();
-		this.type = type;
-	}
-
-	public Query(Expression parent, Type type) {
+public class SolutionModifier extends Expression {
+	
+	public SolutionModifier(Expression parent) {
 		super(parent);
-		this.type = type;
 	}
-
+	
 	@Override
 	public List<Expression> getChildren(Input input) {
 		List<Expression> children = new LinkedList<Expression>();
-		children.add(new Where(this));
-		children.add(new SolutionModifier(this));
+		children.add(new Group(this));
 		return children;
 	}
 
 	@Override
 	public void addPrefix(StringBuilder stringBuilder) {
-		addParentPrefix(stringBuilder, null, true);
-		stringBuilder.append(type.toString());
-		stringBuilder.append(".*");
+		addWildcardIfRootClass(stringBuilder, SolutionModifier.class);
+		addParentPrefix(stringBuilder, null, false);
 	}
 
 	@Override
@@ -49,6 +35,7 @@ public class Query extends Expression {
 
 	@Override
 	public void addSuffix(StringBuilder stringBuilder) {
-		addParentSuffix(stringBuilder, null, true);
+		addParentSuffix(stringBuilder, null, false);
 	}
+
 }
