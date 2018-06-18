@@ -58,7 +58,6 @@ public abstract class Expression {
 	 * {@link #getRefinementsOfSequence(Input)} is called.
 	 */
 	public List<Expression> getRefinements(Input input) {
-//System.err.println("getRefinements of " + getClass().getSimpleName());
 		return getRefinementsOfSequence(input);
 	}
 
@@ -69,9 +68,6 @@ public abstract class Expression {
 	 */
 	protected List<Expression> getRefinementsOfSequence(Input input) {
 		List<Expression> refinements = new LinkedList<Expression>();
-		
-
-//System.err.println("getRefinementsOfSequence of " + getClass().getSimpleName() + " size " + sequence.size());
 
 		// Go through sequence
 		for (int i = 0; i < sequence.size(); i++) {
@@ -79,11 +75,7 @@ public abstract class Expression {
 			// Check sequence element for refinements
 			Expression sequenceElement = sequence.get(i);
 
-//System.err.println("getRefinementsOfSequence of " + getClass().getSimpleName() + " contains " + sequenceElement.getClass().getSimpleName());
-
 			for (Expression sequenceElementRefinement : sequenceElement.getRefinements(input)) {
-				
-//System.err.println(getClass().getSimpleName() + " asked " + sequenceElement.getClass().getSimpleName() + " got " + sequenceElementRefinement.getClass().getSimpleName());
 
 				// For each refinement of sequence element: Create new sequence (inside element
 				// of same type as this object) and replace element by refinement.

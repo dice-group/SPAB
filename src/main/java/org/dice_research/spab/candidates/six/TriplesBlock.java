@@ -21,11 +21,19 @@ public class TriplesBlock extends Expression {
 	protected boolean createTripleBlock = false;
 	protected int tripleBlockCreationCount;
 
+	/**
+	 * Creates triple block containing one triple.
+	 */
 	public TriplesBlock() {
 		sequence.add(new Triple());
 		tripleBlockCreationCount = MAX_TRIPLE_BLOCKS;
+		this.createTripleBlock = true;
 	}
 
+	/**
+	 * Used for recursive refinement. Will not create additional triple blocks to
+	 * this sequence by default.
+	 */
 	public TriplesBlock(Expression origin) {
 		super(origin);
 	}
@@ -37,7 +45,7 @@ public class TriplesBlock extends Expression {
 
 	@Override
 	protected void addRegex(StringBuilder stringBuilder) {
-		addSequenceToRegex(stringBuilder, " . ");
+		addSequenceToRegex(stringBuilder, " \\. ");
 	}
 
 	@Override
@@ -45,16 +53,17 @@ public class TriplesBlock extends Expression {
 		List<Expression> refinements = getRefinementsOfSequence(input);
 
 		if (createTripleBlock && tripleBlockCreationCount > 1) {
+			// Create new block
 			Expression additionalBlock = createInstance(this);
-
-			TriplesBlock triplesBlock = new TriplesBlock();
+			// Set properties for adding an adittinal triple
+			TriplesBlock triplesBlock = (TriplesBlock) additionalBlock;
+			triplesBlock.tripleBlockCreationCount = tripleBlockCreationCount - 1;
 			triplesBlock.createTripleBlock = true;
-			triplesBlock.tripleBlockCreationCount = tripleBlockCreationCount -1;
-			additionalBlock.sequence.add(triplesBlock);
 			refinements.add(additionalBlock);
 			createTripleBlock = false;
 		}
-		
+
 		return refinements;
 	}
+
 }

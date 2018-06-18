@@ -25,6 +25,8 @@ public class Triple extends Expression {
 		EMPTY, GENERIC, FULL
 	}
 
+	public static boolean generateFullTriples = true;
+
 	protected Type type;
 	protected String resource;
 	protected String subject;
@@ -99,17 +101,15 @@ public class Triple extends Expression {
 				refinements.add(triple);
 			}
 
-		} else if (type.equals(Type.GENERIC)) {
-			for (String resource : input.getResources()) {
-				// (R) -> (S--)
-				refinements.add(createFullTriple(resource, null, null));
-				// (R) -> (-P-)
-				refinements.add(createFullTriple(null, resource, null));
-				// (R) -> (--O)
-				refinements.add(createFullTriple(null, null, resource));
-			}
+		} else if (type.equals(Type.GENERIC) && generateFullTriples) {
+			// (R) -> (S--)
+			refinements.add(createFullTriple(resource, null, null));
+			// (R) -> (-P-)
+			refinements.add(createFullTriple(null, resource, null));
+			// (R) -> (--O)
+			refinements.add(createFullTriple(null, null, resource));
 
-		} else if (type.equals(Type.FULL)) {
+		} else if (type.equals(Type.FULL) && generateFullTriples) {
 			for (String resource : input.getResources()) {
 				int components = countComponents();
 				if (components == 1) {
