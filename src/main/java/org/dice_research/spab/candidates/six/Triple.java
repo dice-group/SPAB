@@ -92,6 +92,7 @@ public class Triple extends Expression {
 
 		if (type.equals(Type.EMPTY)) {
 			for (String resource : input.getResources()) {
+				// (*) -> (R)
 				Triple triple = new Triple(this);
 				triple.type = Type.GENERIC;
 				triple.resource = resource;
@@ -100,22 +101,33 @@ public class Triple extends Expression {
 
 		} else if (type.equals(Type.GENERIC)) {
 			for (String resource : input.getResources()) {
+				// (R) -> (S--)
 				refinements.add(createFullTriple(resource, null, null));
+				// (R) -> (-P-)
 				refinements.add(createFullTriple(null, resource, null));
+				// (R) -> (--O)
 				refinements.add(createFullTriple(null, null, resource));
 			}
 
 		} else if (type.equals(Type.FULL)) {
 			for (String resource : input.getResources()) {
-				if (subject == null) {
-					refinements.add(createFullTriple(resource, null, null));
-				}
-				if (predicate == null) {
-					refinements.add(createFullTriple(null, resource, null));
-				}
-				if (object == null) {
+				int components = countComponents();
+				if (components == 1) {
+					if (subject != null) {
+						// (S--) -> (SP-)
+						refinements.add(createFullTriple(null, resource, null));
+					} else if (predicate != null) {
+						// (-P-) -> (-PO)
+						refinements.add(createFullTriple(null, null, resource));
+					} else if (object != null) {
+						// (--O) -> (S-O)
+						refinements.add(createFullTriple(resource, null, null));
+					}
+				} else if (components == 2 && subject != null && predicate != null) {
+					// (SP-) -> (SPO)
 					refinements.add(createFullTriple(null, null, resource));
 				}
+
 			}
 		}
 
@@ -123,10 +135,33 @@ public class Triple extends Expression {
 	}
 
 	/**
+	 * Returns number of set S, P, O.
+	 */
+	protected int countComponents() {
+		if (!type.equals(Type.FULL)) {
+			throw new RuntimeException("Wrong triple type.");
+		}
+		int counter = 0;
+		if (subject != null) {
+			counter++;
+		}
+		if (predicate != null) {
+			counter++;
+		}
+		if (object != null) {
+			counter++;
+		}
+		return counter;
+	}
+
+	/**
 	 * Creates copy of triple using {@link Triple#Triple(Expression)}. Updates S, P,
 	 * O, if not null.
 	 */
 	protected Triple createFullTriple(String subject, String predicate, String object) {
+		if (!type.equals(Type.GENERIC) && !type.equals(Type.FULL)) {
+			throw new RuntimeException("Wrong triple type.");
+		}
 		Triple triple = new Triple(this);
 		triple.type = Type.FULL;
 		if (subject != null) {
