@@ -31,7 +31,7 @@ public class WhereClause extends Expression {
 
 	@Override
 	protected void addRegex(StringBuilder stringBuilder) {
-		stringBuilder.append("WHERE ");
+		stringBuilder.append(".* WHERE ");
 		addSequenceToRegex(stringBuilder);
 	}
 }

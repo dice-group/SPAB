@@ -4,6 +4,7 @@ import org.dice_research.spab.Matcher;
 import org.dice_research.spab.SpabApi;
 import org.dice_research.spab.SpabApi.CandidateImplementation;
 import org.dice_research.spab.candidates.four.SpabFourCandidate;
+import org.dice_research.spab.candidates.six.CandidateSix;
 import org.dice_research.spab.candidates.three.SpabThreeCandidate;
 import org.dice_research.spab.candidates.two.SpabTwoCandidate;
 import org.dice_research.spab.exceptions.SpabException;
@@ -30,6 +31,9 @@ public abstract class CandidateFactory {
 
 		case SPAB_FOUR:
 			return new SpabFourCandidate();
+
+		case SPAB_SIX:
+			return new CandidateSix();
 
 		case UNIT_TEST:
 			// Unit tests of candidates also are matchers
