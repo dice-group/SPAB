@@ -5,7 +5,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import org.dice_research.spab.candidates.six.Expression;
-import org.dice_research.spab.candidates.six.GroupGraphPattern;
+import org.dice_research.spab.candidates.six.Root;
 import org.dice_research.spab.candidates.six.Triple;
 import org.dice_research.spab.input.Input;
 import org.junit.Test;
@@ -31,7 +31,7 @@ public class CandidateSpabSixTest extends AbstractTestCase {
 
 		Expression expression;
 
-		expression = new GroupGraphPattern();
+		expression = new Root();
 
 		List<Expression> expressions = new LinkedList<Expression>();
 		recursiveGeneration(expression, input, expressions);
