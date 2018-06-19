@@ -5,7 +5,6 @@ import java.util.LinkedList;
 import java.util.List;
 
 import org.dice_research.spab.candidates.six.Expression;
-import org.dice_research.spab.candidates.six.Root;
 import org.dice_research.spab.candidates.six.Triple;
 import org.dice_research.spab.candidates.six.TriplesBlock;
 import org.dice_research.spab.input.Input;
@@ -23,26 +22,7 @@ public class CandidateSpabSixTest extends AbstractTestCase {
 
 	public static final String A = "SELECT ?s WHERE { ?s <A> ?o }";
 	public static final String B = "SELECT ?s WHERE { ?s <B> ?o }";
-	
-	public void humanCheck() {
-		Input input = new Input();
-		input.addPositive(A);
-		// input.addPositive(B);
 
-		Expression expression;
-
-		expression = new Root();
-
-		List<Expression> expressions = new LinkedList<Expression>();
-		expressions.add(expression);
-
-		refine(expressions, input, 5);
-
-		for (Expression expression2 : expressions) {
-			System.out.println(expression2.getRegex());
-		}
-
-	}
 
 	@Test
 	public void testTriplesBlockCreation() {
@@ -115,13 +95,6 @@ public class CandidateSpabSixTest extends AbstractTestCase {
 		assertEquals(2 + 6 + 12 + 8, expressions.size());
 
 		assertEquals(expressions.size(), new HashSet<Expression>(expressions).size());
-	}
-
-	public List<Expression> refine(List<Expression> expressions, Input input, int steps) {
-		for (int i = 0; i < steps; i++) {
-			expressions.addAll(refine(expressions, input));
-		}
-		return expressions;
 	}
 
 	public List<Expression> refine(List<Expression> expressions, Input input) {

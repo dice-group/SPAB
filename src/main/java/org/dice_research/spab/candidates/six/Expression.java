@@ -118,8 +118,12 @@ public abstract class Expression {
 	 * Adds wild-card '.*', if it is currently not at and of given StringBuilder.
 	 */
 	protected void addWildcard(StringBuilder stringBuilder) {
-		if (stringBuilder != null && stringBuilder.length() >= 2) {
-			if (!stringBuilder.substring(stringBuilder.length() - 2).equals(".*")) {
+		if (stringBuilder != null) {
+			if (stringBuilder.length() >= 2) {
+				if (!stringBuilder.substring(stringBuilder.length() - 2).equals(".*")) {
+					stringBuilder.append(".*");
+				}
+			} else {
 				stringBuilder.append(".*");
 			}
 		}
@@ -129,7 +133,16 @@ public abstract class Expression {
 	 * Adds wild-card '.*' at begin and end.
 	 */
 	protected void encloseWithWildcards(StringBuilder stringBuilder) {
-		stringBuilder.insert(0, ".*");
-		stringBuilder.append(".*");
+		// Begin
+		if (stringBuilder.length() >= 2) {
+			if (!stringBuilder.substring(0, 2).equals(".*")) {
+				stringBuilder.insert(0, ".*");
+			}
+		} else {
+			stringBuilder.append(".*");
+		}
+
+		// End
+		addWildcard(stringBuilder);
 	}
 }

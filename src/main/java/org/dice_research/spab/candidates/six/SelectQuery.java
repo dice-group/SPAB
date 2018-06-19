@@ -16,6 +16,8 @@ public class SelectQuery extends Expression {
 		sequence.add(selectClause);
 		WhereClause whereClause = new WhereClause();
 		sequence.add(whereClause);
+		SolutionModifier solutionModifier = new SolutionModifier();
+		sequence.add(solutionModifier);
 	}
 
 	public SelectQuery(Expression origin) {

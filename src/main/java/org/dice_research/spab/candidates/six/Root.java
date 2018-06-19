@@ -61,6 +61,12 @@ public class Root extends Expression {
 			refinement.sequence.add(graphPatternNotTriples);
 			refinements.add(refinement);
 
+			refinement = new Root();
+			refinement.type = Type.REFINED;
+			SolutionModifier solutionModifier = new SolutionModifier();
+			refinement.sequence.add(solutionModifier);
+			refinements.add(refinement);
+
 			type = Type.REFINED;
 		}
 

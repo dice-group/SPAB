@@ -1,5 +1,9 @@
 package org.dice_research.spab.candidates.six;
 
+import java.util.List;
+
+import org.dice_research.spab.input.Input;
+
 /**
  * SolutionModifier ::= GroupClause? HavingClause? OrderClause?
  * LimitOffsetClauses?
@@ -12,13 +16,23 @@ package org.dice_research.spab.candidates.six;
  */
 public class SolutionModifier extends Expression {
 
+	enum Type {
+		INITIAL, REFINED
+	};
+
+	protected Type type;
+
 	public SolutionModifier() {
-		GroupClause groupClause = new GroupClause();
-		sequence.add(groupClause);
+		// Default constructor is empty, as all contents are optional
+		// TODO: Results in empty (and maybe duplicate in other case) regular
+		// expression.
+		super();
+		type = Type.INITIAL;
 	}
 
 	public SolutionModifier(Expression origin) {
 		super(origin);
+		type = ((SolutionModifier) origin).type;
 	}
 
 	@Override
@@ -28,8 +42,46 @@ public class SolutionModifier extends Expression {
 
 	@Override
 	protected void addRegex(StringBuilder stringBuilder) {
-		stringBuilder.append("\\{");
+		boolean empty = false;
+		if (stringBuilder.length() == 0) {
+			empty = true;
+		}
+
 		addSequenceToRegex(stringBuilder);
-		stringBuilder.append("\\}");
+
+		if (empty && !sequence.isEmpty()) {
+			encloseWithWildcards(stringBuilder);
+		}
+	}
+
+	@Override
+	public List<Expression> getRefinements(Input input) {
+		List<Expression> refinements = super.getRefinements(input);
+		if (type.equals(Type.INITIAL)) {
+			SolutionModifier refinement;
+
+			refinement = new SolutionModifier(this);
+			refinement.type = Type.REFINED;
+			refinement.sequence.add(new GroupClause());
+			refinements.add(refinement);
+
+			refinement = new SolutionModifier(this);
+			refinement.type = Type.REFINED;
+			refinement.sequence.add(new HavingClause());
+			refinements.add(refinement);
+
+			refinement = new SolutionModifier(this);
+			refinement.type = Type.REFINED;
+			refinement.sequence.add(new OrderClause());
+			refinements.add(refinement);
+
+			refinement = new SolutionModifier(this);
+			refinement.type = Type.REFINED;
+			refinement.sequence.add(new LimitOffsetClauses());
+			refinements.add(refinement);
+
+			type = Type.REFINED;
+		}
+		return refinements;
 	}
 }
