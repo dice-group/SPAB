@@ -15,7 +15,7 @@ import org.junit.Test;
  * 
  * @author Adrian Wilke
  */
-public class CandidateSpabSixTest extends AbstractTestCase {
+public class CandidateSixTest extends AbstractTestCase {
 
 	public static final String SELECT = "PREFIX dbpedia-owl: <http://dbpedia.org/ontology/> "
 			+ "SELECT ?s ?o WHERE { ?s dbpedia-owl:pubchem ?o }";

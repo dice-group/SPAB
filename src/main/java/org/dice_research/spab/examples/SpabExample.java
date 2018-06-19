@@ -89,7 +89,7 @@ public class SpabExample {
 		spab.setLambda(.1f);
 		spab.setMaxIterations(MAX_ITERATIONS);
 		spab.setCheckPerfectSolution(true);
-		spab.setCandidateImplementation(CandidateImplementation.SPAB_TWO);
+		spab.setCandidateImplementation(CandidateImplementation.SPAB_SIX);
 
 		CandidateVertex bestCandidate = spab.run();
 		System.out.println(bestCandidate.getInfoLine());

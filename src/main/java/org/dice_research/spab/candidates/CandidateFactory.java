@@ -3,10 +3,7 @@ package org.dice_research.spab.candidates;
 import org.dice_research.spab.Matcher;
 import org.dice_research.spab.SpabApi;
 import org.dice_research.spab.SpabApi.CandidateImplementation;
-import org.dice_research.spab.candidates.four.SpabFourCandidate;
 import org.dice_research.spab.candidates.six.CandidateSix;
-import org.dice_research.spab.candidates.three.SpabThreeCandidate;
-import org.dice_research.spab.candidates.two.SpabTwoCandidate;
 import org.dice_research.spab.exceptions.SpabException;
 
 /**
@@ -22,15 +19,6 @@ public abstract class CandidateFactory {
 	public static Candidate createCandidate(CandidateImplementation candidateImplementation, Matcher matcher)
 			throws SpabException {
 		switch (candidateImplementation) {
-
-		case SPAB_TWO:
-			return new SpabTwoCandidate(null);
-
-		case SPAB_THREE:
-			return new SpabThreeCandidate(null);
-
-		case SPAB_FOUR:
-			return new SpabFourCandidate();
 
 		case SPAB_SIX:
 			return new CandidateSix();

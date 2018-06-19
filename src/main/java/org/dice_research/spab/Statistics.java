@@ -1,6 +1,5 @@
 package org.dice_research.spab;
 
-import org.dice_research.spab.candidates.two.RegEx;
 import org.dice_research.spab.input.SparqlQuery;
 import org.dice_research.spab.structures.CandidateVertex;
 import org.slf4j.Logger;

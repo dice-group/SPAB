@@ -36,7 +36,7 @@ public class SpabApi {
 	 * CandidateImplementation in {@link SpabApi} and to {@link CandidateFactory}.
 	 */
 	public static enum CandidateImplementation {
-		SPAB_ONE, SPAB_TWO, SPAB_THREE, SPAB_FOUR, SPAB_SIX, UNIT_TEST
+		SPAB_SIX, UNIT_TEST
 	}
 
 	/**
