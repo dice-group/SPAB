@@ -16,20 +16,21 @@ import org.dice_research.spab.input.Input;
  */
 public class SolutionModifier extends Expression {
 
-	enum Type {
-		INITIAL, REFINED
-	};
+	protected static final int ID_GROUP = 1;
+	protected static final int ID_HAVING = 2;
+	protected static final int ID_ORDER = 3;
+	protected static final int ID_LIMIT_OFFSET = 4;
+	protected static final int END_FLAG = 5;
 
-	protected Type type;
+	protected int maxId = 0;
 
 	public SolutionModifier() {
 		super();
-		type = Type.INITIAL;
 	}
 
 	public SolutionModifier(Expression origin) {
 		super(origin);
-		type = ((SolutionModifier) origin).type;
+		maxId = ((SolutionModifier) origin).maxId;
 	}
 
 	@Override
@@ -54,33 +55,66 @@ public class SolutionModifier extends Expression {
 	@Override
 	public List<Expression> getRefinements(Input input) {
 		List<Expression> refinements = super.getRefinements(input);
-		if (type.equals(Type.INITIAL)) {
-			SolutionModifier refinement;
+		SolutionModifier refinement;
 
-			refinement = new SolutionModifier(this);
-			refinement.type = Type.REFINED;
+		if (maxId == 0) {
+			// Initial solution modifier
+
+			refinement = new SolutionModifier();
+			refinement.maxId = ID_GROUP;
 			refinement.sequence.add(new GroupClause());
 			refinements.add(refinement);
 
-			refinement = new SolutionModifier(this);
-			refinement.type = Type.REFINED;
+			refinement = new SolutionModifier();
+			refinement.maxId = ID_HAVING;
 			refinement.sequence.add(new HavingClause());
 			refinements.add(refinement);
 
-			refinement = new SolutionModifier(this);
-			refinement.type = Type.REFINED;
+			refinement = new SolutionModifier();
+			refinement.maxId = ID_ORDER;
 			refinement.sequence.add(new OrderClause());
 			refinements.add(refinement);
 
 			for (Expression expression : new LimitOffsetClauses().getInitialInstances()) {
-				refinement = new SolutionModifier(this);
-				refinement.type = Type.REFINED;
+				refinement = new SolutionModifier();
+				refinement.maxId = ID_LIMIT_OFFSET;
 				refinement.sequence.add(expression);
 				refinements.add(refinement);
 			}
 
-			type = Type.REFINED;
+		} else {
+			// There is at least one solution modifier. Add one additional solution modifier
+			// to existing sequence. To generate all possible pairs exactly one, only add
+			// greater IDs.
+
+			if (maxId < ID_HAVING) {
+				refinement = new SolutionModifier(this);
+				refinement.maxId = ID_HAVING;
+				refinement.sequence.add(new HavingClause());
+				refinements.add(refinement);
+			}
+
+			if (maxId < ID_ORDER) {
+				refinement = new SolutionModifier(this);
+				refinement.maxId = ID_ORDER;
+				refinement.sequence.add(new OrderClause());
+				refinements.add(refinement);
+			}
+
+			if (maxId < ID_LIMIT_OFFSET) {
+				for (Expression expression : new LimitOffsetClauses().getInitialInstances()) {
+					refinement = new SolutionModifier(this);
+					refinement.maxId = ID_LIMIT_OFFSET;
+					refinement.sequence.add(expression);
+					refinements.add(refinement);
+				}
+			}
 		}
+
+		// In every case, stop adding additional elements for this solution modifier.
+		// The refinement will continue at other instances.
+		maxId = END_FLAG;
+
 		return refinements;
 	}
 }
