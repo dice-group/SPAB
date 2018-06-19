@@ -40,6 +40,14 @@ public abstract class Expression {
 	protected abstract Expression createInstance(Expression origin);
 
 	/**
+	 * Creates an initial list of instances, if more than one initial instance
+	 * (a.k.a. the default constructor without parameters) is required.
+	 */
+	protected List<Expression> getInitialInstances() {
+		return new LinkedList<Expression>();
+	}
+
+	/**
 	 * Adds current regular expression part.
 	 */
 	protected abstract void addRegex(StringBuilder stringBuilder);

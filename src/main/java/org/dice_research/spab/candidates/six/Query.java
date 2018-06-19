@@ -1,5 +1,8 @@
 package org.dice_research.spab.candidates.six;
 
+import java.util.LinkedList;
+import java.util.List;
+
 /**
  * Query ::= Prologue ( SelectQuery | ConstructQuery | DescribeQuery | AskQuery
  * ) ValuesClause
@@ -15,8 +18,7 @@ package org.dice_research.spab.candidates.six;
 public class Query extends Expression {
 
 	public Query() {
-		SelectQuery selectQuery = new SelectQuery();
-		sequence.add(selectQuery);
+		super();
 	}
 
 	public Query(Expression origin) {
@@ -31,5 +33,21 @@ public class Query extends Expression {
 	@Override
 	protected void addRegex(StringBuilder stringBuilder) {
 		addSequenceToRegex(stringBuilder);
+	}
+
+	@Override
+	protected List<Expression> getInitialInstances() {
+		List<Expression> instances = new LinkedList<Expression>();
+		Query instance;
+
+		instance = new Query();
+		instance.sequence.add(new SelectQuery());
+		instances.add(instance);
+
+		instance = new Query();
+		instance.sequence.add(new ConstructQuery());
+		instances.add(instance);
+		
+		return instances;
 	}
 }
