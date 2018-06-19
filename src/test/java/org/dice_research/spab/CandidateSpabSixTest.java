@@ -23,24 +23,24 @@ public class CandidateSpabSixTest extends AbstractTestCase {
 
 	public static final String A = "SELECT ?s WHERE { ?s <A> ?o }";
 	public static final String B = "SELECT ?s WHERE { ?s <B> ?o }";
+	
+	public void humanCheck() {
+		Input input = new Input();
+		input.addPositive(A);
+		// input.addPositive(B);
 
-	@Test
-	public void test() {
-//		Input input = new Input();
-//		input.addPositive(A);
-//		input.addPositive(B);
-//
-//		Expression expression;
-//
-//		expression = new Root();
-//
-//		List<Expression> expressions = new LinkedList<Expression>();
-//		recursiveGeneration(expression, input, expressions);
-//		System.out.println(expressions.size());
-//
-//		for (Expression exp : expressions) {
-//			System.out.println(exp.getRegex() + "  (" + exp.getClass().getSimpleName() + ")");
-//		}
+		Expression expression;
+
+		expression = new Root();
+
+		List<Expression> expressions = new LinkedList<Expression>();
+		expressions.add(expression);
+
+		refine(expressions, input, 5);
+
+		for (Expression expression2 : expressions) {
+			System.out.println(expression2.getRegex());
+		}
 
 	}
 
@@ -51,29 +51,38 @@ public class CandidateSpabSixTest extends AbstractTestCase {
 		Input input = new Input();
 		input.addPositive(A);
 
-		List<Expression> expressions = new LinkedList<Expression>();
+		// First block: Should contain 1 triple
 
 		TriplesBlock triplesBlock = new TriplesBlock();
-		triplesBlock.createTripleBlock=true;
+		triplesBlock.createTripleBlock = true;
+		assertTrue(triplesBlock.getRegex().equals(".*"));
+
+		// Second generation: Should contain 2 triples
+
+		List<Expression> expressions = new LinkedList<Expression>();
 		expressions.add(triplesBlock);
-		for (Expression expression : expressions) {
-			System.out.println(expression.getRegex());
-		}
-
-		
 		expressions = refine(expressions, input);
-		System.out.println(expressions.size());
-		for (Expression expression : expressions) {
-			System.out.println(expression.getRegex());
-		}
-		
-		expressions = refine(expressions, input);
-		System.out.println(expressions.size());
-		for (Expression expression : expressions) {
-			System.out.println(expression.getRegex());
-		}
 
-		
+		boolean found = false;
+		for (Expression expression : expressions) {
+			if (expression.getRegex().equals(".* \\. .*")) {
+				found = true;
+			}
+		}
+		assertTrue(found);
+
+		// Third generation: Should contain 3 triples
+
+		expressions = refine(expressions, input);
+
+		found = false;
+		for (Expression expression : expressions) {
+			if (expression.getRegex().equals(".* \\. .* \\. .*")) {
+				found = true;
+			}
+		}
+		assertTrue(found);
+
 		Triple.generateFullTriples = true;
 	}
 
@@ -106,6 +115,13 @@ public class CandidateSpabSixTest extends AbstractTestCase {
 		assertEquals(2 + 6 + 12 + 8, expressions.size());
 
 		assertEquals(expressions.size(), new HashSet<Expression>(expressions).size());
+	}
+
+	public List<Expression> refine(List<Expression> expressions, Input input, int steps) {
+		for (int i = 0; i < steps; i++) {
+			expressions.addAll(refine(expressions, input));
+		}
+		return expressions;
 	}
 
 	public List<Expression> refine(List<Expression> expressions, Input input) {

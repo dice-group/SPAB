@@ -1,5 +1,9 @@
 package org.dice_research.spab.candidates.six;
 
+import java.util.List;
+
+import org.dice_research.spab.input.Input;
+
 /**
  * GroupGraphPatternSub ::= TriplesBlock? ( GraphPatternNotTriples '.'?
  * TriplesBlock? )*
@@ -14,14 +18,24 @@ package org.dice_research.spab.candidates.six;
  */
 public class GroupGraphPatternSub extends Expression {
 
+	enum Type {
+		INITIAL, REFINED
+	};
+
+	protected Type type;
+
 	public GroupGraphPatternSub() {
 		TriplesBlock triplesBlock = new TriplesBlock();
 		triplesBlock.createTripleBlock = true;
 		sequence.add(triplesBlock);
+
+		type = Type.INITIAL;
 	}
 
 	public GroupGraphPatternSub(Expression origin) {
 		super(origin);
+
+		type = ((GroupGraphPatternSub) origin).type;
 	}
 
 	@Override
@@ -32,5 +46,18 @@ public class GroupGraphPatternSub extends Expression {
 	@Override
 	protected void addRegex(StringBuilder stringBuilder) {
 		addSequenceToRegex(stringBuilder);
+	}
+
+	@Override
+	public List<Expression> getRefinements(Input input) {
+		List<Expression> refinements = super.getRefinements(input);
+		if (type.equals(Type.INITIAL)) {
+			GroupGraphPatternSub refinement = new GroupGraphPatternSub(this);
+			refinement.type = Type.REFINED;
+			refinement.sequence.add(new GraphPatternNotTriples());
+			type = Type.REFINED;
+			refinements.add(refinement);
+		}
+		return refinements;
 	}
 }

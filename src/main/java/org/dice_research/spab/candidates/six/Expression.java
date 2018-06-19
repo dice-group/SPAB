@@ -124,4 +124,12 @@ public abstract class Expression {
 			}
 		}
 	}
+
+	/**
+	 * Adds wild-card '.*' at begin and end.
+	 */
+	protected void encloseWithWildcards(StringBuilder stringBuilder) {
+		stringBuilder.insert(0, ".*");
+		stringBuilder.append(".*");
+	}
 }
