@@ -19,19 +19,15 @@ public class CandidateSix {
 		Input input = new Input();
 		input.addPositive(A);
 
-		Expression expression;
-
-		expression = new Root();
-
+		// Add root node and refine
 		List<Expression> expressions = new LinkedList<Expression>();
-		expressions.add(expression);
-
+		expressions.add(new Root());
 		refine(expressions, input, 5);
 
-		for (Expression expression2 : expressions) {
-			System.out.println(expression2.getRegex());
+		// Print all generated expressions
+		for (Expression expression : expressions) {
+			System.out.println(expression.getRegex());
 		}
-
 	}
 
 	public static List<Expression> refine(List<Expression> expressions, Input input, int steps) {

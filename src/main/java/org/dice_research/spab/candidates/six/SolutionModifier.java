@@ -23,9 +23,6 @@ public class SolutionModifier extends Expression {
 	protected Type type;
 
 	public SolutionModifier() {
-		// Default constructor is empty, as all contents are optional
-		// TODO: Results in empty (and maybe duplicate in other case) regular
-		// expression.
 		super();
 		type = Type.INITIAL;
 	}
@@ -75,10 +72,12 @@ public class SolutionModifier extends Expression {
 			refinement.sequence.add(new OrderClause());
 			refinements.add(refinement);
 
-			refinement = new SolutionModifier(this);
-			refinement.type = Type.REFINED;
-			refinement.sequence.add(new LimitOffsetClauses());
-			refinements.add(refinement);
+			for (Expression expression : new LimitOffsetClauses().getInitialInstances()) {
+				refinement = new SolutionModifier(this);
+				refinement.type = Type.REFINED;
+				refinement.sequence.add(expression);
+				refinements.add(refinement);
+			}
 
 			type = Type.REFINED;
 		}

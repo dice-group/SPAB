@@ -1,5 +1,6 @@
 package org.dice_research.spab.candidates.six;
 
+import java.util.LinkedList;
 import java.util.List;
 
 import org.dice_research.spab.input.Input;
@@ -20,17 +21,13 @@ import org.dice_research.spab.input.Input;
 public class LimitOffsetClauses extends Expression {
 
 	enum Type {
-		INITIAL, LIMIT, OFFSET, REFINED
+		LIMIT, OFFSET, REFINED
 	};
 
 	protected Type type;
 
 	public LimitOffsetClauses() {
-		// Default constructor is empty, as all contents are optional
-		// TODO: Results in empty (and maybe duplicate in other case) regular
-		// expression.
 		super();
-		type = Type.INITIAL;
 	}
 
 	public LimitOffsetClauses(Expression origin) {
@@ -52,21 +49,7 @@ public class LimitOffsetClauses extends Expression {
 	public List<Expression> getRefinements(Input input) {
 
 		List<Expression> refinements = super.getRefinements(input);
-		if (type.equals(Type.INITIAL)) {
-			LimitOffsetClauses refinement;
-
-			refinement = new LimitOffsetClauses(this);
-			refinement.type = Type.LIMIT;
-			refinement.sequence.add(new LimitClause());
-			refinements.add(refinement);
-
-			refinement = new LimitOffsetClauses(this);
-			refinement.type = Type.OFFSET;
-			refinement.sequence.add(new OffsetClause());
-			refinements.add(refinement);
-
-			type = Type.REFINED;
-		} else if (type.equals(Type.LIMIT)) {
+		if (type.equals(Type.LIMIT)) {
 			LimitOffsetClauses refinement;
 
 			refinement = new LimitOffsetClauses(this);
@@ -86,5 +69,23 @@ public class LimitOffsetClauses extends Expression {
 			type = Type.REFINED;
 		}
 		return refinements;
+	}
+
+	@Override
+	protected List<Expression> getInitialInstances() {
+		List<Expression> instances = new LinkedList<Expression>();
+		LimitOffsetClauses instance;
+
+		instance = new LimitOffsetClauses();
+		instance.type = Type.LIMIT;
+		instance.sequence.add(new LimitClause());
+		instances.add(instance);
+
+		instance = new LimitOffsetClauses();
+		instance.type = Type.OFFSET;
+		instance.sequence.add(new OffsetClause());
+		instances.add(instance);
+
+		return instances;
 	}
 }

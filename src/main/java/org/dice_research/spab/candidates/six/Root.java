@@ -12,7 +12,7 @@ import org.dice_research.spab.input.Input;
 public class Root extends Expression {
 
 	enum Type {
-		INITIAL, REFINED
+		INITIAL, ROOT_REFINED, REFINED
 	}
 
 	protected Type type;
@@ -33,7 +33,11 @@ public class Root extends Expression {
 
 	@Override
 	protected void addRegex(StringBuilder stringBuilder) {
-		addSequenceToRegex(stringBuilder);
+		if (type.equals(Type.ROOT_REFINED)) {
+			stringBuilder.append(".*");
+		} else {
+			addSequenceToRegex(stringBuilder);
+		}
 	}
 
 	@Override
@@ -62,13 +66,14 @@ public class Root extends Expression {
 			refinement.sequence.add(graphPatternNotTriples);
 			refinements.add(refinement);
 
-			refinement = new Root();
-			refinement.type = Type.REFINED;
-			SolutionModifier solutionModifier = new SolutionModifier();
-			refinement.sequence.add(solutionModifier);
-			refinements.add(refinement);
+			for (Expression expression : new SolutionModifier().getRefinements(input)) {
+				refinement = new Root();
+				refinement.type = Type.REFINED;
+				refinement.sequence.add(expression);
+				refinements.add(refinement);
+			}
 
-			type = Type.REFINED;
+			type = Type.ROOT_REFINED;
 		}
 
 		return refinements;
