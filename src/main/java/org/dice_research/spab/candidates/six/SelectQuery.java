@@ -12,6 +12,8 @@ package org.dice_research.spab.candidates.six;
 public class SelectQuery extends Expression {
 
 	public SelectQuery() {
+		SelectClause selectClause = new SelectClause();
+		sequence.add(selectClause);
 		WhereClause whereClause = new WhereClause();
 		sequence.add(whereClause);
 	}

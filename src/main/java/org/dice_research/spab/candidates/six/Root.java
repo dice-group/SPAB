@@ -1,5 +1,8 @@
 package org.dice_research.spab.candidates.six;
 
+import java.util.List;
+
+import org.dice_research.spab.input.Input;
 
 /**
  * Most general expression.
@@ -8,13 +11,19 @@ package org.dice_research.spab.candidates.six;
  */
 public class Root extends Expression {
 
+	enum Type {
+		INITIAL, REFINED
+	}
+
+	protected Type type;
+
 	public Root() {
-		Query query = new Query();
-		sequence.add(query);
+		type = Type.INITIAL;
 	}
 
 	public Root(Expression origin) {
 		super(origin);
+		type = ((Root) origin).type;
 	}
 
 	@Override
@@ -25,5 +34,30 @@ public class Root extends Expression {
 	@Override
 	protected void addRegex(StringBuilder stringBuilder) {
 		addSequenceToRegex(stringBuilder);
+	}
+
+	@Override
+	public List<Expression> getRefinements(Input input) {
+		List<Expression> refinements = super.getRefinements(input);
+
+		if (type.equals(Type.INITIAL)) {
+			Root refinement;
+
+			refinement = new Root();
+			refinement.type = Type.REFINED;
+			Query query = new Query();
+			refinement.sequence.add(query);
+			refinements.add(refinement);
+
+			refinement = new Root();
+			refinement.type = Type.REFINED;
+			WhereClause where = new WhereClause();
+			refinement.sequence.add(where);
+			refinements.add(refinement);
+
+			type = Type.REFINED;
+		}
+
+		return refinements;
 	}
 }

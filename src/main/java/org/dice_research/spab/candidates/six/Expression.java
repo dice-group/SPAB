@@ -113,4 +113,15 @@ public abstract class Expression {
 			sequence.get(i).addRegex(stringBuilder);
 		}
 	}
+
+	/**
+	 * Adds wild-card '.*', if it is currently not at and of given StringBuilder.
+	 */
+	protected void addWildcard(StringBuilder stringBuilder) {
+		if (stringBuilder != null && stringBuilder.length() >= 2) {
+			if (!stringBuilder.substring(stringBuilder.length() - 2).equals(".*")) {
+				stringBuilder.append(".*");
+			}
+		}
+	}
 }

@@ -16,6 +16,7 @@ public class GroupGraphPatternSub extends Expression {
 
 	public GroupGraphPatternSub() {
 		TriplesBlock triplesBlock = new TriplesBlock();
+		triplesBlock.createTripleBlock = true;
 		sequence.add(triplesBlock);
 	}
 

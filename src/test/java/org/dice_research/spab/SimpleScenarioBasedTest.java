@@ -155,7 +155,7 @@ public class SimpleScenarioBasedTest extends AbstractTestCase {
 		CandidateVertex result = spab.run();
 
 		// Human debugging
-		int indexForDebbung = 0;
+		int indexForDebbung = -1;
 		if (title.equals("Scenario-" + indexForDebbung)) {
 			printInput(spab, true, "Positive inputs", true);
 			printInput(spab, false, "Negative inputs", true);

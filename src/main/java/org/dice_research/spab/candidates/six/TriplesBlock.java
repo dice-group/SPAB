@@ -17,8 +17,11 @@ import org.dice_research.spab.input.Input;
  */
 public class TriplesBlock extends Expression {
 
+	// TODO Set length based on input
 	protected final static int MAX_TRIPLE_BLOCKS = 3;
-	protected boolean createTripleBlock = false;
+	
+	// TODO Could be set in another way.
+	public boolean createTripleBlock = false;
 	protected int tripleBlockCreationCount;
 
 	/**
@@ -27,7 +30,6 @@ public class TriplesBlock extends Expression {
 	public TriplesBlock() {
 		sequence.add(new Triple());
 		tripleBlockCreationCount = MAX_TRIPLE_BLOCKS;
-		this.createTripleBlock = true;
 	}
 
 	/**
@@ -53,12 +55,12 @@ public class TriplesBlock extends Expression {
 		List<Expression> refinements = getRefinementsOfSequence(input);
 
 		if (createTripleBlock && tripleBlockCreationCount > 1) {
-			// Create new block
-			Expression additionalBlock = createInstance(this);
-			// Set properties for adding an adittinal triple
-			TriplesBlock triplesBlock = (TriplesBlock) additionalBlock;
+			TriplesBlock triplesBlock = new TriplesBlock();
 			triplesBlock.tripleBlockCreationCount = tripleBlockCreationCount - 1;
 			triplesBlock.createTripleBlock = true;
+
+			Expression additionalBlock = createInstance(this);
+			additionalBlock.sequence.add(triplesBlock);
 			refinements.add(additionalBlock);
 			createTripleBlock = false;
 		}
