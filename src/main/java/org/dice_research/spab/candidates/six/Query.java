@@ -47,7 +47,15 @@ public class Query extends Expression {
 		instance = new Query();
 		instance.sequence.add(new ConstructQuery());
 		instances.add(instance);
-		
+
+		instance = new Query();
+		instance.sequence.add(new DescribeQuery());
+		instances.add(instance);
+
+		instance = new Query();
+		instance.sequence.add(new AskQuery());
+		instances.add(instance);
+
 		return instances;
 	}
 }
