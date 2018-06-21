@@ -12,7 +12,33 @@ public class CandidateSix {
 	public static final String A = "SELECT ?s WHERE { ?s <A> ?o }";
 
 	public static void main(String[] args) {
-		humanCheck();
+		// humanCheck();
+		humanClassesCheck();
+	}
+
+	/**
+	 * Prints regular expressions and related class structure.
+	 */
+	public static void humanClassesCheck() {
+		Input input = new Input();
+		input.addPositive(A);
+
+		// Add root node and refine
+		List<Expression> expressions = new LinkedList<Expression>();
+		expressions.add(new Root());
+		refine(expressions, input, 5);
+
+		// Print all generated expressions
+		StringBuilder stringBuilder = new StringBuilder();
+		for (Expression expression : expressions) {
+			expression.getClasses(stringBuilder);
+			stringBuilder.append(System.lineSeparator());
+			stringBuilder.append(expression.getRegex());
+			stringBuilder.append(System.lineSeparator());
+			stringBuilder.append(System.lineSeparator());
+		}
+		System.out.println(stringBuilder.toString());
+
 	}
 
 	public static void humanCheck() {

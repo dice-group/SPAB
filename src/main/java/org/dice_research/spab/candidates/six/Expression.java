@@ -122,6 +122,17 @@ public abstract class Expression {
 		}
 	}
 
+	public void getClasses(StringBuilder stringBuilder) {
+		stringBuilder.append(getClass().getSimpleName());
+		if (!sequence.isEmpty()) {
+			stringBuilder.append("[ ");
+			for (Expression expression : sequence) {
+				expression.getClasses(stringBuilder);
+			}
+			stringBuilder.append(" ]");
+		}
+	}
+
 	/**
 	 * Adds wild-card '.*', if it is currently not at and of given StringBuilder.
 	 */
