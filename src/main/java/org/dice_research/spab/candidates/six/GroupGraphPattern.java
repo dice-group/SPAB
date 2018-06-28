@@ -29,6 +29,7 @@ public class GroupGraphPattern extends Expression {
 	protected void addRegex(StringBuilder stringBuilder) {
 		stringBuilder.append("\\{");
 		addSequenceToRegex(stringBuilder);
+		addWildcard(stringBuilder);
 		stringBuilder.append("\\}");
 	}
 }
