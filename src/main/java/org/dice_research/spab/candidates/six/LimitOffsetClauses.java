@@ -23,6 +23,23 @@ import org.dice_research.spab.input.Input;
  */
 public class LimitOffsetClauses extends Expression {
 
+	public static List<Expression> getInitialInstances() {
+		List<Expression> instances = new LinkedList<Expression>();
+		LimitOffsetClauses instance;
+
+		instance = new LimitOffsetClauses();
+		instance.type = Type.LIMIT;
+		instance.sequence.add(new LimitClause());
+		instances.add(instance);
+
+		instance = new LimitOffsetClauses();
+		instance.type = Type.OFFSET;
+		instance.sequence.add(new OffsetClause());
+		instances.add(instance);
+
+		return instances;
+	}
+
 	enum Type {
 		LIMIT, OFFSET, REFINED
 	};
@@ -72,24 +89,6 @@ public class LimitOffsetClauses extends Expression {
 			type = Type.REFINED;
 		}
 		return refinements;
-	}
-
-	@Override
-	protected List<Expression> getInitialInstances() {
-		List<Expression> instances = new LinkedList<Expression>();
-		LimitOffsetClauses instance;
-
-		instance = new LimitOffsetClauses();
-		instance.type = Type.LIMIT;
-		instance.sequence.add(new LimitClause());
-		instances.add(instance);
-
-		instance = new LimitOffsetClauses();
-		instance.type = Type.OFFSET;
-		instance.sequence.add(new OffsetClause());
-		instances.add(instance);
-
-		return instances;
 	}
 
 	/**

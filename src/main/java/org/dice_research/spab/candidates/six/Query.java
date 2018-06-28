@@ -17,26 +17,7 @@ import java.util.List;
  */
 public class Query extends Expression {
 
-	public Query() {
-		super();
-	}
-
-	public Query(Expression origin) {
-		super(origin);
-	}
-
-	@Override
-	protected Expression createInstance(Expression origin) {
-		return new Query(origin);
-	}
-
-	@Override
-	protected void addRegex(StringBuilder stringBuilder) {
-		addSequenceToRegex(stringBuilder);
-	}
-
-	@Override
-	protected List<Expression> getInitialInstances() {
+	public static List<Expression> getInitialInstances() {
 		List<Expression> instances = new LinkedList<Expression>();
 		Query instance;
 
@@ -57,5 +38,23 @@ public class Query extends Expression {
 		instances.add(instance);
 
 		return instances;
+	}
+
+	public Query() {
+		super();
+	}
+
+	public Query(Expression origin) {
+		super(origin);
+	}
+
+	@Override
+	protected Expression createInstance(Expression origin) {
+		return new Query(origin);
+	}
+
+	@Override
+	protected void addRegex(StringBuilder stringBuilder) {
+		addSequenceToRegex(stringBuilder);
 	}
 }

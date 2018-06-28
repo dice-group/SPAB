@@ -15,6 +15,21 @@ import org.dice_research.spab.input.Input;
 public abstract class Expression {
 
 	/**
+	 * Creates an initial list of instances, if more than one initial instance is
+	 * required.
+	 * 
+	 * Implementation note: A non-static implementation would generate the need to
+	 * create an instance to call this method. That seems senseless. The current
+	 * static implementation is not part of the inheritance, as not bound to an
+	 * instance, and can not be overwritten. Therefore the method in the abstract
+	 * class {@link Expression} will not be used. It is a note on how to use this
+	 * pattern.
+	 */
+	public static List<Expression> getInitialInstances() {
+		return new LinkedList<Expression>();
+	}
+
+	/**
 	 * Sequence of sub-expressions.
 	 */
 	protected List<Expression> sequence = new LinkedList<Expression>();
@@ -38,14 +53,6 @@ public abstract class Expression {
 	 * {@link #getRefinementsOfSequence(Input)}.
 	 */
 	protected abstract Expression createInstance(Expression origin);
-
-	/**
-	 * Creates an initial list of instances, if more than one initial instance
-	 * (a.k.a. the default constructor without parameters) is required.
-	 */
-	protected List<Expression> getInitialInstances() {
-		return new LinkedList<Expression>();
-	}
 
 	/**
 	 * Adds current regular expression part.

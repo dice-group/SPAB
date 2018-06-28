@@ -1,5 +1,8 @@
 package org.dice_research.spab.candidates.six;
 
+import java.util.LinkedList;
+import java.util.List;
+
 /**
  * GraphPatternNotTriples ::= GroupOrUnionGraphPattern | OptionalGraphPattern |
  * MinusGraphPattern | GraphGraphPattern | ServiceGraphPattern | Filter | Bind |
@@ -13,8 +16,28 @@ package org.dice_research.spab.candidates.six;
  */
 public class GraphPatternNotTriples extends Expression {
 
+	/**
+	 * Creates objects containing {@link GroupOrUnionGraphPattern} or
+	 * {@link Filter}.
+	 */
+	public static List<Expression> getInitialInstances() {
+		List<Expression> instances = new LinkedList<Expression>();
+
+		GraphPatternNotTriples graphPatternNotTriples = new GraphPatternNotTriples();
+		graphPatternNotTriples.sequence.add(new GroupOrUnionGraphPattern());
+		instances.add(graphPatternNotTriples);
+
+		for (Expression filter : Filter.getInitialInstances()) {
+			graphPatternNotTriples = new GraphPatternNotTriples();
+			graphPatternNotTriples.sequence.add(filter);
+			instances.add(graphPatternNotTriples);
+		}
+
+		return instances;
+	}
+
 	public GraphPatternNotTriples() {
-		sequence.add(new GroupOrUnionGraphPattern());
+		super();
 	}
 
 	public GraphPatternNotTriples(Expression origin) {

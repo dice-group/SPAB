@@ -21,6 +21,7 @@ public class GroupOrUnionGraphPattern extends Expression {
 
 	protected Type type;
 
+	// TODO Get max out of input
 	protected final static int MAX = 4;
 	protected int counter;
 

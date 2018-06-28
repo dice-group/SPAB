@@ -47,7 +47,7 @@ public class Root extends Expression {
 		if (type.equals(Type.INITIAL)) {
 			Root refinement;
 
-			for (Expression expression : new Query().getInitialInstances()) {
+			for (Expression expression : Query.getInitialInstances()) {
 				refinement = new Root();
 				refinement.type = Type.REFINED;
 				refinement.sequence.add(expression);
