@@ -48,6 +48,16 @@ public class BuiltInCall extends Expression {
 
 	protected final static String[] CALLS_VAR = { "BOUND" };
 
+	protected final static String[] CALLS_SINGLE_NIL = { "BNODE" };
+
+	protected final static String[] CALLS_NIL = { "RAND", "NOW", "UUID", "STRUUID" };
+
+	protected final static String[] CALLS_EXPRESSIONLIST = { "CONCAT", "COALESCEF" };
+
+	protected final static String[] CALLS_EXPRESSIONS = { "SUBSTR", "REPLACE", "REGEX" };
+
+	protected final static String[] CALLS_FUNC = { "EXISTS", "NOT EXISTS" };
+
 	/**
 	 * Creates list of call with reserved words.
 	 */
@@ -69,6 +79,31 @@ public class BuiltInCall extends Expression {
 			instances.add(builtInCall);
 		}
 		for (String call : CALLS_VAR) {
+			BuiltInCall builtInCall = new BuiltInCall();
+			builtInCall.sequence.add(new ExpressionString(call));
+			instances.add(builtInCall);
+		}
+		for (String call : CALLS_SINGLE_NIL) {
+			BuiltInCall builtInCall = new BuiltInCall();
+			builtInCall.sequence.add(new ExpressionString(call));
+			instances.add(builtInCall);
+		}
+		for (String call : CALLS_NIL) {
+			BuiltInCall builtInCall = new BuiltInCall();
+			builtInCall.sequence.add(new ExpressionString(call));
+			instances.add(builtInCall);
+		}
+		for (String call : CALLS_EXPRESSIONLIST) {
+			BuiltInCall builtInCall = new BuiltInCall();
+			builtInCall.sequence.add(new ExpressionString(call));
+			instances.add(builtInCall);
+		}
+		for (String call : CALLS_EXPRESSIONS) {
+			BuiltInCall builtInCall = new BuiltInCall();
+			builtInCall.sequence.add(new ExpressionString(call));
+			instances.add(builtInCall);
+		}
+		for (String call : CALLS_FUNC) {
 			BuiltInCall builtInCall = new BuiltInCall();
 			builtInCall.sequence.add(new ExpressionString(call));
 			instances.add(builtInCall);
