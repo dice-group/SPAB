@@ -63,13 +63,21 @@ public class QueryReplacementsTest extends AbstractTestCase {
 		// variables before resources in subject
 		spabApi.addPositive(
 				"SELECT ?x WHERE { <http://example.org#X> a <http://example.org#Y> . ?x  a <http://example.org#X> }");
+
+		spabApi.addNegative(
+				"SELECT ?a ?b WHERE { ?a <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> ?b . ?b <http://www.w3.org/2000/01/rdf-schema#label> \"Literal\" . }");
+		spabApi.addNegative(
+				"SELECT ?v1 ?v2 WHERE { ?v1 <http://www.w3.org/2000/01/rdf-schema#comment> \"Literal\" . ?v2 <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> ?v1 . }");
+
 		SparqlUnit sparqlUnit = spabApi.getInput().getPositives().get(0);
 		String line = sparqlUnit.getLineRepresentation();
 		String where = line.substring(line.indexOf("WHERE"));
 		assert (where.indexOf("?") < where.indexOf("#X"));
-		
-		if(PRINT) {
+
+		if (PRINT) {
 			System.out.println(line);
+			System.out.println(spabApi.getInput().getNegatives().get(0).getLineRepresentation());
+			System.out.println(spabApi.getInput().getNegatives().get(1).getLineRepresentation());
 		}
 
 		// resources before literals in object
@@ -78,8 +86,8 @@ public class QueryReplacementsTest extends AbstractTestCase {
 		line = sparqlUnit.getLineRepresentation();
 		where = line.substring(line.indexOf("WHERE"));
 		assert (where.indexOf("#X") < where.indexOf("42"));
-		
-		if(PRINT) {
+
+		if (PRINT) {
 			System.out.println(line);
 		}
 	}

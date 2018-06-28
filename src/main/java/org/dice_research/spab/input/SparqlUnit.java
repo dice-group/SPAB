@@ -205,8 +205,10 @@ public abstract class SparqlUnit {
 						return compare(a.s, b.s);
 					} else if (compare(a.p, b.p) != 0) {
 						return compare(a.p, b.p);
-					} else {
+					} else if (compare(a.o, b.o) != 0) {
 						return compare(a.o, b.o);
+					} else {
+						return a.toString().compareTo(b.toString());
 					}
 				} catch (Exception e) {
 					LOGGER.warn("Unsupported SPARQL format (" + e.getMessage() + ", " + a + " | " + b);
@@ -215,6 +217,8 @@ public abstract class SparqlUnit {
 			}
 
 			/**
+			 * Compares types of triple components (priority: variable > resource > literal)
+			 * 
 			 * 1. Variables: '?' or '$'
 			 * 
 			 * 2. Resources: '<'
@@ -247,14 +251,7 @@ public abstract class SparqlUnit {
 					throw new Exception(preB);
 				}
 
-				int prio = prioB - prioA;
-				if (prio != 0) {
-					// Priority of type (variable > resource > literal)
-					return prio;
-				} else {
-					// Same type, compare strings
-					return a.compareTo(b);
-				}
+				return prioB - prioA;
 			}
 		};
 
@@ -270,9 +267,7 @@ public abstract class SparqlUnit {
 			if (searchForTriples) {
 
 				// Collect triples
-				if (parts[i + 3].equals(".")
-						|| parts[i + 3].equals("}")
-						|| parts[i + 3].equals("{")
+				if (parts[i + 3].equals(".") || parts[i + 3].equals("}") || parts[i + 3].equals("{")
 						|| reservedWords.contains(parts[i + 3])) {
 					triples.add(new Triple(parts[i], parts[i + 1], parts[i + 2]));
 					i += 3;
