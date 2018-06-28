@@ -64,10 +64,15 @@ public class QueryReplacementsTest extends AbstractTestCase {
 		spabApi.addPositive(
 				"SELECT ?x WHERE { <http://example.org#X> a <http://example.org#Y> . ?x  a <http://example.org#X> }");
 
+		// Source: SimpleScenarioBasedTest[5]
 		spabApi.addNegative(
 				"SELECT ?a ?b WHERE { ?a <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> ?b . ?b <http://www.w3.org/2000/01/rdf-schema#label> \"Literal\" . }");
 		spabApi.addNegative(
 				"SELECT ?v1 ?v2 WHERE { ?v1 <http://www.w3.org/2000/01/rdf-schema#comment> \"Literal\" . ?v2 <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> ?v1 . }");
+		spabApi.addNegative(
+				"SELECT ?a ?b WHERE { ?a <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> ?b . ?a <http://www.w3.org/2000/01/rdf-schema#label> \"Literal\" .  }");
+		spabApi.addNegative(
+				"SELECT ?v1 ?v2 WHERE { ?v2 <http://www.w3.org/2000/01/rdf-schema#comment> \"Literal\" . ?v2 <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> ?v1 . }");
 
 		SparqlUnit sparqlUnit = spabApi.getInput().getPositives().get(0);
 		String line = sparqlUnit.getLineRepresentation();
@@ -78,6 +83,8 @@ public class QueryReplacementsTest extends AbstractTestCase {
 			System.out.println(line);
 			System.out.println(spabApi.getInput().getNegatives().get(0).getLineRepresentation());
 			System.out.println(spabApi.getInput().getNegatives().get(1).getLineRepresentation());
+			System.out.println(spabApi.getInput().getNegatives().get(2).getLineRepresentation());
+			System.out.println(spabApi.getInput().getNegatives().get(3).getLineRepresentation());
 		}
 
 		// resources before literals in object
