@@ -191,7 +191,7 @@ public abstract class SparqlUnit {
 			}
 		}
 
-		// Aim of this method: Sort triples
+		// Comparator to sort triples
 		Comparator<Triple> tripleComparator = new Comparator<Triple>() {
 			@Override
 			public int compare(Triple a, Triple b) {
@@ -244,27 +244,58 @@ public abstract class SparqlUnit {
 
 				int prio = prioB - prioA;
 				if (prio != 0) {
+					// Priority of type (variable > resource > literal)
 					return prio;
 				} else {
+					// Same type, compare strings
 					return a.compareTo(b);
 				}
 			}
 		};
 
 		StringJoiner stringJoiner = new StringJoiner(" ");
-		boolean searchTriples = false;
 		LinkedList<Triple> triples = new LinkedList<Triple>();
+
+		// Indicates if current SPARQL parts could contain triples
+		boolean searchForTriples = false;
+
+		// Examine every part, which is separated by whitespace from other parts
 		String[] parts = sparqlLine.split(" ");
 		for (int i = 0; i < parts.length; i++) {
-			if (searchTriples) {
+			if (searchForTriples) {
 
-				// Remember triples
-				if (parts[i + 3].equals(".") || parts[i + 3].equals("}")) {
+				if (parts.length < i + 3 + 1) {
+					LOGGER.error("Unsupported SPARQL format, assumed 3 additional elements at [index "
+							+ i
+							+ ": "
+							+ parts[i]
+							+ "]: "
+							+ sparqlLine);
+				}
+
+				// Collect triples
+				if (
+
+				// Default separator or default end of triple block
+				parts[i + 3].equals(".") || parts[i + 3].equals("}")
+
+				// TODO handle reserved words inside blocks
+				// Internal valid SPARQL parts
+				// || parts[i + 3].equals("FILTER")
+				// || parts[i + 3].equals("SELECT")
+				// || parts[i + 3].equals("OPTIONAL")
+				) {
+
 					triples.add(new Triple(parts[i], parts[i + 1], parts[i + 2]));
 					i += 3;
+
+				} else if (parts[i].equals("{")) {
+					// Embedded brackets, e.g. WHERE { {...} UNION {...} }
+					// -> Ignore current search and search for triples in the next iteration.
+
 				} else {
 
-					// Triple sould only end with ',' or '}'
+					// Triple should only end with ',' or '}'
 					LOGGER.warn(
 							"Unsupported SPARQL format [index " + (i + 3) + ": " + parts[i + 3] + "]: " + sparqlLine);
 					return sparqlLine;
@@ -272,7 +303,7 @@ public abstract class SparqlUnit {
 
 				// Add triples to return string
 				if (parts[i].equals("}")) {
-					searchTriples = false;
+					searchForTriples = false;
 					triples.sort(tripleComparator);
 					boolean firstTriple = true;
 					for (Triple triple : triples) {
@@ -287,14 +318,15 @@ public abstract class SparqlUnit {
 					stringJoiner.add("}");
 				}
 
-				// Control flow; add miscellaneous characters
 			} else {
+
+				// Control flow
 				if (parts[i].equals("{")) {
-					stringJoiner.add("{");
-					searchTriples = true;
-				} else {
-					stringJoiner.add(parts[i]);
+					searchForTriples = true;
 				}
+
+				// Add miscellaneous characters out of triple blocks
+				stringJoiner.add(parts[i]);
 			}
 		}
 

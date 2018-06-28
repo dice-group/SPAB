@@ -103,7 +103,6 @@ public class LimitOffsetClauses extends Expression {
 		while (newInstances == null || !newInstances.isEmpty()) {
 			newInstances = new LinkedList<Expression>();
 			for (Expression instance : instances) {
-				// TODO null
 				newInstances.addAll(instance.getRefinements(null));
 			}
 			instances.addAll(newInstances);
