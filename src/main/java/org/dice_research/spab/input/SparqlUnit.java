@@ -32,6 +32,11 @@ public abstract class SparqlUnit {
 	 */
 	static List<String> variableNames = new LinkedList<String>();
 
+	// Reserved words, which can occur inside {}
+	// @see https://www.w3.org/TR/sparql11-query/#rGroupGraphPattern
+	static List<String> reservedWords = Arrays.asList(new String[] { "SELECT", "WHERE", "GROUP", "HAVING", "ORDER",
+			"LIMIT", "OFFSET", "VALUES", "OPTIONAL", "MINUS", "GRAPH", "SERVICE", "FILTER", "BIND" });
+
 	static {
 		for (int i = 10; i <= 35; i++) {
 			variableNames.add("?" + Character.forDigit(i, 36));
@@ -264,28 +269,11 @@ public abstract class SparqlUnit {
 		for (int i = 0; i < parts.length; i++) {
 			if (searchForTriples) {
 
-				if (parts.length < i + 3 + 1) {
-					LOGGER.error("Unsupported SPARQL format, assumed 3 additional elements at [index "
-							+ i
-							+ ": "
-							+ parts[i]
-							+ "]: "
-							+ sparqlLine);
-				}
-
 				// Collect triples
-				if (
-
-				// Default separator or default end of triple block
-				parts[i + 3].equals(".") || parts[i + 3].equals("}")
-
-				// TODO handle reserved words inside blocks
-				// Internal valid SPARQL parts
-				// || parts[i + 3].equals("FILTER")
-				// || parts[i + 3].equals("SELECT")
-				// || parts[i + 3].equals("OPTIONAL")
-				) {
-
+				if (parts[i + 3].equals(".")
+						|| parts[i + 3].equals("}")
+						|| parts[i + 3].equals("{")
+						|| reservedWords.contains(parts[i + 3])) {
 					triples.add(new Triple(parts[i], parts[i + 1], parts[i + 2]));
 					i += 3;
 
@@ -294,15 +282,14 @@ public abstract class SparqlUnit {
 					// -> Ignore current search and search for triples in the next iteration.
 
 				} else {
-
-					// Triple should only end with ',' or '}'
+					// Triple should only end with supportedd strings
 					LOGGER.warn(
 							"Unsupported SPARQL format [index " + (i + 3) + ": " + parts[i + 3] + "]: " + sparqlLine);
 					return sparqlLine;
 				}
 
 				// Add triples to return string
-				if (parts[i].equals("}")) {
+				if (!parts[i].equals(".")) {
 					searchForTriples = false;
 					triples.sort(tripleComparator);
 					boolean firstTriple = true;
@@ -315,13 +302,13 @@ public abstract class SparqlUnit {
 						stringJoiner.add(triple.toString());
 					}
 					triples.clear();
-					stringJoiner.add("}");
+					stringJoiner.add(parts[i]);
 				}
 
 			} else {
 
-				// Control flow
-				if (parts[i].equals("{")) {
+				// Control flow: New bracket block, which does not start with reserved word.
+				if (parts[i].equals("{") && !reservedWords.contains(parts[i + 1])) {
 					searchForTriples = true;
 				}
 
