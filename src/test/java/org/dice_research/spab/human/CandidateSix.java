@@ -4,16 +4,32 @@ import java.util.LinkedList;
 import java.util.List;
 
 import org.dice_research.spab.candidates.six.Expression;
+import org.dice_research.spab.candidates.six.GroupOrUnionGraphPattern;
 import org.dice_research.spab.candidates.six.Root;
 import org.dice_research.spab.input.Input;
 
 public class CandidateSix {
 
-	public static final String A = "SELECT ?s WHERE { ?s <A> ?o }";
+	public static final String RES = "SELECT ?s WHERE { ?s <RES> ?o }";
 
 	public static void main(String[] args) {
-		// humanCheck();
-		humanClassesCheck();
+		humanCheck();
+		// humanClassesCheck();
+	}
+
+	public static void humanCheck() {
+		Input input = new Input();
+		input.addPositive(RES);
+
+		// Add root node and refine
+		List<Expression> expressions = new LinkedList<Expression>();
+		expressions.add(new GroupOrUnionGraphPattern());
+		refine(expressions, input, 3);
+
+		// Print all generated expressions
+		for (Expression expression : expressions) {
+			System.out.println(expression.getRegex());
+		}
 	}
 
 	/**
@@ -21,7 +37,7 @@ public class CandidateSix {
 	 */
 	public static void humanClassesCheck() {
 		Input input = new Input();
-		input.addPositive(A);
+		input.addPositive(RES);
 
 		// Add root node and refine
 		List<Expression> expressions = new LinkedList<Expression>();
@@ -39,21 +55,6 @@ public class CandidateSix {
 		}
 		System.out.println(stringBuilder.toString());
 
-	}
-
-	public static void humanCheck() {
-		Input input = new Input();
-		input.addPositive(A);
-
-		// Add root node and refine
-		List<Expression> expressions = new LinkedList<Expression>();
-		expressions.add(new Root());
-		refine(expressions, input, 5);
-
-		// Print all generated expressions
-		for (Expression expression : expressions) {
-			System.out.println(expression.getRegex());
-		}
 	}
 
 	public static List<Expression> refine(List<Expression> expressions, Input input, int steps) {

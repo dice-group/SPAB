@@ -1,5 +1,9 @@
 package org.dice_research.spab.candidates.six;
 
+import java.util.List;
+
+import org.dice_research.spab.input.Input;
+
 /**
  * GroupOrUnionGraphPattern ::= GroupGraphPattern ( 'UNION' GroupGraphPattern )*
  * 
@@ -11,14 +15,28 @@ package org.dice_research.spab.candidates.six;
  */
 public class GroupOrUnionGraphPattern extends Expression {
 
+	enum Type {
+		INITIAL, REFINED
+	};
+
+	protected Type type;
+
+	protected final static int MAX = 4;
+	protected int counter;
+
 	public GroupOrUnionGraphPattern() {
 		sequence.add(new GroupGraphPattern());
 		sequence.add(new ExpressionString(" UNION "));
 		sequence.add(new GroupGraphPattern());
+		counter = MAX;
+		type = Type.INITIAL;
 	}
 
 	public GroupOrUnionGraphPattern(Expression origin) {
 		super(origin);
+		sequence.add(new ExpressionString(" UNION "));
+		sequence.add(new GroupGraphPattern());
+		type = Type.INITIAL;
 	}
 
 	@Override
@@ -29,5 +47,20 @@ public class GroupOrUnionGraphPattern extends Expression {
 	@Override
 	protected void addRegex(StringBuilder stringBuilder) {
 		addSequenceToRegex(stringBuilder);
+	}
+
+	@Override
+	public List<Expression> getRefinements(Input input) {
+		List<Expression> refinements = super.getRefinements(input);
+
+		if (type.equals(Type.INITIAL) && counter > 1) {
+			GroupOrUnionGraphPattern groupOrUnionGraphPattern = new GroupOrUnionGraphPattern(this);
+			groupOrUnionGraphPattern.counter = counter - 1;
+			refinements.add(groupOrUnionGraphPattern);
+			
+			type = Type.REFINED;
+		}
+		
+		return refinements;
 	}
 }
