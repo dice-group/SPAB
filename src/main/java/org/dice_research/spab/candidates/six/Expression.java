@@ -43,6 +43,10 @@ public abstract class Expression {
 	/**
 	 * Creates expression based on origin. By default, the sequence of origin is
 	 * duplicated. Used in {@link #createInstance(Expression)}.
+	 * 
+	 * Do not add functionality in the constructor, as it will be used by
+	 * {@link #getRefinementsOfSequence(Input)} to create a duplicate of the origin
+	 * object and the related properties.
 	 */
 	Expression(Expression origin) {
 		this.sequence = Lists.newLinkedList(origin.sequence);

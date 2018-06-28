@@ -4,7 +4,9 @@ import java.util.LinkedList;
 import java.util.List;
 
 import org.dice_research.spab.candidates.six.Expression;
+import org.dice_research.spab.candidates.six.GroupOrUnionGraphPattern;
 import org.dice_research.spab.candidates.six.Root;
+import org.dice_research.spab.candidates.six.TriplesBlock;
 import org.dice_research.spab.input.Input;
 
 public class CandidateSix {
@@ -22,7 +24,8 @@ public class CandidateSix {
 
 		// Add root node and refine
 		List<Expression> expressions = new LinkedList<Expression>();
-		expressions.add(new Root());
+		expressions.add(new GroupOrUnionGraphPattern());
+//		expressions.add(new TriplesBlock());
 		refine(expressions, input, 3);
 
 		// Print all generated expressions

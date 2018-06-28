@@ -19,25 +19,22 @@ public class GroupOrUnionGraphPattern extends Expression {
 		INITIAL, REFINED
 	};
 
-	protected Type type;
+	protected Type type = Type.INITIAL;
 
-	// TODO Get max out of input
-	protected final static int MAX = 4;
+	// TODO Handle by input
+	protected final static int MAX_UNIONS = 2;
 	protected int counter;
 
 	public GroupOrUnionGraphPattern() {
 		sequence.add(new GroupGraphPattern());
 		sequence.add(new ExpressionString(" UNION "));
 		sequence.add(new GroupGraphPattern());
-		counter = MAX;
-		type = Type.INITIAL;
+		counter = MAX_UNIONS;
 	}
 
 	public GroupOrUnionGraphPattern(Expression origin) {
 		super(origin);
-		sequence.add(new ExpressionString(" UNION "));
-		sequence.add(new GroupGraphPattern());
-		type = Type.INITIAL;
+		counter = ((GroupOrUnionGraphPattern) origin).counter;
 	}
 
 	@Override
@@ -57,11 +54,16 @@ public class GroupOrUnionGraphPattern extends Expression {
 		if (type.equals(Type.INITIAL) && counter > 1) {
 			GroupOrUnionGraphPattern groupOrUnionGraphPattern = new GroupOrUnionGraphPattern(this);
 			groupOrUnionGraphPattern.counter = counter - 1;
+			groupOrUnionGraphPattern.type = Type.INITIAL;
+
+			groupOrUnionGraphPattern.sequence.add(new ExpressionString(" UNION "));
+			groupOrUnionGraphPattern.sequence.add(new GroupGraphPattern());
+
 			refinements.add(groupOrUnionGraphPattern);
-			
+
 			type = Type.REFINED;
 		}
-		
+
 		return refinements;
 	}
 }
