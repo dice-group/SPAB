@@ -3,6 +3,8 @@ package org.dice_research.spab.candidates.six;
 import java.util.LinkedList;
 import java.util.List;
 
+import org.dice_research.spab.input.Input;
+
 /**
  * Filter ::= 'FILTER' Constraint
  * 
@@ -15,24 +17,28 @@ import java.util.List;
 public class Filter extends Expression {
 
 	/**
-	 * Creates filters containing various constraints.
+	 * Creates expression, which has to contain reserved word FILTER
 	 */
 	public static List<Expression> getInitialInstances() {
 		List<Expression> instances = new LinkedList<Expression>();
-		for (Expression constraint : Constraint.getInitialInstances()) {
-			Filter filter = new Filter();
-			filter.sequence.add(constraint);
-			instances.add(filter);
-		}
+		instances.add(new Filter());
 		return instances;
 	}
 
+	enum Type {
+		INITIAL, REFINED
+	};
+
+	protected Type type;
+
 	public Filter() {
 		super();
+		type = Type.INITIAL;
 	}
 
 	public Filter(Expression origin) {
 		super(origin);
+		type = ((Filter) origin).type;
 	}
 
 	@Override
@@ -44,6 +50,25 @@ public class Filter extends Expression {
 	protected void addRegex(StringBuilder stringBuilder) {
 		addWildcard(stringBuilder);
 		stringBuilder.append("FILTER ");
+		if (type.equals(Type.INITIAL)) {
+			addWildcard(stringBuilder);
+		}
 		addSequenceToRegex(stringBuilder);
+	}
+
+	@Override
+	public List<Expression> getRefinements(Input input) {
+		List<Expression> refinements = super.getRefinements(input);
+
+		if (type.equals(Type.INITIAL)) {
+			// Create filters containing various constraints.
+			for (Expression constraint : Constraint.getInitialInstances()) {
+				Filter filter = new Filter(this);
+				filter.sequence.add(constraint);
+				filter.type = Type.REFINED;
+				refinements.add(filter);
+			}
+		}
+		return refinements;
 	}
 }
