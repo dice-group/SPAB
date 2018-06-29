@@ -49,11 +49,10 @@ public class SelectClause extends Expression {
 		if (type.equals(Type.INITIAL)) {
 			SelectClause selectClause;
 
-			// TODO: Add and ensure not to add a sequence of two whitespaces
-			// selectClause = new SelectClause(this);
-			// selectClause.sequence.add(new ExpressionString("\\*"));
-			// selectClause.type = Type.LOCKED;
-			// refinements.add(selectClause);
+			selectClause = new SelectClause(this);
+			selectClause.sequence.add(new ExpressionString("\\*"));
+			selectClause.type = Type.LOCKED;
+			refinements.add(selectClause);
 
 			selectClause = new SelectClause(this);
 			selectClause.sequence.add(new Var());

@@ -50,7 +50,7 @@ public class Var extends Expression {
 	protected void addRegex(StringBuilder stringBuilder) {
 		addSequenceToRegex(stringBuilder);
 		for (int v = 0; v < counter; v++) {
-			stringBuilder.append("?.* ");
+			stringBuilder.append("\\?.* ");
 		}
 	}
 
