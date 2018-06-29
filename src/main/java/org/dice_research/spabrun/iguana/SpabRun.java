@@ -16,6 +16,16 @@ import org.dice_research.spab.structures.CandidateVertex;
  * Generates Iguana queries of interest, imports query strings, and runs SPAB
  * variations.
  * 
+ * Source files are set in
+ * /SPAB/src/main/resources/iguana-2018-01-20/file-locations.properties
+ * 
+ * dbpedia_results.nt: https://figshare.com/s/01a0dad8427c463f2b25
+ * 
+ * swdf_results.nt: https://figshare.com/s/790f9441a36f15015252
+ * 
+ * dbpedia.txt and swdf.txt contain the original queries, but are not available
+ * online.
+ * 
  * @author Adrian Wilke
  */
 public class SpabRun {
