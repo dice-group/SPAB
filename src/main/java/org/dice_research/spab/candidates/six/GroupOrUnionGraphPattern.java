@@ -20,16 +20,11 @@ public class GroupOrUnionGraphPattern extends Expression {
 	};
 
 	protected Type type = Type.INITIAL;
-
-	// TODO Handle by input
-	protected final static int MAX_UNIONS = 2;
 	protected int counter;
 
 	public GroupOrUnionGraphPattern() {
 		sequence.add(new GroupGraphPattern());
-		sequence.add(new ExpressionString(" UNION "));
-		sequence.add(new GroupGraphPattern());
-		counter = MAX_UNIONS;
+		counter = 0;
 	}
 
 	public GroupOrUnionGraphPattern(Expression origin) {
@@ -51,9 +46,9 @@ public class GroupOrUnionGraphPattern extends Expression {
 	public List<Expression> getRefinements(Input input) {
 		List<Expression> refinements = super.getRefinements(input);
 
-		if (type.equals(Type.INITIAL) && counter > 1) {
+		if (type.equals(Type.INITIAL) && counter < input.getMaxUnions()) {
 			GroupOrUnionGraphPattern groupOrUnionGraphPattern = new GroupOrUnionGraphPattern(this);
-			groupOrUnionGraphPattern.counter = counter - 1;
+			groupOrUnionGraphPattern.counter = counter + 1;
 			groupOrUnionGraphPattern.type = Type.INITIAL;
 
 			groupOrUnionGraphPattern.sequence.add(new ExpressionString(" UNION "));

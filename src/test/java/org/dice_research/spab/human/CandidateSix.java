@@ -4,7 +4,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import org.dice_research.spab.candidates.six.Expression;
-import org.dice_research.spab.candidates.six.Query;
+import org.dice_research.spab.candidates.six.GroupOrUnionGraphPattern;
 import org.dice_research.spab.candidates.six.Root;
 import org.dice_research.spab.input.Input;
 
@@ -14,30 +14,20 @@ public class CandidateSix {
 
 	public static void main(String[] args) {
 
-		// if ("SELECT ?a ?b ?c WHERE { ?c ?b ?a }".matches("SELECT .* WHERE \\{.*\\}"))
-		// {
-
-		// if ("SELECT ?a ?b ?c WHERE { ?c ?b ?a }".matches("SELECT .* WHERE \\{.*\\}"))
-		// {
-		// System.out.println("y");
-		// } else {
-		// System.out.println("n");
-		// }
-
-		// humanCheck();
+		humanCheck();
 		// humanClassesCheck();
 	}
 
 	public static void humanCheck() {
+		List<Expression> expressions = new LinkedList<Expression>();
+
+		int refinements = 4;
+		expressions.add(new GroupOrUnionGraphPattern());
+		// expressions.addAll(.getInitialInstances());
+
 		Input input = new Input();
 		input.addPositive(RES);
-
-		// Add root node and refine
-		List<Expression> expressions = new LinkedList<Expression>();
-		// expressions.add(new Root());
-		expressions.addAll(Query.getInitialInstances());
-		// expressions.add(new Var());
-		refine(expressions, input, 6);
+		refine(expressions, input, refinements);
 
 		// Print all generated expressions
 		for (Expression expression : expressions) {

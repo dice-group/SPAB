@@ -4,6 +4,8 @@ import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.apache.jena.query.QueryParseException;
 import org.dice_research.spab.exceptions.InputRuntimeException;
@@ -121,5 +123,25 @@ public class Input {
 			}
 		}
 		return resources;
+	}
+
+	/**
+	 * Gets through the set of positive inputs, counts occurrences of reserved word
+	 * UNION, and returns maximum.
+	 */
+	public int getMaxUnions() {
+		int max = 0;
+		for (SparqlUnit sparqlUnit : positives) {
+			int i = 0;
+			Pattern p = Pattern.compile("UNION");
+			Matcher m = p.matcher(sparqlUnit.getLineRepresentation());
+			while (m.find()) {
+				i++;
+			}
+			if (i > max) {
+				max = i;
+			}
+		}
+		return max;
 	}
 }
