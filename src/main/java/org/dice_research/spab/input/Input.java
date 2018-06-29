@@ -144,4 +144,25 @@ public class Input {
 		}
 		return max;
 	}
+
+	/**
+	 * Gets through the set of positive inputs, counts occurrences of distinct
+	 * variables, and returns maximum.
+	 */
+	public int getMaxVariables() {
+		int max = 0;
+		for (SparqlUnit sparqlUnit : positives) {
+			Set<String> matches = new HashSet<String>();
+			// ? means lazy matching instead of greedy matching
+			Pattern p = Pattern.compile("\\?.+? ");
+			Matcher m = p.matcher(sparqlUnit.getLineRepresentation());
+			while (m.find()) {
+				matches.add(m.toString());
+			}
+			if (matches.size() > max) {
+				max = matches.size();
+			}
+		}
+		return max;
+	}
 }

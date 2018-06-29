@@ -267,7 +267,10 @@ public abstract class SparqlUnit {
 			if (searchForTriples) {
 
 				// Collect triples
-				if (parts[i + 3].equals(".") || parts[i + 3].equals("}") || parts[i + 3].equals("{")
+				if (parts[i].equals("}")) {
+					// Empty brackets
+
+				} else if (parts[i + 3].equals(".") || parts[i + 3].equals("}") || parts[i + 3].equals("{")
 						|| reservedWords.contains(parts[i + 3])) {
 					triples.add(new Triple(parts[i], parts[i + 1], parts[i + 2]));
 					i += 3;

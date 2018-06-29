@@ -47,6 +47,10 @@ public class QueryReplacementsTest extends AbstractTestCase {
 	public static final String UNION1 = "SELECT * WHERE { { ?s1 ?p1 ?o } UNION { ?s2 ?p2 ?o } }";
 	public static final String UNION2 = "SELECT * WHERE { { ?s1 ?p1 ?o } UNION { ?s2 ?p2 ?o } UNION { ?s3 ?p3 ?o } }";
 
+	public static final String VAR0 = "SELECT * WHERE {  }";
+	public static final String VAR1 = "SELECT * WHERE { <res> ?explains <res> }";
+	public static final String VAR2 = "SELECT ?s WHERE { ?s <res> ?o }";
+
 	public static final String IGUANA_FUSEKI = "PREFIX  dc:   <http://purl.org/dc/elements/1.1/>  "
 			+ "PREFIX  :     <http://dbpedia.org/resource/>  PREFIX  rdfs: <http://www.w3.org/2000/01/rdf-schema#>  "
 			+ "PREFIX  dbpedia2: <http://dbpedia.org/property/>  PREFIX  foaf: <http://xmlns.com/foaf/0.1/>  "
@@ -320,6 +324,27 @@ public class QueryReplacementsTest extends AbstractTestCase {
 		spabApi.addPositive(UNION0);
 		spabApi.addNegative(UNION2);
 		assertEquals(1, spabApi.getInput().getMaxUnions());
+	}
+
+	@Test
+	public void testVariablesCount() {
+		SpabApi spabApi = new SpabApi();
+		assertEquals(0, spabApi.getInput().getMaxVariables());
+
+		spabApi.addPositive(VAR0);
+		assertEquals(0, spabApi.getInput().getMaxVariables());
+
+		spabApi.addPositive(VAR1);
+		assertEquals(1, spabApi.getInput().getMaxVariables());
+
+		spabApi.addPositive(VAR2);
+		assertEquals(2, spabApi.getInput().getMaxVariables());
+
+		spabApi = new SpabApi();
+		spabApi.addPositive(VAR1);
+		spabApi.addPositive(VAR0);
+		spabApi.addNegative(VAR2);
+		assertEquals(1, spabApi.getInput().getMaxVariables());
 	}
 
 }

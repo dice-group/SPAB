@@ -28,8 +28,6 @@ public class Var extends Expression {
 
 	protected Type type = Type.INITIAL;
 
-	// TODO Handle by input
-	protected final static int MAX_VARS = 4;
 	protected int counter;
 
 	public Var() {
@@ -58,7 +56,7 @@ public class Var extends Expression {
 	public List<Expression> getRefinements(Input input) {
 		List<Expression> refinements = super.getRefinements(input);
 
-		if (type.equals(Type.INITIAL) && counter < MAX_VARS) {
+		if (type.equals(Type.INITIAL) && counter < input.getMaxVariables()) {
 			Var var = new Var(this);
 			var.counter = counter + 1;
 			var.type = Type.INITIAL;
