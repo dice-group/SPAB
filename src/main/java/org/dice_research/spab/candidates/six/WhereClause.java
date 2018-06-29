@@ -35,7 +35,6 @@ public class WhereClause extends Expression {
 		if (stringBuilder.length() == 0) {
 			stringBuilder.append(".*");
 		}
-
 		stringBuilder.append(" WHERE ");
 		addSequenceToRegex(stringBuilder);
 	}

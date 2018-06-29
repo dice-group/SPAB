@@ -4,6 +4,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import org.dice_research.spab.candidates.six.Expression;
+import org.dice_research.spab.candidates.six.Query;
 import org.dice_research.spab.candidates.six.Root;
 import org.dice_research.spab.input.Input;
 
@@ -12,7 +13,18 @@ public class CandidateSix {
 	public static final String RES = "SELECT ?s WHERE { ?s <RES> ?o }";
 
 	public static void main(String[] args) {
-		humanCheck();
+
+		// if ("SELECT ?a ?b ?c WHERE { ?c ?b ?a }".matches("SELECT .* WHERE \\{.*\\}"))
+		// {
+
+		// if ("SELECT ?a ?b ?c WHERE { ?c ?b ?a }".matches("SELECT .* WHERE \\{.*\\}"))
+		// {
+		// System.out.println("y");
+		// } else {
+		// System.out.println("n");
+		// }
+
+		// humanCheck();
 		// humanClassesCheck();
 	}
 
@@ -22,8 +34,10 @@ public class CandidateSix {
 
 		// Add root node and refine
 		List<Expression> expressions = new LinkedList<Expression>();
-		expressions.add(new Root());
-		refine(expressions, input, 3);
+		// expressions.add(new Root());
+		expressions.addAll(Query.getInitialInstances());
+		// expressions.add(new Var());
+		refine(expressions, input, 6);
 
 		// Print all generated expressions
 		for (Expression expression : expressions) {
