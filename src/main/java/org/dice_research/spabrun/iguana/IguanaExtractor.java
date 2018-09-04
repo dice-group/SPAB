@@ -42,14 +42,7 @@ public class IguanaExtractor {
 		tdbFilter.add(tdb);
 	}
 
-	/**
-	 * Fills {@link #positive.entrySet()} and {@link #negative} query examples for
-	 * TDBs based on non-parallel executed queries.
-	 * 
-	 * @param range
-	 *            is added to/subtracted from average queries-per-second
-	 */
-	public void generateQueryIndexes(double range) {
+	protected Map<Integer, List<QueriesPerSecond>> getNonParallelQueries() {
 
 		// Get non-parallel workers
 		List<Worker> workersNonParallel = getQpsWorkers(1);
@@ -73,6 +66,21 @@ public class IguanaExtractor {
 				queryMap.remove(queryIndex);
 			}
 		}
+
+		return queryMap;
+	}
+
+	/**
+	 * Fills {@link #positive.entrySet()} and {@link #negative} query examples for
+	 * TDBs based on non-parallel executed queries.
+	 * 
+	 * @param range
+	 *            is added to/subtracted from average queries-per-second
+	 */
+	public void generateQueryIndexes(double range) {
+
+		// Get queries
+		Map<Integer, List<QueriesPerSecond>> queryMap = getNonParallelQueries();
 
 		// Compare queries
 		for (String tdb : tdbFilter) {

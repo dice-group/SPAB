@@ -5,21 +5,21 @@ package org.dice_research.spab.benchmark;
  * 
  * @author Adrian Wilke
  */
-public class Runtime {
+public class Result {
 
 	private TripleStore tripleStore;
 	private Query query;
-	private long runtime;
+	private double result;
 
-	public Runtime(TripleStore tripleStore, Query query, long runtime) {
+	public Result(TripleStore tripleStore, Query query, double result) {
 		this.query = query;
 		this.tripleStore = tripleStore;
-		this.runtime = runtime;
+		this.result = result;
 	}
 
 	@Override
 	public String toString() {
-		return String.valueOf(runtime);
+		return String.valueOf(result);
 	}
 
 	public TripleStore getTripleStore() {
@@ -30,7 +30,7 @@ public class Runtime {
 		return query;
 	}
 
-	public long getRuntime() {
-		return runtime;
+	public double getResult() {
+		return result;
 	}
 }

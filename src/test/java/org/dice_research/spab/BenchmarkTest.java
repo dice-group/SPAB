@@ -5,7 +5,7 @@ import java.io.IOException;
 
 import org.dice_research.spab.benchmark.Benchmark;
 import org.dice_research.spab.benchmark.Query;
-import org.dice_research.spab.benchmark.Runtime;
+import org.dice_research.spab.benchmark.Result;
 import org.dice_research.spab.benchmark.TripleStore;
 import org.dice_research.spab.exceptions.IoRuntimeException;
 import org.junit.Test;
@@ -38,9 +38,9 @@ public class BenchmarkTest extends AbstractTestCase {
 		Query queryB = benchmark.addQuery(queryIdB, queryStringB);
 
 		// For testing: No combination TS-B and Q-B
-		Runtime runtimeAA = benchmark.addRuntime(tripleStoreA, queryA, 1111);
-		Runtime runtimeAB = benchmark.addRuntime(tripleStoreA, queryB, 1122);
-		Runtime runtimeBA = benchmark.addRuntime(tripleStoreB, queryA, 2211);
+		Result runtimeAA = benchmark.addResult(tripleStoreA, queryA, 1111);
+		Result runtimeAB = benchmark.addResult(tripleStoreA, queryB, 1122);
+		Result runtimeBA = benchmark.addResult(tripleStoreB, queryA, 2211);
 
 		if (PRINT) {
 			System.out.println(benchmark);
@@ -69,8 +69,8 @@ public class BenchmarkTest extends AbstractTestCase {
 		assertNotNull(benchmark.getQuery(queryStringA));
 		assertNull(benchmark.getQuery("not existing query string"));
 
-		assertNotNull(benchmark.getRuntime(tripleStoreA, queryA));
-		assertNull(benchmark.getRuntime(tripleStoreB, queryB));
+		assertNotNull(benchmark.getResult(tripleStoreA, queryA));
+		assertNull(benchmark.getResult(tripleStoreB, queryB));
 
 		// Export
 
@@ -90,6 +90,6 @@ public class BenchmarkTest extends AbstractTestCase {
 		assertEquals(benchmark.getComment(), restoredBenchmark.getComment());
 		assertEquals(benchmark.getTripleStores().size(), restoredBenchmark.getTripleStores().size());
 		assertEquals(benchmark.getQueries().size(), restoredBenchmark.getQueries().size());
-		assertEquals(benchmark.getRuntimes().size(), restoredBenchmark.getRuntimes().size());
+		assertEquals(benchmark.getResults().size(), restoredBenchmark.getResults().size());
 	}
 }

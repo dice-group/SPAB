@@ -33,14 +33,14 @@ public class Benchmark {
 	public static final String JSON_TRIPLE_STORE = "tripleStore";
 	public static final String JSON_QUERIES = "queries";
 	public static final String JSON_QUERY = "query";
-	public static final String JSON_RUNTIMES = "runtimes";
-	public static final String JSON_RUNTIME = "runtime";
+	public static final String JSON_RESULTS = "results";
+	public static final String JSON_RESULT = "result";
 
 	private String benchmarkId;
 	private String comment;
 	private List<TripleStore> tripleStores = new LinkedList<TripleStore>();
 	private List<Query> queries = new LinkedList<Query>();
-	private List<Runtime> runtimes = new LinkedList<Runtime>();
+	private List<Result> results = new LinkedList<Result>();
 
 	public Benchmark(String benchmarkId) {
 		this.benchmarkId = benchmarkId;
@@ -79,22 +79,33 @@ public class Benchmark {
 		return query;
 	}
 
-	public Runtime addRuntime(TripleStore tripleStore, Query query, long runtime) {
-		Runtime runtimeObj = new Runtime(tripleStore, query, runtime);
-		this.runtimes.add(runtimeObj);
-		return runtimeObj;
+	public Result addResult(TripleStore tripleStore, Query query, double result) {
+		Result resultObj = new Result(tripleStore, query, result);
+		this.results.add(resultObj);
+		return resultObj;
 	}
 
 	public List<TripleStore> getTripleStores() {
 		return tripleStores;
 	}
 
+	/**
+	 * Maps IDs to objects.
+	 */
+	public Map<String, TripleStore> getTripleStoresMap() {
+		Map<String, TripleStore> map = new HashMap<String, TripleStore>();
+		for (TripleStore tripleStore : tripleStores) {
+			map.put(tripleStore.getTripleStoreId(), tripleStore);
+		}
+		return map;
+	}
+
 	public List<Query> getQueries() {
 		return queries;
 	}
 
-	public List<Runtime> getRuntimes() {
-		return runtimes;
+	public List<Result> getResults() {
+		return results;
 	}
 
 	/**
@@ -135,13 +146,13 @@ public class Benchmark {
 	}
 
 	/**
-	 * Returns runtime object for given objects. Returns null, if object combination
+	 * Returns result object for given objects. Returns null, if object combination
 	 * is unknown.
 	 */
-	public Runtime getRuntime(TripleStore tripleStore, Query query) {
-		for (Runtime runtime : runtimes) {
-			if (runtime.getTripleStore().equals(tripleStore) && runtime.getQuery().equals(query)) {
-				return runtime;
+	public Result getResult(TripleStore tripleStore, Query query) {
+		for (Result result : results) {
+			if (result.getTripleStore().equals(tripleStore) && result.getQuery().equals(query)) {
+				return result;
 			}
 		}
 		return null;
@@ -173,19 +184,19 @@ public class Benchmark {
 			jsonGenerator.writeFieldName(JSON_QUERIES);
 			objectMapper.writeValue(jsonGenerator, this.queries);
 
-			jsonGenerator.writeFieldName(JSON_RUNTIMES);
+			jsonGenerator.writeFieldName(JSON_RESULTS);
 			jsonGenerator.writeStartArray();
-			for (Runtime runtime : this.runtimes) {
+			for (Result result : this.results) {
 				jsonGenerator.writeStartObject();
 
 				jsonGenerator.writeFieldName(JSON_TRIPLE_STORE);
-				objectMapper.writeValue(jsonGenerator, runtime.getTripleStore().getTripleStoreId());
+				objectMapper.writeValue(jsonGenerator, result.getTripleStore().getTripleStoreId());
 
 				jsonGenerator.writeFieldName(JSON_QUERY);
-				objectMapper.writeValue(jsonGenerator, runtime.getQuery().getQueryId());
+				objectMapper.writeValue(jsonGenerator, result.getQuery().getQueryId());
 
-				jsonGenerator.writeFieldName(JSON_RUNTIME);
-				objectMapper.writeValue(jsonGenerator, runtime.getRuntime());
+				jsonGenerator.writeFieldName(JSON_RESULT);
+				objectMapper.writeValue(jsonGenerator, result.getResult());
 
 				jsonGenerator.writeEndObject();
 			}
@@ -247,12 +258,12 @@ public class Benchmark {
 			queryMap.put(id, benchmark.addQuery(id, queryNode.get(Query.QUERY_STRING).asText()));
 		}
 
-		it = jsonNode.get(JSON_RUNTIMES).elements();
+		it = jsonNode.get(JSON_RESULTS).elements();
 		while (it.hasNext()) {
-			JsonNode runtimeNode = it.next();
-			TripleStore tripleStore = tripleStoreMap.get(runtimeNode.get(JSON_TRIPLE_STORE).asText());
-			Query query = queryMap.get(runtimeNode.get(JSON_QUERY).asText());
-			benchmark.addRuntime(tripleStore, query, runtimeNode.get(JSON_RUNTIME).asLong());
+			JsonNode resultNode = it.next();
+			TripleStore tripleStore = tripleStoreMap.get(resultNode.get(JSON_TRIPLE_STORE).asText());
+			Query query = queryMap.get(resultNode.get(JSON_QUERY).asText());
+			benchmark.addResult(tripleStore, query, resultNode.get(JSON_RESULT).asLong());
 		}
 
 		return benchmark;
