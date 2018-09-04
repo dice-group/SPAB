@@ -1,9 +1,13 @@
 package org.dice_research.spab;
 
+import java.io.File;
+import java.io.IOException;
+
 import org.dice_research.spab.benchmark.Benchmark;
 import org.dice_research.spab.benchmark.Query;
 import org.dice_research.spab.benchmark.Runtime;
 import org.dice_research.spab.benchmark.TripleStore;
+import org.dice_research.spab.exceptions.IoRuntimeException;
 import org.junit.Test;
 
 /**
@@ -30,9 +34,8 @@ public class BenchmarkTest extends AbstractTestCase {
 		TripleStore tripleStoreA = benchmark.addTripleStore(tripleStoreAId);
 		TripleStore tripleStoreB = benchmark.addTripleStore(tripleStoreBId);
 
-		// For testing: A without and B with ID
-		Query queryA = benchmark.addQuery(queryStringA);
-		Query queryB = benchmark.addQuery(queryStringB, queryIdB);
+		Query queryA = benchmark.addQuery(queryIdA, queryStringA);
+		Query queryB = benchmark.addQuery(queryIdB, queryStringB);
 
 		// For testing: No combination TS-B and Q-B
 		Runtime runtimeAA = benchmark.addRuntime(tripleStoreA, queryA, 1111);
@@ -46,6 +49,9 @@ public class BenchmarkTest extends AbstractTestCase {
 			System.out.println(tripleStoreA);
 			System.out.println(tripleStoreB);
 
+			System.out.println(queryIdA);
+			System.out.println(queryIdB);
+
 			System.out.println(queryA);
 			System.out.println(queryB);
 
@@ -57,13 +63,23 @@ public class BenchmarkTest extends AbstractTestCase {
 		assertNotNull(benchmark.getTripleStore(tripleStoreAId));
 		assertNull(benchmark.getTripleStore("not existent triple store"));
 
+		assertNotNull(benchmark.getQueryById(queryIdA));
+		assertNull(benchmark.getQueryById("not existing query id"));
+
 		assertNotNull(benchmark.getQuery(queryStringA));
 		assertNull(benchmark.getQuery("not existing query string"));
 
-		assertNotNull(benchmark.getQueryById(queryIdB));
-		assertNull(benchmark.getQueryById(queryIdA));
-
 		assertNotNull(benchmark.getRuntime(tripleStoreA, queryA));
 		assertNull(benchmark.getRuntime(tripleStoreB, queryB));
+
+		File tempFile;
+		try {
+			tempFile = File.createTempFile("SPAB", ".json");
+			tempFile.deleteOnExit();
+		} catch (IOException e) {
+			throw new IoRuntimeException(e);
+		}
+		benchmark.writeJsonFile(tempFile.getPath());
+
 	}
 }

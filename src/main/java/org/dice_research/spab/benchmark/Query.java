@@ -7,35 +7,24 @@ package org.dice_research.spab.benchmark;
  */
 public class Query {
 
+	private String queryId;
 	private String queryString;
-	private String queryOptionalId;
 
-	public Query(String queryString) {
+	public Query(String queryId, String queryString) {
+		this.queryId = queryId;
 		this.queryString = queryString;
-	}
-
-	public Query(String queryString, String queryOptionialId) {
-		this.queryString = queryString;
-		this.queryOptionalId = queryOptionialId;
 	}
 
 	@Override
 	public String toString() {
-		if (queryOptionalId == null) {
-			return this.queryString;
-		} else {
-			return queryOptionalId;
-		}
+		return "Q" + queryId;
+	}
+
+	public String getQueryId() {
+		return queryId;
 	}
 
 	public String getQueryString() {
 		return queryString;
-	}
-
-	/**
-	 * Returns optional ID or null.
-	 */
-	public String getQueryOptionalId() {
-		return queryOptionalId;
 	}
 }
