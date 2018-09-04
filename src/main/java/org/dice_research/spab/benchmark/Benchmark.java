@@ -2,15 +2,22 @@ package org.dice_research.spab.benchmark;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 import org.dice_research.spab.exceptions.IoRuntimeException;
+import org.dice_research.spab.io.FileReader;
 import org.dice_research.spab.io.FileWriter;
 
 import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.core.JsonGenerator;
+import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.util.DefaultPrettyPrinter;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**
@@ -37,6 +44,10 @@ public class Benchmark {
 
 	public Benchmark(String benchmarkId) {
 		this.benchmarkId = benchmarkId;
+	}
+
+	public String getBenchmarkId() {
+		return this.benchmarkId;
 	}
 
 	public void setComment(String comment) {
@@ -72,6 +83,18 @@ public class Benchmark {
 		Runtime runtimeObj = new Runtime(tripleStore, query, runtime);
 		this.runtimes.add(runtimeObj);
 		return runtimeObj;
+	}
+
+	public List<TripleStore> getTripleStores() {
+		return tripleStores;
+	}
+
+	public List<Query> getQueries() {
+		return queries;
+	}
+
+	public List<Runtime> getRuntimes() {
+		return runtimes;
 	}
 
 	/**
@@ -125,7 +148,7 @@ public class Benchmark {
 	}
 
 	/**
-	 * JSON Serialization of benchmark.
+	 * JSON serialization of benchmark.
 	 * 
 	 * @see https://www.baeldung.com/jackson
 	 */
@@ -139,10 +162,10 @@ public class Benchmark {
 			jsonGenerator.writeStartObject();
 
 			jsonGenerator.writeFieldName(JSON_BENCHMARK_ID);
-			jsonGenerator.writeString(benchmarkId);
+			jsonGenerator.writeString(this.benchmarkId);
 
 			jsonGenerator.writeFieldName(JSON_BENCHMARK_COMMENT);
-			jsonGenerator.writeString(comment);
+			jsonGenerator.writeString(this.comment);
 
 			jsonGenerator.writeFieldName(JSON_TRIPLE_STORES);
 			objectMapper.writeValue(jsonGenerator, this.tripleStores);
@@ -182,9 +205,63 @@ public class Benchmark {
 	}
 
 	/**
-	 * JSON Serialization of benchmark.
+	 * JSON serialization of benchmark.
 	 */
 	public void writeJsonFile(String filePath) {
 		FileWriter.writeStringToFile(toJson(), filePath, true);
+	}
+
+	/**
+	 * JSON deserialization of benchmark.
+	 * 
+	 * @return
+	 * 
+	 * @throws IOException
+	 * @throws JsonParseException
+	 */
+	public static Benchmark readJson(String json) {
+		ObjectMapper objectMapper = new ObjectMapper();
+		JsonNode jsonNode;
+		try {
+			jsonNode = objectMapper.readTree(json);
+		} catch (IOException e) {
+			throw new IoRuntimeException(e);
+		}
+
+		Benchmark benchmark = new Benchmark(jsonNode.get(JSON_BENCHMARK_ID).asText());
+		benchmark.setComment(jsonNode.get(JSON_BENCHMARK_COMMENT).asText());
+
+		Map<String, TripleStore> tripleStoreMap = new HashMap<String, TripleStore>();
+		Iterator<JsonNode> it = jsonNode.get(JSON_TRIPLE_STORES).elements();
+		while (it.hasNext()) {
+			JsonNode tripleStoreNode = it.next();
+			String id = tripleStoreNode.get(TripleStore.TRIPLE_STORE_ID).asText();
+			tripleStoreMap.put(id, benchmark.addTripleStore(id));
+		}
+
+		Map<String, Query> queryMap = new HashMap<String, Query>();
+		it = jsonNode.get(JSON_QUERIES).elements();
+		while (it.hasNext()) {
+			JsonNode queryNode = it.next();
+			String id = queryNode.get(Query.QUERY_ID).asText();
+			queryMap.put(id, benchmark.addQuery(id, queryNode.get(Query.QUERY_STRING).asText()));
+		}
+
+		it = jsonNode.get(JSON_RUNTIMES).elements();
+		while (it.hasNext()) {
+			JsonNode runtimeNode = it.next();
+			TripleStore tripleStore = tripleStoreMap.get(runtimeNode.get(JSON_TRIPLE_STORE).asText());
+			Query query = queryMap.get(runtimeNode.get(JSON_QUERY).asText());
+			benchmark.addRuntime(tripleStore, query, runtimeNode.get(JSON_RUNTIME).asLong());
+		}
+
+		return benchmark;
+	}
+
+	/**
+	 * JSON deserialization of benchmark.
+	 */
+	public static Benchmark readJsonFile(String filePath) {
+		return readJson(FileReader.readFileToString(filePath, StandardCharsets.UTF_8));
 	}
 }

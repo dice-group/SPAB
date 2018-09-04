@@ -5,7 +5,10 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -52,5 +55,20 @@ public abstract class FileReader {
 				throw new IoRuntimeException(closeException);
 			}
 		}
+	}
+
+	/**
+	 * Reads file to string.
+	 * 
+	 * @see https://stackoverflow.com/a/326440
+	 */
+	public static String readFileToString(String path, Charset encoding) {
+		byte[] encoded;
+		try {
+			encoded = Files.readAllBytes(Paths.get(path));
+		} catch (IOException e) {
+			throw new IoRuntimeException(e);
+		}
+		return new String(encoded, encoding);
 	}
 }

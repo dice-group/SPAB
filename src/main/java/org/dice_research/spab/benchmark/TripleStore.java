@@ -7,6 +7,8 @@ package org.dice_research.spab.benchmark;
  */
 public class TripleStore {
 
+	public static final String TRIPLE_STORE_ID = "tripleStoreId";
+
 	private String tripleStoreId;
 
 	public TripleStore(String tripleStoreId) {

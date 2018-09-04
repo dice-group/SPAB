@@ -72,6 +72,8 @@ public class BenchmarkTest extends AbstractTestCase {
 		assertNotNull(benchmark.getRuntime(tripleStoreA, queryA));
 		assertNull(benchmark.getRuntime(tripleStoreB, queryB));
 
+		// Export
+
 		File tempFile;
 		try {
 			tempFile = File.createTempFile("SPAB", ".json");
@@ -81,5 +83,13 @@ public class BenchmarkTest extends AbstractTestCase {
 		}
 		benchmark.writeJsonFile(tempFile.getPath());
 
+		// Import
+
+		Benchmark restoredBenchmark = Benchmark.readJsonFile(tempFile.getPath());
+		assertEquals(benchmark.getBenchmarkId(), restoredBenchmark.getBenchmarkId());
+		assertEquals(benchmark.getComment(), restoredBenchmark.getComment());
+		assertEquals(benchmark.getTripleStores().size(), restoredBenchmark.getTripleStores().size());
+		assertEquals(benchmark.getQueries().size(), restoredBenchmark.getQueries().size());
+		assertEquals(benchmark.getRuntimes().size(), restoredBenchmark.getRuntimes().size());
 	}
 }

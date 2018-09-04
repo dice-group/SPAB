@@ -7,6 +7,9 @@ package org.dice_research.spab.benchmark;
  */
 public class Query {
 
+	public static final String QUERY_ID = "queryId";
+	public static final String QUERY_STRING = "queryString";
+
 	private String queryId;
 	private String queryString;
 
