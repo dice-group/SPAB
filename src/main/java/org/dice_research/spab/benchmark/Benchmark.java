@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -22,6 +23,13 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**
  * Container for benchmark data.
+ * 
+ * Creation: Use constructor and add methods to set: Benchmark id and comment,
+ * triple stores, queries, and results.
+ * 
+ * Load: Use read methods.
+ * 
+ * Store: Use write method or toJson.
  * 
  * @author Adrian Wilke
  */
@@ -42,29 +50,15 @@ public class Benchmark {
 	private List<Query> queries = new LinkedList<Query>();
 	private List<Result> results = new LinkedList<Result>();
 
+	private Map<TripleStore, List<Result>> triplestoreToResults;
+	private Map<Query, List<Result>> queriesToResults;
+
 	public Benchmark(String benchmarkId) {
 		this.benchmarkId = benchmarkId;
 	}
 
-	public String getBenchmarkId() {
-		return this.benchmarkId;
-	}
-
 	public void setComment(String comment) {
 		this.comment = comment;
-	}
-
-	public String getComment() {
-		if (this.comment == null) {
-			return "";
-		} else {
-			return this.comment;
-		}
-	}
-
-	@Override
-	public String toString() {
-		return benchmarkId;
 	}
 
 	public TripleStore addTripleStore(String tripleStoreId) {
@@ -85,8 +79,31 @@ public class Benchmark {
 		return resultObj;
 	}
 
+	public String getBenchmarkId() {
+		return this.benchmarkId;
+	}
+
+	public String getComment() {
+		if (this.comment == null) {
+			return "";
+		} else {
+			return this.comment;
+		}
+	}
+
 	public List<TripleStore> getTripleStores() {
 		return tripleStores;
+	}
+
+	/**
+	 * Gets list of triple store IDs.
+	 */
+	public List<String> getTripleStoreIds() {
+		List<String> tripleStoreIds = new LinkedList<String>();
+		for (TripleStore tripleStore : tripleStores) {
+			tripleStoreIds.add(tripleStore.getTripleStoreId());
+		}
+		return tripleStoreIds;
 	}
 
 	/**
@@ -100,14 +117,6 @@ public class Benchmark {
 		return map;
 	}
 
-	public List<Query> getQueries() {
-		return queries;
-	}
-
-	public List<Result> getResults() {
-		return results;
-	}
-
 	/**
 	 * Returns object for given ID. Returns null, if ID is unknown.
 	 */
@@ -118,6 +127,10 @@ public class Benchmark {
 			}
 		}
 		return null;
+	}
+
+	public List<Query> getQueries() {
+		return queries;
 	}
 
 	/**
@@ -145,6 +158,10 @@ public class Benchmark {
 		return null;
 	}
 
+	public List<Result> getResults() {
+		return results;
+	}
+
 	/**
 	 * Returns result object for given objects. Returns null, if object combination
 	 * is unknown.
@@ -156,6 +173,96 @@ public class Benchmark {
 			}
 		}
 		return null;
+	}
+
+	/**
+	 * Gets map TripleStore object to list of Result objects.
+	 * 
+	 * Uses cache.
+	 */
+	public Map<TripleStore, List<Result>> getResultsOrderedbyTripleStores() {
+		if (triplestoreToResults == null) {
+			triplestoreToResults = new LinkedHashMap<TripleStore, List<Result>>();
+			for (TripleStore tripleStore : tripleStores) {
+				triplestoreToResults.put(tripleStore, new LinkedList<Result>());
+			}
+			for (Result result : results) {
+				triplestoreToResults.get(result.getTripleStore()).add(result);
+			}
+		}
+		return triplestoreToResults;
+	}
+
+	/**
+	 * Gets map TripleStore object to list of Result objects.
+	 * 
+	 * Uses cache.
+	 */
+	public Map<Query, List<Result>> getResultsOrderedbyQueries() {
+		if (queriesToResults == null) {
+			queriesToResults = new LinkedHashMap<Query, List<Result>>();
+			for (Query query : queries) {
+				queriesToResults.put(query, new LinkedList<Result>());
+			}
+			for (Result result : results) {
+				queriesToResults.get(result.getQuery()).add(result);
+			}
+		}
+		return queriesToResults;
+	}
+
+	/**
+	 * JSON deserialization of benchmark.
+	 * 
+	 * @return
+	 * 
+	 * @throws IOException
+	 * @throws JsonParseException
+	 */
+	public static Benchmark readJson(String json) {
+		ObjectMapper objectMapper = new ObjectMapper();
+		JsonNode jsonNode;
+		try {
+			jsonNode = objectMapper.readTree(json);
+		} catch (IOException e) {
+			throw new IoRuntimeException(e);
+		}
+
+		Benchmark benchmark = new Benchmark(jsonNode.get(JSON_BENCHMARK_ID).asText());
+		benchmark.setComment(jsonNode.get(JSON_BENCHMARK_COMMENT).asText());
+
+		Map<String, TripleStore> tripleStoreMap = new HashMap<String, TripleStore>();
+		Iterator<JsonNode> it = jsonNode.get(JSON_TRIPLE_STORES).elements();
+		while (it.hasNext()) {
+			JsonNode tripleStoreNode = it.next();
+			String id = tripleStoreNode.get(TripleStore.TRIPLE_STORE_ID).asText();
+			tripleStoreMap.put(id, benchmark.addTripleStore(id));
+		}
+
+		Map<String, Query> queryMap = new HashMap<String, Query>();
+		it = jsonNode.get(JSON_QUERIES).elements();
+		while (it.hasNext()) {
+			JsonNode queryNode = it.next();
+			String id = queryNode.get(Query.QUERY_ID).asText();
+			queryMap.put(id, benchmark.addQuery(id, queryNode.get(Query.QUERY_STRING).asText()));
+		}
+
+		it = jsonNode.get(JSON_RESULTS).elements();
+		while (it.hasNext()) {
+			JsonNode resultNode = it.next();
+			TripleStore tripleStore = tripleStoreMap.get(resultNode.get(JSON_TRIPLE_STORE).asText());
+			Query query = queryMap.get(resultNode.get(JSON_QUERY).asText());
+			benchmark.addResult(tripleStore, query, resultNode.get(JSON_RESULT).asLong());
+		}
+
+		return benchmark;
+	}
+
+	/**
+	 * JSON deserialization of benchmark.
+	 */
+	public static Benchmark readJsonFile(String filePath) {
+		return readJson(FileReader.readFileToString(filePath, StandardCharsets.UTF_8));
 	}
 
 	/**
@@ -222,57 +329,8 @@ public class Benchmark {
 		FileWriter.writeStringToFile(toJson(), filePath, true);
 	}
 
-	/**
-	 * JSON deserialization of benchmark.
-	 * 
-	 * @return
-	 * 
-	 * @throws IOException
-	 * @throws JsonParseException
-	 */
-	public static Benchmark readJson(String json) {
-		ObjectMapper objectMapper = new ObjectMapper();
-		JsonNode jsonNode;
-		try {
-			jsonNode = objectMapper.readTree(json);
-		} catch (IOException e) {
-			throw new IoRuntimeException(e);
-		}
-
-		Benchmark benchmark = new Benchmark(jsonNode.get(JSON_BENCHMARK_ID).asText());
-		benchmark.setComment(jsonNode.get(JSON_BENCHMARK_COMMENT).asText());
-
-		Map<String, TripleStore> tripleStoreMap = new HashMap<String, TripleStore>();
-		Iterator<JsonNode> it = jsonNode.get(JSON_TRIPLE_STORES).elements();
-		while (it.hasNext()) {
-			JsonNode tripleStoreNode = it.next();
-			String id = tripleStoreNode.get(TripleStore.TRIPLE_STORE_ID).asText();
-			tripleStoreMap.put(id, benchmark.addTripleStore(id));
-		}
-
-		Map<String, Query> queryMap = new HashMap<String, Query>();
-		it = jsonNode.get(JSON_QUERIES).elements();
-		while (it.hasNext()) {
-			JsonNode queryNode = it.next();
-			String id = queryNode.get(Query.QUERY_ID).asText();
-			queryMap.put(id, benchmark.addQuery(id, queryNode.get(Query.QUERY_STRING).asText()));
-		}
-
-		it = jsonNode.get(JSON_RESULTS).elements();
-		while (it.hasNext()) {
-			JsonNode resultNode = it.next();
-			TripleStore tripleStore = tripleStoreMap.get(resultNode.get(JSON_TRIPLE_STORE).asText());
-			Query query = queryMap.get(resultNode.get(JSON_QUERY).asText());
-			benchmark.addResult(tripleStore, query, resultNode.get(JSON_RESULT).asLong());
-		}
-
-		return benchmark;
-	}
-
-	/**
-	 * JSON deserialization of benchmark.
-	 */
-	public static Benchmark readJsonFile(String filePath) {
-		return readJson(FileReader.readFileToString(filePath, StandardCharsets.UTF_8));
+	@Override
+	public String toString() {
+		return benchmarkId;
 	}
 }
