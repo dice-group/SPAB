@@ -8,6 +8,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 
+import org.apache.commons.math3.stat.descriptive.moment.StandardDeviation;
 import org.dice_research.spab.exceptions.IoRuntimeException;
 
 /**
@@ -23,6 +24,48 @@ public class InputSetsCreator {
 		this.benchmark = benchmark;
 	}
 
+	public InputSets createStandardDeviationSets(double factor, boolean smallIsPositive) {
+
+		// Check, if there is a result for every triple store and every query.
+		try {
+			checkBenchmark();
+		} catch (Exception e) {
+			throw new IoRuntimeException(e);
+		}
+
+		boolean positiveSet = true;
+		boolean negativeSet = false;
+		if (!smallIsPositive) {
+			positiveSet = false;
+			negativeSet = true;
+		}
+
+		InputSets inputSets = new InputSets(benchmark.getTripleStoreIds());
+
+		Map<Query, List<Result>> queriesToResults = benchmark.getResultsOrderedbyQueries();
+		Map<Query, Double> queriesToMeans = getArithmeticMeans(queriesToResults);
+		Map<Query, Double> queriesToStandardDeviations = getStandardDeviations(queriesToResults);
+
+		for (Entry<Query, List<Result>> queryToResults : benchmark.getResultsOrderedbyQueries().entrySet()) {
+			Double arithmeticMean = queriesToMeans.get(queryToResults.getKey());
+			Double standardDeviation = queriesToStandardDeviations.get(queryToResults.getKey());
+
+			for (Result result : queryToResults.getValue()) {
+
+				if (result.getResult() < (arithmeticMean - (standardDeviation * factor))) {
+					inputSets.addQuery(result.getTripleStore().getTripleStoreId(), positiveSet,
+							queryToResults.getKey());
+				}
+				if (result.getResult() > (arithmeticMean + (standardDeviation * factor))) {
+					inputSets.addQuery(result.getTripleStore().getTripleStoreId(), negativeSet,
+							queryToResults.getKey());
+				}
+			}
+		}
+
+		return inputSets;
+	}
+
 	/**
 	 * Creates positive/negative set for results, which deviate from the arithmetic
 	 * mean.
@@ -34,7 +77,7 @@ public class InputSetsCreator {
 	 * @param smallIsPositive
 	 *            true for runtimes, false for number of executions per time period.
 	 */
-	public InputSets createPercentual(double percentageDeviation, boolean smallIsPositive) {
+	public InputSets createPercentualSets(double percentageDeviation, boolean smallIsPositive) {
 
 		// Check, if there is a result for every triple store and every query.
 		try {
@@ -70,6 +113,20 @@ public class InputSetsCreator {
 		}
 
 		return inputSets;
+	}
+
+	private Map<Query, Double> getStandardDeviations(Map<Query, List<Result>> queriesToResults) {
+		Map<Query, Double> standardDeviations = new LinkedHashMap<Query, Double>();
+		for (Query query : queriesToResults.keySet()) {
+			List<Result> results = queriesToResults.get(query);
+			double[] resultValues = new double[results.size()];
+			for (int i = 0; i < results.size(); i++) {
+				resultValues[i] = results.get(i).getResult();
+				System.out.println(resultValues[i]);
+			}
+			standardDeviations.put(query, new StandardDeviation().evaluate(resultValues));
+		}
+		return standardDeviations;
 	}
 
 	private Map<Query, Double> getArithmeticMeans(Map<Query, List<Result>> queriesToResults) {

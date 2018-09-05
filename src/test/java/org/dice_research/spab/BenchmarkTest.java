@@ -23,6 +23,10 @@ public class BenchmarkTest extends AbstractTestCase {
 	public static final String TRIPLESTORE_A_ID = "Triple Store A";
 	public static final String TRIPLESTORE_B_ID = "Triple Store B";
 	public static final String TRIPLESTORE_C_ID = "Triple Store C";
+	public static final String TRIPLESTORE_D_ID = "Triple Store D";
+	public static final String TRIPLESTORE_E_ID = "Triple Store E";
+	public static final String TRIPLESTORE_F_ID = "Triple Store F";
+	public static final String TRIPLESTORE_G_ID = "Triple Store G";
 	public static final String QUERYSTRING_A = "SELECT ?s WHERE { ?s <A> ?o }";
 	public static final String QUERYSTRING_B = "SELECT ?s WHERE { ?s <B> ?o }";
 	public static final String QUERY_ID_A = "1";
@@ -50,31 +54,66 @@ public class BenchmarkTest extends AbstractTestCase {
 		benchmark.addResult(tripleStoreC, queryA, 120);
 		InputSetsCreator inputSetsCreator = new InputSetsCreator(benchmark);
 
-		InputSets inputSets = inputSetsCreator.createPercentual(0.09, true);
+		InputSets inputSets = inputSetsCreator.createPercentualSets(0.09, true);
 		assertEquals(inputSets.getPositives(TRIPLESTORE_A_ID).size(), 1);
 		assertEquals(inputSets.getPositives(TRIPLESTORE_B_ID).size(), 0);
 		assertEquals(inputSets.getNegatives(TRIPLESTORE_C_ID).size(), 1);
 
 		// Negate test
-		inputSets = inputSetsCreator.createPercentual(0.09, false);
+		inputSets = inputSetsCreator.createPercentualSets(0.09, false);
 		assertEquals(inputSets.getNegatives(TRIPLESTORE_A_ID).size(), 1);
 		assertEquals(inputSets.getPositives(TRIPLESTORE_B_ID).size(), 0);
 		assertEquals(inputSets.getPositives(TRIPLESTORE_C_ID).size(), 1);
 
 		// Results have only to be not arithmetic mean
-		inputSets = inputSetsCreator.createPercentual(0, true);
+		inputSets = inputSetsCreator.createPercentualSets(0, true);
 		assertEquals(inputSets.getPositives(TRIPLESTORE_A_ID).size(), 1);
 		assertEquals(inputSets.getPositives(TRIPLESTORE_B_ID).size(), 0);
 		assertEquals(inputSets.getPositives(TRIPLESTORE_C_ID).size(), 0);
 
 		// No runtime is good/bad enough
-		inputSets = inputSetsCreator.createPercentual(0.1, true);
+		inputSets = inputSetsCreator.createPercentualSets(0.1, true);
 		assertEquals(inputSets.getPositives(TRIPLESTORE_A_ID).size(), 0);
 		assertEquals(inputSets.getPositives(TRIPLESTORE_B_ID).size(), 0);
 		assertEquals(inputSets.getPositives(TRIPLESTORE_C_ID).size(), 0);
 		assertEquals(inputSets.getNegatives(TRIPLESTORE_A_ID).size(), 0);
 		assertEquals(inputSets.getNegatives(TRIPLESTORE_B_ID).size(), 0);
 		assertEquals(inputSets.getNegatives(TRIPLESTORE_C_ID).size(), 0);
+	}
+
+	@Test
+	public void testStandardDeviation() {
+
+		Benchmark benchmark = new Benchmark("testStandardDeviation");
+
+		TripleStore tripleStoreA = benchmark.addTripleStore(TRIPLESTORE_A_ID);
+		TripleStore tripleStoreB = benchmark.addTripleStore(TRIPLESTORE_B_ID);
+		TripleStore tripleStoreC = benchmark.addTripleStore(TRIPLESTORE_C_ID);
+		TripleStore tripleStoreD = benchmark.addTripleStore(TRIPLESTORE_D_ID);
+		TripleStore tripleStoreE = benchmark.addTripleStore(TRIPLESTORE_E_ID);
+		TripleStore tripleStoreF = benchmark.addTripleStore(TRIPLESTORE_F_ID);
+		TripleStore tripleStoreG = benchmark.addTripleStore(TRIPLESTORE_G_ID);
+
+		Query queryA = benchmark.addQuery(QUERY_ID_A, QUERYSTRING_A);
+
+		benchmark.addResult(tripleStoreA, queryA, 100);
+		benchmark.addResult(tripleStoreB, queryA, 110);
+		benchmark.addResult(tripleStoreC, queryA, 120);
+		benchmark.addResult(tripleStoreD, queryA, 130);
+		benchmark.addResult(tripleStoreE, queryA, 140);
+		benchmark.addResult(tripleStoreF, queryA, 150);
+		benchmark.addResult(tripleStoreG, queryA, 160);
+		InputSetsCreator inputSetsCreator = new InputSetsCreator(benchmark);
+
+		// https://www.calculator.net/standard-deviation-calculator.html
+		// Standard deviation: 21.602468994693
+		// Arithmetic mean: 130
+		// 130 - 21.x < 110 -> only triple store A should have non-empty positive set.
+		InputSets inputSets = inputSetsCreator.createStandardDeviationSets(1, true);
+		assertEquals(inputSets.getPositives(TRIPLESTORE_A_ID).size(), 1);
+		assertEquals(inputSets.getPositives(TRIPLESTORE_B_ID).size(), 0);
+
+		// TODO: Test factors
 	}
 
 	@Test
