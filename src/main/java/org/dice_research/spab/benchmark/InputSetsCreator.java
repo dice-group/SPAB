@@ -7,6 +7,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
+import java.util.SortedSet;
+import java.util.TreeSet;
 
 import org.apache.commons.math3.stat.descriptive.moment.StandardDeviation;
 import org.dice_research.spab.exceptions.IoRuntimeException;
@@ -24,6 +26,114 @@ public class InputSetsCreator {
 		this.benchmark = benchmark;
 	}
 
+	/**
+	 * Creates positive/negative set for best or rather worst results for each
+	 * triple store.
+	 * 
+	 * @param maxNumberOfElements:
+	 *            Maximum number of elements in each set. This is maximum and not
+	 *            exact number of elements, as a triple store may have no best/worst
+	 *            results.
+	 * @param smallIsPositive
+	 *            true for runtimes, false for number of executions per time period.
+	 */
+	public InputSets createMaxSizeSets(int maxNumberOfElements, boolean smallIsPositive) {
+
+		// Check, if there is a result for every triple store and every query.
+		try {
+			checkBenchmark();
+		} catch (Exception e) {
+			throw new IoRuntimeException(e);
+		}
+
+		boolean positiveSet = true;
+		boolean negativeSet = false;
+		if (!smallIsPositive) {
+			positiveSet = false;
+			negativeSet = true;
+		}
+
+		Map<Query, List<Result>> queriesToResults = benchmark.getResultsOrderedbyQueries();
+		Map<Query, Double> queriesToMeans = getArithmeticMeans(queriesToResults);
+
+		// To get best/worst results for a TDB, the percentage deviation per query is
+		// used.
+		class Container implements Comparable<Container> {
+			public boolean isPositiveSet;
+			public Result result;
+			public double percentage;
+
+			public Container(boolean isPositiveSet, Result result, double percentage) {
+				this.isPositiveSet = isPositiveSet;
+				this.result = result;
+				this.percentage = percentage;
+			}
+
+			/**
+			 * Generates ID consisting of triple store id and positive/negative flag.
+			 */
+			public String getMapKey() {
+				return result.getTripleStore().getTripleStoreId() + (isPositiveSet ? "-pos" : "-neg");
+			}
+
+			/**
+			 * Sort containers based on their percentage deviation.
+			 */
+			@Override
+			public int compareTo(Container container) {
+				return Double.compare(this.percentage, container.percentage);
+			}
+		}
+		Map<String, SortedSet<Container>> containers = new HashMap<String, SortedSet<Container>>();
+
+		// Create containers depending on result value.
+		// Containers are distinguished by triple store as well as pos/neg.
+		for (Entry<Query, List<Result>> queryToResults : benchmark.getResultsOrderedbyQueries().entrySet()) {
+			Double arithmeticMean = queriesToMeans.get(queryToResults.getKey());
+
+			for (Result result : queryToResults.getValue()) {
+				if (result.getResult() < arithmeticMean) {
+					Container container = new Container(positiveSet, result, 100 * result.getResult() / arithmeticMean);
+					if (!containers.containsKey(container.getMapKey())) {
+						containers.put(container.getMapKey(), new TreeSet<Container>());
+					}
+					containers.get(container.getMapKey()).add(container);
+				} else if (result.getResult() > arithmeticMean) {
+					Container container = new Container(negativeSet, result, 100 * result.getResult() / arithmeticMean);
+					if (!containers.containsKey(container.getMapKey())) {
+						containers.put(container.getMapKey(), new TreeSet<Container>());
+					}
+					containers.get(container.getMapKey()).add(container);
+				}
+			}
+		}
+
+		// Use already sorted containers to create input sets
+		InputSets inputSets = new InputSets(benchmark.getTripleStoreIds());
+		for (Set<Container> containerSet : containers.values()) {
+			innerLoop: for (Container container : containerSet) {
+				if (inputSets.get(container.isPositiveSet, container.result.getTripleStore().getTripleStoreId())
+						.size() == maxNumberOfElements) {
+					break innerLoop;
+				}
+				inputSets.addQuery(container.result.getTripleStore().getTripleStoreId(), container.isPositiveSet,
+						container.result.getQuery());
+			}
+		}
+		return inputSets;
+	}
+
+	/**
+	 * Creates positive/negative set for results, which deviate by the standard
+	 * deviation from the arithmetic mean.
+	 * 
+	 * @param factor:
+	 *            Is multiplied with standard deviation. 1: no change. Grater than
+	 *            1: accepted deviation is larger, more items could be chosen for
+	 *            sets.
+	 * @param smallIsPositive
+	 *            true for runtimes, false for number of executions per time period.
+	 */
 	public InputSets createStandardDeviationSets(double factor, boolean smallIsPositive) {
 
 		// Check, if there is a result for every triple store and every query.
@@ -67,8 +177,8 @@ public class InputSetsCreator {
 	}
 
 	/**
-	 * Creates positive/negative set for results, which deviate from the arithmetic
-	 * mean.
+	 * Creates positive/negative set for results, which deviate by a percentage from
+	 * the arithmetic mean.
 	 * 
 	 * @param percentageDeviation
 	 *            0: Every value less/greater than the arithmetic mean is used in
@@ -122,7 +232,6 @@ public class InputSetsCreator {
 			double[] resultValues = new double[results.size()];
 			for (int i = 0; i < results.size(); i++) {
 				resultValues[i] = results.get(i).getResult();
-				System.out.println(resultValues[i]);
 			}
 			standardDeviations.put(query, new StandardDeviation().evaluate(resultValues));
 		}

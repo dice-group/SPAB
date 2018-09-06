@@ -40,6 +40,13 @@ public class InputSets {
 	}
 
 	/**
+	 * Gets set of queries.
+	 */
+	public List<Query> get(boolean getPositiveSet, String tripleStoreId) {
+		return triplestoreSettypeQueries.get(tripleStoreId).get(getPositiveSet);
+	}
+
+	/**
 	 * Gets positive set of queries.
 	 */
 	public List<Query> getPositives(String tripleStoreId) {
