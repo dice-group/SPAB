@@ -59,12 +59,4 @@ public class CandidateSix implements Candidate {
 		expression.addRegex(stringBuilder);
 		return stringBuilder.toString();
 	}
-
-	/**
-	 * TODO: Outdated interface?
-	 */
-	@Override
-	public void setVertex(CandidateVertex candidateVertex) {
-		this.candidateVertex = candidateVertex;
-	}
 }

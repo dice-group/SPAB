@@ -98,8 +98,4 @@ public class ScoringTest extends AbstractTestCase implements Candidate, Matcher 
 	public String getRegEx() throws CandidateRuntimeException {
 		return null;
 	}
-
-	@Override
-	public void setVertex(CandidateVertex candidateVertex) {
-	}
 }

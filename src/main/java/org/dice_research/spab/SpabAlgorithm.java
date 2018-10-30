@@ -129,9 +129,6 @@ public class SpabAlgorithm {
 				Map<CandidateVertex, Candidate> bestCandidateChildren = bestCandidate.generateChildren();
 				removeDuplicates(bestCandidateChildren);
 				graph.addCandidates(bestCandidateChildren.keySet(), bestCandidate);
-				for (Entry<CandidateVertex, Candidate> bestCandidateChild : bestCandidateChildren.entrySet()) {
-					bestCandidateChild.getValue().setVertex(bestCandidateChild.getKey());
-				}
 				if (i <= 10 || i % 100 == 0) {
 					LOGGER.info("Iteration " + i + ". Generated " + bestCandidateChildren.size()
 							+ " children. Graph size: " + graph.getAllCandidates().size());
