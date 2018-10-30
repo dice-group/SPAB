@@ -50,7 +50,7 @@ public class CandidateSix {
 		// Print all generated expressions
 		StringBuilder stringBuilder = new StringBuilder();
 		for (Expression expression : expressions) {
-			expression.getClasses(stringBuilder);
+			expression.addClassNames(stringBuilder);
 			stringBuilder.append(System.lineSeparator());
 			stringBuilder.append(expression.getRegex());
 			stringBuilder.append(System.lineSeparator());

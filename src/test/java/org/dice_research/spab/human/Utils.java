@@ -1,4 +1,4 @@
-package org.dice_research.spab;
+package org.dice_research.spab.human;
 
 import org.dice_research.spab.input.Input;
 

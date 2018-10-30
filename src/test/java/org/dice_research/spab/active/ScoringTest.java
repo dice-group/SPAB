@@ -1,7 +1,9 @@
-package org.dice_research.spab;
+package org.dice_research.spab.active;
 
 import java.util.List;
 
+import org.dice_research.spab.AbstractTestCase;
+import org.dice_research.spab.Matcher;
 import org.dice_research.spab.candidates.Candidate;
 import org.dice_research.spab.exceptions.CandidateRuntimeException;
 import org.dice_research.spab.exceptions.PerfectSolutionException;
