@@ -21,7 +21,13 @@ public class SpabExample {
 	 * Configuration: Number of iterations. Test run with 1000 iterations took about
 	 * 9 seconds
 	 */
-	public static final int MAX_ITERATIONS = 1000;
+	public static final float LAMBDA = .1f;
+
+	/**
+	 * Configuration: Number of iterations. Test run with 1000 iterations took about
+	 * 9 seconds
+	 */
+	public static final int MAX_ITERATIONS = 100;
 
 	/**
 	 * Configuration: Use Fuseki or Virtuoso file.
@@ -81,29 +87,38 @@ public class SpabExample {
 			System.out.println(" " + unit.getLineRepresentation());
 		}
 
+		System.out.println();
 		System.out.println("Negatives:");
 		for (SparqlUnit unit : spab.getInput().getNegatives()) {
 			System.out.println(" " + unit.getLineRepresentation());
 		}
 
-		spab.setLambda(.1f);
+		System.out.println();
+		System.out.println("Lambda: " + LAMBDA);
+		System.out.println("Iterations: " + MAX_ITERATIONS);
+
+		spab.setLambda(LAMBDA);
 		spab.setMaxIterations(MAX_ITERATIONS);
 		spab.setCheckPerfectSolution(true);
 		spab.setCandidateImplementation(CandidateImplementation.SPAB_SIX);
 
 		CandidateVertex bestCandidate = spab.run();
+		System.out.println("Best candidate:");
 		System.out.println(bestCandidate.getInfoLine());
 
 		System.out.println();
 		int noOfPrintBest = 30;
+		List<CandidateVertex> bestCandidates = spab.getBestCandidates();
+		noOfPrintBest = Math.min(noOfPrintBest, bestCandidates.size());
 		System.out.println("First " + noOfPrintBest + " best candidates: ");
-		for (int i = 0; i < Math.min(noOfPrintBest, spab.getStack().size()); i++) {
-			System.out.println(spab.getStack().get(i).getInfoLine());
+		for (int i = 0; i < noOfPrintBest; i++) {
+			System.out.println(bestCandidates.get(i).getInfoLine());
 		}
 
 		System.out.println();
-		System.out.println("Generated generations:                   " + spab.getGraph().getDepth());
-		System.out.println("Number generated candidates:             " + spab.getGraph().getAllCandidates().size());
-		System.out.println("Number of remaining candidates in queue: " + spab.getQueue().getQueue().size());
+		System.out.println("Generated generations:                  " + spab.getGraph().getDepth());
+		System.out.println("Number generated candidates (graph):    " + spab.getGraph().getAllCandidates().size());
+		System.out.println("Number of remaining candidates (queue): " + spab.getQueue().getQueue().size());
+		System.out.println("Number visited candidates (stack):      " + spab.getStack().size());
 	}
 }

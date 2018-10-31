@@ -67,8 +67,8 @@ public class CandidateVertex implements Matcher {
 	/**
 	 * Calculates score of this candidate.
 	 * 
-	 * @throws PerfectSolutionException
-	 *             if candidate has no false positives or false negatives
+	 * @throws PerfectSolutionException if candidate has no false positives or false
+	 *                                  negatives
 	 */
 	public void calculateScore(Configuration configuration, int maxDepth, Matcher matcher)
 			throws PerfectSolutionException {
@@ -145,8 +145,8 @@ public class CandidateVertex implements Matcher {
 	/**
 	 * Generates children for this candidate.
 	 * 
-	 * @throws CandidateRuntimeException
-	 *             on Exceptions in {@link Candidate} implementations
+	 * @throws CandidateRuntimeException on Exceptions in {@link Candidate}
+	 *                                   implementations
 	 */
 	public Map<CandidateVertex, Candidate> generateChildren() throws CandidateRuntimeException {
 		Map<CandidateVertex, Candidate> map = new HashMap<CandidateVertex, Candidate>();
@@ -238,12 +238,12 @@ public class CandidateVertex implements Matcher {
 		StringBuilder sb = new StringBuilder();
 		sb.append("S:" + (Math.round(getScore() * 1000)) / 1000d);
 		sb.append(" fM:" + (Math.round(getfMeasure() * 1000)) / 1000d);
-		sb.append(" TP:" + getNumberOfTruePositives());
+		sb.append(" (TP:" + getNumberOfTruePositives());
 		sb.append(" TN:" + getNumberOfTrueNegatives());
 		sb.append(" FP:" + getNumberOfFalsePositives());
 		sb.append(" FN:" + getNumberOfFalseNegatives());
-		sb.append(" G:" + getGeneration());
-		sb.append(" RegEx:" + getCandidate().getRegEx());
+		sb.append(") Gen:" + getGeneration());
+		sb.append(" [" + getCandidate().getRegEx() + "]");
 		return sb.toString();
 	}
 }

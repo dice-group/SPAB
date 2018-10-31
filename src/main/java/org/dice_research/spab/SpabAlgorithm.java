@@ -7,8 +7,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
-import java.util.SortedSet;
-import java.util.TreeSet;
 
 import org.dice_research.spab.candidates.Candidate;
 import org.dice_research.spab.candidates.CandidateFactory;
@@ -37,14 +35,14 @@ public class SpabAlgorithm {
 	protected Configuration configuration;
 
 	/**
-	 * Candidate graph
-	 */
-	protected CandidateGraph graph;
-
-	/**
 	 * Input container
 	 */
 	protected Input input;
+
+	/**
+	 * Graph of generated candidates
+	 */
+	protected CandidateGraph graph;
 
 	/**
 	 * Candidate priority queue
@@ -129,6 +127,7 @@ public class SpabAlgorithm {
 				Map<CandidateVertex, Candidate> bestCandidateChildren = bestCandidate.generateChildren();
 				removeDuplicates(bestCandidateChildren);
 				graph.addCandidates(bestCandidateChildren.keySet(), bestCandidate);
+
 				if (i <= 10 || i % 100 == 0) {
 					LOGGER.info("Iteration " + i + ". Generated " + bestCandidateChildren.size()
 							+ " children. Graph size: " + graph.getAllCandidates().size());
@@ -142,7 +141,6 @@ public class SpabAlgorithm {
 				for (CandidateVertex queueCandidate : queue.reset()) {
 					queueCandidate.calculateScore(configuration, graph.getDepth(), matcher);
 					queue.add(queueCandidate);
-
 					Statistics.info();
 				}
 
@@ -150,9 +148,9 @@ public class SpabAlgorithm {
 				for (CandidateVertex bestCandidateChild : bestCandidateChildren.keySet()) {
 					bestCandidateChild.calculateScore(configuration, graph.getDepth(), matcher);
 					queue.add(bestCandidateChild);
-
 					Statistics.info();
 				}
+
 				if (i <= 10 || i % 100 == 0) {
 					LOGGER.info("Iteration " + i + ". Queue size: " + queue.getQueue().size());
 				}
@@ -233,7 +231,7 @@ public class SpabAlgorithm {
 	}
 
 	/**
-	 * Gets candidate graph.
+	 * Gets graph of generated candidates.
 	 */
 	public CandidateGraph getGraph() {
 		return graph;
@@ -256,14 +254,14 @@ public class SpabAlgorithm {
 	/**
 	 * Gets visited candidates from stack sorted by score.
 	 */
-	public SortedSet<CandidateVertex> getBestCandidates() {
-		SortedSet<CandidateVertex> bestCandidates = new TreeSet<CandidateVertex>(new Comparator<CandidateVertex>() {
+	public List<CandidateVertex> getBestCandidates() {
+		List<CandidateVertex> bestCandidates = new LinkedList<CandidateVertex>(stack);
+		bestCandidates.sort(new Comparator<CandidateVertex>() {
 			@Override
 			public int compare(CandidateVertex v1, CandidateVertex v2) {
-				return Float.compare(v1.getScore(), v2.getScore());
+				return Float.compare(v2.getScore(), v1.getScore());
 			}
 		});
-		bestCandidates.addAll(this.stack);
 		return bestCandidates;
 	}
 }

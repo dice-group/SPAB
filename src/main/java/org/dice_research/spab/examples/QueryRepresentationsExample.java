@@ -8,7 +8,7 @@ import org.dice_research.spab.input.SparqlUnit;
  * 
  * @author Adrian Wilke
  */
-public class InputQueryExample {
+public class QueryRepresentationsExample {
 
 	public static String exampleQuery = "PREFIX  rdf:    <http://www.w3.org/1999/02/22-rdf-syntax-ns#> \n"
 			+ "PREFIX  foaf:   <http://xmlns.com/foaf/0.1/> \n" + "\n" + "SELECT ?person\n" + "WHERE \n" + "{\n"
@@ -20,9 +20,16 @@ public class InputQueryExample {
 		spab.addPositive(exampleQuery);
 		SparqlUnit sparqlUnit = spab.getInput().getPositives().get(0);
 
-		System.out.println("Original query string:");
+		System.out.println("Java string:");
 		System.out.println();
 		System.out.println(exampleQuery);
+		System.out.println();
+		System.out.println("----------------------------------------------------------------------------------------");
+		System.out.println();
+
+		System.out.println("Original query string:");
+		System.out.println();
+		System.out.println(sparqlUnit.getOriginalString());
 		System.out.println();
 		System.out.println("----------------------------------------------------------------------------------------");
 		System.out.println();

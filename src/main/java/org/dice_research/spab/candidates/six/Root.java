@@ -12,7 +12,7 @@ import org.dice_research.spab.input.Input;
 public class Root extends Expression {
 
 	enum Type {
-		INITIAL, ROOT_REFINED, REFINED
+		INITIAL, INITIAL_REFINED, CHILD
 	}
 
 	protected Type type;
@@ -33,10 +33,10 @@ public class Root extends Expression {
 
 	@Override
 	protected void addRegex(StringBuilder stringBuilder) {
-		if (type.equals(Type.ROOT_REFINED)) {
-			stringBuilder.append(".*");
-		} else {
+		if (type.equals(Type.CHILD)) {
 			addSequenceToRegex(stringBuilder);
+		} else {
+			stringBuilder.append(".*");
 		}
 	}
 
@@ -49,31 +49,31 @@ public class Root extends Expression {
 
 			for (Expression expression : Query.getInitialInstances()) {
 				refinement = new Root();
-				refinement.type = Type.REFINED;
+				refinement.type = Type.CHILD;
 				refinement.sequence.add(expression);
 				refinements.add(refinement);
 			}
 
 			refinement = new Root();
-			refinement.type = Type.REFINED;
+			refinement.type = Type.CHILD;
 			WhereClause where = new WhereClause();
 			refinement.sequence.add(where);
 			refinements.add(refinement);
 
 			refinement = new Root();
-			refinement.type = Type.REFINED;
+			refinement.type = Type.CHILD;
 			GraphPatternNotTriples graphPatternNotTriples = new GraphPatternNotTriples();
 			refinement.sequence.add(graphPatternNotTriples);
 			refinements.add(refinement);
 
 			for (Expression expression : new SolutionModifier().getRefinements(input)) {
 				refinement = new Root();
-				refinement.type = Type.REFINED;
+				refinement.type = Type.CHILD;
 				refinement.sequence.add(expression);
 				refinements.add(refinement);
 			}
 
-			type = Type.ROOT_REFINED;
+			type = Type.INITIAL_REFINED;
 		}
 
 		return refinements;

@@ -1,7 +1,6 @@
 package org.dice_research.spab;
 
 import java.util.List;
-import java.util.SortedSet;
 
 import org.dice_research.spab.candidates.Candidate;
 import org.dice_research.spab.candidates.CandidateFactory;
@@ -121,7 +120,7 @@ public class SpabApi {
 	/**
 	 * Gets visited candidates from stack sorted by score.
 	 */
-	public SortedSet<CandidateVertex> getBestCandidates() {
+	public List<CandidateVertex> getBestCandidates() {
 		return spab.getBestCandidates();
 	}
 
