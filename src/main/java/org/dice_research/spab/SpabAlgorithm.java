@@ -1,11 +1,14 @@
 package org.dice_research.spab;
 
+import java.util.Comparator;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
+import java.util.SortedSet;
+import java.util.TreeSet;
 
 import org.dice_research.spab.candidates.Candidate;
 import org.dice_research.spab.candidates.CandidateFactory;
@@ -73,8 +76,7 @@ public class SpabAlgorithm {
 	 * 
 	 * @return The best candidate found.
 	 * 
-	 * @throws SpabException
-	 *             on errors in SPAB algorithm.
+	 * @throws SpabException on errors in SPAB algorithm.
 	 */
 	public CandidateVertex execute() throws SpabException {
 		return execute(null);
@@ -83,15 +85,13 @@ public class SpabAlgorithm {
 	/**
 	 * Executes SPAB algorithm.
 	 * 
-	 * @param matcher
-	 *            The matching algorithm to use. If null, the default implementation
-	 *            implemented by {@link CandidateVertex#matches(Candidate, String)}
-	 *            is used.
+	 * @param matcher The matching algorithm to use. If null, the default
+	 *                implementation implemented by
+	 *                {@link CandidateVertex#matches(Candidate, String)} is used.
 	 * 
 	 * @return The best candidate found.
 	 * 
-	 * @throws SpabException
-	 *             on errors in SPAB algorithm.
+	 * @throws SpabException on errors in SPAB algorithm.
 	 */
 	public CandidateVertex execute(Matcher matcher) throws SpabException {
 		Statistics.timeBegin = System.currentTimeMillis();
@@ -158,6 +158,11 @@ public class SpabAlgorithm {
 				}
 			}
 
+			// Update final scores
+			for (CandidateVertex candidate : graph.getAllCandidates()) {
+				candidate.calculateScore(configuration, graph.getDepth(), matcher);
+			}
+
 			// Return best candidate
 			CandidateVertex bestCandidate = firstCandidate;
 			for (CandidateVertex candidate : graph.getAllCandidates()) {
@@ -170,6 +175,15 @@ public class SpabAlgorithm {
 			return bestCandidate;
 
 		} catch (PerfectSolutionException e) {
+
+			// Update final scores
+			for (CandidateVertex candidate : graph.getAllCandidates()) {
+				try {
+					candidate.calculateScore(configuration, graph.getDepth(), matcher);
+				} catch (PerfectSolutionException pse) {
+					// This will happen, as already in catch clause.
+				}
+			}
 
 			// Perfect candidate was found before reaching maximum number of iterations.
 			// A perfect candidate has no false positives or false negatives.
@@ -212,17 +226,17 @@ public class SpabAlgorithm {
 	}
 
 	/**
-	 * Gets candidate graph.
-	 */
-	public CandidateGraph getGraph() {
-		return graph;
-	}
-
-	/**
 	 * Gets input container.
 	 */
 	public Input getInput() {
 		return input;
+	}
+
+	/**
+	 * Gets candidate graph.
+	 */
+	public CandidateGraph getGraph() {
+		return graph;
 	}
 
 	/**
@@ -233,9 +247,23 @@ public class SpabAlgorithm {
 	}
 
 	/**
-	 * Gets stack of visited candidates.
+	 * Gets stack of visited candidates. Candidates are sorted by insertion time.
 	 */
 	public List<CandidateVertex> getStack() {
 		return stack;
+	}
+
+	/**
+	 * Gets visited candidates from stack sorted by score.
+	 */
+	public SortedSet<CandidateVertex> getBestCandidates() {
+		SortedSet<CandidateVertex> bestCandidates = new TreeSet<CandidateVertex>(new Comparator<CandidateVertex>() {
+			@Override
+			public int compare(CandidateVertex v1, CandidateVertex v2) {
+				return Float.compare(v1.getScore(), v2.getScore());
+			}
+		});
+		bestCandidates.addAll(this.stack);
+		return bestCandidates;
 	}
 }
