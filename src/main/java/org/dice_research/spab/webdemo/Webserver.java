@@ -112,7 +112,10 @@ public class Webserver implements HttpHandler {
 				html = html.replaceFirst("<!--TITLE-->", TITLE);
 				html = html.replaceFirst("<!--HEAD-->", "");
 				html = html.replaceFirst("<!--BODY-->", form + spab.toString());
+				
+				// Avoid Chrome ERR_BLOCKED_BY_XSS_AUDITOR
 				exchange.getResponseHeaders().add("X-XSS-Protection", "0");
+				
 				exchange.getResponseHeaders().add("Content-type", "text/html");
 				exchange.sendResponseHeaders(200, html.length());
 				OutputStream os = exchange.getResponseBody();
