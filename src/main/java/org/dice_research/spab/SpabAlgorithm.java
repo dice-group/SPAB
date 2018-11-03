@@ -60,6 +60,11 @@ public class SpabAlgorithm {
 	protected Set<String> regExCheckSet = new HashSet<String>();
 
 	/**
+	 * Runtime will be set at end of last execution.
+	 */
+	protected float runtime = -1;
+
+	/**
 	 * Initializes data structures.
 	 */
 	public SpabAlgorithm() {
@@ -92,7 +97,7 @@ public class SpabAlgorithm {
 	 * @throws SpabException on errors in SPAB algorithm.
 	 */
 	public CandidateVertex execute(Matcher matcher) throws SpabException {
-		Statistics.timeBegin = System.currentTimeMillis();
+		long startTime = System.currentTimeMillis();
 		LOGGER.info("SPAB run with " + getInput().getPositives().size() + " positives and "
 				+ getInput().getNegatives().size() + " negatives. Max iterations: " + configuration.getMaxIterations()
 				+ ". Lambda: " + getConfiguration().getLambda() + ". Resource URIs: "
@@ -169,10 +174,16 @@ public class SpabAlgorithm {
 				}
 			}
 
-			LOGGER.info("Runtime: " + Statistics.getRuntime() + " seconds");
+			this.runtime = (System.currentTimeMillis() - startTime) / 1000f;
+			LOGGER.info("Runtime: " + runtime + " seconds");
+
+			// TODO: Use method to make use of comparator
 			return bestCandidate;
 
 		} catch (PerfectSolutionException e) {
+
+			// Perfect candidate was found before reaching maximum number of iterations.
+			// A perfect candidate has no false positives or false negatives.
 
 			// Update final scores
 			for (CandidateVertex candidate : graph.getAllCandidates()) {
@@ -182,11 +193,8 @@ public class SpabAlgorithm {
 					// This will happen, as already in catch clause.
 				}
 			}
-
-			// Perfect candidate was found before reaching maximum number of iterations.
-			// A perfect candidate has no false positives or false negatives.
-			LOGGER.info("Perfect solution found!");
-			LOGGER.info("Runtime: " + Statistics.getRuntime() + " seconds");
+			this.runtime = (System.currentTimeMillis() - startTime) / 1000f;
+			LOGGER.info("Runtime: " + runtime + " seconds");
 
 			return e.getCandidate();
 		}
@@ -249,6 +257,13 @@ public class SpabAlgorithm {
 	 */
 	public List<CandidateVertex> getStack() {
 		return stack;
+	}
+
+	/**
+	 * Gets runtime in seconds.
+	 */
+	public float getRuntime() {
+		return runtime;
 	}
 
 	/**

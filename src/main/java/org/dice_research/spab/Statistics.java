@@ -29,9 +29,6 @@ public abstract class Statistics {
 	public static int queryLineCalls = 0;
 	public static double queryLineRuntime = 0;
 
-	public static long timeBegin;
-	public static long timeEnd;
-
 	/**
 	 * Calculate duration until next logging interval
 	 */
@@ -85,10 +82,5 @@ public abstract class Statistics {
 			LOGGER.info("Matching: " + matchingCalls + " calls, " + matchingRuntime + " sec");
 			LOGGER.info("Score calculations: " + calcScoreCalls + " calls, " + calcScoreRuntime + " sec");
 		}
-	}
-
-	public static double getRuntime() {
-		timeEnd = System.currentTimeMillis();
-		return (timeEnd - timeBegin) / 1000d;
 	}
 }

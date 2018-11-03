@@ -1,6 +1,7 @@
 package org.dice_research.spab.structures;
 
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 
 import org.dice_research.spab.Matcher;
@@ -236,12 +237,12 @@ public class CandidateVertex implements Matcher {
 
 	public String getInfoLine() {
 		StringBuilder sb = new StringBuilder();
-		sb.append("S:" + (Math.round(getScore() * 1000)) / 1000d);
-		sb.append(" fM:" + (Math.round(getfMeasure() * 1000)) / 1000d);
-		sb.append(" (TP:" + getNumberOfTruePositives());
-		sb.append(" TN:" + getNumberOfTrueNegatives());
-		sb.append(" FP:" + getNumberOfFalsePositives());
-		sb.append(" FN:" + getNumberOfFalseNegatives());
+		sb.append("S:" + String.format(Locale.US, "%.3f", getScore()));
+		sb.append(" fM:" + String.format(Locale.US, "%.3f", getScore()));
+		sb.append(" (TP:" + String.format(Locale.US, "%02d", getNumberOfTruePositives()));
+		sb.append(" TN:" + String.format(Locale.US, "%02d", getNumberOfTrueNegatives()));
+		sb.append(" FP:" + String.format(Locale.US, "%02d", getNumberOfFalsePositives()));
+		sb.append(" FN:" + String.format(Locale.US, "%02d", getNumberOfFalseNegatives()));
 		sb.append(") Gen:" + getGeneration());
 		sb.append(" [" + getCandidate().getRegEx() + "]");
 		return sb.toString();
