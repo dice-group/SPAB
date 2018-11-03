@@ -1,6 +1,7 @@
 package org.dice_research.spab.webdemo;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -11,6 +12,11 @@ import org.dice_research.spab.exceptions.InputRuntimeException;
 import org.dice_research.spab.exceptions.SpabException;
 import org.dice_research.spab.structures.CandidateVertex;
 
+/**
+ * Processes SPAB execution.
+ *
+ * @author Adrian Wilke
+ */
 public class WebHandler extends AbstractHandler {
 
 	@Override
@@ -22,9 +28,9 @@ public class WebHandler extends AbstractHandler {
 
 		// Get user parameters
 
-		Map<String, String> parameters = null;
+		Map<String, String> parameters = new HashMap<String, String>();
 		try {
-			parameters = getParameters();
+			fillParameters(parameters);
 		} catch (WebserverIoException e) {
 			setInternalServerError("Error " + e.getMessage());
 			return;
@@ -34,14 +40,7 @@ public class WebHandler extends AbstractHandler {
 
 		String form = new String();
 		try {
-			form = getResource("templates/form.html");
-			// TODO set user input
-			String pos = getResource("data/positive.txt");
-			String neg = getResource("data/negative.txt");
-			form = form.replaceFirst("<!--POSITIVES-->", pos);
-			form = form.replaceFirst("<!--NEGATIVES-->", neg);
-			form = form.replaceFirst("<!--LAMBDA-->", "0.1");
-			form = form.replaceFirst("<!--ITERATIONNS-->", "100");
+			form = getForm(isStatic, parameters);
 		} catch (IOException e) {
 			setInternalServerError("Error " + e.getMessage());
 			return;
@@ -58,9 +57,12 @@ public class WebHandler extends AbstractHandler {
 
 		SpabApi spabApi = new SpabApi();
 		List<String> errors = checkSpabInput(spabApi, parameters);
+
+		StringBuilder stringBuilder = new StringBuilder();
 		if (errors.isEmpty()) {
+			// Run
+
 			try {
-				StringBuilder stringBuilder = new StringBuilder();
 				spabApi.run();
 				stringBuilder.append("<h2>Best candidates</h2>");
 				stringBuilder.append("<ul>");
@@ -68,9 +70,6 @@ public class WebHandler extends AbstractHandler {
 					stringBuilder.append("<li>" + StringEscapeUtils.escapeHtml4(cv.getInfoLine()) + "</li>");
 				}
 				stringBuilder.append("</ul>");
-				stringBuilder.append("<a href=\"javascript:history.back()\">Go back</a>");
-				setOkWithBody(stringBuilder.toString());
-				return;
 			} catch (SpabException e) {
 				// TODO: Check errors, return HTML
 				setInternalServerError("Error " + e.getMessage());
@@ -78,19 +77,24 @@ public class WebHandler extends AbstractHandler {
 			}
 
 		} else {
-			StringBuilder stringBuilder = new StringBuilder();
+			// Display errors
+
 			stringBuilder.append("<h2>Input errors</h2>");
 			stringBuilder.append("<ul>");
 			for (String error : errors) {
 				stringBuilder.append("<li>" + error + "</li>");
 			}
 			stringBuilder.append("</ul>");
-			stringBuilder.append("<a href=\"javascript:history.back()\">Go back</a>");
 
 			// TODO: Other return type?
-			setOkWithBody(stringBuilder.toString());
-			return;
 		}
+
+		stringBuilder.append(form);
+
+		stringBuilder.append("<a href=\"javascript:history.back()\">Go back</a>");
+
+		setOkWithBody(stringBuilder.toString());
+		return;
 	}
 
 	/**

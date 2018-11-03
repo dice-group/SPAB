@@ -131,16 +131,18 @@ public abstract class AbstractHandler implements HttpHandler {
 	/**
 	 * Parses query string.
 	 * 
+	 * @param parameters map has to be constructed before, as it the needed HTTP
+	 *                   request body can only be read once.
+	 * 
 	 * @see https://www.codeproject.com/Tips/1040097/Create-simple-http-server-in-Java
 	 * 
 	 * @throws WebserverIoException on errors reading request body or decoding
 	 *                              parameters.
 	 */
-	protected Map<String, String> getParameters() throws WebserverIoException {
-		Map<String, String> parameters = new HashMap<String, String>();
+	protected void fillParameters(Map<String, String> parameters) throws WebserverIoException {
 		String pairs[];
 		try {
-			pairs = IOUtils.toString(exchange.getRequestBody(), "UTF-8").split("[&]");
+			pairs = IOUtils.toString(getHttpExchange().getRequestBody(), "UTF-8").split("[&]");
 		} catch (IOException e) {
 			throw new WebserverIoException("Can not read request body.", e);
 		}
@@ -160,7 +162,36 @@ public abstract class AbstractHandler implements HttpHandler {
 			}
 			parameters.put(key, value);
 		}
-		return parameters;
+	}
+
+	/**
+	 * Prepares form template
+	 */
+	String getForm(boolean isStatic, Map<String, String> parameters) throws IOException {
+		String form = new String();
+		form = getResource(Templates.FORM);
+		if (isStatic) {
+			String pos = getResource("data/positive.txt");
+			String neg = getResource("data/negative.txt");
+			form = form.replaceFirst(Templates.FORM_MARKER_POSITIVES, pos);
+			form = form.replaceFirst(Templates.FORM_MARKER_NEGATIVES, neg);
+			form = form.replaceFirst(Templates.FORM_MARKER_LAMBDA, "0.1");
+			form = form.replaceFirst(Templates.FORM_MARKER_ITERATIONNS, "100");
+		} else {
+			String parameter = parameters.get(Templates.FORM_ID_POSITIVES);
+			form = form.replaceFirst(Templates.FORM_MARKER_POSITIVES, parameter == null ? "" : parameter);
+
+			parameter = parameters.get(Templates.FORM_ID_NEGATIVES);
+			form = form.replaceFirst(Templates.FORM_MARKER_NEGATIVES, parameter == null ? "" : parameter);
+
+			parameter = parameters.get(Templates.FORM_ID_LAMBDA);
+			form = form.replaceFirst(Templates.FORM_MARKER_LAMBDA, parameter == null ? "" : parameter);
+
+			parameter = parameters.get(Templates.FORM_ID_ITERATIONNS);
+			form = form.replaceFirst(Templates.FORM_MARKER_ITERATIONNS, parameter == null ? "" : parameter);
+		}
+
+		return form;
 	}
 
 	/**
@@ -208,13 +239,13 @@ public abstract class AbstractHandler implements HttpHandler {
 		bodyBuilder.append(
 				"<div style=\"margin-top:10px\"><a href=\"https://github.com/dice-group/SPAB\">SPAB on GitHub</a></div>");
 		try {
-			setOk(getResource("templates/html.html")
+			setOk(getResource(Templates.HTML)
 
-					.replaceFirst("<!--TITLE-->", TITLE)
+					.replaceFirst(Templates.HTML_MARKER_TITLE, TITLE)
 
-					.replaceFirst("<!--HEAD-->", "")
+					.replaceFirst(Templates.HTML_MARKER_HEAD, "")
 
-					.replaceFirst("<!--BODY-->", bodyBuilder.toString()));
+					.replaceFirst(Templates.HTML_MARKER_BODY, bodyBuilder.toString()));
 		} catch (IOException e) {
 			setInternalServerError(e.getMessage());
 			return;

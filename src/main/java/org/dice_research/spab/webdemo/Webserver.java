@@ -2,14 +2,16 @@ package org.dice_research.spab.webdemo;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
+import java.util.HashMap;
+import java.util.Map;
 
 import com.sun.net.httpserver.HttpServer;
 
 /**
  * SPAB web server.
  * 
- * Dev note: On Eclipse com.sun.net.httpserver problems
- * https://stackoverflow.com/a/25945740
+ * Dev note: On Eclipse com.sun.net.httpserver problems set project libraries
+ * accessible: com/sun/net/httpserver/** https://stackoverflow.com/a/25945740
  *
  * @author Adrian Wilke
  */
@@ -24,29 +26,28 @@ public class Webserver extends AbstractHandler {
 	 */
 	public static void main(String[] args) throws IOException {
 
-		// TODO
-		int port = 8080;
+		if (args.length == 0) {
+			System.err.println("Please provide a port for the webserver");
+			System.exit(1);
+		}
+
+		int port = Integer.parseInt(args[0]);
 
 		HttpServer server = HttpServer.create(new InetSocketAddress(port), 0);
 		server.createContext("/spab", new WebHandler());
 		server.createContext("/", new Webserver());
 		server.start();
 
-		System.out.println(port);
-
+		System.out.println("Webserver startet at port " + port);
 	}
 
 	@Override
 	public void handle() throws WebserverIoException {
 		String form = new String();
 		try {
-			form = getResource("templates/form.html");
-			String pos = getResource("data/positive.txt");
-			String neg = getResource("data/negative.txt");
-			form = form.replaceFirst("<!--POSITIVES-->", pos);
-			form = form.replaceFirst("<!--NEGATIVES-->", neg);
-			form = form.replaceFirst("<!--LAMBDA-->", "0.1");
-			form = form.replaceFirst("<!--ITERATIONNS-->", "100");
+			Map<String, String> parameters = new HashMap<String, String>();
+			fillParameters(parameters);
+			form = getForm(true, parameters);
 		} catch (IOException e) {
 			setInternalServerError("Error " + e.getMessage());
 			return;
