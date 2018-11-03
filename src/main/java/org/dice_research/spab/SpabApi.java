@@ -125,6 +125,13 @@ public class SpabApi {
 	}
 
 	/**
+	 * Gets runtime in seconds.
+	 */
+	public float getRuntime() {
+		return spab.getRuntime();
+	}
+
+	/**
 	 * Runs SPAB.
 	 * 
 	 * @return The best candidate found.
