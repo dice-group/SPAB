@@ -23,4 +23,5 @@ public abstract class Templates {
 	public final static String FORM_ID_ITERATIONNS = "iterations";
 
 	public final static String GRAPH = "templates/graph.js";
+	public final static String GRAPH_MARKER_ELEMENTS = "//ELEMENTS";
 }

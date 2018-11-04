@@ -4,7 +4,7 @@ var cy = cytoscape({
 
   boxSelectionEnabled: false,
   autounselectify: true,
-
+  
   style: cytoscape.stylesheet()
     .selector('node')
     .css({
@@ -12,7 +12,8 @@ var cy = cytoscape({
       'text-valign': 'center',
       'shape': 'roundrectangle',
       'background-color': '#ddd',
-      'color': '#222222'
+      'color': '#222222',
+      'font-size': '.8em'
     })
     .selector('edge')
     .style({
@@ -25,33 +26,44 @@ var cy = cytoscape({
 
   layout: {
     name: 'breadthfirst',
-    spacingFactor: 0.5,
-    nodeDimensionsIncludeLabels: true,
+    spacingFactor: 0.7
   }
 });
 
 cy.on('tap', 'node', function() {
-  document.getElementById("cydata").innerHTML = this.data('id');
+  var html = 'Candidate number: <br />';
+  html += this.data('id');
+  html += '<br /><br />Regular expression: <br />';
+  html += this.data('regex');
+  document.getElementById("cydata").innerHTML = html;
 });
 
 function creategraph() {
-
-  //console.log("Hello world!");
-
-  cy.add([
-	  { group: "nodes", data: { id: "n0", title: "n0" } },
-	  { group: "nodes", data: { id: "n1", title: "n1" } },
-	  { group: "edges", data: { id: "e0", source: "n0", target: "n1" } }
-  ]);
+	
+//ELEMENTS
 
   cy.layout({
     name: 'breadthfirst',
-    spacingFactor: 0.5,
-    nodeDimensionsIncludeLabels: true,
-    roots: '#n0'
+    spacingFactor: 0.7,
+    roots: '#0'
   }).run();
 
   return;
 
+}
+
+// Resize graph after window resize event
+
+var resizer;
+window.addEventListener('resize', function(event) {
+  clearTimeout(resizer);
+  resizer = setTimeout(resizeCy, 300);
+});
+function resizeCy() {
+  cy.layout({
+    name: 'breadthfirst',
+    spacingFactor: 0.7,
+    roots: '#0'
+  }).run();
 }
 </script>

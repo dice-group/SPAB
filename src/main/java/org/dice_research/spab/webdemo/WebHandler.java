@@ -65,9 +65,9 @@ public class WebHandler extends AbstractHandler {
 			try {
 				spabApi.run();
 
-				stringBuilder.append("<div id=\"cy\" style=\"height:400px; width:90%\"></div>");
+				stringBuilder.append("<div id=\"cy\"></div>");
 				stringBuilder.append(System.lineSeparator());
-				stringBuilder.append("<div id=\"cydata\" style=\"height:100px; width:90%\"></div>");
+				stringBuilder.append("<div id=\"cydata\"></div>");
 				stringBuilder.append(System.lineSeparator());
 
 				stringBuilder.append("<h2>Results</h2>");
@@ -84,7 +84,11 @@ public class WebHandler extends AbstractHandler {
 				stringBuilder.append("</pre>");
 				stringBuilder.append(System.lineSeparator());
 
-				stringBuilder.append(getResource(Templates.GRAPH));
+				// TODO
+				int maxBestCandidateVertices = 30;
+				stringBuilder.append(getResource(Templates.GRAPH).replaceFirst(Templates.GRAPH_MARKER_ELEMENTS,
+						GraphConstructor.construct(spabApi, maxBestCandidateVertices)));
+
 				stringBuilder.append(System.lineSeparator());
 
 			} catch (SpabException e) {
