@@ -18,6 +18,7 @@ public class CandidateGraph {
 	protected int depth = CandidateVertex.START_GENERATION;
 	protected Graph<CandidateVertex, DefaultEdge> graph;
 	protected CandidateVertex root = null;
+	protected int candidateVertexCounter = 0;
 
 	/**
 	 * Initializes graph.
@@ -29,8 +30,7 @@ public class CandidateGraph {
 	/**
 	 * Adds candidate vertex, which represents root of the graph.
 	 * 
-	 * @throws SpabException
-	 *             if a second root vertex is found
+	 * @throws SpabException if a second root vertex is found
 	 */
 	public void addCandidate(CandidateVertex candidate) throws SpabException {
 		addCandidate(candidate, null);
@@ -40,8 +40,7 @@ public class CandidateGraph {
 	 * Adds candidate vertex. If parent is set, adds edge. Updates graph depth by
 	 * generation of candidate.
 	 * 
-	 * @throws SpabException
-	 *             if a second root vertex is found
+	 * @throws SpabException if a second root vertex is found
 	 */
 	public void addCandidate(CandidateVertex candidate, CandidateVertex parent) throws SpabException {
 
@@ -70,8 +69,7 @@ public class CandidateGraph {
 	 * Adds multiple candidate vertices. If parent is set, adds edges. Updates graph
 	 * depth by generation of candidates.
 	 * 
-	 * @throws SpabException
-	 *             if a second root vertex is found
+	 * @throws SpabException if a second root vertex is found
 	 */
 	public void addCandidates(Collection<CandidateVertex> candidates, CandidateVertex parent) throws SpabException {
 		for (CandidateVertex candidate : candidates) {
@@ -84,6 +82,13 @@ public class CandidateGraph {
 	 */
 	public Set<CandidateVertex> getAllCandidates() {
 		return graph.vertexSet();
+	}
+
+	/**
+	 * Returns and increments counter of generated candidate vertices.
+	 */
+	public int createCandidateVertexNumber() {
+		return candidateVertexCounter++;
 	}
 
 	/**
