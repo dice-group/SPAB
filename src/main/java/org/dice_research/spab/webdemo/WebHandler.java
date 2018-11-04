@@ -65,18 +65,33 @@ public class WebHandler extends AbstractHandler {
 			try {
 				spabApi.run();
 
+				stringBuilder.append("<div id=\"cy\" style=\"height:400px; width:90%\"></div>");
+				stringBuilder.append(System.lineSeparator());
+				stringBuilder.append("<div id=\"cydata\" style=\"height:100px; width:90%\"></div>");
+				stringBuilder.append(System.lineSeparator());
+
 				stringBuilder.append("<h2>Results</h2>");
+				stringBuilder.append(System.lineSeparator());
 				stringBuilder.append("<pre>");
 				stringBuilder.append(StringEscapeUtils.escapeHtml4(InfoStrings.getAllOutput(spabApi, 30)));
 				stringBuilder.append("</pre>");
+				stringBuilder.append(System.lineSeparator());
 
 				stringBuilder.append("<h2>Used input</h2>");
+				stringBuilder.append(System.lineSeparator());
 				stringBuilder.append("<pre>");
 				stringBuilder.append(StringEscapeUtils.escapeHtml4(InfoStrings.getAllInput(spabApi)));
 				stringBuilder.append("</pre>");
+				stringBuilder.append(System.lineSeparator());
+
+				stringBuilder.append(getResource(Templates.GRAPH));
+				stringBuilder.append(System.lineSeparator());
 
 			} catch (SpabException e) {
 				// TODO: Check errors, return HTML
+				setInternalServerError("Error " + e.getMessage());
+				return;
+			} catch (IOException e) {
 				setInternalServerError("Error " + e.getMessage());
 				return;
 			}
