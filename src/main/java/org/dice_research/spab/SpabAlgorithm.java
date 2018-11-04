@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
+import java.util.SortedMap;
 
 import org.dice_research.spab.candidates.Candidate;
 import org.dice_research.spab.candidates.CandidateFactory;
@@ -107,7 +108,8 @@ public class SpabAlgorithm {
 			// Generate first candidate
 			Candidate rootCandidate = CandidateFactory.createCandidate(configuration.getCandidateImplementation(),
 					matcher);
-			CandidateVertex firstCandidate = new CandidateVertex(rootCandidate, getInput());
+			CandidateVertex firstCandidate = new CandidateVertex(this.graph, rootCandidate, getInput());
+			regExCheckSet.add(firstCandidate.getCandidate().getRegEx());
 
 			// Set matcher
 			if (matcher == null) {
@@ -129,7 +131,7 @@ public class SpabAlgorithm {
 					break;
 				}
 				stack.add(bestCandidate);
-				Map<CandidateVertex, Candidate> bestCandidateChildren = bestCandidate.generateChildren();
+				SortedMap<CandidateVertex, Candidate> bestCandidateChildren = bestCandidate.generateChildren();
 				removeDuplicates(bestCandidateChildren);
 				graph.addCandidates(bestCandidateChildren.keySet(), bestCandidate);
 
