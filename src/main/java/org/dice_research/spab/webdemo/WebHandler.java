@@ -7,10 +7,10 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang3.StringEscapeUtils;
+import org.dice_research.spab.InfoStrings;
 import org.dice_research.spab.SpabApi;
 import org.dice_research.spab.exceptions.InputRuntimeException;
 import org.dice_research.spab.exceptions.SpabException;
-import org.dice_research.spab.structures.CandidateVertex;
 
 /**
  * Processes SPAB execution.
@@ -64,12 +64,17 @@ public class WebHandler extends AbstractHandler {
 
 			try {
 				spabApi.run();
-				stringBuilder.append("<h2>Best candidates</h2>");
-				stringBuilder.append("<ul>");
-				for (CandidateVertex cv : spabApi.getBestCandidates()) {
-					stringBuilder.append("<li>" + StringEscapeUtils.escapeHtml4(cv.getInfoLine()) + "</li>");
-				}
-				stringBuilder.append("</ul>");
+
+				stringBuilder.append("<h2>Results</h2>");
+				stringBuilder.append("<pre>");
+				stringBuilder.append(StringEscapeUtils.escapeHtml4(InfoStrings.getAllOutput(spabApi, 30)));
+				stringBuilder.append("</pre>");
+
+				stringBuilder.append("<h2>Used input</h2>");
+				stringBuilder.append("<pre>");
+				stringBuilder.append(StringEscapeUtils.escapeHtml4(InfoStrings.getAllInput(spabApi)));
+				stringBuilder.append("</pre>");
+
 			} catch (SpabException e) {
 				// TODO: Check errors, return HTML
 				setInternalServerError("Error " + e.getMessage());
@@ -89,9 +94,10 @@ public class WebHandler extends AbstractHandler {
 			// TODO: Other return type?
 		}
 
+		stringBuilder.append("<h2>Start a new run</h2>");
 		stringBuilder.append(form);
 
-		stringBuilder.append("<a href=\"javascript:history.back()\">Go back</a>");
+		stringBuilder.append("<div><a href=\"javascript:history.back()\">Back to previous page</a></div>");
 
 		setOkWithBody(stringBuilder.toString());
 		return;
@@ -116,7 +122,7 @@ public class WebHandler extends AbstractHandler {
 			errors.add("No " + setType + " set of SPARQL queries specified.");
 		} else {
 			// Split by at least 3 line breaks
-			for (String query : queryBlock.split("(\\r\\n|\\r|\\n)(\\r\\n|\\r|\\n)(\\r\\n|\\r|\\n)*")) {
+			for (String query : queryBlock.split("(\\r?\\n)(\\r?\\n)(\\r?\\n)+")) {
 				try {
 					if (setType.equals("positive")) {
 						spabApi.addPositive(query);
@@ -135,7 +141,7 @@ public class WebHandler extends AbstractHandler {
 			errors.add("No " + setType + " set of SPARQL queries specified.");
 		} else {
 			// Split by at least 3 line breaks
-			for (String query : queryBlock.split("(\\r\\n|\\r|\\n)(\\r\\n|\\r|\\n)(\\r\\n|\\r|\\n)*")) {
+			for (String query : queryBlock.split("(\\r?\\n)(\\r?\\n)(\\r?\\n)+")) {
 				try {
 					if (setType.equals("positive")) {
 						spabApi.addPositive(query);

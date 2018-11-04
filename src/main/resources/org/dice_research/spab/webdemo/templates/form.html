@@ -1,17 +1,15 @@
 <form name="form" action="/spab" method="post">
 	<h3><label for="positives">Positive set of SPARQL queries</label></h3>
-	<textarea name="positives" id="positives" style="width: 95%; height:200px; background: #f3f3f3; padding:10px; border:solid 2px #ddd; color:#222"><!--POSITIVES--></textarea>
+	<textarea name="positives" id="positives" ><!--POSITIVES--></textarea>
 	
 	<h3><label for="negatives">Negative set of SPARQL queries</label></h3>
-	<textarea name="negatives" id="negatives" style="width: 95%; height:200px; background: #f3f3f3; padding:10px; border:solid 2px #ddd; color:#222"><!--NEGATIVES--></textarea>
+	<textarea name="negatives" id="negatives"><!--NEGATIVES--></textarea>
 	
 	<h3><label for="lambda">Lambda</label></h3>
-	<input name="lambda" id="lambda" type="text" value="<!--LAMBDA-->" style="background: #f3f3f3; padding:10px; border:solid 2px #ddd; color:#222" />
+	<input name="lambda" id="lambda" type="text" value="<!--LAMBDA-->" />
 	
-	<h3><label for="iterations">Max. Iterations</label></h3>
-	<input name="iterations" id="iterations" type="text" value="<!--ITERATIONNS-->" style="background: #f3f3f3; padding:10px; border:solid 2px #ddd; color:#222" />
+	<h3><label for="iterations">Maximum number of iterations</label></h3>
+	<input name="iterations" id="iterations" type="text" value="<!--ITERATIONNS-->" />
 	
-	<div>
-	<input type="submit" style="margin-top:25px;" />
-	</div>
+	<div><input type="submit" /></div>
 </form>
