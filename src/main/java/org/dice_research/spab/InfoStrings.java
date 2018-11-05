@@ -53,7 +53,7 @@ public abstract class InfoStrings {
 
 		stringBuilder.append((positiveSet ? "Positive" : "Negative") + " set of SPARQL queries:");
 		stringBuilder.append(System.lineSeparator());
-		for (SparqlUnit unit : positiveSet ? spabApi.getInput().getNegatives() : spabApi.getInput().getNegatives()) {
+		for (SparqlUnit unit : positiveSet ? spabApi.getInput().getPositives() : spabApi.getInput().getNegatives()) {
 			stringBuilder.append(unit.getLineRepresentation());
 			stringBuilder.append(System.lineSeparator());
 		}
