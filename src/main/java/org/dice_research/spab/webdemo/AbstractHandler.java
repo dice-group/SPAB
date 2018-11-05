@@ -237,7 +237,7 @@ public abstract class AbstractHandler implements HttpHandler {
 		bodyBuilder.append(body);
 		bodyBuilder.append(System.lineSeparator());
 		bodyBuilder.append(
-				"<div><a href=\"https://github.com/dice-group/SPAB\">SPAB on GitHub</a></div>");
+				"<p><a href=\"https://github.com/dice-group/SPAB\">SPAB on GitHub</a></p>");
 		try {
 			setOk(getResource(Templates.HTML)
 

@@ -2,8 +2,8 @@
 var cy = cytoscape({
   container: document.getElementById('cy'),
 
-  boxSelectionEnabled: false,
-  autounselectify: true,
+  autoungrabify: true,
+  userPanningEnabled: false,
   
   style: cytoscape.stylesheet()
     .selector('node')
@@ -13,7 +13,7 @@ var cy = cytoscape({
       'shape': 'roundrectangle',
       'background-color': '#ddd',
       'color': '#222222',
-      'font-size': '.8em'
+      'font-size': '.7em'
     })
     .selector('edge')
     .style({

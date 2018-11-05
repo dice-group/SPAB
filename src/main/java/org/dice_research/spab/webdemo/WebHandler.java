@@ -116,7 +116,7 @@ public class WebHandler extends AbstractHandler {
 		stringBuilder.append("<h2>Start a new run</h2>");
 		stringBuilder.append(form);
 
-		stringBuilder.append("<div><a href=\"javascript:history.back()\">Back to previous page</a></div>");
+		stringBuilder.append("<p><a href=\"javascript:history.back()\">Back to previous page</a></p>");
 
 		setOkWithBody(stringBuilder.toString());
 		return;
