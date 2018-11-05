@@ -1,15 +1,13 @@
 package org.dice_research.spab.webdemo;
 
-import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
-import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
+
 
 import org.apache.commons.io.IOUtils;
 import org.dice_research.spab.io.Resources;
@@ -34,7 +32,7 @@ public abstract class AbstractHandler implements HttpHandler {
 	public static final int STATUS_NOT_FOUND = 404;
 	public static final int STATUS_INTERNAL_SERVER_ERROR = 500;
 
-	private HttpExchange exchange;
+	private com.sun.net.httpserver.HttpExchange exchange;
 
 	private String contentType;
 	private String data;
@@ -113,31 +111,25 @@ public abstract class AbstractHandler implements HttpHandler {
 	/**
 	 * Loads from webdemo resource directory.
 	 * 
-	 * @throws IOException           If resource could not be read.
-	 * @throws FileNotFoundException (also IOException) if resource was not found.
+	 * @throws IOException
+	 *             If resource could not be read.
 	 */
 	protected String getResource(String resource) throws IOException {
 		String webdemoResourcePath = "org/dice_research/spab/webdemo/";
-		File file;
-		try {
-			file = Resources.getResource(webdemoResourcePath + resource);
-		} catch (NullPointerException e) {
-			throw new FileNotFoundException("File not found: " + resource);
-		}
-		return IOUtils.toString(file.toURI(), StandardCharsets.UTF_8);
-
+		return Resources.getResourceAsString(webdemoResourcePath + resource);
 	}
 
 	/**
 	 * Parses query string.
 	 * 
-	 * @param parameters map has to be constructed before, as it the needed HTTP
-	 *                   request body can only be read once.
+	 * @param parameters
+	 *            map has to be constructed before, as it the needed HTTP request
+	 *            body can only be read once.
 	 * 
 	 * @see https://www.codeproject.com/Tips/1040097/Create-simple-http-server-in-Java
 	 * 
-	 * @throws WebserverIoException on errors reading request body or decoding
-	 *                              parameters.
+	 * @throws WebserverIoException
+	 *             on errors reading request body or decoding parameters.
 	 */
 	protected void fillParameters(Map<String, String> parameters) throws WebserverIoException {
 		String pairs[];
@@ -197,7 +189,8 @@ public abstract class AbstractHandler implements HttpHandler {
 	/**
 	 * Sets HTTP 500.
 	 * 
-	 * @param text Error information
+	 * @param text
+	 *            Error information
 	 */
 	protected void setInternalServerError(String text) {
 		statusCode = STATUS_INTERNAL_SERVER_ERROR;
@@ -208,7 +201,8 @@ public abstract class AbstractHandler implements HttpHandler {
 	/**
 	 * Sets HTTP 404
 	 * 
-	 * @param html HTML to send
+	 * @param html
+	 *            HTML to send
 	 */
 	protected void setNotFound(String text) {
 		statusCode = STATUS_NOT_FOUND;
@@ -219,7 +213,8 @@ public abstract class AbstractHandler implements HttpHandler {
 	/**
 	 * Sets HTTP 200
 	 * 
-	 * @param html HTML to send
+	 * @param html
+	 *            HTML to send
 	 */
 	protected void setOk(String html) {
 		statusCode = STATUS_OK;
@@ -236,8 +231,7 @@ public abstract class AbstractHandler implements HttpHandler {
 		bodyBuilder.append(System.lineSeparator());
 		bodyBuilder.append(body);
 		bodyBuilder.append(System.lineSeparator());
-		bodyBuilder.append(
-				"<p><a href=\"https://github.com/dice-group/SPAB\">SPAB on GitHub</a></p>");
+		bodyBuilder.append("<p><a href=\"https://github.com/dice-group/SPAB\">SPAB on GitHub</a></p>");
 		try {
 			setOk(getResource(Templates.HTML)
 

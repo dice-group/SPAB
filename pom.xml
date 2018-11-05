@@ -103,9 +103,6 @@
 							<goal>single</goal>
 						</goals>
 						<configuration>
-
-							<finalName>remove-duplicates</finalName>
-
 							<archive>
 								<manifest>
 									<mainClass>
