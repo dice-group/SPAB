@@ -16,6 +16,7 @@ public abstract class GraphConstructor {
 	static class Vertex implements Comparable<Vertex> {
 		int number;
 		String regex;
+		float fMeasure;
 
 		@Override
 		public int compareTo(Vertex vertex) {
@@ -66,6 +67,7 @@ public abstract class GraphConstructor {
 					vertex = new Vertex();
 					vertex.number = candidate.getNumber();
 					vertex.regex = StringEscapeUtils.escapeHtml4(candidate.getCandidate().getRegEx());
+					vertex.fMeasure = candidate.getfMeasure();
 					vertices.put(vertex.number, vertex);
 				}
 
@@ -133,7 +135,7 @@ public abstract class GraphConstructor {
 			stringBuilder.append(System.lineSeparator());
 
 			stringBuilder.append("{ group: \"nodes\", data: { id: \"" + vertex.number + "\", title: \"" + vertex.number
-					+ "\", regex: \"" + vertex.regex + "\" } }");
+					+ "\", regex: \"" + vertex.regex +"\", fmeasure: " + vertex.fMeasure + " } }");
 		}
 
 		stringBuilder.append(System.lineSeparator());

@@ -11,7 +11,7 @@ var cy = cytoscape({
       'content': 'data(title)',
       'text-valign': 'center',
       'shape': 'roundrectangle',
-      'background-color': '#ddd',
+      'background-color': 'mapData(fmeasure, 0, 1, #ddd, #85CD53)',
       'color': '#222222',
       'font-size': '.7em'
     })
@@ -31,9 +31,11 @@ var cy = cytoscape({
 });
 
 cy.on('tap', 'node', function() {
-  var html = 'Candidate number: <br />';
+  var html = 'Candidate number: ';
   html += this.data('id');
-  html += '<br /><br />Regular expression: <br />';
+  html += '<br />F-measure: ';
+  html += this.data('fmeasure');
+  html += '<br />Regular expression: ';
   html += this.data('regex');
   document.getElementById("cydata").innerHTML = html;
 });
