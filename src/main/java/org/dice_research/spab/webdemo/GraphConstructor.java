@@ -10,10 +10,18 @@ import org.apache.commons.lang3.StringEscapeUtils;
 import org.dice_research.spab.SpabApi;
 import org.dice_research.spab.structures.CandidateVertex;
 
-public abstract class GraphConstructor {
+/**
+ * Creates data to display JS graph
+ * 
+ * @author Adrian Wilke
+ */
+public class GraphConstructor {
+
+	protected Float maxFmeasure = Float.MIN_VALUE;
+	protected Float minFmeasure = Float.MAX_VALUE;
 
 	// Container for construction
-	static class Vertex implements Comparable<Vertex> {
+	protected static class Vertex implements Comparable<Vertex> {
 		int number;
 		String regex;
 		float fMeasure;
@@ -25,7 +33,7 @@ public abstract class GraphConstructor {
 	}
 
 	// Container for construction
-	static class Edge implements Comparable<Edge> {
+	protected static class Edge implements Comparable<Edge> {
 		String id;
 		int source;
 		int target;
@@ -45,7 +53,7 @@ public abstract class GraphConstructor {
 		}
 	}
 
-	static String construct(SpabApi spabApi, int maxBestCandidates) {
+	public String construct(SpabApi spabApi, int maxBestCandidates) {
 
 		// Create list of best candidates to use
 		List<CandidateVertex> bestCandidates = spabApi.getBestCandidates();
@@ -64,10 +72,7 @@ public abstract class GraphConstructor {
 				// Add unknown vertex
 				Vertex vertex = null;
 				if (!vertices.containsKey(candidate.getNumber())) {
-					vertex = new Vertex();
-					vertex.number = candidate.getNumber();
-					vertex.regex = StringEscapeUtils.escapeHtml4(candidate.getCandidate().getRegEx());
-					vertex.fMeasure = candidate.getfMeasure();
+					vertex = createVertex(candidate);
 					vertices.put(vertex.number, vertex);
 				}
 
@@ -79,9 +84,7 @@ public abstract class GraphConstructor {
 				// Add unknown parent of vertex
 				Vertex vertexParent = null;
 				if (!vertices.containsKey(candidateParent.getNumber())) {
-					vertexParent = new Vertex();
-					vertexParent.number = candidateParent.getNumber();
-					vertexParent.regex = StringEscapeUtils.escapeHtml4(candidateParent.getCandidate().getRegEx());
+					vertexParent = createVertex(candidateParent);
 					vertices.put(vertexParent.number, vertexParent);
 				}
 
@@ -111,7 +114,23 @@ public abstract class GraphConstructor {
 		return generateJs(new TreeSet<Vertex>(vertices.values()), new TreeSet<Edge>(edges.values()));
 	}
 
-	protected static String generateJs(SortedSet<Vertex> vertices, SortedSet<Edge> edges) {
+	protected Vertex createVertex(CandidateVertex candidateVertex) {
+		Vertex vertex = new Vertex();
+		vertex.number = candidateVertex.getNumber();
+		vertex.regex = StringEscapeUtils.escapeHtml4(candidateVertex.getCandidate().getRegEx());
+		vertex.fMeasure = candidateVertex.getfMeasure();
+
+		if (vertex.fMeasure < minFmeasure) {
+			minFmeasure = vertex.fMeasure;
+		}
+		if (vertex.fMeasure > maxFmeasure) {
+			maxFmeasure = vertex.fMeasure;
+		}
+
+		return vertex;
+	}
+
+	protected String generateJs(SortedSet<Vertex> vertices, SortedSet<Edge> edges) {
 
 		// Format:
 		// cy.add([
@@ -135,7 +154,7 @@ public abstract class GraphConstructor {
 			stringBuilder.append(System.lineSeparator());
 
 			stringBuilder.append("{ group: \"nodes\", data: { id: \"" + vertex.number + "\", title: \"" + vertex.number
-					+ "\", regex: \"" + vertex.regex +"\", fmeasure: " + vertex.fMeasure + " } }");
+					+ "\", regex: \"" + vertex.regex + "\", fmeasure: " + vertex.fMeasure + " } }");
 		}
 
 		stringBuilder.append(System.lineSeparator());
@@ -165,4 +184,31 @@ public abstract class GraphConstructor {
 		return stringBuilder.toString();
 	}
 
+	/**
+	 * Gets value to color good candidates.
+	 * 
+	 * Best candidates with good fM should be separated from 1 (very saturated) and
+	 * from those with bad fM.
+	 */
+	float getMaxValue() {
+		if (maxFmeasure.equals(Float.MIN_VALUE)) {
+			return 1f;
+		} else {
+			return (2f + maxFmeasure) / 3f;
+		}
+	}
+
+	/**
+	 * Gets value to color bad candidates.
+	 * 
+	 * Best candidates with bad fM should be separated from 0 (grey) and from those
+	 * with good fM.
+	 */
+	float getMinValue() {
+		if (minFmeasure.equals(Float.MAX_VALUE)) {
+			return 0f;
+		} else {
+			return minFmeasure / 2f;
+		}
+	}
 }

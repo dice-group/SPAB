@@ -84,10 +84,17 @@ public class WebHandler extends AbstractHandler {
 				stringBuilder.append("</pre>");
 				stringBuilder.append(System.lineSeparator());
 
-				// TODO
+				// TODO: Whats the best number of candidates to display?
 				int maxBestCandidateVertices = 30;
-				stringBuilder.append(getResource(Templates.GRAPH).replaceFirst(Templates.GRAPH_MARKER_ELEMENTS,
-						GraphConstructor.construct(spabApi, maxBestCandidateVertices)));
+				GraphConstructor graphConstructor = new GraphConstructor();
+				String graphTemplate = getResource(Templates.GRAPH);
+				graphTemplate = graphTemplate.replaceFirst(Templates.GRAPH_MARKER_ELEMENTS,
+						graphConstructor.construct(spabApi, maxBestCandidateVertices));
+				graphTemplate = graphTemplate.replaceFirst(Templates.GRAPH_MARKER_MAX,
+						"" + graphConstructor.getMaxValue());
+				graphTemplate = graphTemplate.replaceFirst(Templates.GRAPH_MARKER_MIN,
+						"" + graphConstructor.getMinValue());
+				stringBuilder.append(graphTemplate);
 
 				stringBuilder.append(System.lineSeparator());
 

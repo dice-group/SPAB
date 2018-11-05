@@ -11,7 +11,7 @@ var cy = cytoscape({
       'content': 'data(title)',
       'text-valign': 'center',
       'shape': 'roundrectangle',
-      'background-color': 'mapData(fmeasure, 0, 1, #ddd, #85CD53)',
+      'background-color': 'mapData(fmeasure, /*MIN*/, /*MAX*/, #ddd, #85CD53)',
       'color': '#222222',
       'font-size': '.7em'
     })
