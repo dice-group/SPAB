@@ -75,8 +75,8 @@ public class CandidateVertex implements Matcher, Comparable<CandidateVertex> {
 	/**
 	 * Calculates score of this candidate.
 	 * 
-	 * @throws PerfectSolutionException if candidate has no false positives or false
-	 *                                  negatives
+	 * @throws PerfectSolutionException
+	 *             if candidate has no false positives or false negatives
 	 */
 	public void calculateScore(Configuration configuration, int maxDepth, Matcher matcher)
 			throws PerfectSolutionException {
@@ -153,8 +153,8 @@ public class CandidateVertex implements Matcher, Comparable<CandidateVertex> {
 	/**
 	 * Generates children for this candidate.
 	 * 
-	 * @throws CandidateRuntimeException on Exceptions in {@link Candidate}
-	 *                                   implementations
+	 * @throws CandidateRuntimeException
+	 *             on Exceptions in {@link Candidate} implementations
 	 */
 	public SortedMap<CandidateVertex, Candidate> generateChildren() throws CandidateRuntimeException {
 		SortedMap<CandidateVertex, Candidate> map = new TreeMap<CandidateVertex, Candidate>();
@@ -257,7 +257,7 @@ public class CandidateVertex implements Matcher, Comparable<CandidateVertex> {
 	public String getInfoLine() {
 		StringBuilder sb = new StringBuilder();
 		sb.append("S:" + String.format(Locale.US, "%.3f", getScore()));
-		sb.append(" fM:" + String.format(Locale.US, "%.3f", getScore()));
+		sb.append(" fM:" + String.format(Locale.US, "%.3f", getfMeasure()));
 		sb.append(" (TP:" + String.format(Locale.US, "%02d", getNumberOfTruePositives()));
 		sb.append(" TN:" + String.format(Locale.US, "%02d", getNumberOfTrueNegatives()));
 		sb.append(" FP:" + String.format(Locale.US, "%02d", getNumberOfFalsePositives()));
