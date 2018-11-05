@@ -1,7 +1,10 @@
 package org.dice_research.spab.structures;
 
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
+import java.util.SortedMap;
+import java.util.TreeMap;
 
 import org.dice_research.spab.Matcher;
 import org.dice_research.spab.Statistics;
@@ -17,9 +20,12 @@ import org.dice_research.spab.input.SparqlUnit;
  * 
  * @author Adrian Wilke
  */
-public class CandidateVertex implements Matcher {
+public class CandidateVertex implements Matcher, Comparable<CandidateVertex> {
 
 	public final static int START_GENERATION = 0;
+
+	protected CandidateGraph candidateGraph;
+	protected int number;
 
 	protected Candidate candidate;
 	protected Float fMeasureCache = null;
@@ -43,8 +49,8 @@ public class CandidateVertex implements Matcher {
 	 * 
 	 * Stores the {@link Candidate}.
 	 */
-	public CandidateVertex(Candidate candidate, Input input) {
-		this(null, candidate, input);
+	public CandidateVertex(CandidateGraph candidateGraph, Candidate candidate, Input input) {
+		this(candidateGraph, null, candidate, input);
 	}
 
 	/**
@@ -52,23 +58,25 @@ public class CandidateVertex implements Matcher {
 	 * 
 	 * Stores the {@link Candidate}.
 	 */
-	public CandidateVertex(CandidateVertex parent, Candidate candidate, Input input) {
+	public CandidateVertex(CandidateGraph candidateGraph, CandidateVertex parent, Candidate candidate, Input input) {
 		if (parent == null) {
 			generation = START_GENERATION;
 		} else {
 			generation = parent.getGeneration() + 1;
 		}
 
+		this.candidateGraph = candidateGraph;
 		this.parent = parent;
 		this.candidate = candidate;
 		this.input = input;
+		this.number = candidateGraph.createCandidateVertexNumber();
 	}
 
 	/**
 	 * Calculates score of this candidate.
 	 * 
-	 * @throws PerfectSolutionException
-	 *             if candidate has no false positives or false negatives
+	 * @throws PerfectSolutionException if candidate has no false positives or false
+	 *                                  negatives
 	 */
 	public void calculateScore(Configuration configuration, int maxDepth, Matcher matcher)
 			throws PerfectSolutionException {
@@ -145,15 +153,27 @@ public class CandidateVertex implements Matcher {
 	/**
 	 * Generates children for this candidate.
 	 * 
-	 * @throws CandidateRuntimeException
-	 *             on Exceptions in {@link Candidate} implementations
+	 * @throws CandidateRuntimeException on Exceptions in {@link Candidate}
+	 *                                   implementations
 	 */
-	public Map<CandidateVertex, Candidate> generateChildren() throws CandidateRuntimeException {
-		Map<CandidateVertex, Candidate> map = new HashMap<CandidateVertex, Candidate>();
+	public SortedMap<CandidateVertex, Candidate> generateChildren() throws CandidateRuntimeException {
+		SortedMap<CandidateVertex, Candidate> map = new TreeMap<CandidateVertex, Candidate>();
 		for (Candidate candidate : this.candidate.getChildren(getInput())) {
-			map.put(new CandidateVertex(this, candidate, input), candidate);
+			map.put(new CandidateVertex(this.candidateGraph, this, candidate, input), candidate);
 		}
 		return map;
+	}
+
+	@Override
+	public int compareTo(CandidateVertex candidateVertex) {
+		return Integer.compare(getNumber(), candidateVertex.getNumber());
+	}
+
+	/**
+	 * Gets number of candidate.
+	 */
+	public int getNumber() {
+		return number;
 	}
 
 	/**
@@ -236,14 +256,15 @@ public class CandidateVertex implements Matcher {
 
 	public String getInfoLine() {
 		StringBuilder sb = new StringBuilder();
-		sb.append("S:" + (Math.round(getScore() * 1000)) / 1000d);
-		sb.append(" fM:" + (Math.round(getfMeasure() * 1000)) / 1000d);
-		sb.append(" TP:" + getNumberOfTruePositives());
-		sb.append(" TN:" + getNumberOfTrueNegatives());
-		sb.append(" FP:" + getNumberOfFalsePositives());
-		sb.append(" FN:" + getNumberOfFalseNegatives());
-		sb.append(" G:" + getGeneration());
-		sb.append(" RegEx:" + getCandidate().getRegEx());
+		sb.append("S:" + String.format(Locale.US, "%.3f", getScore()));
+		sb.append(" fM:" + String.format(Locale.US, "%.3f", getScore()));
+		sb.append(" (TP:" + String.format(Locale.US, "%02d", getNumberOfTruePositives()));
+		sb.append(" TN:" + String.format(Locale.US, "%02d", getNumberOfTrueNegatives()));
+		sb.append(" FP:" + String.format(Locale.US, "%02d", getNumberOfFalsePositives()));
+		sb.append(" FN:" + String.format(Locale.US, "%02d", getNumberOfFalseNegatives()));
+		sb.append(") Gen:" + getGeneration());
+		sb.append(" No:" + getNumber());
+		sb.append(" [" + getCandidate().getRegEx() + "]");
 		return sb.toString();
 	}
 }

@@ -1,9 +1,10 @@
-package org.dice_research.spab;
+package org.dice_research.spab.active;
 
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 
+import org.dice_research.spab.AbstractTestCase;
 import org.dice_research.spab.candidates.six.Expression;
 import org.dice_research.spab.candidates.six.Triple;
 import org.dice_research.spab.candidates.six.TriplesBlock;

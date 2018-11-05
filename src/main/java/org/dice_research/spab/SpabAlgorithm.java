@@ -1,11 +1,13 @@
 package org.dice_research.spab;
 
+import java.util.Comparator;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
+import java.util.SortedMap;
 
 import org.dice_research.spab.candidates.Candidate;
 import org.dice_research.spab.candidates.CandidateFactory;
@@ -34,14 +36,14 @@ public class SpabAlgorithm {
 	protected Configuration configuration;
 
 	/**
-	 * Candidate graph
-	 */
-	protected CandidateGraph graph;
-
-	/**
 	 * Input container
 	 */
 	protected Input input;
+
+	/**
+	 * Graph of generated candidates
+	 */
+	protected CandidateGraph graph;
 
 	/**
 	 * Candidate priority queue
@@ -59,6 +61,11 @@ public class SpabAlgorithm {
 	protected Set<String> regExCheckSet = new HashSet<String>();
 
 	/**
+	 * Runtime will be set at end of last execution.
+	 */
+	protected float runtime = -1;
+
+	/**
 	 * Initializes data structures.
 	 */
 	public SpabAlgorithm() {
@@ -73,8 +80,7 @@ public class SpabAlgorithm {
 	 * 
 	 * @return The best candidate found.
 	 * 
-	 * @throws SpabException
-	 *             on errors in SPAB algorithm.
+	 * @throws SpabException on errors in SPAB algorithm.
 	 */
 	public CandidateVertex execute() throws SpabException {
 		return execute(null);
@@ -83,18 +89,16 @@ public class SpabAlgorithm {
 	/**
 	 * Executes SPAB algorithm.
 	 * 
-	 * @param matcher
-	 *            The matching algorithm to use. If null, the default implementation
-	 *            implemented by {@link CandidateVertex#matches(Candidate, String)}
-	 *            is used.
+	 * @param matcher The matching algorithm to use. If null, the default
+	 *                implementation implemented by
+	 *                {@link CandidateVertex#matches(Candidate, String)} is used.
 	 * 
 	 * @return The best candidate found.
 	 * 
-	 * @throws SpabException
-	 *             on errors in SPAB algorithm.
+	 * @throws SpabException on errors in SPAB algorithm.
 	 */
 	public CandidateVertex execute(Matcher matcher) throws SpabException {
-		Statistics.timeBegin = System.currentTimeMillis();
+		long startTime = System.currentTimeMillis();
 		LOGGER.info("SPAB run with " + getInput().getPositives().size() + " positives and "
 				+ getInput().getNegatives().size() + " negatives. Max iterations: " + configuration.getMaxIterations()
 				+ ". Lambda: " + getConfiguration().getLambda() + ". Resource URIs: "
@@ -104,7 +108,8 @@ public class SpabAlgorithm {
 			// Generate first candidate
 			Candidate rootCandidate = CandidateFactory.createCandidate(configuration.getCandidateImplementation(),
 					matcher);
-			CandidateVertex firstCandidate = new CandidateVertex(rootCandidate, getInput());
+			CandidateVertex firstCandidate = new CandidateVertex(this.graph, rootCandidate, getInput());
+			regExCheckSet.add(firstCandidate.getCandidate().getRegEx());
 
 			// Set matcher
 			if (matcher == null) {
@@ -126,12 +131,10 @@ public class SpabAlgorithm {
 					break;
 				}
 				stack.add(bestCandidate);
-				Map<CandidateVertex, Candidate> bestCandidateChildren = bestCandidate.generateChildren();
+				SortedMap<CandidateVertex, Candidate> bestCandidateChildren = bestCandidate.generateChildren();
 				removeDuplicates(bestCandidateChildren);
 				graph.addCandidates(bestCandidateChildren.keySet(), bestCandidate);
-				for (Entry<CandidateVertex, Candidate> bestCandidateChild : bestCandidateChildren.entrySet()) {
-					bestCandidateChild.getValue().setVertex(bestCandidateChild.getKey());
-				}
+
 				if (i <= 10 || i % 100 == 0) {
 					LOGGER.info("Iteration " + i + ". Generated " + bestCandidateChildren.size()
 							+ " children. Graph size: " + graph.getAllCandidates().size());
@@ -145,7 +148,6 @@ public class SpabAlgorithm {
 				for (CandidateVertex queueCandidate : queue.reset()) {
 					queueCandidate.calculateScore(configuration, graph.getDepth(), matcher);
 					queue.add(queueCandidate);
-
 					Statistics.info();
 				}
 
@@ -153,12 +155,17 @@ public class SpabAlgorithm {
 				for (CandidateVertex bestCandidateChild : bestCandidateChildren.keySet()) {
 					bestCandidateChild.calculateScore(configuration, graph.getDepth(), matcher);
 					queue.add(bestCandidateChild);
-
 					Statistics.info();
 				}
+
 				if (i <= 10 || i % 100 == 0) {
 					LOGGER.info("Iteration " + i + ". Queue size: " + queue.getQueue().size());
 				}
+			}
+
+			// Update final scores
+			for (CandidateVertex candidate : graph.getAllCandidates()) {
+				candidate.calculateScore(configuration, graph.getDepth(), matcher);
 			}
 
 			// Return best candidate
@@ -169,15 +176,27 @@ public class SpabAlgorithm {
 				}
 			}
 
-			LOGGER.info("Runtime: " + Statistics.getRuntime() + " seconds");
+			this.runtime = (System.currentTimeMillis() - startTime) / 1000f;
+			LOGGER.info("Runtime: " + runtime + " seconds");
+
+			// TODO: Use method to make use of comparator
 			return bestCandidate;
 
 		} catch (PerfectSolutionException e) {
 
 			// Perfect candidate was found before reaching maximum number of iterations.
 			// A perfect candidate has no false positives or false negatives.
-			LOGGER.info("Perfect solution found!");
-			LOGGER.info("Runtime: " + Statistics.getRuntime() + " seconds");
+
+			// Update final scores
+			for (CandidateVertex candidate : graph.getAllCandidates()) {
+				try {
+					candidate.calculateScore(configuration, graph.getDepth(), matcher);
+				} catch (PerfectSolutionException pse) {
+					// This will happen, as already in catch clause.
+				}
+			}
+			this.runtime = (System.currentTimeMillis() - startTime) / 1000f;
+			LOGGER.info("Runtime: " + runtime + " seconds");
 
 			return e.getCandidate();
 		}
@@ -215,17 +234,17 @@ public class SpabAlgorithm {
 	}
 
 	/**
-	 * Gets candidate graph.
-	 */
-	public CandidateGraph getGraph() {
-		return graph;
-	}
-
-	/**
 	 * Gets input container.
 	 */
 	public Input getInput() {
 		return input;
+	}
+
+	/**
+	 * Gets graph of generated candidates.
+	 */
+	public CandidateGraph getGraph() {
+		return graph;
 	}
 
 	/**
@@ -236,9 +255,30 @@ public class SpabAlgorithm {
 	}
 
 	/**
-	 * Gets stack of visited candidates.
+	 * Gets stack of visited candidates. Candidates are sorted by insertion time.
 	 */
 	public List<CandidateVertex> getStack() {
 		return stack;
+	}
+
+	/**
+	 * Gets runtime in seconds.
+	 */
+	public float getRuntime() {
+		return runtime;
+	}
+
+	/**
+	 * Gets visited candidates from stack sorted by score.
+	 */
+	public List<CandidateVertex> getBestCandidates() {
+		List<CandidateVertex> bestCandidates = new LinkedList<CandidateVertex>(stack);
+		bestCandidates.sort(new Comparator<CandidateVertex>() {
+			@Override
+			public int compare(CandidateVertex v1, CandidateVertex v2) {
+				return Float.compare(v2.getScore(), v1.getScore());
+			}
+		});
+		return bestCandidates;
 	}
 }

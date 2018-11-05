@@ -5,7 +5,6 @@ import java.util.List;
 import org.dice_research.spab.SpabApi;
 import org.dice_research.spab.exceptions.CandidateRuntimeException;
 import org.dice_research.spab.input.Input;
-import org.dice_research.spab.structures.CandidateVertex;
 
 /**
  * Interface for candidate implementations.
@@ -26,9 +25,4 @@ public interface Candidate {
 	 * Returns a regular expression to match SPARQL queries.
 	 */
 	public String getRegEx() throws CandidateRuntimeException;
-
-	/**
-	 * Sets the related vertex in the candidate graph.
-	 */
-	public void setVertex(CandidateVertex candidateVertex);
 }

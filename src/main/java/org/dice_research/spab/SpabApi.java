@@ -67,8 +67,7 @@ public class SpabApi {
 	/**
 	 * Adds query to set of negative inputs.
 	 * 
-	 * @throws InputRuntimeException
-	 *             if query string could not be parsed
+	 * @throws InputRuntimeException if query string could not be parsed
 	 */
 	public void addNegative(String sparqlQuery) throws InputRuntimeException {
 		spab.getInput().addNegative(sparqlQuery);
@@ -77,25 +76,10 @@ public class SpabApi {
 	/**
 	 * Adds query to set of positive inputs.
 	 * 
-	 * @throws InputRuntimeException
-	 *             if query string could not be parsed
+	 * @throws InputRuntimeException if query string could not be parsed
 	 */
 	public void addPositive(String sparqlQuery) throws InputRuntimeException {
 		spab.getInput().addPositive(sparqlQuery);
-	}
-
-	/**
-	 * Gets candidate graph.
-	 */
-	public CandidateGraph getGraph() {
-		return spab.getGraph();
-	}
-
-	/**
-	 * Gets input container.
-	 */
-	public Input getInput() {
-		return spab.getInput();
 	}
 
 	/**
@@ -106,6 +90,20 @@ public class SpabApi {
 	}
 
 	/**
+	 * Gets input container.
+	 */
+	public Input getInput() {
+		return spab.getInput();
+	}
+
+	/**
+	 * Gets candidate graph.
+	 */
+	public CandidateGraph getGraph() {
+		return spab.getGraph();
+	}
+
+	/**
 	 * Gets candidate priority queue.
 	 */
 	public CandidateQueue getQueue() {
@@ -113,14 +111,24 @@ public class SpabApi {
 	}
 
 	/**
-	 * Gets stack of visited candidates.
-	 * 
-	 * The contained scores rely on the state of the candidate-graph when the
-	 * respective candidates were generated. As the graph can become deeper
-	 * afterwards, a re-calculation may produce better scores.
+	 * Gets stack of visited candidates. Candidates are sorted by insertion time.
 	 */
 	public List<CandidateVertex> getStack() {
 		return spab.getStack();
+	}
+
+	/**
+	 * Gets visited candidates from stack sorted by score.
+	 */
+	public List<CandidateVertex> getBestCandidates() {
+		return spab.getBestCandidates();
+	}
+
+	/**
+	 * Gets runtime in seconds.
+	 */
+	public float getRuntime() {
+		return spab.getRuntime();
 	}
 
 	/**
@@ -128,8 +136,7 @@ public class SpabApi {
 	 * 
 	 * @return The best candidate found.
 	 * 
-	 * @throws SpabException
-	 *             on errors in SPAB algorithm.
+	 * @throws SpabException on errors in SPAB algorithm.
 	 */
 	public CandidateVertex run() throws SpabException {
 		try {
@@ -153,15 +160,13 @@ public class SpabApi {
 	/**
 	 * Runs SPAB.
 	 * 
-	 * @param matcher
-	 *            The matching algorithm to use. If null, the default implementation
-	 *            implemented by {@link CandidateVertex#matches(Candidate, String)}
-	 *            is used.
+	 * @param matcher The matching algorithm to use. If null, the default
+	 *                implementation implemented by
+	 *                {@link CandidateVertex#matches(Candidate, String)} is used.
 	 * 
 	 * @return The best candidate found.
 	 * 
-	 * @throws SpabException
-	 *             on errors in SPAB algorithm.
+	 * @throws SpabException on errors in SPAB algorithm.
 	 */
 	public CandidateVertex run(Matcher matcher) throws SpabException {
 		try {
@@ -212,8 +217,7 @@ public class SpabApi {
 	 * 
 	 * Default value: {@link SpabApi#LAMBDA}
 	 * 
-	 * @throws InputRuntimeException
-	 *             if lambda is not in scope.
+	 * @throws InputRuntimeException if lambda is not in scope.
 	 */
 	public void setLambda(float lambda) throws InputRuntimeException {
 		spab.getConfiguration().setLambda(lambda);

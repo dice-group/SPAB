@@ -2,10 +2,10 @@ package org.dice_research.spab.examples;
 
 import java.util.List;
 
+import org.dice_research.spab.InfoStrings;
 import org.dice_research.spab.SpabApi;
 import org.dice_research.spab.SpabApi.CandidateImplementation;
 import org.dice_research.spab.exceptions.SpabException;
-import org.dice_research.spab.input.SparqlUnit;
 import org.dice_research.spab.io.FileReader;
 import org.dice_research.spab.io.Resources;
 import org.dice_research.spab.structures.CandidateVertex;
@@ -21,7 +21,13 @@ public class SpabExample {
 	 * Configuration: Number of iterations. Test run with 1000 iterations took about
 	 * 9 seconds
 	 */
-	public static final int MAX_ITERATIONS = 1000;
+	public static final float LAMBDA = .1f;
+
+	/**
+	 * Configuration: Number of iterations. Test run with 1000 iterations took about
+	 * 9 seconds
+	 */
+	public static final int MAX_ITERATIONS = 100;
 
 	/**
 	 * Configuration: Use Fuseki or Virtuoso file.
@@ -45,6 +51,10 @@ public class SpabExample {
 	public static final String RESOURCE_IGUANA_VIRTUOSO_POSITIVE = "iguana-2018-01-20/Virtuoso-positive.txt";
 
 	public static void main(String[] args) throws SpabException {
+		new SpabExample().run();
+	}
+
+	public SpabApi run() throws SpabException {
 
 		String negFile = RESOURCE_IGUANA_VIRTUOSO_NEGATIVE;
 		String posFile = RESOURCE_IGUANA_VIRTUOSO_POSITIVE;
@@ -58,11 +68,11 @@ public class SpabExample {
 		List<String> positives = FileReader.readFileToList(Resources.getResource(posFile).getPath(), true,
 				FileReader.UTF8);
 
-		SpabApi spab = new SpabApi();
+		SpabApi spabApi = new SpabApi();
 
 		int n = NUMBER_OF_NEGATIVES;
 		for (String query : negatives) {
-			spab.addNegative(query);
+			spabApi.addNegative(query);
 			if (--n == 0) {
 				break;
 			}
@@ -70,40 +80,24 @@ public class SpabExample {
 
 		int p = NUMBER_OF_POSITIVES;
 		for (String query : positives) {
-			spab.addPositive(query);
+			spabApi.addPositive(query);
 			if (--p == 0) {
 				break;
 			}
 		}
 
-		System.out.println("Positives:");
-		for (SparqlUnit unit : spab.getInput().getPositives()) {
-			System.out.println(" " + unit.getLineRepresentation());
-		}
+		spabApi.setLambda(LAMBDA);
+		spabApi.setMaxIterations(MAX_ITERATIONS);
+		spabApi.setCheckPerfectSolution(true);
+		spabApi.setCandidateImplementation(CandidateImplementation.SPAB_SIX);
 
-		System.out.println("Negatives:");
-		for (SparqlUnit unit : spab.getInput().getNegatives()) {
-			System.out.println(" " + unit.getLineRepresentation());
-		}
+		System.out.println(InfoStrings.getAllInput(spabApi));
 
-		spab.setLambda(.1f);
-		spab.setMaxIterations(MAX_ITERATIONS);
-		spab.setCheckPerfectSolution(true);
-		spab.setCandidateImplementation(CandidateImplementation.SPAB_SIX);
+		@SuppressWarnings("unused")
+		CandidateVertex bestCandidate = spabApi.run();
 
-		CandidateVertex bestCandidate = spab.run();
-		System.out.println(bestCandidate.getInfoLine());
+		System.out.println(InfoStrings.getAllOutput(spabApi, 30));
 
-		System.out.println();
-		int noOfPrintBest = 30;
-		System.out.println("First " + noOfPrintBest + " best candidates: ");
-		for (int i = 0; i < Math.min(noOfPrintBest, spab.getStack().size()); i++) {
-			System.out.println(spab.getStack().get(i).getInfoLine());
-		}
-
-		System.out.println();
-		System.out.println("Generated generations:                   " + spab.getGraph().getDepth());
-		System.out.println("Number generated candidates:             " + spab.getGraph().getAllCandidates().size());
-		System.out.println("Number of remaining candidates in queue: " + spab.getQueue().getQueue().size());
+		return spabApi;
 	}
 }

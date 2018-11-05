@@ -1,4 +1,4 @@
-package org.dice_research.spab;
+package org.dice_research.spab.active;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -9,6 +9,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.LinkedList;
 import java.util.List;
 
+import org.dice_research.spab.AbstractTestCase;
 import org.dice_research.spab.exceptions.UnitTestRuntimeException;
 
 /**

@@ -1,4 +1,7 @@
-package org.dice_research.spab;
+package org.dice_research.spab.active;
+
+import org.dice_research.spab.AbstractTestCase;
+import org.dice_research.spab.SpabApi;
 
 /**
  * Tests import of example queries.

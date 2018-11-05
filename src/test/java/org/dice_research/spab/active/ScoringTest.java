@@ -1,12 +1,15 @@
-package org.dice_research.spab;
+package org.dice_research.spab.active;
 
 import java.util.List;
 
+import org.dice_research.spab.AbstractTestCase;
+import org.dice_research.spab.Matcher;
 import org.dice_research.spab.candidates.Candidate;
 import org.dice_research.spab.exceptions.CandidateRuntimeException;
 import org.dice_research.spab.exceptions.PerfectSolutionException;
 import org.dice_research.spab.input.Configuration;
 import org.dice_research.spab.input.Input;
+import org.dice_research.spab.structures.CandidateGraph;
 import org.dice_research.spab.structures.CandidateVertex;
 import org.junit.Test;
 
@@ -57,7 +60,7 @@ public class ScoringTest extends AbstractTestCase implements Candidate, Matcher 
 
 		// SPAB
 
-		CandidateVertex candidateVertex = new CandidateVertex(this, input);
+		CandidateVertex candidateVertex = new CandidateVertex(new CandidateGraph(), this, input);
 		candidateVertex.calculateScore(new Configuration(), 0, this);
 		if (PRINT) {
 			System.out.println("TP " + candidateVertex.getNumberOfTruePositives());
@@ -95,9 +98,5 @@ public class ScoringTest extends AbstractTestCase implements Candidate, Matcher 
 	@Override
 	public String getRegEx() throws CandidateRuntimeException {
 		return null;
-	}
-
-	@Override
-	public void setVertex(CandidateVertex candidateVertex) {
 	}
 }

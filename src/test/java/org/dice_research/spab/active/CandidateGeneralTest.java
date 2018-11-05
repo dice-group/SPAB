@@ -1,9 +1,12 @@
-package org.dice_research.spab;
+package org.dice_research.spab.active;
 
 import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
+import org.dice_research.spab.AbstractTestCase;
+import org.dice_research.spab.Matcher;
+import org.dice_research.spab.SpabApi;
 import org.dice_research.spab.SpabApi.CandidateImplementation;
 import org.dice_research.spab.candidates.Candidate;
 import org.dice_research.spab.exceptions.CandidateRuntimeException;

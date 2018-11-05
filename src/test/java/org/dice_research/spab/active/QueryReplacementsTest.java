@@ -1,9 +1,11 @@
-package org.dice_research.spab;
+package org.dice_research.spab.active;
 
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
+import org.dice_research.spab.AbstractTestCase;
+import org.dice_research.spab.SpabApi;
 import org.dice_research.spab.input.SparqlUnit;
 import org.junit.Test;
 

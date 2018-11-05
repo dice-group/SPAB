@@ -1,6 +1,8 @@
-package org.dice_research.spab;
+package org.dice_research.spab.active;
 
 import org.apache.jena.vocabulary.DC;
+import org.dice_research.spab.AbstractTestCase;
+import org.dice_research.spab.SpabApi;
 import org.dice_research.spab.exceptions.InputRuntimeException;
 import org.junit.Test;
 

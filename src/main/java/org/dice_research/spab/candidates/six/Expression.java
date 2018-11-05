@@ -7,64 +7,63 @@ import org.apache.jena.ext.com.google.common.collect.Lists;
 import org.dice_research.spab.input.Input;
 
 /**
- * A feature can be represented as regular expression. It represents a SPARQL
- * part.
+ * A superclass for SPARQL features/properties/parts which are represented as
+ * part of a regular expression. The SPARQL features are implemented by
+ * subclasses.
  * 
  * @author Adrian Wilke
  */
 public abstract class Expression {
 
 	/**
-	 * Creates an initial list of instances, if more than one initial instance is
-	 * required.
-	 * 
-	 * Implementation note: A non-static implementation would generate the need to
-	 * create an instance to call this method. That seems senseless. The current
-	 * static implementation is not part of the inheritance, as not bound to an
-	 * instance, and can not be overwritten. Therefore the method in the abstract
-	 * class {@link Expression} will not be used. It is a note on how to use this
-	 * pattern.
-	 */
-	public static List<Expression> getInitialInstances() {
-		return new LinkedList<Expression>();
-	}
-
-	/**
-	 * Sequence of sub-expressions.
+	 * Sequence of expression parts. The whole sequence represents a complete
+	 * regular expression.
 	 */
 	protected List<Expression> sequence = new LinkedList<Expression>();
 
 	/**
-	 * Creates new type of expression.
+	 * Creates new type of expression. Subclasses use this constructor to set class
+	 * variables.
 	 */
-	Expression() {
+	public Expression() {
 	}
 
 	/**
-	 * Creates expression based on origin. By default, the sequence of origin is
-	 * duplicated. Used in {@link #createInstance(Expression)}.
+	 * Creates an expression based on the origin expression. By default, subclasses
+	 * just call 'super(origin)' to duplicate the sequence of the origin expression.
 	 * 
-	 * Do not add functionality in the constructor, as it will be used by
-	 * {@link #getRefinementsOfSequence(Input)} to create a duplicate of the origin
-	 * object and the related properties.
+	 * If subclasses define additional class variables, these should be duplicated
+	 * in this constructor.
+	 * 
+	 * Implementation note: Do not add functionality in the constructor, as it will
+	 * be used by {@link #getRefinementsOfSequence(Input)} to create a duplicate of
+	 * the origin object and the related properties.
+	 * 
+	 * Used in {@link #createInstance(Expression)}.
 	 */
-	Expression(Expression origin) {
+	public Expression(Expression origin) {
 		this.sequence = Lists.newLinkedList(origin.sequence);
 	}
 
 	/**
-	 * Creates new instance for refinement in
+	 * Used to create instances of subclasses.
+	 * 
+	 * Subclasses should return their implementation of
+	 * {@link #Expression(Expression)}.
+	 * 
+	 * Used to creates new instances for refinement in
 	 * {@link #getRefinementsOfSequence(Input)}.
 	 */
 	protected abstract Expression createInstance(Expression origin);
 
 	/**
-	 * Adds current regular expression part.
+	 * Subclasses should add their regular expression part.
 	 */
 	protected abstract void addRegex(StringBuilder stringBuilder);
 
 	/**
-	 * Builds regular expression based on {@link #addRegex(StringBuilder)}.
+	 * Builds regular expression by calling subclass implementations of
+	 * {@link #addRegex(StringBuilder)}.
 	 */
 	public String getRegex() {
 		StringBuilder stringBuilder = new StringBuilder();
@@ -73,8 +72,12 @@ public abstract class Expression {
 	}
 
 	/**
-	 * Gets refinements of same type of expression. By default,
-	 * {@link #getRefinementsOfSequence(Input)} is called.
+	 * Gets refinements of same type of expression.
+	 * 
+	 * By default the sequence of expression parts is refined by
+	 * {@link #getRefinementsOfSequence(Input)}.
+	 * 
+	 * Subclasses may add additional refinements.
 	 */
 	public List<Expression> getRefinements(Input input) {
 		return getRefinementsOfSequence(input);
@@ -82,8 +85,9 @@ public abstract class Expression {
 
 	/**
 	 * Returns list of expressions of the same type of this element. The elements in
-	 * the list are refinements of expression sequences. By default, this is used in
-	 * {@link #getRefinements(Input)}.
+	 * the returned list are refinements of expression sequences.
+	 * 
+	 * This is the default refinement used in {@link #getRefinements(Input)}.
 	 */
 	protected List<Expression> getRefinementsOfSequence(Input input) {
 		List<Expression> refinements = new LinkedList<Expression>();
@@ -133,19 +137,8 @@ public abstract class Expression {
 		}
 	}
 
-	public void getClasses(StringBuilder stringBuilder) {
-		stringBuilder.append(getClass().getSimpleName());
-		if (!sequence.isEmpty()) {
-			stringBuilder.append("[ ");
-			for (Expression expression : sequence) {
-				expression.getClasses(stringBuilder);
-			}
-			stringBuilder.append(" ]");
-		}
-	}
-
 	/**
-	 * Adds wild-card '.*', if it is currently not at and of given StringBuilder.
+	 * Adds wild-card '.*', if it is currently not at end of given StringBuilder.
 	 */
 	protected void addWildcard(StringBuilder stringBuilder) {
 		if (stringBuilder != null) {
@@ -174,5 +167,20 @@ public abstract class Expression {
 
 		// End
 		addWildcard(stringBuilder);
+	}
+
+	/**
+	 * Adds names of classes to stringBuilder. Used in tests to keep
+	 * {@link Expression#sequence} protected.
+	 */
+	public void addClassNames(StringBuilder stringBuilder) {
+		stringBuilder.append(getClass().getSimpleName());
+		if (!sequence.isEmpty()) {
+			stringBuilder.append("[ ");
+			for (Expression expression : sequence) {
+				expression.addClassNames(stringBuilder);
+			}
+			stringBuilder.append(" ]");
+		}
 	}
 }
