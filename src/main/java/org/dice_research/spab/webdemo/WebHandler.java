@@ -67,7 +67,7 @@ public class WebHandler extends AbstractHandler {
 
 				stringBuilder.append("<div id=\"cy\"></div>");
 				stringBuilder.append(System.lineSeparator());
-				stringBuilder.append("<p id=\"cydata\">Please select a candidate.</p>");
+				stringBuilder.append("<pre id=\"cydata\">Please select a candidate.</pre>");
 				stringBuilder.append(System.lineSeparator());
 
 				stringBuilder.append("<h2>Results</h2>");

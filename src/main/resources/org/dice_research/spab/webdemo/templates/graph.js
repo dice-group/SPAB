@@ -37,13 +37,14 @@ cy.on('tap', 'node', function() {
   html += this.data('fmeasure');
   html += '<br />Regular expression: ';
   html += this.data('regex');
+  html += '<br /><br />Regular expression hierarchy: <br />';
+  html += this.data('hierarchy');
   document.getElementById("cydata").innerHTML = html;
 });
 
 function creategraph() {
 	
-//ELEMENTS
-
+// ELEMENTS
   cy.layout({
     name: 'breadthfirst',
     spacingFactor: 0.7,

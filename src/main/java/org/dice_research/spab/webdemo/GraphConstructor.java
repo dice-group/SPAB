@@ -8,6 +8,9 @@ import java.util.TreeSet;
 
 import org.apache.commons.lang3.StringEscapeUtils;
 import org.dice_research.spab.SpabApi;
+import org.dice_research.spab.candidates.Candidate;
+import org.dice_research.spab.candidates.six.CandidateSix;
+import org.dice_research.spab.candidates.six.Expression;
 import org.dice_research.spab.structures.CandidateVertex;
 
 /**
@@ -24,6 +27,7 @@ public class GraphConstructor {
 	protected static class Vertex implements Comparable<Vertex> {
 		int number;
 		String regex;
+		String hierarchy;
 		float fMeasure;
 
 		@Override
@@ -120,6 +124,20 @@ public class GraphConstructor {
 		vertex.regex = StringEscapeUtils.escapeHtml4(candidateVertex.getCandidate().getRegEx());
 		vertex.fMeasure = candidateVertex.getfMeasure();
 
+		Candidate<?> candidate = candidateVertex.getCandidate();
+		if (candidate instanceof CandidateSix) {
+			@SuppressWarnings("unchecked")
+			Candidate<Expression> castedCandidate = (Candidate<Expression>) candidate;
+			Expression expression = castedCandidate.getInternalRepresentation(Expression.class);
+
+			StringBuilder stringBuilder = new StringBuilder();
+			expression.getHierarchy(stringBuilder);
+			vertex.hierarchy = StringEscapeUtils.escapeHtml4(stringBuilder.toString());
+		} else {
+			vertex.hierarchy = "";
+		}
+
+		// Update max and min of fMeasures
 		if (vertex.fMeasure < minFmeasure) {
 			minFmeasure = vertex.fMeasure;
 		}
@@ -153,8 +171,17 @@ public class GraphConstructor {
 			}
 			stringBuilder.append(System.lineSeparator());
 
-			stringBuilder.append("{ group: \"nodes\", data: { id: \"" + vertex.number + "\", title: \"" + vertex.number
-					+ "\", regex: \"" + vertex.regex + "\", fmeasure: " + vertex.fMeasure + " } }");
+			stringBuilder.append("{ group: \"nodes\", data: { id: \"" + vertex.number
+
+					+ "\", title: \"" + vertex.number
+
+					+ "\", hierarchy: \"" + vertex.hierarchy.replaceAll(System.lineSeparator(), "<br />")
+
+					+ "\", regex: \"" + vertex.regex
+
+					+ "\", fmeasure: " + vertex.fMeasure
+
+					+ " } }");
 		}
 
 		stringBuilder.append(System.lineSeparator());
