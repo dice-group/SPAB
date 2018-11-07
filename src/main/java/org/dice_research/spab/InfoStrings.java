@@ -109,12 +109,12 @@ public abstract class InfoStrings {
 		stringBuilder.append(spabApi.getGraph().getAllCandidates().size());
 		stringBuilder.append(System.lineSeparator());
 
-		stringBuilder.append("Remaining candidates (queue): ");
-		stringBuilder.append(spabApi.getQueue().getQueue().size());
+		stringBuilder.append("Refined candidates   (stack): ");
+		stringBuilder.append(spabApi.getStack().size());
 		stringBuilder.append(System.lineSeparator());
 
-		stringBuilder.append("Visited candidates   (stack): ");
-		stringBuilder.append(spabApi.getStack().size());
+		stringBuilder.append("Remaining candidates (queue): ");
+		stringBuilder.append(spabApi.getQueue().getQueue().size());
 		stringBuilder.append(System.lineSeparator());
 
 		stringBuilder.append("Generated generations:        ");
