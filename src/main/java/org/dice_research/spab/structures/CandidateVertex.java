@@ -27,7 +27,7 @@ public class CandidateVertex implements Matcher, Comparable<CandidateVertex> {
 	protected CandidateGraph candidateGraph;
 	protected int number;
 
-	protected Candidate candidate;
+	protected Candidate<?> candidate;
 	protected Float fMeasureCache = null;
 	protected int generation;
 	protected Input input;
@@ -49,7 +49,7 @@ public class CandidateVertex implements Matcher, Comparable<CandidateVertex> {
 	 * 
 	 * Stores the {@link Candidate}.
 	 */
-	public CandidateVertex(CandidateGraph candidateGraph, Candidate candidate, Input input) {
+	public CandidateVertex(CandidateGraph candidateGraph, Candidate<?> candidate, Input input) {
 		this(candidateGraph, null, candidate, input);
 	}
 
@@ -58,7 +58,7 @@ public class CandidateVertex implements Matcher, Comparable<CandidateVertex> {
 	 * 
 	 * Stores the {@link Candidate}.
 	 */
-	public CandidateVertex(CandidateGraph candidateGraph, CandidateVertex parent, Candidate candidate, Input input) {
+	public CandidateVertex(CandidateGraph candidateGraph, CandidateVertex parent, Candidate<?> candidate, Input input) {
 		if (parent == null) {
 			generation = START_GENERATION;
 		} else {
@@ -156,9 +156,9 @@ public class CandidateVertex implements Matcher, Comparable<CandidateVertex> {
 	 * @throws CandidateRuntimeException
 	 *             on Exceptions in {@link Candidate} implementations
 	 */
-	public SortedMap<CandidateVertex, Candidate> generateChildren() throws CandidateRuntimeException {
-		SortedMap<CandidateVertex, Candidate> map = new TreeMap<CandidateVertex, Candidate>();
-		for (Candidate candidate : this.candidate.getChildren(getInput())) {
+	public SortedMap<CandidateVertex, Candidate<?>> generateChildren() throws CandidateRuntimeException {
+		SortedMap<CandidateVertex, Candidate<?>> map = new TreeMap<CandidateVertex, Candidate<?>>();
+		for (Candidate<?> candidate : this.candidate.getChildren(getInput())) {
 			map.put(new CandidateVertex(this.candidateGraph, this, candidate, input), candidate);
 		}
 		return map;
@@ -179,7 +179,7 @@ public class CandidateVertex implements Matcher, Comparable<CandidateVertex> {
 	/**
 	 * Gets related candidate.
 	 */
-	public Candidate getCandidate() {
+	public Candidate<?> getCandidate() {
 		return candidate;
 	}
 
@@ -230,7 +230,7 @@ public class CandidateVertex implements Matcher, Comparable<CandidateVertex> {
 	 * 
 	 * Uses cache. Assumes that regular expression of candidates never change.
 	 */
-	public boolean matches(Candidate candidate, String query) throws CandidateRuntimeException {
+	public boolean matches(Candidate<?> candidate, String query) throws CandidateRuntimeException {
 		String cachingKey = candidate.getRegEx() + "|" + query;
 		if (!matcherCache.containsKey(cachingKey)) {
 			matcherCache.put(cachingKey, query.matches(candidate.getRegEx()));

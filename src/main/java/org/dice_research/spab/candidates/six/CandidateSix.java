@@ -17,7 +17,7 @@ import org.dice_research.spab.structures.CandidateVertex;
  *
  * @author Adrian Wilke
  */
-public class CandidateSix implements Candidate {
+public class CandidateSix<InternalRepresentation> implements Candidate<InternalRepresentation> {
 
 	protected CandidateVertex candidateVertex;
 	protected Expression expression;
@@ -42,10 +42,10 @@ public class CandidateSix implements Candidate {
 	 * to generate children.
 	 */
 	@Override
-	public List<Candidate> getChildren(Input input) throws CandidateRuntimeException {
-		List<Candidate> children = new LinkedList<Candidate>();
+	public List<Candidate<InternalRepresentation>> getChildren(Input input) throws CandidateRuntimeException {
+		List<Candidate<InternalRepresentation>> children = new LinkedList<Candidate<InternalRepresentation>>();
 		for (Expression expression : expression.getRefinements(input)) {
-			children.add(new CandidateSix(expression));
+			children.add(new CandidateSix<InternalRepresentation>(expression));
 		}
 		return children;
 	}
@@ -58,5 +58,19 @@ public class CandidateSix implements Candidate {
 		StringBuilder stringBuilder = new StringBuilder();
 		expression.addRegex(stringBuilder);
 		return stringBuilder.toString();
+	}
+
+	/**
+	 * Returns {@link Expression} instance.
+	 * 
+	 * @throws CandidateRuntimeException on casting errors.
+	 */
+	@Override
+	public InternalRepresentation getInternalRepresentation(Class<InternalRepresentation> internalRepresentationClass)
+			throws CandidateRuntimeException {
+		if (!internalRepresentationClass.equals(Expression.class)) {
+			throw new CandidateRuntimeException("The internal representation is " + Expression.class.getName());
+		}
+		return internalRepresentationClass.cast(expression);
 	}
 }
