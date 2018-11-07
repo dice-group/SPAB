@@ -99,7 +99,7 @@ public class SpabExample {
 		@SuppressWarnings("unused")
 		CandidateVertex bestCandidate = spabApi.run();
 
-		System.out.println(InfoStrings.getAllOutput(spabApi, 30));
+		System.out.print(InfoStrings.getAllOutput(spabApi, 30));
 
 		int candidateToShow = 4;
 		if (spabApi.getBestCandidates().size() >= candidateToShow) {
@@ -120,6 +120,8 @@ public class SpabExample {
 			Expression expression = castedCandidate.getInternalRepresentation(Expression.class);
 
 			StringBuilder stringBuilder = new StringBuilder();
+			stringBuilder.append("Hierarchy:");
+			stringBuilder.append(System.lineSeparator());
 			expression.getHierarchy(stringBuilder);
 			System.out.println(stringBuilder.toString());
 		}
