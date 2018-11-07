@@ -106,7 +106,7 @@ public class SpabAlgorithm {
 		try {
 
 			// Generate first candidate
-			Candidate rootCandidate = CandidateFactory.createCandidate(configuration.getCandidateImplementation(),
+			Candidate<?> rootCandidate = CandidateFactory.createCandidate(configuration.getCandidateImplementation(),
 					matcher);
 			CandidateVertex firstCandidate = new CandidateVertex(this.graph, rootCandidate, getInput());
 			regExCheckSet.add(firstCandidate.getCandidate().getRegEx());
@@ -131,7 +131,7 @@ public class SpabAlgorithm {
 					break;
 				}
 				stack.add(bestCandidate);
-				SortedMap<CandidateVertex, Candidate> bestCandidateChildren = bestCandidate.generateChildren();
+				SortedMap<CandidateVertex, Candidate<?>> bestCandidateChildren = bestCandidate.generateChildren();
 				removeDuplicates(bestCandidateChildren);
 				graph.addCandidates(bestCandidateChildren.keySet(), bestCandidate);
 
@@ -206,11 +206,11 @@ public class SpabAlgorithm {
 	 * Checks, if regular expression of candidate is already known. If so, the
 	 * candidate is removed from map.
 	 */
-	protected void removeDuplicates(Map<CandidateVertex, Candidate> candidateMap) {
+	protected void removeDuplicates(Map<CandidateVertex, Candidate<?>> candidateMap) {
 		Set<CandidateVertex> candidatesToRemove = new HashSet<CandidateVertex>();
 
 		// Check regular expression of all candidates
-		for (Entry<CandidateVertex, Candidate> candidateEntry : candidateMap.entrySet()) {
+		for (Entry<CandidateVertex, Candidate<?>> candidateEntry : candidateMap.entrySet()) {
 			if (regExCheckSet.contains(candidateEntry.getValue().getRegEx())) {
 				// If regular expression already is used, the candidate can be removed
 				candidatesToRemove.add(candidateEntry.getKey());

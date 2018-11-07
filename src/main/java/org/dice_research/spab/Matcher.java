@@ -13,6 +13,6 @@ public interface Matcher {
 	/**
 	 * Checks, if the candidates regular expression and the query are matching.
 	 */
-	public boolean matches(Candidate candidate, String query) throws CandidateRuntimeException;
+	public boolean matches(Candidate<?> candidate, String query) throws CandidateRuntimeException;
 
 }

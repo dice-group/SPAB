@@ -5,6 +5,9 @@ import java.util.List;
 import org.dice_research.spab.InfoStrings;
 import org.dice_research.spab.SpabApi;
 import org.dice_research.spab.SpabApi.CandidateImplementation;
+import org.dice_research.spab.candidates.Candidate;
+import org.dice_research.spab.candidates.six.CandidateSix;
+import org.dice_research.spab.candidates.six.Expression;
 import org.dice_research.spab.exceptions.SpabException;
 import org.dice_research.spab.io.FileReader;
 import org.dice_research.spab.io.Resources;
@@ -98,6 +101,27 @@ public class SpabExample {
 
 		System.out.println(InfoStrings.getAllOutput(spabApi, 30));
 
+		int candidateToShow = 4;
+		if (spabApi.getBestCandidates().size() >= candidateToShow) {
+			printInternalRepresentation(spabApi.getBestCandidates().get(candidateToShow).getCandidate());
+		}
+
 		return spabApi;
+	}
+
+	/**
+	 * Prints sequence of {@link CandidateSix} instance.
+	 */
+	void printInternalRepresentation(Candidate<?> candidate) {
+		if (candidate instanceof CandidateSix) {
+
+			@SuppressWarnings("unchecked")
+			Candidate<Expression> castedCandidate = (Candidate<Expression>) candidate;
+			Expression expression = castedCandidate.getInternalRepresentation(Expression.class);
+
+			StringBuilder stringBuilder = new StringBuilder();
+			expression.getHierarchy(stringBuilder);
+			System.out.println(stringBuilder.toString());
+		}
 	}
 }

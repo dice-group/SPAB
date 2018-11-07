@@ -21,7 +21,7 @@ import org.junit.Test;
  * 
  * @author Adrian Wilke
  */
-public class CandidateGeneralTest extends AbstractTestCase implements Candidate, Matcher {
+public class CandidateGeneralTest extends AbstractTestCase implements Candidate<Object>, Matcher {
 
 	final public static int CHILDREN_MAX = 3;
 	final public static int CHILDREN_MIN = 1;
@@ -33,13 +33,13 @@ public class CandidateGeneralTest extends AbstractTestCase implements Candidate,
 	 * Generates dummy children between {@link CHILDREN_MIN} and
 	 * {@link CHILDREN_MAX}
 	 */
-	public List<Candidate> getChildren(Input input) throws CandidateRuntimeException {
+	public List<Candidate<Object>> getChildren(Input input) throws CandidateRuntimeException {
 		try {
 
-			List<Candidate> list = new LinkedList<Candidate>();
+			List<Candidate<Object>> list = new LinkedList<Candidate<Object>>();
 			int numberOfCandidates = ThreadLocalRandom.current().nextInt(CHILDREN_MIN, CHILDREN_MAX + 1);
 			for (int i = 0; i < numberOfCandidates; i++) {
-				Candidate candidate = new CandidateGeneralTest();
+				Candidate<Object> candidate = new CandidateGeneralTest();
 				list.add(candidate);
 			}
 			return list;
@@ -65,7 +65,7 @@ public class CandidateGeneralTest extends AbstractTestCase implements Candidate,
 	/**
 	 * Checks, if the candidates regular expression and the query are matching.
 	 */
-	public boolean matches(Candidate candidate, String query) throws CandidateRuntimeException {
+	public boolean matches(Candidate<?> candidate, String query) throws CandidateRuntimeException {
 
 		matcherUsed = true;
 
@@ -124,5 +124,11 @@ public class CandidateGeneralTest extends AbstractTestCase implements Candidate,
 		if (PRINT) {
 			printResult(bestCandidate, spab, "", PRINT);
 		}
+	}
+
+	@Override
+	public Object getInternalRepresentation(Class<Object> internalRepresentationClass)
+			throws CandidateRuntimeException {
+		return new Object();
 	}
 }

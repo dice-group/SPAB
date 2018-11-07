@@ -14,15 +14,21 @@ import org.dice_research.spab.input.Input;
  * 
  * @author Adrian Wilke
  */
-public interface Candidate {
+public interface Candidate<InternalRepresentation> {
 
 	/**
 	 * Returns generated children.
 	 */
-	public List<Candidate> getChildren(Input input) throws CandidateRuntimeException;
+	public List<Candidate<InternalRepresentation>> getChildren(Input input) throws CandidateRuntimeException;
 
 	/**
 	 * Returns a regular expression to match SPARQL queries.
 	 */
 	public String getRegEx() throws CandidateRuntimeException;
+
+	/**
+	 * Returns internal representation of candidate.
+	 */
+	public InternalRepresentation getInternalRepresentation(Class<InternalRepresentation> internalRepresentationClass)
+			throws CandidateRuntimeException;
 }

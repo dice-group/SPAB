@@ -18,7 +18,7 @@ import org.junit.Test;
  * 
  * @author Adrian Wilke
  */
-public class ScoringTest extends AbstractTestCase implements Candidate, Matcher {
+public class ScoringTest extends AbstractTestCase implements Candidate<Object>, Matcher {
 
 	public final static String POSITIVE_MATCHING_SUBSTRING = "positive";
 
@@ -82,7 +82,7 @@ public class ScoringTest extends AbstractTestCase implements Candidate, Matcher 
 	}
 
 	@Override
-	public boolean matches(Candidate candidate, String query) throws CandidateRuntimeException {
+	public boolean matches(Candidate<?> candidate, String query) throws CandidateRuntimeException {
 		if (query.contains(POSITIVE_MATCHING_SUBSTRING)) {
 			return true;
 		} else {
@@ -91,12 +91,18 @@ public class ScoringTest extends AbstractTestCase implements Candidate, Matcher 
 	}
 
 	@Override
-	public List<Candidate> getChildren(Input input) throws CandidateRuntimeException {
+	public List<Candidate<Object>> getChildren(Input input) throws CandidateRuntimeException {
 		return null;
 	}
 
 	@Override
 	public String getRegEx() throws CandidateRuntimeException {
 		return null;
+	}
+
+	@Override
+	public Object getInternalRepresentation(Class<Object> internalRepresentationClass)
+			throws CandidateRuntimeException {
+		return new Object();
 	}
 }

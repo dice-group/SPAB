@@ -84,6 +84,13 @@ public abstract class Expression {
 	}
 
 	/**
+	 * Gets sequence of current candidate.
+	 */
+	public List<Expression> getSequence() {
+		return this.sequence;
+	}
+
+	/**
 	 * Returns list of expressions of the same type of this element. The elements in
 	 * the returned list are refinements of expression sequences.
 	 * 
@@ -172,6 +179,8 @@ public abstract class Expression {
 	/**
 	 * Adds names of classes to stringBuilder. Used in tests to keep
 	 * {@link Expression#sequence} protected.
+	 * 
+	 * @deprecated Sequence can be accessed now.
 	 */
 	public void addClassNames(StringBuilder stringBuilder) {
 		stringBuilder.append(getClass().getSimpleName());
@@ -182,5 +191,53 @@ public abstract class Expression {
 			}
 			stringBuilder.append(" ]");
 		}
+	}
+
+	/**
+	 * Gets hierarchy of expressions as several lines containing the related
+	 * expression class name and the respective regular expression.
+	 */
+	public void getHierarchy(StringBuilder stringBuilder) {
+		getHierarchy(stringBuilder, 0, 0);
+	}
+
+	/**
+	 * Gets hierarchy of expressions as several lines containing the related
+	 * expression class name and the respective regular expression.
+	 */
+	protected void getHierarchy(StringBuilder stringBuilder, int indent, int separatorLength) {
+
+		for (int i = 0; i < indent; i++) {
+			stringBuilder.append(" ");
+		}
+
+		stringBuilder.append(this.getClass().getSimpleName());
+
+		if (separatorLength == 0) {
+			separatorLength = getHierarchyLength(indent);
+		}
+		for (int i = 0; i < separatorLength - this.getClass().getSimpleName().length() - indent; i++) {
+			stringBuilder.append(" ");
+		}
+
+		stringBuilder.append(" ");
+		stringBuilder.append(getRegex());
+
+		for (Expression expression : sequence) {
+			stringBuilder.append(System.lineSeparator());
+			expression.getHierarchy(stringBuilder, indent + 1, separatorLength);
+		}
+	}
+
+	/**
+	 * Gets maximum length of class name and indent of current class and all
+	 * children.
+	 */
+	protected int getHierarchyLength(int indent) {
+		int max = this.getClass().getSimpleName().length() + indent;
+		for (Expression expression : sequence) {
+			max = Math.max(max, expression.getHierarchyLength(indent + 1));
+		}
+		return max;
 	}
 }
