@@ -10,25 +10,30 @@ input[type=submit] { font-family: sans-serif; }
 
 * { color: #222; }
 a { color: #00a3e0; font-weight: bold;}
-h1, h2, h3, h4 { font-weight: normal; }
-h1 { color: #00205b; }
-h2, h3, h4 { color: #8a1b61; }
-label { color: #00205b; font-weight: normal; }
-
+h1, h2, h3, h4, label, th { font-weight: normal; }
+h1, h3, h4, label { color: #00205b; }
+h2 { color: #8a1b61; }
+h2.error { color: #fff; background: #8a1b61; padding: 3px 20px;}
+ 	
 body { margin: 0px; padding: 0px; }
-h1 { background: #f8f8f8; margin: 0px; padding: 20px 30px 15px 30px; border-bottom: solid 1px #eee }
-h2 { margin-top: 40px; }
-h3 { margin-top: 15px; }
-h2, h3, h4, pre, p, textarea, input { margin-left: 30px; margin-right: 30px; margin-bottom: 10px; }
+h1 { background: #f8f8f8; margin: 0px; padding: 20px 30px 15px 30px; border-bottom: solid 1px #eee; margin-bottom:-15px; }
+h2 { margin-top: 70px; }
+h3 { margin-top: 25px; }
+h2, h3, h4, pre, p, textarea, input, table, ul { margin-left: 30px; margin-right: 30px; margin-bottom: 10px; }
 label { margin: 0px; }
 pre { margin-top: 0px; overflow:auto; }
-textarea, input { background: #f8f8f8; border: solid 1px #ddd; padding: 10px; font-size: .9em; }
+textarea, input { background: #f5f5f5; border: solid 1px #ddd; padding: 10px; font-size: .9em; }
 textarea { width: 85%; height: 245px; }
-input[type=submit] { color: #00a3e0; margin: 25px 0px 40px 0px; border: solid 1px #00a3e0; cursor: pointer; font-weight: bold; }
+input[type=submit] { color: #00a3e0; margin: 5px 0px 40px 0px; border: solid 1px #00a3e0; cursor: pointer; font-weight: bold; }
 input { width: 245px; }
 
 #cy { height:400px; width:100%; margin:0px; }
 #cydata { height:300px; width:90% }
+
+table { border: none; border-collapse: collapse; }
+table tr:nth-child(odd) { background: #f8f8f8; }
+table th { padding: 7px 15px; background: #f5f5f5}
+table td { padding: 5px 15px; }
 
 </style>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/cytoscape/3.2.19/cytoscape.min.js"></script>

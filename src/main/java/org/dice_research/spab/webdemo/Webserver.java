@@ -34,8 +34,9 @@ public class Webserver extends AbstractHandler {
 		int port = Integer.parseInt(args[0]);
 
 		HttpServer server = HttpServer.create(new InetSocketAddress(port), 0);
-		server.createContext("/spab", new WebHandler());
 		server.createContext("/", new Webserver());
+		server.createContext("/benchmark", new BenchmarkHandler());
+		server.createContext("/spab", new WebHandler());
 		server.start();
 
 		System.out.println("Webserver startet at port " + port);
@@ -52,7 +53,7 @@ public class Webserver extends AbstractHandler {
 			setInternalServerError("Error " + e.getMessage());
 			return;
 		}
-		setOkWithBody(form);
+		setOkWithBody("<h2>Specify the input parameters</h2>" + form);
 	}
 
 }

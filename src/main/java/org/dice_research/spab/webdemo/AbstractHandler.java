@@ -231,7 +231,8 @@ public abstract class AbstractHandler implements HttpHandler {
 		bodyBuilder.append(System.lineSeparator());
 		bodyBuilder.append(body);
 		bodyBuilder.append(System.lineSeparator());
-		bodyBuilder.append("<p><a href=\"https://github.com/dice-group/SPAB\">SPAB on GitHub</a></p>");
+		bodyBuilder.append("<p style=\"text-align:center\"><a target=\"_blank\" href=\"https://github.com/dice-group/SPAB\">SPAB on GitHub</a>");
+		bodyBuilder.append(" &nbsp; <a target=\"_blank\" href=\"https://dice.cs.uni-paderborn.de/about/\">Data Science Group (DICE) at Paderborn University</a></p>");
 		try {
 			setOk(getResource(Templates.HTML)
 
@@ -240,7 +241,7 @@ public abstract class AbstractHandler implements HttpHandler {
 					.replaceFirst(Templates.HTML_MARKER_HEAD, "")
 
 					.replaceFirst(Templates.HTML_MARKER_BODY, bodyBuilder.toString()));
-		} catch (IOException e) {
+		} catch (Exception e) {
 			setInternalServerError(e.getMessage());
 			return;
 		}

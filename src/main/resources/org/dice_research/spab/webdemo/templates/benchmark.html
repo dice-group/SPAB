@@ -1,0 +1,19 @@
+<form name="form" action="/benchmark" method="post">
+
+	<h3><label for="queries">SPARQL Queries</label></h3>
+	<p>Queries have to be separated by at least 2 empty lines.</p>
+	<textarea name="queries" id="queries" ><!--QUERIES--></textarea>
+
+	<h3><label for="results">Benchmark results</label></h3>
+	<p>The benchmark results have to be provided tab-separated (TSV).<br />
+	This format is often generated, if you mark several cells in spreadsheet applications and copy them, e.g. using [Ctrl]+[C].<br />
+	The needed fields/columns are:</p>
+	<ul>
+	<li>Query-number (in order of the input box above)</li>
+	<li>Triplestore ID (an identificator for the RDF database)</li>
+	<li>Runtime of query on Triplestore</li>
+	</ul>
+	<textarea name="results" id="results" ><!--RESULTS--></textarea>
+	
+	<p><input type="submit" value="Check input data" /></p>
+</form>

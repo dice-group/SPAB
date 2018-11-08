@@ -1,6 +1,5 @@
 package org.dice_research.spab.webdemo;
 
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -10,7 +9,7 @@ import org.apache.commons.lang3.StringEscapeUtils;
 import org.dice_research.spab.InfoStrings;
 import org.dice_research.spab.SpabApi;
 import org.dice_research.spab.exceptions.InputRuntimeException;
-import org.dice_research.spab.exceptions.SpabException;
+import org.dice_research.spab.structures.CandidateVertex;
 
 /**
  * Processes SPAB execution.
@@ -31,7 +30,7 @@ public class WebHandler extends AbstractHandler {
 		Map<String, String> parameters = new HashMap<String, String>();
 		try {
 			fillParameters(parameters);
-		} catch (WebserverIoException e) {
+		} catch (Exception e) {
 			setInternalServerError("Error " + e.getMessage());
 			return;
 		}
@@ -41,7 +40,7 @@ public class WebHandler extends AbstractHandler {
 		String form = new String();
 		try {
 			form = getForm(isStatic, parameters);
-		} catch (IOException e) {
+		} catch (Exception e) {
 			setInternalServerError("Error " + e.getMessage());
 			return;
 		}
@@ -49,7 +48,7 @@ public class WebHandler extends AbstractHandler {
 		// Serve only static content
 
 		if (isStatic) {
-			setOkWithBody(form);
+			setOkWithBody("<h2>Specify the input parameters</h2>" + form);
 			return;
 		}
 
@@ -63,21 +62,36 @@ public class WebHandler extends AbstractHandler {
 			// Run
 
 			try {
-				spabApi.run();
+				CandidateVertex bestCandidate = spabApi.run();
 
+				stringBuilder.append("<h2>Results</h2>");
+				
+				stringBuilder.append("<h3>Summary</h3>");
+				stringBuilder.append(System.lineSeparator());
+				stringBuilder.append("<ul>");
+				stringBuilder.append("<li>Best candidate score: " + bestCandidate.getScore() + "</li>");
+				stringBuilder.append("<li>Best candidate F-measure: " + bestCandidate.getfMeasure() + "</li>");
+				stringBuilder.append(
+						"<li>Best candidate regular expression: " + bestCandidate.getCandidate().getRegEx() + "</li>");
+				stringBuilder.append("<li>Scores calculated for " + spabApi.getGraph().getAllCandidates().size()
+						+ " candidates</li>");
+				stringBuilder.append("</ul>");
+				stringBuilder.append(System.lineSeparator());
+
+				stringBuilder.append("<h3>Explore best candidates</h3>");
 				stringBuilder.append("<div id=\"cy\"></div>");
 				stringBuilder.append(System.lineSeparator());
 				stringBuilder.append("<pre id=\"cydata\">Please select a candidate.</pre>");
 				stringBuilder.append(System.lineSeparator());
 
-				stringBuilder.append("<h2>Results</h2>");
+				stringBuilder.append("<h3>Overview of candidates</h3>");
 				stringBuilder.append(System.lineSeparator());
 				stringBuilder.append("<pre>");
 				stringBuilder.append(StringEscapeUtils.escapeHtml4(InfoStrings.getAllOutput(spabApi, 30)));
 				stringBuilder.append("</pre>");
 				stringBuilder.append(System.lineSeparator());
 
-				stringBuilder.append("<h2>Used input</h2>");
+				stringBuilder.append("<h3>Input in canonical form</h3>");
 				stringBuilder.append(System.lineSeparator());
 				stringBuilder.append("<pre>");
 				stringBuilder.append(StringEscapeUtils.escapeHtml4(InfoStrings.getAllInput(spabApi)));
@@ -98,11 +112,8 @@ public class WebHandler extends AbstractHandler {
 
 				stringBuilder.append(System.lineSeparator());
 
-			} catch (SpabException e) {
+			} catch (Exception e) {
 				// TODO: Check errors, return HTML
-				setInternalServerError("Error " + e.getMessage());
-				return;
-			} catch (IOException e) {
 				setInternalServerError("Error " + e.getMessage());
 				return;
 			}
@@ -110,7 +121,7 @@ public class WebHandler extends AbstractHandler {
 		} else {
 			// Display errors
 
-			stringBuilder.append("<h2>Input errors</h2>");
+			stringBuilder.append("<h2 class=\"error\">Input errors</h2>");
 			stringBuilder.append("<ul>");
 			for (String error : errors) {
 				stringBuilder.append("<li>" + error + "</li>");
