@@ -65,7 +65,7 @@ public class WebHandler extends AbstractHandler {
 				CandidateVertex bestCandidate = spabApi.run();
 
 				stringBuilder.append("<h2>Results</h2>");
-				
+
 				stringBuilder.append("<h3>Summary</h3>");
 				stringBuilder.append(System.lineSeparator());
 				stringBuilder.append("<ul>");
@@ -208,13 +208,19 @@ public class WebHandler extends AbstractHandler {
 		}
 
 		// Iterations
-		// TODO: Never checked, i.e. negative values
 		String iterations = parameters.get("iterations");
 		if (iterations == null) {
 			errors.add("No number of iterations specified.");
 		} else {
 			try {
-				spabApi.setMaxIterations(Integer.valueOf(iterations));
+				Integer it = Integer.valueOf(iterations);
+				if (it > 1000) {
+					errors.add("Max number of iterations in web demo is 1000.");
+				} else if (it < 0) {
+					errors.add("<a target=\"_blank\" "
+							+ "href=\"https://goo.gl/78LgBK\">You found an easter egg! Get you reward</a>");
+				}
+				spabApi.setMaxIterations(it);
 			} catch (NumberFormatException e) {
 				errors.add("Incorrect format for maximum number of iterations: " + iterations);
 			}
