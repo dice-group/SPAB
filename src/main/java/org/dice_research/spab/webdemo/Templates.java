@@ -32,4 +32,15 @@ public abstract class Templates {
 	public final static String BENCHMARK_MARKER_RESULTS = "<!--RESULTS-->";
 	public final static String BENCHMARK_ID_QUERIES = "queries";
 	public final static String BENCHMARK_ID_RESULTS = "results";
+
+	public final static String SETS = "templates/sets.html";
+	public final static String SETS_MARKER_BENCHMARK = "<!--BENCHMARK-->";
+	public final static String SETS_MARKER_TRIPLESTORE = "<!--TRIPLESTORE-->";
+	public final static String SETS_ID_BENCHMARK = "benchmark";
+	public final static String SETS_ID_TRIPLESTORE = "triplestore";
+	public final static String SETS_ID_SMALLISPOSITIVE = "smallIsPositive";
+	public final static String SETS_ID_METHOD = "creationmethod";
+	public final static String SETS_ID_STDDEV = "standarddeviation";
+	public final static String SETS_ID_PERSENTACE = "percentage";
+	public final static String SETS_ID_MAXSIZE = "maxsize";
 }

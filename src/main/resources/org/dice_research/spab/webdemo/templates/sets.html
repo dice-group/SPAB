@@ -1,0 +1,47 @@
+<form name="form" action="/sets" method="post">
+	<p>
+	The following types specify, how the benchmark results are used for further processing.
+	The benchmark results are used to create two sets of SPARQL queries.
+	The positive set and the negative set are created dependent of the benchmark runtimes.
+	</p>
+	
+	<h3>TripleStore</h3>
+	
+	<!--TRIPLESTORE-->
+	
+	<h3>Interpretation of positive values</h3>
+	
+	<input type="radio" name="smallIsPositive" id="smallIsPositive-true" value="true" checked="checked">
+	<label for="smallIsPositive-true" class="radiolabel">Small values are positive values (e.g. runtimes)</label>
+	<br />
+	<input type="radio" name="smallIsPositive" id="smallIsPositive-false" value="false">
+	<label for="smallIsPositive-false" class="radiolabel">Large values are positive values (e.g. throughput)</label>
+	
+	<h3>Creation method</h3>
+
+	<input type="radio" name="creationmethod" id="maxsize" value="maxsize" checked="checked">
+	<label for="maxsize" class="radiolabel">Max size</label>
+	<p>Uses best and rather worst results for each triple store.
+	<br />This method will generate the largest sets, if using default parameters.</p>
+	<input name="maxsize" type="text" value="10" />
+	<br />
+		
+	<input type="radio" name="creationmethod" id="percentage" value="percentage">
+	<label for="percentage" class="radiolabel">Percentage</label>
+	<p>Uses the percentage deviation from the arithmetic mean.</p>
+	<input name="percentage" type="text" value="0.1" />
+	<br />
+	
+	<input type="radio" name="creationmethod" id="standarddeviation" value="standarddeviation">
+	<label for="standarddeviation" class="radiolabel">Standard deviation</label>
+	<p>Uses the standard deviation from the arithmetic mean.
+	<br />This method will generate the smallest sets, if using default parameters. </p>
+	<input name="standarddeviation" type="text" value="1" />
+	<br />
+	
+	<input type="hidden" name="benchmark" value="<!--BENCHMARK-->">
+	
+	<p>
+		<input type="submit" value="Create input sets" />
+	</p>
+</form>

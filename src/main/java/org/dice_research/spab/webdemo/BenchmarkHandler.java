@@ -105,7 +105,8 @@ public class BenchmarkHandler extends AbstractHandler {
 			}
 
 			stringBuilder.append("<h2>Check parsed input</h2>");
-			stringBuilder.append("<p>Please check if the identified data is correct.</p>");
+			stringBuilder.append("<p>Please check if the identified data is correct.<br />");
+			stringBuilder.append("Afterwards, you can correct your input data or create input sets at the bottom of this page.</p>");
 
 			stringBuilder.append("<h3>SPARQL Queries</h3>");
 			StringBuilder queryHtmlBuilder = new StringBuilder();
@@ -161,7 +162,41 @@ public class BenchmarkHandler extends AbstractHandler {
 			benchmarkHtmlBuilder.append("</table>");
 			stringBuilder.append(benchmarkHtmlBuilder);
 
-			// TODO
+			// SPAB form
+			stringBuilder.append("<h2>Correct data</h2>");
+			stringBuilder.append(form);
+
+			// Input sets form
+			try {
+				stringBuilder.append("<h2>Create input sets</h2>");
+				String setsForm = getResource(Templates.SETS);
+
+				// Triplestores
+				StringBuilder tsBuilder = new StringBuilder();
+				boolean isFirst = true;
+				for (String triplestoreId : benchmarkTriplestoreMap.keySet()) {
+					tsBuilder.append("<input type=\"radio\" name=\"triplestore\" id=\"" + triplestoreId + "\" value=\""
+							+ triplestoreId + "\"");
+					if (isFirst) {
+						isFirst = false;
+						tsBuilder.append(" checked=\"checked\">");
+					} else {
+						tsBuilder.append(">");
+					}
+					tsBuilder.append(
+							"<label for=\"" + triplestoreId + "\" class=\"radiolabel\">" + triplestoreId + "</label>");
+					tsBuilder.append("<br />");
+				}
+				setsForm = setsForm.replaceFirst(Templates.SETS_MARKER_TRIPLESTORE, tsBuilder.toString());
+
+				// Benchmark
+				setsForm = setsForm.replaceFirst(Templates.SETS_MARKER_BENCHMARK,
+						StringEscapeUtils.escapeHtml4(benchmark.toJson()));
+				stringBuilder.append(setsForm);
+			} catch (Exception e) {
+				setInternalServerError("Error " + e.getMessage());
+				return;
+			}
 
 		} else {
 			// Display errors
@@ -173,9 +208,6 @@ public class BenchmarkHandler extends AbstractHandler {
 			}
 			stringBuilder.append("</ul>");
 		}
-
-		stringBuilder.append("<h2>Correct data</h2>");
-		stringBuilder.append(form);
 
 		stringBuilder.append("<p><a href=\"javascript:history.back()\">Back to previous page</a></p>");
 
@@ -208,7 +240,8 @@ public class BenchmarkHandler extends AbstractHandler {
 				try {
 					spabApi.addPositive(query);
 				} catch (InputRuntimeException e) {
-					errors.add("Could not parse query " + queryCounter + " :" + StringEscapeUtils.escapeHtml4(query));
+					errors.add("Could not parse query " + queryCounter + ":<br />" + "<code>"
+							+ StringEscapeUtils.escapeHtml4(query) + "</code>");
 				}
 
 				queryMap.put(queryCounter, query.trim());

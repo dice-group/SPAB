@@ -16,7 +16,7 @@ import org.dice_research.spab.structures.CandidateVertex;
  *
  * @author Adrian Wilke
  */
-public class WebHandler extends AbstractHandler {
+public class SpabHandler extends AbstractHandler {
 
 	@Override
 	public void handle() throws WebserverIoException {
@@ -69,12 +69,13 @@ public class WebHandler extends AbstractHandler {
 				stringBuilder.append("<h3>Summary</h3>");
 				stringBuilder.append(System.lineSeparator());
 				stringBuilder.append("<ul>");
-				stringBuilder.append("<li>Best candidate score: " + bestCandidate.getScore() + "</li>");
-				stringBuilder.append("<li>Best candidate F-measure: " + bestCandidate.getfMeasure() + "</li>");
-				stringBuilder.append(
-						"<li>Best candidate regular expression: " + bestCandidate.getCandidate().getRegEx() + "</li>");
-				stringBuilder.append("<li>Scores calculated for " + spabApi.getGraph().getAllCandidates().size()
-						+ " candidates</li>");
+				stringBuilder.append("<li>Scores calculated for <b>" + spabApi.getGraph().getAllCandidates().size()
+						+ "</b> candidates</li>");
+				stringBuilder.append("<li>Best candidate F-measure: <b>" + bestCandidate.getfMeasure() + "</b></li>");
+				stringBuilder.append("<li>Best candidate final score: <b>" + bestCandidate.getScore()
+						+ "</b> (includes weighting of the position in the graph)</li>");
+				stringBuilder.append("<li>Best candidate regular expression: <b><code>"
+						+ bestCandidate.getCandidate().getRegEx() + "</code></b></li>");
 				stringBuilder.append("</ul>");
 				stringBuilder.append(System.lineSeparator());
 
@@ -167,7 +168,8 @@ public class WebHandler extends AbstractHandler {
 						spabApi.addNegative(query);
 					}
 				} catch (InputRuntimeException e) {
-					errors.add("Could not parse " + setType + " query: " + StringEscapeUtils.escapeHtml4(query));
+					errors.add("Could not parse " + setType + " query: <br />" + "<code>"
+							+ StringEscapeUtils.escapeHtml4(query) + "</code>");
 				}
 			}
 		}
@@ -186,7 +188,8 @@ public class WebHandler extends AbstractHandler {
 						spabApi.addNegative(query);
 					}
 				} catch (InputRuntimeException e) {
-					errors.add("Could not parse " + setType + " query: " + StringEscapeUtils.escapeHtml4(query));
+					errors.add("Could not parse " + setType + " query: <br />" + "<code>"
+							+ StringEscapeUtils.escapeHtml4(query) + "</code>");
 				}
 			}
 		}

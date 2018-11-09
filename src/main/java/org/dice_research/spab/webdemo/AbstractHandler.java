@@ -8,7 +8,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 
-
 import org.apache.commons.io.IOUtils;
 import org.dice_research.spab.io.Resources;
 
@@ -231,8 +230,12 @@ public abstract class AbstractHandler implements HttpHandler {
 		bodyBuilder.append(System.lineSeparator());
 		bodyBuilder.append(body);
 		bodyBuilder.append(System.lineSeparator());
-		bodyBuilder.append("<p style=\"text-align:center\"><a target=\"_blank\" href=\"https://github.com/dice-group/SPAB\">SPAB on GitHub</a>");
-		bodyBuilder.append(" &nbsp; <a target=\"_blank\" href=\"https://dice.cs.uni-paderborn.de/about/\">Data Science Group (DICE) at Paderborn University</a></p>");
+		bodyBuilder.append("<p class=\"footer\">");
+		bodyBuilder.append("<a target=\"_blank\" href=\"https://github.com/dice-group/SPAB\">SPAB on GitHub</a>");
+		bodyBuilder.append(" - ");
+		bodyBuilder.append(
+				"<a target=\"_blank\" href=\"https://dice.cs.uni-paderborn.de/about/\">Data Science Group (DICE) at Paderborn University</a>");
+		bodyBuilder.append("</p>");
 		try {
 			setOk(getResource(Templates.HTML)
 

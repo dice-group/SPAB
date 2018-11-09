@@ -36,7 +36,8 @@ public class Webserver extends AbstractHandler {
 		HttpServer server = HttpServer.create(new InetSocketAddress(port), 0);
 		server.createContext("/", new Webserver());
 		server.createContext("/benchmark", new BenchmarkHandler());
-		server.createContext("/spab", new WebHandler());
+		server.createContext("/sets", new SetsHandler());
+		server.createContext("/spab", new SpabHandler());
 		server.start();
 
 		System.out.println("Webserver startet at port " + port);
@@ -49,7 +50,7 @@ public class Webserver extends AbstractHandler {
 			Map<String, String> parameters = new HashMap<String, String>();
 			fillParameters(parameters);
 			form = getForm(true, parameters);
-		} catch (IOException e) {
+		} catch (Exception e) {
 			setInternalServerError("Error " + e.getMessage());
 			return;
 		}
