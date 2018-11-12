@@ -4,9 +4,12 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.StringReader;
+import java.nio.charset.StandardCharsets;
 import java.util.LinkedList;
 import java.util.List;
 
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.io.LineIterator;
 
@@ -70,6 +73,87 @@ public class BenchmarkTxt {
 			queries.add(stringBuilder.toString());
 		}
 		return queries;
+	}
+
+	/**
+	 * Gets TXT files containing SPARQL queries in directory.
+	 */
+	public List<File> getQueryTextFiles() throws IOException {
+		List<File> files = new LinkedList<File>();
+		for (int querytype = 1; querytype <= 5; querytype++) {
+			for (int dataset = 1; dataset <= 2; dataset++) {
+				files.add(getFile(querytype, dataset));
+			}
+		}
+		return files;
+	}
+
+	/**
+	 * Writes text files with queries into root of given directory. Queries are
+	 * separated by two empty lines.
+	 * 
+	 * Query number, Triplestore ID, result
+	 */
+	public void generateToLinesSplittedFiles() throws FileNotFoundException, IOException {
+		for (int querytype = 1; querytype <= 5; querytype++) {
+			for (int dataset = 1; dataset <= 2; dataset++) {
+
+				List<String> queries = getQueries(querytype, dataset);
+				StringBuilder stringBuilder = new StringBuilder();
+				for (String query : queries) {
+					LineIterator lineIterator = IOUtils.lineIterator(new StringReader(query));
+					boolean empty = false;
+					boolean firstLine = true;
+					while (lineIterator.hasNext()) {
+						String line = lineIterator.next();
+						if (line.trim().isEmpty()) {
+							if (!empty) {
+								if (!firstLine) {
+									stringBuilder.append(System.lineSeparator());
+								}
+							}
+							empty = true;
+						} else {
+							if (!firstLine) {
+								stringBuilder.append(System.lineSeparator());
+							}
+							stringBuilder.append(line);
+							empty = false;
+						}
+						firstLine = false;
+					}
+					stringBuilder.append(System.lineSeparator());
+					stringBuilder.append(System.lineSeparator());
+					stringBuilder.append(System.lineSeparator());
+				}
+
+				StringBuilder filenameBuilder = new StringBuilder();
+				filenameBuilder.append("FEASIBLE-");
+				if (dataset == DATASET_DBPEDIA) {
+					filenameBuilder.append("DBpedia-");
+				} else {
+					filenameBuilder.append("SWDF-");
+				}
+
+				if (querytype == QUERYTYPE_ASK) {
+					filenameBuilder.append("ASK-");
+				} else if (querytype == QUERYTYPE_CONSTRUCT) {
+					filenameBuilder.append("CONSTRUCT-");
+				} else if (querytype == QUERYTYPE_DESCRIBE) {
+					filenameBuilder.append("DESCRIBE-");
+				} else if (querytype == QUERYTYPE_SELECT) {
+					filenameBuilder.append("SELECT-");
+				} else {
+					filenameBuilder.append("MIX-");
+				}
+
+				filenameBuilder.append(queries.size());
+				filenameBuilder.append(".queries.txt");
+				FileUtils.writeStringToFile(new File(directory, filenameBuilder.toString()), stringBuilder.toString(),
+						StandardCharsets.UTF_8);
+			}
+		}
+
 	}
 
 	/**
@@ -148,11 +232,9 @@ public class BenchmarkTxt {
 
 		BenchmarkTxt benchmarkTxt = new BenchmarkTxt(new File(args[0]));
 
-		// Check if all files present
-		for (int querytype = 1; querytype <= 5; querytype++) {
-			for (int dataset = 1; dataset <= 2; dataset++) {
-				benchmarkTxt.getFile(querytype, dataset);
-			}
+		// Check files
+		if (benchmarkTxt.getQueryTextFiles().size() != 5 * 2) {
+			System.err.println("Expected " + 5 * 2 + " results, found " + benchmarkTxt.getQueryTextFiles().size());
 		}
 
 		// Check queries
