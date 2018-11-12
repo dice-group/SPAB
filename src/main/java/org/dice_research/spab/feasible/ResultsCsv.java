@@ -60,16 +60,17 @@ public class ResultsCsv {
 	 * 
 	 * @param directory containing the 10 CSV files
 	 */
-	public ResultsCsv(File directory) throws FileNotFoundException {
-		if (!directory.exists() || !directory.canRead()) {
-			throw new FileNotFoundException(
-					"Directory does not exist or is not readable: " + directory.getAbsolutePath());
+	public ResultsCsv(File directory) throws IOException {
+		if (!directory.exists()) {
+			throw new FileNotFoundException("Directory not found: " + directory.getAbsolutePath());
+		} else if (!directory.canRead()) {
+			throw new IOException("Can not read directory: " + directory.getAbsolutePath());
 		}
 		this.directory = directory;
 	}
 
 	/**
-	 * Gets FUSEKI results.
+	 * Gets FEASIBLE results.
 	 * 
 	 * @param filename is one of the DBPEDIA or SWDF constants defined in
 	 *                 {@link ResultsCsv}.
