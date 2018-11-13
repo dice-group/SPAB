@@ -35,7 +35,7 @@ public class SetsHandler extends AbstractHandler {
 		try {
 			fillParameters(parameters);
 		} catch (Exception e) {
-			setInternalServerError("Error " + e.getMessage());
+			setInternalServerError(e);
 			return;
 		}
 
@@ -58,7 +58,7 @@ public class SetsHandler extends AbstractHandler {
 			} else if (this.genMethod.equals(METHOD_MAXSIZE)) {
 				inputSets = inputSetsCreator.createMaxSizeSets(this.maxNumberOfElements, this.smallIsPositive);
 			} else {
-				setInternalServerError("Error " + "Could not find input set method. " + getClass().getSimpleName());
+				setInternalServerError("Could not find input set method. " + getClass().getSimpleName());
 				return;
 			}
 
@@ -66,7 +66,7 @@ public class SetsHandler extends AbstractHandler {
 				stringBuilder.append(
 						getForm(inputSets.getPositives(this.triplestore), inputSets.getNegatives(this.triplestore)));
 			} catch (Exception e) {
-				setInternalServerError("Error " + e.getMessage());
+				setInternalServerError(e);
 				return;
 			}
 

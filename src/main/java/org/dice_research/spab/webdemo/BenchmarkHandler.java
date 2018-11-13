@@ -38,7 +38,7 @@ public class BenchmarkHandler extends AbstractHandler {
 		try {
 			fillParameters(parameters);
 		} catch (Exception e) {
-			setInternalServerError("Error " + e.getMessage());
+			setInternalServerError(e);
 			return;
 		}
 
@@ -57,7 +57,7 @@ public class BenchmarkHandler extends AbstractHandler {
 				form = form.replaceFirst(Templates.BENCHMARK_MARKER_RESULTS, parameter == null ? "" : parameter);
 			}
 		} catch (Exception e) {
-			setInternalServerError("Error " + e.getMessage());
+			setInternalServerError(e);
 			return;
 		}
 
@@ -194,7 +194,7 @@ public class BenchmarkHandler extends AbstractHandler {
 						StringEscapeUtils.escapeHtml4(benchmark.toJson()));
 				stringBuilder.append(setsForm);
 			} catch (Exception e) {
-				setInternalServerError("Error " + e.getMessage());
+				setInternalServerError(e);
 				return;
 			}
 

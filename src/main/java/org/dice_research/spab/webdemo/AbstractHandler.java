@@ -10,6 +10,8 @@ import java.util.Map.Entry;
 
 import org.apache.commons.io.IOUtils;
 import org.dice_research.spab.io.Resources;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
@@ -21,6 +23,8 @@ import com.sun.net.httpserver.HttpHandler;
  * @author Adrian Wilke
  */
 public abstract class AbstractHandler implements HttpHandler {
+
+	private static final Logger LOGGER = LoggerFactory.getLogger(AbstractHandler.class);
 
 	public static final String TITLE = "SPAB web demo";
 
@@ -191,6 +195,17 @@ public abstract class AbstractHandler implements HttpHandler {
 	 * @param text
 	 *            Error information
 	 */
+	protected void setInternalServerError(Throwable throwable) {
+		LOGGER.error("Internal Server Error: ", throwable);
+		setInternalServerError(throwable.toString());
+	}
+
+	/**
+	 * Sets HTTP 500.
+	 * 
+	 * @param text
+	 *            Error information
+	 */
 	protected void setInternalServerError(String text) {
 		statusCode = STATUS_INTERNAL_SERVER_ERROR;
 		contentType = CONTENT_TYPE_TEXT;
@@ -245,7 +260,7 @@ public abstract class AbstractHandler implements HttpHandler {
 
 					.replaceFirst(Templates.HTML_MARKER_BODY, bodyBuilder.toString()));
 		} catch (Exception e) {
-			setInternalServerError(e.getMessage());
+			setInternalServerError(e);
 			return;
 		}
 	}

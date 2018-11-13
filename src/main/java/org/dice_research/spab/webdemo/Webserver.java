@@ -51,7 +51,7 @@ public class Webserver extends AbstractHandler {
 			fillParameters(parameters);
 			form = getForm(true, parameters);
 		} catch (Exception e) {
-			setInternalServerError("Error " + e.getMessage());
+			setInternalServerError(e);
 			return;
 		}
 		setOkWithBody("<h2>Specify the input parameters</h2>" + form);

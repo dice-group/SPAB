@@ -31,7 +31,7 @@ public class SpabHandler extends AbstractHandler {
 		try {
 			fillParameters(parameters);
 		} catch (Exception e) {
-			setInternalServerError("Error " + e.getMessage());
+			setInternalServerError(e);
 			return;
 		}
 
@@ -41,7 +41,7 @@ public class SpabHandler extends AbstractHandler {
 		try {
 			form = getForm(isStatic, parameters);
 		} catch (Exception e) {
-			setInternalServerError("Error " + e.getMessage());
+			setInternalServerError(e);
 			return;
 		}
 
@@ -115,7 +115,7 @@ public class SpabHandler extends AbstractHandler {
 
 			} catch (Exception e) {
 				// TODO: Check errors, return HTML
-				setInternalServerError("Error " + e.getMessage());
+				setInternalServerError(e);
 				return;
 			}
 
