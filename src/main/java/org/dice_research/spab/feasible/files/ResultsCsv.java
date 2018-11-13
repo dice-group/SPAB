@@ -1,4 +1,4 @@
-package org.dice_research.spab.feasible;
+package org.dice_research.spab.feasible.files;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -20,14 +20,19 @@ import org.apache.commons.csv.CSVPrinter;
 import org.apache.commons.csv.CSVRecord;
 
 /**
- * Parses results of FUSEKI CSV files. These are have to be extracted from the
- * FEASIBLE evaluation results.
+ * Parses results of FUSEKI CSV files.
  * 
- * The method {@link ResultsCsv#getResults(String)} returns results of a
- * respective file.
+ * 
+ * The method {@link ResultsCsv#main(String[])} tests the import.
+ * 
+ * The method {@link ResultsCsv#getResults(int, int)} returns results of a
+ * respective file. int queryType is one of the QUERYTYPE constants defined in
+ * {@link FileAccesor}. int dataset is one of the DATASET constants defined in
+ * {@link FileAccesor}.
  * 
  * The method {@link ResultsCsv#generateRowBasedTsvFiles()} generates files for
  * the SPAB webdemo.
+ * 
  * 
  * @see https://github.com/dice-group/feasible#evaluation-results-and-timeouts-queries
  *
@@ -58,7 +63,8 @@ public class ResultsCsv {
 	/**
 	 * Checks existing directory.
 	 * 
-	 * @param directory containing the 10 CSV files
+	 * @param directory
+	 *            containing the 10 CSV files
 	 */
 	public ResultsCsv(File directory) throws IOException {
 		if (!directory.exists()) {
@@ -72,8 +78,48 @@ public class ResultsCsv {
 	/**
 	 * Gets FEASIBLE results.
 	 * 
-	 * @param filename is one of the DBPEDIA or SWDF constants defined in
-	 *                 {@link ResultsCsv}.
+	 * @param queryType
+	 *            is one of the QUERYTYPE constants defined in {@link FileAccesor}.
+	 * @param dataset
+	 *            is one of the DATASET constants defined in {@link FileAccesor}.
+	 * @return A list, whose position represents the query ID. The list contains
+	 *         Maps, which map a Triplestore ID to its result. Triplestore IDs are
+	 *         defined as constants in {@link ResultsCsv}.
+	 */
+	public List<Map<String, Float>> getResults(int queryType, int dataset) throws FileNotFoundException, IOException {
+		if (dataset == FileAccesor.DATASET_DBPEDIA) {
+			if (queryType == FileAccesor.QUERYTYPE_ASK) {
+				return getResults(DBPEDIA_ASK);
+			} else if (queryType == FileAccesor.QUERYTYPE_CONSTRUCT) {
+				return getResults(DBPEDIA_CONSTRUCT);
+			} else if (queryType == FileAccesor.QUERYTYPE_DESCRIBE) {
+				return getResults(DBPEDIA_DESCRIBE);
+			} else if (queryType == FileAccesor.QUERYTYPE_SELECT) {
+				return getResults(DBPEDIA_SELECT);
+			} else {
+				return getResults(DBPEDIA_MIX);
+			}
+		} else {
+			if (queryType == FileAccesor.QUERYTYPE_ASK) {
+				return getResults(SWDF_ASK);
+			} else if (queryType == FileAccesor.QUERYTYPE_CONSTRUCT) {
+				return getResults(SWDF_CONSTRUCT);
+			} else if (queryType == FileAccesor.QUERYTYPE_DESCRIBE) {
+				return getResults(SWDF_DESCRIBE);
+			} else if (queryType == FileAccesor.QUERYTYPE_SELECT) {
+				return getResults(SWDF_SELECT);
+			} else {
+				return getResults(SWDF_MIX);
+			}
+		}
+	}
+
+	/**
+	 * Gets FEASIBLE results.
+	 * 
+	 * @param filename
+	 *            is one of the DBPEDIA or SWDF constants defined in
+	 *            {@link ResultsCsv}.
 	 * @return A list, whose position represents the query ID. The list contains
 	 *         Maps, which map a Triplestore ID to its result. Triplestore IDs are
 	 *         defined as constants in {@link ResultsCsv}.

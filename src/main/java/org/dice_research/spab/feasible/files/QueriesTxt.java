@@ -1,4 +1,4 @@
-package org.dice_research.spab.feasible;
+package org.dice_research.spab.feasible.files;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -13,26 +13,37 @@ import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.io.LineIterator;
 
-public class BenchmarkTxt {
-
-	public final static int QUERYTYPE_ASK = 1;
-	public final static int QUERYTYPE_CONSTRUCT = 2;
-	public final static int QUERYTYPE_DESCRIBE = 3;
-	public final static int QUERYTYPE_SELECT = 4;
-	public final static int QUERYTYPE_MIX = 5;
-
-	public final static int DATASET_DBPEDIA = 1;
-	public final static int DATASET_SWDF = 2;
+/**
+ * Parses SPARQL queries FUSEKI text files.
+ * 
+ * 
+ * The method {@link QueriesTxt#main(String[])} tests the import.
+ * 
+ * The method {@link QueriesTxt#getQueries(int, int)} returns results of a
+ * respective file. int queryType is one of the QUERYTYPE constants defined in
+ * {@link FileAccesor}. int dataset is one of the DATASET constants defined in
+ * {@link FileAccesor}.
+ * 
+ * The method {@link QueriesTxt#generateToLinesSplittedFiles()} generates files
+ * for the SPAB webdemo.
+ * 
+ * 
+ * @see https://github.com/dice-group/feasible#downloads
+ *
+ * @author Adrian Wilke
+ */
+public class QueriesTxt {
 
 	protected File directory;
 
 	/**
 	 * Checks existing directory.
 	 * 
-	 * @param directory containing the sub-directories 'Benchmarks_Errors' and
-	 *                  'Benchmarks_Evaluation'.
+	 * @param directory
+	 *            containing the sub-directories 'Benchmarks_Errors' and
+	 *            'Benchmarks_Evaluation'.
 	 */
-	public BenchmarkTxt(File directory) throws IOException {
+	public QueriesTxt(File directory) throws IOException {
 		if (!directory.exists()) {
 			throw new FileNotFoundException("Directory not found: " + directory.getAbsolutePath());
 		} else if (!directory.canRead()) {
@@ -44,10 +55,10 @@ public class BenchmarkTxt {
 	/**
 	 * Gets FEASIBLE SPARQL queries.
 	 * 
-	 * @param queryType is one of the QUERYTYPE constants defined in
-	 *                  {@link BenchmarkTxt}.
-	 * @param dataset   is one of the DATASET constants defined in
-	 *                  {@link BenchmarkTxt}.
+	 * @param queryType
+	 *            is one of the QUERYTYPE constants defined in {@link FileAccesor}.
+	 * @param dataset
+	 *            is one of the DATASET constants defined in {@link FileAccesor}.
 	 * @return A list of SPARQL queries.
 	 */
 	public List<String> getQueries(int queryType, int dataset) throws FileNotFoundException, IOException {
@@ -129,19 +140,19 @@ public class BenchmarkTxt {
 
 				StringBuilder filenameBuilder = new StringBuilder();
 				filenameBuilder.append("FEASIBLE-");
-				if (dataset == DATASET_DBPEDIA) {
+				if (dataset == FileAccesor.DATASET_DBPEDIA) {
 					filenameBuilder.append("DBpedia-");
 				} else {
 					filenameBuilder.append("SWDF-");
 				}
 
-				if (querytype == QUERYTYPE_ASK) {
+				if (querytype == FileAccesor.QUERYTYPE_ASK) {
 					filenameBuilder.append("ASK-");
-				} else if (querytype == QUERYTYPE_CONSTRUCT) {
+				} else if (querytype == FileAccesor.QUERYTYPE_CONSTRUCT) {
 					filenameBuilder.append("CONSTRUCT-");
-				} else if (querytype == QUERYTYPE_DESCRIBE) {
+				} else if (querytype == FileAccesor.QUERYTYPE_DESCRIBE) {
 					filenameBuilder.append("DESCRIBE-");
-				} else if (querytype == QUERYTYPE_SELECT) {
+				} else if (querytype == FileAccesor.QUERYTYPE_SELECT) {
 					filenameBuilder.append("SELECT-");
 				} else {
 					filenameBuilder.append("MIX-");
@@ -153,7 +164,6 @@ public class BenchmarkTxt {
 						StandardCharsets.UTF_8);
 			}
 		}
-
 	}
 
 	/**
@@ -163,10 +173,10 @@ public class BenchmarkTxt {
 		StringBuilder pathBuilder = new StringBuilder();
 
 		pathBuilder.append("Benchmarks_Evaluation/");
-		pathBuilder.append(queryType == QUERYTYPE_MIX ? "mix-benchmarks/" : "individual-benchmarks/");
-		pathBuilder.append(dataset == DATASET_DBPEDIA ? "dbpedia351/" : "swdf/");
+		pathBuilder.append(queryType == FileAccesor.QUERYTYPE_MIX ? "mix-benchmarks/" : "individual-benchmarks/");
+		pathBuilder.append(dataset == FileAccesor.DATASET_DBPEDIA ? "dbpedia351/" : "swdf/");
 
-		if (queryType == QUERYTYPE_MIX) {
+		if (queryType == FileAccesor.QUERYTYPE_MIX) {
 			pathBuilder.append("queries-175.txt");
 			File file = new File(directory, pathBuilder.toString());
 			if (!file.exists()) {
@@ -179,14 +189,14 @@ public class BenchmarkTxt {
 
 		} else {
 
-			if (dataset == DATASET_DBPEDIA) {
-				if (queryType == QUERYTYPE_ASK) {
+			if (dataset == FileAccesor.DATASET_DBPEDIA) {
+				if (queryType == FileAccesor.QUERYTYPE_ASK) {
 					pathBuilder.append("dbpedia-ask-100/");
 
-				} else if (queryType == QUERYTYPE_CONSTRUCT) {
+				} else if (queryType == FileAccesor.QUERYTYPE_CONSTRUCT) {
 					pathBuilder.append("dbpedia-construct-100/");
 
-				} else if (queryType == QUERYTYPE_DESCRIBE) {
+				} else if (queryType == FileAccesor.QUERYTYPE_DESCRIBE) {
 					pathBuilder.append("dbpedia-describe-25/");
 
 				} else {
@@ -195,20 +205,20 @@ public class BenchmarkTxt {
 				}
 
 			} else {
-				if (queryType == QUERYTYPE_ASK) {
+				if (queryType == FileAccesor.QUERYTYPE_ASK) {
 					pathBuilder.append("swdf-ask-50/");
 
-				} else if (queryType == QUERYTYPE_CONSTRUCT) {
+				} else if (queryType == FileAccesor.QUERYTYPE_CONSTRUCT) {
 					pathBuilder.append("swdf-construct-23/");
 
-				} else if (queryType == QUERYTYPE_DESCRIBE) {
+				} else if (queryType == FileAccesor.QUERYTYPE_DESCRIBE) {
 					pathBuilder.append("swdf-describe-100/");
 
 				} else {
 					pathBuilder.append("swdf-select-100/");
 				}
 			}
-
+			
 			pathBuilder.append("queries/queries.txt");
 			File file = new File(directory, pathBuilder.toString());
 			if (!file.exists()) {
@@ -230,7 +240,7 @@ public class BenchmarkTxt {
 			System.exit(1);
 		}
 
-		BenchmarkTxt benchmarkTxt = new BenchmarkTxt(new File(args[0]));
+		QueriesTxt benchmarkTxt = new QueriesTxt(new File(args[0]));
 
 		// Check files
 		if (benchmarkTxt.getQueryTextFiles().size() != 5 * 2) {
