@@ -13,7 +13,13 @@ public class Query {
 	private String queryId;
 	private String queryString;
 
-	public Query(String queryId, String queryString) {
+	public Query(String queryId, String queryString) throws BenchmarkNullException {
+		if (queryId == null) {
+			throw new BenchmarkNullException("queryId is null");
+		}
+		if (queryString == null) {
+			throw new BenchmarkNullException("queryString is null");
+		}
 		this.queryId = queryId;
 		this.queryString = queryString;
 	}

@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 
 import org.dice_research.spab.benchmark.Benchmark;
+import org.dice_research.spab.benchmark.BenchmarkNullException;
 import org.dice_research.spab.benchmark.InputSets;
 import org.dice_research.spab.benchmark.InputSetsCreator;
 import org.dice_research.spab.benchmark.Query;
@@ -37,7 +38,7 @@ public class BenchmarkTest extends AbstractTestCase {
 	public static final Double RUNTIME_A_ON_B = 12d;
 
 	@Test
-	public void testCreatePercentual() {
+	public void testCreatePercentual() throws BenchmarkNullException {
 
 		Benchmark benchmark = createBenchmark(false);
 		TripleStore tripleStoreA = benchmark.getTripleStore(TRIPLESTORE_A_ID);
@@ -82,7 +83,7 @@ public class BenchmarkTest extends AbstractTestCase {
 	}
 
 	@Test
-	public void testMaxSize() {
+	public void testMaxSize() throws BenchmarkNullException {
 
 		Benchmark benchmark = new Benchmark("testStandardDeviation");
 
@@ -130,7 +131,7 @@ public class BenchmarkTest extends AbstractTestCase {
 	}
 
 	@Test
-	public void testStandardDeviation() {
+	public void testStandardDeviation() throws BenchmarkNullException {
 
 		Benchmark benchmark = new Benchmark("testStandardDeviation");
 
@@ -175,7 +176,7 @@ public class BenchmarkTest extends AbstractTestCase {
 	}
 
 	@Test
-	public void testBenchmarkSerialization() {
+	public void testBenchmarkSerialization() throws BenchmarkNullException {
 
 		Benchmark benchmark = createBenchmark(true);
 		TripleStore tripleStoreA = benchmark.getTripleStore(TRIPLESTORE_A_ID);
@@ -216,7 +217,7 @@ public class BenchmarkTest extends AbstractTestCase {
 		assertEquals(benchmark.getResults().size(), restoredBenchmark.getResults().size());
 	}
 
-	private Benchmark createBenchmark(boolean addResults) {
+	private Benchmark createBenchmark(boolean addResults) throws BenchmarkNullException {
 		Benchmark benchmark;
 
 		benchmark = new Benchmark(BENCHMARK_ID);
