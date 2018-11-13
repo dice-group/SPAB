@@ -15,6 +15,7 @@ import org.apache.commons.csv.CSVRecord;
 import org.apache.commons.lang3.StringEscapeUtils;
 import org.dice_research.spab.SpabApi;
 import org.dice_research.spab.benchmark.Benchmark;
+import org.dice_research.spab.benchmark.BenchmarkNullException;
 import org.dice_research.spab.benchmark.Query;
 import org.dice_research.spab.benchmark.Result;
 import org.dice_research.spab.benchmark.TripleStore;
@@ -76,37 +77,45 @@ public class BenchmarkHandler extends AbstractHandler {
 		StringBuilder stringBuilder = new StringBuilder();
 		if (errors.isEmpty()) {
 
-			Benchmark benchmark = new Benchmark("SPAB webdemo benchmark");
+			Benchmark benchmark = null;
+			SortedMap<String, TripleStore> benchmarkTriplestoreMap = null;
+			try {
 
-			// Queries
-			SortedMap<String, Query> benchmarkQueryMap = new TreeMap<String, Query>();
-			for (Entry<Integer, String> queryEntry : queryMap.entrySet()) {
-				benchmarkQueryMap.put(queryEntry.getKey().toString(),
-						benchmark.addQuery(queryEntry.getKey().toString(), queryEntry.getValue()));
-			}
+				benchmark = new Benchmark("SPAB webdemo benchmark");
 
-			// Triplestores
-			SortedMap<String, TripleStore> benchmarkTriplestoreMap = new TreeMap<String, TripleStore>();
-			for (CSVRecord csvRecord : recordList) {
-				String triplestoreId = csvRecord.get(1).trim();
-				if (!benchmarkTriplestoreMap.containsKey(triplestoreId)) {
-					benchmarkTriplestoreMap.put(triplestoreId, benchmark.addTripleStore(triplestoreId));
+				// Queries
+				SortedMap<String, Query> benchmarkQueryMap = new TreeMap<String, Query>();
+				for (Entry<Integer, String> queryEntry : queryMap.entrySet()) {
+					benchmarkQueryMap.put(queryEntry.getKey().toString(),
+							benchmark.addQuery(queryEntry.getKey().toString(), queryEntry.getValue()));
 				}
-			}
 
-			// Benchmark results
-			for (CSVRecord csvRecord : recordList) {
-				int queryId = Integer.parseInt(csvRecord.get(0).trim());
-				String triplestoreId = csvRecord.get(1).trim();
-				double runtime = Double.parseDouble(csvRecord.get(2).trim());
+				// Triplestores
+				benchmarkTriplestoreMap = new TreeMap<String, TripleStore>();
+				for (CSVRecord csvRecord : recordList) {
+					String triplestoreId = csvRecord.get(1).trim();
+					if (!benchmarkTriplestoreMap.containsKey(triplestoreId)) {
+						benchmarkTriplestoreMap.put(triplestoreId, benchmark.addTripleStore(triplestoreId));
+					}
+				}
 
-				benchmark.addResult(benchmarkTriplestoreMap.get(triplestoreId),
-						benchmarkQueryMap.get(Integer.toString(queryId)), runtime);
+				// Benchmark results
+				for (CSVRecord csvRecord : recordList) {
+					int queryId = Integer.parseInt(csvRecord.get(0).trim());
+					String triplestoreId = csvRecord.get(1).trim();
+					double runtime = Double.parseDouble(csvRecord.get(2).trim());
+
+					benchmark.addResult(benchmarkTriplestoreMap.get(triplestoreId),
+							benchmarkQueryMap.get(Integer.toString(queryId)), runtime);
+				}
+			} catch (BenchmarkNullException e) {
+				throw new WebserverIoException(e);
 			}
 
 			stringBuilder.append("<h2>Check parsed input</h2>");
 			stringBuilder.append("<p>Please check if the identified data is correct.<br />");
-			stringBuilder.append("Afterwards, you can correct your input data or create input sets at the bottom of this page.</p>");
+			stringBuilder.append(
+					"Afterwards, you can correct your input data or create input sets at the bottom of this page.</p>");
 
 			stringBuilder.append("<h3>SPARQL Queries</h3>");
 			StringBuilder queryHtmlBuilder = new StringBuilder();
@@ -273,7 +282,11 @@ public class BenchmarkHandler extends AbstractHandler {
 					} else {
 
 						try {
-							Integer.parseInt(csvRecord.get(0).trim());
+							int queryId = Integer.parseInt(csvRecord.get(0).trim());
+							if (queryId > queryMap.size()) {
+								errors.add("Result " + recordCounter + " query ID is larger than the list of queries ("
+										+ csvRecord.get(0) + ").");
+							}
 						} catch (NumberFormatException e) {
 							errors.add("Result " + recordCounter + " query ID is not a valid number ("
 									+ csvRecord.get(0) + ").");

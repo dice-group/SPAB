@@ -8,6 +8,7 @@ import java.util.Map;
 
 import org.apache.commons.lang3.StringEscapeUtils;
 import org.dice_research.spab.benchmark.Benchmark;
+import org.dice_research.spab.benchmark.BenchmarkNullException;
 import org.dice_research.spab.benchmark.InputSets;
 import org.dice_research.spab.benchmark.InputSetsCreator;
 import org.dice_research.spab.benchmark.Query;
@@ -46,9 +47,14 @@ public class SetsHandler extends AbstractHandler {
 		StringBuilder stringBuilder = new StringBuilder();
 		if (errors.isEmpty()) {
 
-			Benchmark benchmark = Benchmark
-					.readJson(StringEscapeUtils.unescapeHtml4(parameters.get(Templates.SETS_ID_BENCHMARK)));
-			InputSetsCreator inputSetsCreator = new InputSetsCreator(benchmark);
+			InputSetsCreator inputSetsCreator = null;
+			try {
+				Benchmark benchmark = Benchmark
+						.readJson(StringEscapeUtils.unescapeHtml4(parameters.get(Templates.SETS_ID_BENCHMARK)));
+				inputSetsCreator = new InputSetsCreator(benchmark);
+			} catch (BenchmarkNullException e) {
+				throw new WebserverIoException(e);
+			}
 			InputSets inputSets;
 
 			if (this.genMethod.equals(METHOD_STDDEV)) {
