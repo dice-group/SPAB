@@ -16,7 +16,6 @@ import org.dice_research.spab.io.FileWriter;
 
 import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.core.JsonGenerator;
-import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.util.DefaultPrettyPrinter;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -61,19 +60,19 @@ public class Benchmark {
 		this.comment = comment;
 	}
 
-	public TripleStore addTripleStore(String tripleStoreId) {
+	public TripleStore addTripleStore(String tripleStoreId) throws BenchmarkNullException {
 		TripleStore tripleStore = new TripleStore(tripleStoreId);
 		this.tripleStores.add(tripleStore);
 		return tripleStore;
 	}
 
-	public Query addQuery(String queryId, String queryString) {
+	public Query addQuery(String queryId, String queryString) throws BenchmarkNullException {
 		Query query = new Query(queryId, queryString);
 		this.queries.add(query);
 		return query;
 	}
 
-	public Result addResult(TripleStore tripleStore, Query query, double result) {
+	public Result addResult(TripleStore tripleStore, Query query, double result) throws BenchmarkNullException {
 		Result resultObj = new Result(tripleStore, query, result);
 		this.results.add(resultObj);
 		return resultObj;
@@ -213,13 +212,8 @@ public class Benchmark {
 
 	/**
 	 * JSON deserialization of benchmark.
-	 * 
-	 * @return
-	 * 
-	 * @throws IOException
-	 * @throws JsonParseException
 	 */
-	public static Benchmark readJson(String json) {
+	public static Benchmark readJson(String json) throws BenchmarkNullException {
 		ObjectMapper objectMapper = new ObjectMapper();
 		JsonNode jsonNode;
 		try {
@@ -261,7 +255,7 @@ public class Benchmark {
 	/**
 	 * JSON deserialization of benchmark.
 	 */
-	public static Benchmark readJsonFile(String filePath) {
+	public static Benchmark readJsonFile(String filePath) throws BenchmarkNullException {
 		return readJson(FileReader.readFileToString(filePath, StandardCharsets.UTF_8));
 	}
 

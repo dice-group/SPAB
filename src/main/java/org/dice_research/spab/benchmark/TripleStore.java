@@ -11,7 +11,10 @@ public class TripleStore {
 
 	private String tripleStoreId;
 
-	public TripleStore(String tripleStoreId) {
+	public TripleStore(String tripleStoreId) throws BenchmarkNullException {
+		if(tripleStoreId == null) {
+			throw new BenchmarkNullException("tripleStoreId is null");
+		}
 		this.tripleStoreId = tripleStoreId;
 	}
 

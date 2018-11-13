@@ -22,7 +22,10 @@ public class InputSetsCreator {
 
 	private Benchmark benchmark;
 
-	public InputSetsCreator(Benchmark benchmark) {
+	public InputSetsCreator(Benchmark benchmark) throws BenchmarkNullException {
+		if (benchmark == null) {
+			throw new BenchmarkNullException("benchmark is null");
+		}
 		this.benchmark = benchmark;
 	}
 
