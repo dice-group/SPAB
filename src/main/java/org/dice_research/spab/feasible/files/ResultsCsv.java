@@ -27,8 +27,8 @@ import org.apache.commons.csv.CSVRecord;
  * 
  * The method {@link ResultsCsv#getResults(int, int)} returns results of a
  * respective file. int queryType is one of the QUERYTYPE constants defined in
- * {@link FileAccesor}. int dataset is one of the DATASET constants defined in
- * {@link FileAccesor}.
+ * {@link FeasibleFileAccesor}. int dataset is one of the DATASET constants defined in
+ * {@link FeasibleFileAccesor}.
  * 
  * The method {@link ResultsCsv#generateRowBasedTsvFiles()} generates files for
  * the SPAB webdemo.
@@ -79,34 +79,34 @@ public class ResultsCsv {
 	 * Gets FEASIBLE results.
 	 * 
 	 * @param queryType
-	 *            is one of the QUERYTYPE constants defined in {@link FileAccesor}.
+	 *            is one of the QUERYTYPE constants defined in {@link FeasibleFileAccesor}.
 	 * @param dataset
-	 *            is one of the DATASET constants defined in {@link FileAccesor}.
+	 *            is one of the DATASET constants defined in {@link FeasibleFileAccesor}.
 	 * @return A list, whose position represents the query ID. The list contains
 	 *         Maps, which map a Triplestore ID to its result. Triplestore IDs are
 	 *         defined as constants in {@link ResultsCsv}.
 	 */
 	public List<Map<String, Float>> getResults(int queryType, int dataset) throws FileNotFoundException, IOException {
-		if (dataset == FileAccesor.DATASET_DBPEDIA) {
-			if (queryType == FileAccesor.QUERYTYPE_ASK) {
+		if (dataset == FeasibleFileAccesor.DATASET_DBPEDIA) {
+			if (queryType == FeasibleFileAccesor.QUERYTYPE_ASK) {
 				return getResults(DBPEDIA_ASK);
-			} else if (queryType == FileAccesor.QUERYTYPE_CONSTRUCT) {
+			} else if (queryType == FeasibleFileAccesor.QUERYTYPE_CONSTRUCT) {
 				return getResults(DBPEDIA_CONSTRUCT);
-			} else if (queryType == FileAccesor.QUERYTYPE_DESCRIBE) {
+			} else if (queryType == FeasibleFileAccesor.QUERYTYPE_DESCRIBE) {
 				return getResults(DBPEDIA_DESCRIBE);
-			} else if (queryType == FileAccesor.QUERYTYPE_SELECT) {
+			} else if (queryType == FeasibleFileAccesor.QUERYTYPE_SELECT) {
 				return getResults(DBPEDIA_SELECT);
 			} else {
 				return getResults(DBPEDIA_MIX);
 			}
 		} else {
-			if (queryType == FileAccesor.QUERYTYPE_ASK) {
+			if (queryType == FeasibleFileAccesor.QUERYTYPE_ASK) {
 				return getResults(SWDF_ASK);
-			} else if (queryType == FileAccesor.QUERYTYPE_CONSTRUCT) {
+			} else if (queryType == FeasibleFileAccesor.QUERYTYPE_CONSTRUCT) {
 				return getResults(SWDF_CONSTRUCT);
-			} else if (queryType == FileAccesor.QUERYTYPE_DESCRIBE) {
+			} else if (queryType == FeasibleFileAccesor.QUERYTYPE_DESCRIBE) {
 				return getResults(SWDF_DESCRIBE);
-			} else if (queryType == FileAccesor.QUERYTYPE_SELECT) {
+			} else if (queryType == FeasibleFileAccesor.QUERYTYPE_SELECT) {
 				return getResults(SWDF_SELECT);
 			} else {
 				return getResults(SWDF_MIX);

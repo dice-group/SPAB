@@ -21,8 +21,8 @@ import org.apache.commons.io.LineIterator;
  * 
  * The method {@link QueriesTxt#getQueries(int, int)} returns results of a
  * respective file. int queryType is one of the QUERYTYPE constants defined in
- * {@link FileAccesor}. int dataset is one of the DATASET constants defined in
- * {@link FileAccesor}.
+ * {@link FeasibleFileAccesor}. int dataset is one of the DATASET constants defined in
+ * {@link FeasibleFileAccesor}.
  * 
  * The method {@link QueriesTxt#generateToLinesSplittedFiles()} generates files
  * for the SPAB webdemo.
@@ -56,9 +56,9 @@ public class QueriesTxt {
 	 * Gets FEASIBLE SPARQL queries.
 	 * 
 	 * @param queryType
-	 *            is one of the QUERYTYPE constants defined in {@link FileAccesor}.
+	 *            is one of the QUERYTYPE constants defined in {@link FeasibleFileAccesor}.
 	 * @param dataset
-	 *            is one of the DATASET constants defined in {@link FileAccesor}.
+	 *            is one of the DATASET constants defined in {@link FeasibleFileAccesor}.
 	 * @return A list of SPARQL queries.
 	 */
 	public List<String> getQueries(int queryType, int dataset) throws FileNotFoundException, IOException {
@@ -140,19 +140,19 @@ public class QueriesTxt {
 
 				StringBuilder filenameBuilder = new StringBuilder();
 				filenameBuilder.append("FEASIBLE-");
-				if (dataset == FileAccesor.DATASET_DBPEDIA) {
+				if (dataset == FeasibleFileAccesor.DATASET_DBPEDIA) {
 					filenameBuilder.append("DBpedia-");
 				} else {
 					filenameBuilder.append("SWDF-");
 				}
 
-				if (querytype == FileAccesor.QUERYTYPE_ASK) {
+				if (querytype == FeasibleFileAccesor.QUERYTYPE_ASK) {
 					filenameBuilder.append("ASK-");
-				} else if (querytype == FileAccesor.QUERYTYPE_CONSTRUCT) {
+				} else if (querytype == FeasibleFileAccesor.QUERYTYPE_CONSTRUCT) {
 					filenameBuilder.append("CONSTRUCT-");
-				} else if (querytype == FileAccesor.QUERYTYPE_DESCRIBE) {
+				} else if (querytype == FeasibleFileAccesor.QUERYTYPE_DESCRIBE) {
 					filenameBuilder.append("DESCRIBE-");
-				} else if (querytype == FileAccesor.QUERYTYPE_SELECT) {
+				} else if (querytype == FeasibleFileAccesor.QUERYTYPE_SELECT) {
 					filenameBuilder.append("SELECT-");
 				} else {
 					filenameBuilder.append("MIX-");
@@ -173,10 +173,10 @@ public class QueriesTxt {
 		StringBuilder pathBuilder = new StringBuilder();
 
 		pathBuilder.append("Benchmarks_Evaluation/");
-		pathBuilder.append(queryType == FileAccesor.QUERYTYPE_MIX ? "mix-benchmarks/" : "individual-benchmarks/");
-		pathBuilder.append(dataset == FileAccesor.DATASET_DBPEDIA ? "dbpedia351/" : "swdf/");
+		pathBuilder.append(queryType == FeasibleFileAccesor.QUERYTYPE_MIX ? "mix-benchmarks/" : "individual-benchmarks/");
+		pathBuilder.append(dataset == FeasibleFileAccesor.DATASET_DBPEDIA ? "dbpedia351/" : "swdf/");
 
-		if (queryType == FileAccesor.QUERYTYPE_MIX) {
+		if (queryType == FeasibleFileAccesor.QUERYTYPE_MIX) {
 			pathBuilder.append("queries-175.txt");
 			File file = new File(directory, pathBuilder.toString());
 			if (!file.exists()) {
@@ -189,14 +189,14 @@ public class QueriesTxt {
 
 		} else {
 
-			if (dataset == FileAccesor.DATASET_DBPEDIA) {
-				if (queryType == FileAccesor.QUERYTYPE_ASK) {
+			if (dataset == FeasibleFileAccesor.DATASET_DBPEDIA) {
+				if (queryType == FeasibleFileAccesor.QUERYTYPE_ASK) {
 					pathBuilder.append("dbpedia-ask-100/");
 
-				} else if (queryType == FileAccesor.QUERYTYPE_CONSTRUCT) {
+				} else if (queryType == FeasibleFileAccesor.QUERYTYPE_CONSTRUCT) {
 					pathBuilder.append("dbpedia-construct-100/");
 
-				} else if (queryType == FileAccesor.QUERYTYPE_DESCRIBE) {
+				} else if (queryType == FeasibleFileAccesor.QUERYTYPE_DESCRIBE) {
 					pathBuilder.append("dbpedia-describe-25/");
 
 				} else {
@@ -205,13 +205,13 @@ public class QueriesTxt {
 				}
 
 			} else {
-				if (queryType == FileAccesor.QUERYTYPE_ASK) {
+				if (queryType == FeasibleFileAccesor.QUERYTYPE_ASK) {
 					pathBuilder.append("swdf-ask-50/");
 
-				} else if (queryType == FileAccesor.QUERYTYPE_CONSTRUCT) {
+				} else if (queryType == FeasibleFileAccesor.QUERYTYPE_CONSTRUCT) {
 					pathBuilder.append("swdf-construct-23/");
 
-				} else if (queryType == FileAccesor.QUERYTYPE_DESCRIBE) {
+				} else if (queryType == FeasibleFileAccesor.QUERYTYPE_DESCRIBE) {
 					pathBuilder.append("swdf-describe-100/");
 
 				} else {
