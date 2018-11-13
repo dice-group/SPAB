@@ -45,14 +45,19 @@ public class CheckQueryParsing {
 
 	public void allChecks(int querytype, int dataset) throws FileNotFoundException, IOException {
 		List<String> queries = feasibleFileAccesor.getQueries(querytype, dataset);
-		System.out.println("Checking queries for type " + querytype + ", dataset " + dataset + ": " + queries.size());
+		System.out.println(
+				"--- Checking " + queries.size() + " queries for type " + querytype + ", dataset " + dataset + " ---");
 		allChecks(queries);
 	}
 
 	public void allChecks(List<String> queryStrings) {
+		int counter = 1;
 		for (String queryString : queryStrings) {
+			System.out.println(counter + " "
+					+ queryString.replaceAll("\\r?\\n|\\r", " ").substring(0, Math.min(100, queryString.length())));
 			SparqlQuery sparqlQuery = checkSparqlQuery(queryString);
 			checkLineRepresentation(sparqlQuery);
+			counter++;
 		}
 	}
 
