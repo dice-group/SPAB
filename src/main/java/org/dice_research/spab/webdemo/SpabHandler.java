@@ -75,7 +75,7 @@ public class SpabHandler extends AbstractHandler {
 				stringBuilder.append("<li>Best candidate final score: <b>" + bestCandidate.getScore()
 						+ "</b> (includes weighting of the position in the graph)</li>");
 				stringBuilder.append("<li>Best candidate regular expression: <b><code>"
-						+ bestCandidate.getCandidate().getRegEx() + "</code></b></li>");
+						+ StringEscapeUtils.escapeHtml4(bestCandidate.getCandidate().getRegEx()) + "</code></b></li>");
 				stringBuilder.append("</ul>");
 				stringBuilder.append(System.lineSeparator());
 
