@@ -61,11 +61,17 @@ public abstract class AbstractHandler implements HttpHandler {
 		// Exchange object used by various methods
 		this.exchange = exchange;
 
-		// Main behavior. Configuration variables are set.
-		// WebserverIoException will be thrown as IOException.
-		// WebserverIoException is no default Java exception, developers are aware of
-		// throwing it.
-		handle();
+		try {
+			// Main behavior. Configuration variables are set.
+			// WebserverIoException will be thrown as IOException.
+			// WebserverIoException is no default Java exception, developers are aware of
+			// throwing it.
+			handle();
+		} catch (Exception e) {
+			// Catch all exceptions and set server status.
+			// Data will be handled afterwards.
+			setInternalServerError(e);
+		}
 
 		// Content type (Usually HTML)
 		if (contentType == null) {
