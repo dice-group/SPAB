@@ -8,6 +8,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import org.dice_research.spab.benchmark.Benchmark;
+import org.dice_research.spab.benchmark.BenchmarkNullException;
 import org.dice_research.spab.benchmark.Query;
 import org.dice_research.spab.benchmark.TripleStore;
 import org.dice_research.spab.io.FileReader;
@@ -29,7 +30,7 @@ public class SpabBenchmark {
 	/**
 	 * Configuration and execution of extraction.
 	 */
-	public static void main(String[] args) {
+	public static void main(String[] args) throws BenchmarkNullException {
 
 		// Load configuration from file {@link Configuration#PROPERTIES}
 		// Typically resources file "iguana-2018-01-20/file-locations.properties"
@@ -84,7 +85,8 @@ public class SpabBenchmark {
 	 * Extracts data and writes JSON file.
 	 */
 	public static final void generateBenchmarkSet(String queriesFilePath, String resultsFilePath,
-			String benchmarkSetFilePath, String benchmarkId, String benchmarkComment, List<String> tripleStores) {
+			String benchmarkSetFilePath, String benchmarkId, String benchmarkComment, List<String> tripleStores)
+			throws BenchmarkNullException {
 
 		// Import RDF statements into memory DB
 		IguanaModel iguanaModel = new IguanaModel(new File(resultsFilePath));
