@@ -1,5 +1,6 @@
 package org.dice_research.spab.webdemo;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -105,10 +106,8 @@ public class SpabHandler extends AbstractHandler {
 				String graphTemplate = getResource(Templates.GRAPH);
 				graphTemplate = graphTemplate.replace(Templates.GRAPH_MARKER_ELEMENTS,
 						graphConstructor.construct(spabApi, maxBestCandidateVertices));
-				graphTemplate = graphTemplate.replace(Templates.GRAPH_MARKER_MAX,
-						"" + graphConstructor.getMaxValue());
-				graphTemplate = graphTemplate.replace(Templates.GRAPH_MARKER_MIN,
-						"" + graphConstructor.getMinValue());
+				graphTemplate = graphTemplate.replace(Templates.GRAPH_MARKER_MAX, "" + graphConstructor.getMaxValue());
+				graphTemplate = graphTemplate.replace(Templates.GRAPH_MARKER_MIN, "" + graphConstructor.getMinValue());
 				stringBuilder.append(graphTemplate);
 
 				stringBuilder.append(System.lineSeparator());
@@ -234,4 +233,33 @@ public class SpabHandler extends AbstractHandler {
 		return errors;
 	}
 
+	/**
+	 * Prepares form template
+	 */
+	String getForm(boolean isStatic, Map<String, String> parameters) throws IOException {
+		String form = new String();
+		form = getResource(Templates.FORM);
+		if (isStatic) {
+			String pos = getResource("data/positive.txt");
+			String neg = getResource("data/negative.txt");
+			form = form.replace(Templates.FORM_MARKER_POSITIVES, pos);
+			form = form.replace(Templates.FORM_MARKER_NEGATIVES, neg);
+			form = form.replace(Templates.FORM_MARKER_LAMBDA, "0.1");
+			form = form.replace(Templates.FORM_MARKER_ITERATIONNS, "100");
+		} else {
+			String parameter = parameters.get(Templates.FORM_ID_POSITIVES);
+			form = form.replace(Templates.FORM_MARKER_POSITIVES, parameter == null ? "" : parameter);
+
+			parameter = parameters.get(Templates.FORM_ID_NEGATIVES);
+			form = form.replace(Templates.FORM_MARKER_NEGATIVES, parameter == null ? "" : parameter);
+
+			parameter = parameters.get(Templates.FORM_ID_LAMBDA);
+			form = form.replace(Templates.FORM_MARKER_LAMBDA, parameter == null ? "" : parameter);
+
+			parameter = parameters.get(Templates.FORM_ID_ITERATIONNS);
+			form = form.replace(Templates.FORM_MARKER_ITERATIONNS, parameter == null ? "" : parameter);
+		}
+
+		return form;
+	}
 }

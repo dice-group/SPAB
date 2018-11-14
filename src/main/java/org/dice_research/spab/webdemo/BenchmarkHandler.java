@@ -112,100 +112,17 @@ public class BenchmarkHandler extends AbstractHandler {
 				throw new WebserverIoException(e);
 			}
 
-			stringBuilder.append("<h2>Check parsed input</h2>");
-			stringBuilder.append("<p>Please check if the identified data is correct.<br />");
-			stringBuilder.append(
-					"Afterwards, you can correct your input data or create input sets at the bottom of this page.</p>");
-
-			stringBuilder.append("<h3>SPARQL Queries</h3>");
-			StringBuilder queryHtmlBuilder = new StringBuilder();
-			queryHtmlBuilder.append("<table id=\"benchmark-table\">");
-			queryHtmlBuilder.append("<tr>");
-			queryHtmlBuilder.append("<th nowrap>Query ID</th>");
-			queryHtmlBuilder.append("<th>Query</th>");
-			queryHtmlBuilder.append("</tr>");
-
-			for (Query benchmarkQuery : benchmark.getQueries()) {
-				queryHtmlBuilder.append("<tr>");
-
-				queryHtmlBuilder.append("<td>");
-				queryHtmlBuilder.append(benchmarkQuery.getQueryId());
-				queryHtmlBuilder.append("</td>");
-
-				queryHtmlBuilder.append("<td>");
-				queryHtmlBuilder.append(StringEscapeUtils.escapeHtml4(benchmarkQuery.getQueryString()));
-				queryHtmlBuilder.append("</td>");
-
-				queryHtmlBuilder.append("</tr>");
-			}
-			queryHtmlBuilder.append("</table>");
-			stringBuilder.append(queryHtmlBuilder);
-
-			stringBuilder.append("<h3>Benchmark results</h3>");
-			StringBuilder benchmarkHtmlBuilder = new StringBuilder();
-			benchmarkHtmlBuilder.append("<table id=\"benchmark-table\">");
-			benchmarkHtmlBuilder.append("<tr>");
-			benchmarkHtmlBuilder.append("<th nowrap>Query ID</th>");
-			benchmarkHtmlBuilder.append("<th>Triplestore ID</th>");
-			benchmarkHtmlBuilder.append("<th>Result</th>");
-			benchmarkHtmlBuilder.append("</tr>");
-
-			for (Result benchmarkResult : benchmark.getResults()) {
-				benchmarkHtmlBuilder.append("<tr>");
-
-				benchmarkHtmlBuilder.append("<td>");
-				benchmarkHtmlBuilder.append(benchmarkResult.getQuery().getQueryId());
-				benchmarkHtmlBuilder.append("</td>");
-
-				benchmarkHtmlBuilder.append("<td>");
-				benchmarkHtmlBuilder
-						.append(StringEscapeUtils.escapeHtml4(benchmarkResult.getTripleStore().getTripleStoreId()));
-				benchmarkHtmlBuilder.append("</td>");
-
-				benchmarkHtmlBuilder.append("<td>");
-				benchmarkHtmlBuilder.append(benchmarkResult.getResult());
-				benchmarkHtmlBuilder.append("</td>");
-
-				benchmarkHtmlBuilder.append("</tr>");
-			}
-			benchmarkHtmlBuilder.append("</table>");
-			stringBuilder.append(benchmarkHtmlBuilder);
-
-			// SPAB form
-			stringBuilder.append("<h2>Correct data</h2>");
-			stringBuilder.append(form);
-
 			// Input sets form
 			try {
-				stringBuilder.append("<h2>Create input sets</h2>");
-				String setsForm = getResource(Templates.SETS);
-
-				// Triplestores
-				StringBuilder tsBuilder = new StringBuilder();
-				boolean isFirst = true;
-				for (String triplestoreId : benchmarkTriplestoreMap.keySet()) {
-					tsBuilder.append("<input type=\"radio\" name=\"triplestore\" id=\"" + triplestoreId + "\" value=\""
-							+ triplestoreId + "\"");
-					if (isFirst) {
-						isFirst = false;
-						tsBuilder.append(" checked=\"checked\">");
-					} else {
-						tsBuilder.append(">");
-					}
-					tsBuilder.append(
-							"<label for=\"" + triplestoreId + "\" class=\"radiolabel\">" + triplestoreId + "</label>");
-					tsBuilder.append("<br />");
-				}
-				setsForm = setsForm.replace(Templates.SETS_MARKER_TRIPLESTORE, tsBuilder.toString());
-
-				// Benchmark
-				setsForm = setsForm.replace(Templates.SETS_MARKER_BENCHMARK,
-						StringEscapeUtils.escapeHtml4(benchmark.toJson()));
-				stringBuilder.append(setsForm);
+				putInputSetsForm(stringBuilder, benchmark, benchmarkTriplestoreMap);
 			} catch (Exception e) {
 				setInternalServerError(e);
 				return;
 			}
+
+			// Results table
+			StringBuilder benchmarkHtmlBuilder = putResultsHtmlTable(stringBuilder, benchmark);
+			stringBuilder.append(benchmarkHtmlBuilder);
 
 		} else {
 			// Display errors
@@ -223,6 +140,95 @@ public class BenchmarkHandler extends AbstractHandler {
 		setOkWithBody(stringBuilder.toString());
 		return;
 
+	}
+
+	protected StringBuilder putResultsHtmlTable(StringBuilder stringBuilder, Benchmark benchmark) {
+		stringBuilder.append("<h2>Check parsed input</h2>");
+		stringBuilder.append("<p>Please check if the identified data is correct.<br />");
+		stringBuilder.append(
+				"Afterwards, you can correct your input data or create input sets at the bottom of this page.</p>");
+
+		stringBuilder.append("<h3>SPARQL Queries</h3>");
+		StringBuilder queryHtmlBuilder = new StringBuilder();
+		queryHtmlBuilder.append("<table id=\"benchmark-table\">");
+		queryHtmlBuilder.append("<tr>");
+		queryHtmlBuilder.append("<th nowrap>Query ID</th>");
+		queryHtmlBuilder.append("<th>Query</th>");
+		queryHtmlBuilder.append("</tr>");
+
+		for (Query benchmarkQuery : benchmark.getQueries()) {
+			queryHtmlBuilder.append("<tr>");
+
+			queryHtmlBuilder.append("<td>");
+			queryHtmlBuilder.append(benchmarkQuery.getQueryId());
+			queryHtmlBuilder.append("</td>");
+
+			queryHtmlBuilder.append("<td>");
+			queryHtmlBuilder.append(StringEscapeUtils.escapeHtml4(benchmarkQuery.getQueryString()));
+			queryHtmlBuilder.append("</td>");
+
+			queryHtmlBuilder.append("</tr>");
+		}
+		queryHtmlBuilder.append("</table>");
+		stringBuilder.append(queryHtmlBuilder);
+
+		stringBuilder.append("<h3>Benchmark results</h3>");
+		StringBuilder benchmarkHtmlBuilder = new StringBuilder();
+		benchmarkHtmlBuilder.append("<table id=\"benchmark-table\">");
+		benchmarkHtmlBuilder.append("<tr>");
+		benchmarkHtmlBuilder.append("<th nowrap>Query ID</th>");
+		benchmarkHtmlBuilder.append("<th>Triplestore ID</th>");
+		benchmarkHtmlBuilder.append("<th>Result</th>");
+		benchmarkHtmlBuilder.append("</tr>");
+
+		for (Result benchmarkResult : benchmark.getResults()) {
+			benchmarkHtmlBuilder.append("<tr>");
+
+			benchmarkHtmlBuilder.append("<td>");
+			benchmarkHtmlBuilder.append(benchmarkResult.getQuery().getQueryId());
+			benchmarkHtmlBuilder.append("</td>");
+
+			benchmarkHtmlBuilder.append("<td>");
+			benchmarkHtmlBuilder
+					.append(StringEscapeUtils.escapeHtml4(benchmarkResult.getTripleStore().getTripleStoreId()));
+			benchmarkHtmlBuilder.append("</td>");
+
+			benchmarkHtmlBuilder.append("<td>");
+			benchmarkHtmlBuilder.append(benchmarkResult.getResult());
+			benchmarkHtmlBuilder.append("</td>");
+
+			benchmarkHtmlBuilder.append("</tr>");
+		}
+		benchmarkHtmlBuilder.append("</table>");
+		return benchmarkHtmlBuilder;
+	}
+
+	protected void putInputSetsForm(StringBuilder stringBuilder, Benchmark benchmark,
+			SortedMap<String, TripleStore> benchmarkTriplestoreMap) throws IOException {
+
+		stringBuilder.append("<h2>Create input sets</h2>");
+		String setsForm = getResource(Templates.SETS);
+
+		// Triplestores
+		StringBuilder tsBuilder = new StringBuilder();
+		boolean isFirst = true;
+		for (String triplestoreId : benchmarkTriplestoreMap.keySet()) {
+			tsBuilder.append("<input type=\"radio\" name=\"triplestore\" id=\"" + triplestoreId + "\" value=\""
+					+ triplestoreId + "\"");
+			if (isFirst) {
+				isFirst = false;
+				tsBuilder.append(" checked=\"checked\">");
+			} else {
+				tsBuilder.append(">");
+			}
+			tsBuilder.append("<label for=\"" + triplestoreId + "\" class=\"radiolabel\">" + triplestoreId + "</label>");
+			tsBuilder.append("<br />");
+		}
+		setsForm = setsForm.replace(Templates.SETS_MARKER_TRIPLESTORE, tsBuilder.toString());
+
+		// Benchmark
+		setsForm = setsForm.replace(Templates.SETS_MARKER_BENCHMARK, StringEscapeUtils.escapeHtml4(benchmark.toJson()));
+		stringBuilder.append(setsForm);
 	}
 
 	/**

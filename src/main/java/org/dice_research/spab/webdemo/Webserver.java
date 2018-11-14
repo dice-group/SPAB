@@ -2,8 +2,6 @@ package org.dice_research.spab.webdemo;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
-import java.util.HashMap;
-import java.util.Map;
 
 import com.sun.net.httpserver.HttpServer;
 
@@ -45,16 +43,14 @@ public class Webserver extends AbstractHandler {
 
 	@Override
 	public void handle() throws WebserverIoException {
-		String form = new String();
+		String html;
 		try {
-			Map<String, String> parameters = new HashMap<String, String>();
-			fillParameters(parameters);
-			form = getForm(true, parameters);
-		} catch (Exception e) {
+			html = getResource(Templates.START);
+		} catch (IOException e) {
 			setInternalServerError(e);
 			return;
 		}
-		setOkWithBody("<h2>Specify the input parameters</h2>" + form);
+		setOkWithBody(html);
 	}
 
 }

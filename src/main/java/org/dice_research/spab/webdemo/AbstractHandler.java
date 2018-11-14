@@ -166,36 +166,6 @@ public abstract class AbstractHandler implements HttpHandler {
 	}
 
 	/**
-	 * Prepares form template
-	 */
-	String getForm(boolean isStatic, Map<String, String> parameters) throws IOException {
-		String form = new String();
-		form = getResource(Templates.FORM);
-		if (isStatic) {
-			String pos = getResource("data/positive.txt");
-			String neg = getResource("data/negative.txt");
-			form = form.replace(Templates.FORM_MARKER_POSITIVES, pos);
-			form = form.replace(Templates.FORM_MARKER_NEGATIVES, neg);
-			form = form.replace(Templates.FORM_MARKER_LAMBDA, "0.1");
-			form = form.replace(Templates.FORM_MARKER_ITERATIONNS, "100");
-		} else {
-			String parameter = parameters.get(Templates.FORM_ID_POSITIVES);
-			form = form.replace(Templates.FORM_MARKER_POSITIVES, parameter == null ? "" : parameter);
-
-			parameter = parameters.get(Templates.FORM_ID_NEGATIVES);
-			form = form.replace(Templates.FORM_MARKER_NEGATIVES, parameter == null ? "" : parameter);
-
-			parameter = parameters.get(Templates.FORM_ID_LAMBDA);
-			form = form.replace(Templates.FORM_MARKER_LAMBDA, parameter == null ? "" : parameter);
-
-			parameter = parameters.get(Templates.FORM_ID_ITERATIONNS);
-			form = form.replace(Templates.FORM_MARKER_ITERATIONNS, parameter == null ? "" : parameter);
-		}
-
-		return form;
-	}
-
-	/**
 	 * Sets HTTP 500.
 	 * 
 	 * @param text

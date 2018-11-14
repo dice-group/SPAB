@@ -12,6 +12,8 @@ public abstract class Templates {
 	public final static String HTML_MARKER_HEAD = "<!--HEAD-->";
 	public final static String HTML_MARKER_BODY = "<!--BODY-->";
 
+	public final static String START = "templates/start.html";
+
 	public final static String FORM = "templates/form.html";
 	public final static String FORM_MARKER_POSITIVES = "<!--POSITIVES-->";
 	public final static String FORM_MARKER_NEGATIVES = "<!--NEGATIVES-->";
