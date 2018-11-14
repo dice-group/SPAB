@@ -14,6 +14,8 @@ import org.dice_research.spab.exceptions.PerfectSolutionException;
 import org.dice_research.spab.input.Configuration;
 import org.dice_research.spab.input.Input;
 import org.dice_research.spab.input.SparqlUnit;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Candidate for a comprehensive SPARQL query.
@@ -21,6 +23,8 @@ import org.dice_research.spab.input.SparqlUnit;
  * @author Adrian Wilke
  */
 public class CandidateVertex implements Matcher, Comparable<CandidateVertex> {
+
+	private static final Logger LOGGER = LoggerFactory.getLogger(CandidateVertex.class);
 
 	public final static int START_GENERATION = 0;
 
@@ -138,8 +142,9 @@ public class CandidateVertex implements Matcher, Comparable<CandidateVertex> {
 		if (maxDepth == 0) {
 			lengthRelation = 0;
 		} else {
-			lengthRelation = getGeneration() / maxDepth;
+			lengthRelation = 1f * getGeneration() / maxDepth;
 		}
+
 		score = (1f - configuration.getLambda()) * fMeasureCache + configuration.getLambda() * (1f - lengthRelation);
 
 		// At first call of this method: Check for perfect solution
@@ -219,6 +224,7 @@ public class CandidateVertex implements Matcher, Comparable<CandidateVertex> {
 	 */
 	public float getScore() {
 		if (score == null) {
+			LOGGER.warn("Score requested, but not calculated for CandidateVertex " + getNumber());
 			return -1;
 		} else {
 			return score;
