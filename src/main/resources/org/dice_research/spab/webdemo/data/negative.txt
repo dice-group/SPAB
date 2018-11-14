@@ -1,16 +1,190 @@
-PREFIX  dc:   <http://purl.org/dc/elements/1.1/>  PREFIX  :     <http://dbpedia.org/resource/>  PREFIX  rdfs: <http://www.w3.org/2000/01/rdf-schema#>  PREFIX  dbpedia2: <http://dbpedia.org/property/>  PREFIX  foaf: <http://xmlns.com/foaf/0.1/>  PREFIX  owl:  <http://www.w3.org/2002/07/owl#>  PREFIX  xsd:  <http://www.w3.org/2001/XMLSchema#>  PREFIX  dbpedia: <http://dbpedia.org/>  PREFIX  rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#>  PREFIX  skos: <http://www.w3.org/2004/02/skos/core#>   SELECT  *  WHERE    { ?data rdf:type <http://dbpedia.org/ontology/FormulaOneRacer> .      ?wins <http://dbpedia.org/ontology/wins> 10    }   
+PREFIX  rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX  foaf: <http://xmlns.com/foaf/0.1/>
+PREFIX  dbp:  <http://dbpedia.org/property/>
+PREFIX  rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+
+SELECT DISTINCT  ?resource ?uri ?wtitle ?comment ?image
+WHERE
+  { { { ?resource foaf:page <http://en.wikipedia.org/wiki/Telecommunication> } }
+    ?resource foaf:page ?uri .
+    ?resource rdfs:label ?wtitle
+    FILTER langMatches(lang(?wtitle), "en")
+    OPTIONAL
+      { ?resource rdfs:comment ?comment
+        FILTER langMatches(lang(?comment), "en")
+      }
+    OPTIONAL
+      { ?resource foaf:depiction ?image }
+  }
 
 
-SELECT  *  WHERE    { ?airport <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://dbpedia.org/ontology/Airport> .      ?airport <http://dbpedia.org/ontology/iataLocationIdentifier> "IAD"@en    }   
+PREFIX  dc:   <http://purl.org/dc/elements/1.1/>
+PREFIX  :     <http://dbpedia.org/resource/>
+PREFIX  rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX  dbpedia2: <http://dbpedia.org/property/>
+PREFIX  foaf: <http://xmlns.com/foaf/0.1/>
+PREFIX  dbo:  <http://dbpedia.org/ontology/>
+PREFIX  owl:  <http://www.w3.org/2002/07/owl#>
+PREFIX  xsd:  <http://www.w3.org/2001/XMLSchema#>
+PREFIX  dbpedia: <http://dbpedia.org/>
+PREFIX  rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX  skos: <http://www.w3.org/2004/02/skos/core#>
+
+SELECT  ?name ?birth ?death ?person
+WHERE
+  { ?person dbpedia2:birthPlace :London .
+    ?person dbo:birthDate ?birth .
+    ?person foaf:name ?name .
+    ?person dbo:deathDate ?death
+    FILTER ( ?birth < "1985-01-01"^^xsd:date )
+  }
+ORDER BY ?name
 
 
-PREFIX  dc:   <http://purl.org/dc/elements/1.1/>  PREFIX  dbpedia2: <http://dbpedia.org/property/>  PREFIX  dbpedia-owl: <http://dbpedia.org/ontology/>  PREFIX  geo:  <http://www.w3.org/2003/01/geo/wgs84_pos#>  PREFIX  foaf: <http://xmlns.com/foaf/0.1/>  PREFIX  yago: <http://mpii.de/yago/resource/>  PREFIX  georss: <http://www.georss.org/georss/>  PREFIX  umbel-ac: <http://umbel.org/umbel/ac/>  PREFIX  geonames: <http://www.geonames.org/ontology#>  PREFIX  units: <http://dbpedia.org/units/>  PREFIX  dcterms: <http://purl.org/dc/terms/>  PREFIX  gn:   <http://xldb.di.fc.ul.pt/xldb/publications/2009/10/geo-net#>  PREFIX  rdfs: <http://www.w3.org/2000/01/rdf-schema#>  PREFIX  gnpt: <http://xldb.di.fc.ul.pt/xldb/publications/2009/10/geo-net-pt#>  PREFIX  umbel-sc: <http://umbel.org/umbel/sc/>  PREFIX  xsd:  <http://www.w3.org/2001/XMLSchema#>  PREFIX  owl:  <http://www.w3.org/2002/07/owl#>  PREFIX  dbpedia: <http://dbpedia.org/>  PREFIX  gnpt02: <http://xldb.di.fc.ul.pt/xldb/publications/2009/10/geo-net-pt-02#>  PREFIX  rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#>  PREFIX  wikicompany: <http://dbpedia.openlinksw.com/wikicompany/>  PREFIX  skos: <http://www.w3.org/2004/02/skos/core#>  PREFIX  opencyc: <http://sw.opencyc.org/2008/06/10/concept/>   SELECT  ?s  WHERE    { <http://dbpedia.org/resource/Heston_Aerodrome> rdf:type ?s }   
+PREFIX  dc:   <http://purl.org/dc/elements/1.1/>
+PREFIX  :     <http://dbpedia.org/resource/>
+PREFIX  dbpedia2: <http://dbpedia.org/property/>
+PREFIX  foaf: <http://xmlns.com/foaf/0.1/>
+PREFIX  rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX  dbpo: <http://dbpedia.org/ontology/>
+PREFIX  dbpp: <http://dbpedia.org/property/>
+PREFIX  owl:  <http://www.w3.org/2002/07/owl#>
+PREFIX  xsd:  <http://www.w3.org/2001/XMLSchema#>
+PREFIX  dbpedia: <http://dbpedia.org/>
+PREFIX  rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX  skos: <http://www.w3.org/2004/02/skos/core#>
+
+SELECT  *
+WHERE
+  { ?artist rdf:type dbpo:MusicalArtist }
+OFFSET  10
+LIMIT   10
 
 
-PREFIX  dc:   <http://purl.org/dc/elements/1.1/>  PREFIX  :     <http://dbpedia.org/resource/>  PREFIX  rdfs: <http://www.w3.org/2000/01/rdf-schema#>  PREFIX  dbpedia2: <http://dbpedia.org/property/>  PREFIX  foaf: <http://xmlns.com/foaf/0.1/>  PREFIX  owl:  <http://www.w3.org/2002/07/owl#>  PREFIX  xsd:  <http://www.w3.org/2001/XMLSchema#>  PREFIX  dbpedia: <http://dbpedia.org/>  PREFIX  rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#>  PREFIX  skos: <http://www.w3.org/2004/02/skos/core#>   SELECT  *  WHERE    { ?obj rdf:type ?qls }   
+PREFIX  dc:   <http://purl.org/dc/elements/1.1/>
+PREFIX  :     <http://dbpedia.org/resource/>
+PREFIX  rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX  dbpedia2: <http://dbpedia.org/property/>
+PREFIX  foaf: <http://xmlns.com/foaf/0.1/>
+PREFIX  owl:  <http://www.w3.org/2002/07/owl#>
+PREFIX  xsd:  <http://www.w3.org/2001/XMLSchema#>
+PREFIX  dbpedia: <http://dbpedia.org/>
+PREFIX  rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX  skos: <http://www.w3.org/2004/02/skos/core#>
+
+SELECT  *
+WHERE
+  { ?m rdfs:label ?n }
+LIMIT   10
 
 
-PREFIX  :     <http://dbpedia.org/resource/>  PREFIX  dbpedia2: <http://dbpedia.org/property/>  PREFIX  Neo_vocabulary: <http://localhost/drupal-6.17/rdf/schema/Neo_vocabulary#>  PREFIX  drupal: <http://localhost/drupal-6.17/rdf/schema/>  PREFIX  dcterms: <http://purl.org/dc/terms/>  PREFIX  sioc: <http://rdfs.org/sioc/ns#>  PREFIX  Story: <http://localhost/drupal-6.17/rdf/schema/Story#>  PREFIX  rdfs: <http://www.w3.org/2000/01/rdf-schema#>  PREFIX  Page: <http://localhost/drupal-6.17/rdf/schema/Page#>  PREFIX  path: <http://localhost/drupal-6.17/rdf/schema/path#>  PREFIX  dbpedia: <http://dbpedia.org/>  PREFIX  rss:  <http://purl.org/rss/1.0/>  PREFIX  rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#>  PREFIX  Sparql: <http://localhost/drupal-6.17/rdf/schema/Sparql#>  PREFIX  site: <http://localhost/Drupal-6.17/ns#>  PREFIX  dc:   <http://purl.org/dc/elements/1.1/>  PREFIX  foaf: <http://xmlns.com/foaf/0.1/>  PREFIX  vocabulary: <http://localhost/drupal-6.17/rdf/schema/vocabulary#>  PREFIX  Neo_property: <http://localhost/drupal-6.17/rdf/schema/Neo_property#>  PREFIX  dcmitype: <http://purl.org/dc/dcmitype/>  PREFIX  node: <http://localhost/drupal-6.17/rdf/schema/node#>  PREFIX  My_cities: <http://localhost/drupal-6.17/rdf/schema/My_cities#>  PREFIX  term: <http://localhost/drupal-6.17/rdf/schema/term#>  PREFIX  owl:  <http://www.w3.org/2002/07/owl#>  PREFIX  xsd:  <http://www.w3.org/2001/XMLSchema#>  PREFIX  rs:   <http://www.w3.org/2005/sparql-results#>  PREFIX  pm:   <http://localhost/rdf_vocab/areas#>  PREFIX  comment: <http://localhost/drupal-6.17/rdf/schema/comment#>  PREFIX  doap: <http://usefulinc.com/ns/doap#>  PREFIX  user: <http://localhost/drupal-6.17/rdf/schema/user#>  PREFIX  variable: <http://localhost/drupal-6.17/rdf/schema/variable#>  PREFIX  skos: <http://www.w3.org/2004/02/skos/core#>  PREFIX  Neo_class: <http://localhost/drupal-6.17/rdf/schema/Neo_class#>  PREFIX  xsi:  <http://www.w3.org/2001/XMLSchema-instance#>   SELECT  ?name ?birth ?death ?person  WHERE    { ?person foaf:name ?name .      ?person dbpedia2:birthPlace :Prague    }   
+PREFIX  dc:   <http://purl.org/dc/elements/1.1/>
+PREFIX  :     <http://dbpedia.org/resource/>
+PREFIX  rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX  dbpedia2: <http://dbpedia.org/property/>
+PREFIX  foaf: <http://xmlns.com/foaf/0.1/>
+PREFIX  owl:  <http://www.w3.org/2002/07/owl#>
+PREFIX  xsd:  <http://www.w3.org/2001/XMLSchema#>
+PREFIX  dbpedia: <http://dbpedia.org/>
+PREFIX  rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX  skos: <http://www.w3.org/2004/02/skos/core#>
+
+SELECT DISTINCT  *
+WHERE
+  { ?player dbpedia2:nationalteam :England_national_football_team .
+    ?player dbpedia2:position :Striker
+    OPTIONAL
+      { ?player dbpedia2:cityofbirth ?city }
+  }
 
 
-PREFIX  dc:   <http://purl.org/dc/elements/1.1/>  PREFIX  dbpedia2: <http://dbpedia.org/property/>  PREFIX  dbpedia-owl: <http://dbpedia.org/ontology/>  PREFIX  geo:  <http://www.w3.org/2003/01/geo/wgs84_pos#>  PREFIX  foaf: <http://xmlns.com/foaf/0.1/>  PREFIX  yago: <http://mpii.de/yago/resource/>  PREFIX  georss: <http://www.georss.org/georss/>  PREFIX  umbel-ac: <http://umbel.org/umbel/ac/>  PREFIX  geonames: <http://www.geonames.org/ontology#>  PREFIX  units: <http://dbpedia.org/units/>  PREFIX  dcterms: <http://purl.org/dc/terms/>  PREFIX  gn:   <http://xldb.di.fc.ul.pt/xldb/publications/2009/10/geo-net#>  PREFIX  rdfs: <http://www.w3.org/2000/01/rdf-schema#>  PREFIX  gnpt: <http://xldb.di.fc.ul.pt/xldb/publications/2009/10/geo-net-pt#>  PREFIX  umbel-sc: <http://umbel.org/umbel/sc/>  PREFIX  xsd:  <http://www.w3.org/2001/XMLSchema#>  PREFIX  owl:  <http://www.w3.org/2002/07/owl#>  PREFIX  dbpedia: <http://dbpedia.org/>  PREFIX  gnpt02: <http://xldb.di.fc.ul.pt/xldb/publications/2009/10/geo-net-pt-02#>  PREFIX  rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#>  PREFIX  wikicompany: <http://dbpedia.openlinksw.com/wikicompany/>  PREFIX  skos: <http://www.w3.org/2004/02/skos/core#>  PREFIX  opencyc: <http://sw.opencyc.org/2008/06/10/concept/>   SELECT  ?s  WHERE    { <http://dbpedia.org/resource/Uglegorsk%2C_Sakhalin_Oblast> rdf:type ?s }   
+PREFIX  rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX  foaf: <http://xmlns.com/foaf/0.1/>
+PREFIX  dbp:  <http://dbpedia.org/property/>
+PREFIX  rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+
+SELECT DISTINCT  ?resource ?uri ?wtitle ?comment ?image
+WHERE
+  { {   { ?resource foaf:page <http://en.wikipedia.org/wiki/United_Kingdom> }
+      UNION
+        { ?resource foaf:page <http://en.wikipedia.org/wiki/Computer> }
+      UNION
+        { ?resource foaf:page <http://en.wikipedia.org/wiki/Design> }
+      UNION
+        { ?resource foaf:page <http://en.wikipedia.org/wiki/Thought> }
+      UNION
+        { ?resource foaf:page <http://en.wikipedia.org/wiki/SQL> }
+      UNION
+        { ?resource foaf:page <http://en.wikipedia.org/wiki/Measuring_instrument> }
+      UNION
+        { ?resource foaf:page <http://en.wikipedia.org/wiki/Internet> }
+      UNION
+        { ?resource foaf:page <http://en.wikipedia.org/wiki/Washington,_D.C.> }
+      UNION
+        { ?resource foaf:page <http://en.wikipedia.org/wiki/Alternative_rock> }
+      UNION
+        { ?resource foaf:page <http://en.wikipedia.org/wiki/IPhone> }
+    }
+    ?resource foaf:page ?uri .
+    ?resource rdfs:label ?wtitle
+    FILTER langMatches(lang(?wtitle), "en")
+    OPTIONAL
+      { ?resource rdfs:comment ?comment
+        FILTER langMatches(lang(?comment), "en")
+      }
+    OPTIONAL
+      { ?resource foaf:depiction ?image }
+  }
+
+
+SELECT DISTINCT  ?b
+WHERE
+  { ?x <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://dbpedia.org/ontology/Place> .
+    ?x <http://www.georss.org/georss/point> ?z .
+    ?x ?b ?c
+  }
+ORDER BY ?b
+
+
+PREFIX  dc:   <http://purl.org/dc/elements/1.1/>
+PREFIX  :     <http://dbpedia.org/resource/>
+PREFIX  rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX  dbpedia2: <http://dbpedia.org/property/>
+PREFIX  foaf: <http://xmlns.com/foaf/0.1/>
+PREFIX  owl:  <http://www.w3.org/2002/07/owl#>
+PREFIX  xsd:  <http://www.w3.org/2001/XMLSchema#>
+PREFIX  dbpedia: <http://dbpedia.org/>
+PREFIX  rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX  skos: <http://www.w3.org/2004/02/skos/core#>
+
+SELECT DISTINCT  ?property
+WHERE
+  { _:b0 ?property _:b1 }
+ORDER BY ?property
+LIMIT   10
+
+
+SELECT  ?rx ?r
+WHERE
+  {   { <http://dbpedia.org/resource/Kigali> <http://www.w3.org/2004/02/skos/core#subject> ?r }
+    UNION
+      { <http://dbpedia.org/resource/Kigali> <http://www.w3.org/2004/02/skos/core#subject> ?rx .
+        ?rx <http://www.w3.org/2004/02/skos/core#broader> ?r
+      }
+    UNION
+      { <http://dbpedia.org/resource/Kigali> <http://www.w3.org/2004/02/skos/core#subject> ?rx .
+        ?r <http://www.w3.org/2004/02/skos/core#broader> ?rx
+      }
+  }
+
+
+PREFIX  dbprop: <http://dbpedia.org/property/>
+PREFIX  dbpedia: <http://dbpedia.org/ontology/>
+PREFIX  rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+
+SELECT DISTINCT  ?compound ?inchi
+WHERE
+  { ?compound rdf:type dbpedia:ChemicalCompound }
+ORDER BY ?compound
+OFFSET  0
+LIMIT   1000

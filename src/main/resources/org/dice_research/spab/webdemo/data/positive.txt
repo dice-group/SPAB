@@ -1,28 +1,143 @@
-SELECT  ?ville ?population ?personne  WHERE    { ?ville <http://dbpedia.org/property/population> ?population .      ?personne <http://dbpedia.org/property/birthplace> ?ville .      ?personne <http://www.w3.org/2004/02/skos/core#subject> <http://dbpedia.org/resource/Category:French_film_actors>    }   
+PREFIX  dc:   <http://purl.org/dc/elements/1.1/>
+PREFIX  :     <http://dbpedia.org/resource/>
+PREFIX  dbpedia2: <http://dbpedia.org/property/>
+PREFIX  geo:  <http://www.w3.org/2003/01/geo/wgs84_pos#>
+PREFIX  foaf: <http://xmlns.com/foaf/0.1/>
+PREFIX  vcard: <http://www.w3.org/2001/vcard-rdf/3.0#>
+PREFIX  dcterms: <http://purl.org/dc/terms/>
+PREFIX  sioc: <http://rdfs.org/sioc/ns#>
+PREFIX  rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX  co:   <http://www.geonames.org/countries/#>
+PREFIX  category: <http://dbpedia.org/resource/Category:>
+PREFIX  time: <http://pervasive.semanticweb.org/ont/2004/06/time#>
+PREFIX  p:    <http://dbpedia.org/property/>
+PREFIX  dbpedia: <http://dbpedia.org/>
+PREFIX  xsd:  <http://www.w3.org/2001/XMLSchema#>
+PREFIX  owl:  <http://www.w3.org/2002/07/owl#>
+PREFIX  swrc: <http://swrc.ontoware.org/ontology#>
+PREFIX  rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX  rss:  <http://purl.org/rss/1.0/>
+PREFIX  cyc:  <http://www.cyc.com/2004/06/04/cyc#>
+PREFIX  skos: <http://www.w3.org/2004/02/skos/core#>
+
+SELECT  ?label ?property ?hasValue ?itemlabel
+WHERE
+  { <http://dbpedia.org/resource/Fenton%2C_Michigan> ?property ?hasValue
+    OPTIONAL
+      { ?hasValue rdfs:label ?itemlabel }
+    OPTIONAL
+      { ?property rdfs:label ?label }
+    FILTER ( ( ( langMatches(lang(?label), "en") || ( ! langMatches(lang(?label), "*") ) ) && ( langMatches(lang(?hasValue), "en") || ( ! langMatches(lang(?hasValue), "*") ) ) ) && ( langMatches(lang(?itemlabel), "en") || ( ! langMatches(lang(?itemlabel), "*") ) ) )
+  }
 
 
-SELECT  ?x ?y  WHERE    { ?x ?y <http://dbpedia.org/resource/Berlin> }   
+SELECT DISTINCT  ?subject ?predicate ?object
+WHERE
+  {   { <http://dbpedia.org/resource/John_Lennon> ?predicate ?object }
+    UNION
+      { ?subject ?predicate <http://dbpedia.org/resource/John_Lennon> }
+    FILTER ( ( lang(?object) = "en" ) || ( lang(?object) = "" ) )
+  }
+ORDER BY ?predicate ?subject
+OFFSET  400
+LIMIT   200
 
 
-PREFIX  dc:   <http://purl.org/dc/elements/1.1/>  PREFIX  :     <http://dbpedia.org/resource/>  PREFIX  rdfs: <http://www.w3.org/2000/01/rdf-schema#>  PREFIX  dbpedia2: <http://dbpedia.org/property/>  PREFIX  foaf: <http://xmlns.com/foaf/0.1/>  PREFIX  owl:  <http://www.w3.org/2002/07/owl#>  PREFIX  xsd:  <http://www.w3.org/2001/XMLSchema#>  PREFIX  dbpedia: <http://dbpedia.org/>  PREFIX  rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#>  PREFIX  db-ont: <http://dbpedia.org/ontology/>  PREFIX  skos: <http://www.w3.org/2004/02/skos/core#>   SELECT  *  WHERE    { ?id rdf:type db-ont:Film .      ?select dbpedia2:title ?ft .      ?id db-ont:imdbId ?imdb_id    }   
+SELECT DISTINCT  ?subject ?predicate ?object
+WHERE
+  {   { <http://dbpedia.org/resource/Jack_Bender> ?predicate ?object }
+    UNION
+      { ?subject ?predicate <http://dbpedia.org/resource/Jack_Bender> }
+    FILTER ( ( lang(?object) = "en" ) || ( lang(?object) = "" ) )
+  }
+ORDER BY ?predicate ?subject
+OFFSET  0
+LIMIT   200
 
 
-PREFIX  dc:   <http://purl.org/dc/elements/1.1/>  PREFIX  :     <http://dbpedia.org/resource/>  PREFIX  rdfs: <http://www.w3.org/2000/01/rdf-schema#>  PREFIX  dbpedia2: <http://dbpedia.org/property/>  PREFIX  foaf: <http://xmlns.com/foaf/0.1/>  PREFIX  owl:  <http://www.w3.org/2002/07/owl#>  PREFIX  xsd:  <http://www.w3.org/2001/XMLSchema#>  PREFIX  dbpedia: <http://dbpedia.org/>  PREFIX  rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#>  PREFIX  skos: <http://www.w3.org/2004/02/skos/core#>   SELECT  ?sp  WHERE    { ?sp rdf:type <http://dbpedia.org/ontology/SoccerPlayer> }   
+SELECT DISTINCT  ?subject ?predicate ?object
+WHERE
+  {   { <http://dbpedia.org/resource/Oliver_Twist> ?predicate ?object }
+    UNION
+      { ?subject ?predicate <http://dbpedia.org/resource/Oliver_Twist> }
+    FILTER ( ( lang(?object) = "en" ) || ( lang(?object) = "" ) )
+  }
+ORDER BY ?predicate ?subject
+OFFSET  0
+LIMIT   200
 
 
-SELECT  ?x  WHERE    { ?x <http://www.georss.org/georss/point> ?z }   
+SELECT DISTINCT  ?subject ?predicate ?object
+WHERE
+  {   { <http://dbpedia.org/resource/Lost_%28TV_series%29> ?predicate ?object }
+    UNION
+      { ?subject ?predicate <http://dbpedia.org/resource/Lost_%28TV_series%29> }
+    FILTER ( ( lang(?object) = "en" ) || ( lang(?object) = "" ) )
+  }
+ORDER BY ?predicate ?subject
+OFFSET  200
+LIMIT   200
 
 
-PREFIX  dc:   <http://purl.org/dc/elements/1.1/>  PREFIX  :     <http://dbpedia.org/resource/>  PREFIX  rdfs: <http://www.w3.org/2000/01/rdf-schema#>  PREFIX  dbpedia2: <http://dbpedia.org/property/>  PREFIX  foaf: <http://xmlns.com/foaf/0.1/>  PREFIX  owl:  <http://www.w3.org/2002/07/owl#>  PREFIX  xsd:  <http://www.w3.org/2001/XMLSchema#>  PREFIX  dbpedia: <http://dbpedia.org/>  PREFIX  rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#>  PREFIX  skos: <http://www.w3.org/2004/02/skos/core#>   SELECT  ?props1 ?values1  WHERE    { { ?values1 ?props1 :Berlin } }   
+SELECT DISTINCT  ?x ?label
+WHERE
+  { ?x <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> ?type
+    FILTER ( ( ( ?type = <http://www.w3.org/1999/02/22-rdf-syntax-ns#Property> ) || ( ?type = <http://www.w3.org/2002/07/owl#DatatypeProperty> ) ) || ( ?type = <http://www.w3.org/2002/07/owl#ObjectProperty> ) )
+    OPTIONAL
+      { ?x <http://www.w3.org/2000/01/rdf-schema#label> ?label }
+    FILTER ( regex(str(?x), "seafood|Hoosier State|atomic number 49|inward|in|Indiana|IN|inch|inwards|indium|In|city|metropolis|urban center|san|francisco", "i") || regex(str(?label), "seafood|Hoosier State|atomic number 49|inward|in|Indiana|IN|inch|inwards|indium|In|city|metropolis|urban center|san|francisco", "i") )
+  }
 
 
-PREFIX  dc:   <http://purl.org/dc/elements/1.1/>  PREFIX  :     <http://dbpedia.org/resource/>  PREFIX  rdfs: <http://www.w3.org/2000/01/rdf-schema#>  PREFIX  dbpedia2: <http://dbpedia.org/property/>  PREFIX  foaf: <http://xmlns.com/foaf/0.1/>  PREFIX  owl:  <http://www.w3.org/2002/07/owl#>  PREFIX  xsd:  <http://www.w3.org/2001/XMLSchema#>  PREFIX  dbpedia: <http://dbpedia.org/>  PREFIX  rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#>  PREFIX  skos: <http://www.w3.org/2004/02/skos/core#>   SELECT  ?blackboard  WHERE    { ?s dbpedia2:fish ?cake }   
+PREFIX  :     <http://dbpedia.org/resource/>
+PREFIX  dbo:  <http://dbpedia.org/ontology/>
+PREFIX  dbp:  <http://dbpedia.org/property/>
+
+SELECT DISTINCT  ?s ?p ?o
+WHERE
+  {   { { ?s ?p ?o }
+        FILTER ( ( ( ?s = :Virginia_Wolf ) && regex(?p, "(http://dbpedia.org/property/|http://dbpedia.org/ontology/)") ) && regex(?o, "http://dbpedia.org/resource/") )
+      }
+    UNION
+      { { ?s ?p ?o }
+        FILTER ( ( ( ?o = :Virginia_Wolf ) && regex(?p, "(http://dbpedia.org/property/|http://dbpedia.org/ontology/)") ) && regex(?s, "http://dbpedia.org/resource/") )
+      }
+  }
+ORDER BY ?s ?p ?o
+LIMIT   16
 
 
-PREFIX  dc:   <http://purl.org/dc/elements/1.1/>  PREFIX  :     <http://dbpedia.org/resource/>  PREFIX  rdfs: <http://www.w3.org/2000/01/rdf-schema#>  PREFIX  dbpedia2: <http://dbpedia.org/property/>  PREFIX  foaf: <http://xmlns.com/foaf/0.1/>  PREFIX  owl:  <http://www.w3.org/2002/07/owl#>  PREFIX  xsd:  <http://www.w3.org/2001/XMLSchema#>  PREFIX  dbpedia: <http://dbpedia.org/>  PREFIX  rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#>  PREFIX  skos: <http://www.w3.org/2004/02/skos/core#>   SELECT  ?label  WHERE    { ?disease skos:subject <http://dbpedia.org/resource/Category:Diseases_and_disorders> .      ?disease rdfs:label ?label    }   
+SELECT DISTINCT  ?subject ?predicate ?object
+WHERE
+  {   { <http://dbpedia.org/resource/We_Are_Marshall> ?predicate ?object }
+    UNION
+      { ?subject ?predicate <http://dbpedia.org/resource/We_Are_Marshall> }
+    FILTER ( ( lang(?object) = "en" ) || ( lang(?object) = "" ) )
+  }
+ORDER BY ?predicate ?subject
+OFFSET  0
+LIMIT   200
 
 
-PREFIX  dc:   <http://purl.org/dc/elements/1.1/>  PREFIX  :     <http://dbpedia.org/resource/>  PREFIX  rdfs: <http://www.w3.org/2000/01/rdf-schema#>  PREFIX  dbpedia2: <http://dbpedia.org/property/>  PREFIX  foaf: <http://xmlns.com/foaf/0.1/>  PREFIX  dbo:  <http://dbpedia.org/ontology/>  PREFIX  owl:  <http://www.w3.org/2002/07/owl#>  PREFIX  xsd:  <http://www.w3.org/2001/XMLSchema#>  PREFIX  dbpedia: <http://dbpedia.org/>  PREFIX  rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#>  PREFIX  skos: <http://www.w3.org/2004/02/skos/core#>   SELECT  ?name ?birth ?death ?person  WHERE    { ?person dbpedia2:birthPlace :Poland .      ?person dbo:birthDate ?birth .      ?person dbo:deathDate ?death    }   
+SELECT DISTINCT  ?subject ?predicate ?object
+WHERE
+  {   { <http://dbpedia.org/resource/Fantasy> ?predicate ?object }
+    UNION
+      { ?subject ?predicate <http://dbpedia.org/resource/Fantasy> }
+    FILTER ( ( lang(?object) = "en" ) || ( lang(?object) = "" ) )
+  }
+ORDER BY ?predicate ?subject
+OFFSET  0
+LIMIT   200
 
 
-PREFIX  :     <http://dbpedia.org/resource/>  PREFIX  dc:   <http://purl.org/dc/elements/1.1/>  PREFIX  dbpedia2: <http://dbpedia.org/property/>  PREFIX  dbpedia3: <http://dbpedia.org/resource/>  PREFIX  dbpedia-owl: <http://dbpedia.org/ontology/>  PREFIX  foaf: <http://xmlns.com/foaf/0.1/>  PREFIX  yago: <http://dbpedia.org/class/yago/>  PREFIX  rdfs: <http://www.w3.org/2000/01/rdf-schema#>  PREFIX  category: <http://dbpedia.org/resource/Category:>  PREFIX  dbo:  <http://dbpedia.org/property/>  PREFIX  dbpedia: <http://dbpedia.org/>  PREFIX  xsd:  <http://www.w3.org/2001/XMLSchema#>  PREFIX  owl:  <http://www.w3.org/2002/07/owl#>  PREFIX  rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#>  PREFIX  dbpprop: <http://dbpedia.org/property/>  PREFIX  skos: <http://www.w3.org/2004/02/skos/core#>   SELECT  *  WHERE    { ?x foaf:name ?name .      ?x rdf:type dbpedia-owl:Artist .      ?x dbpedia-owl:nationality :Spain .      ?x dbpedia-owl:birthDate ?nacimiento    }   
+SELECT DISTINCT  ?subject ?predicate ?object
+WHERE
+  {   { <http://dbpedia.org/resource/Barnaby_Rudge> ?predicate ?object }
+    UNION
+      { ?subject ?predicate <http://dbpedia.org/resource/Barnaby_Rudge> }
+    FILTER ( ( lang(?object) = "en" ) || ( lang(?object) = "" ) )
+  }
+ORDER BY ?predicate ?subject
+OFFSET  0
+LIMIT   200
