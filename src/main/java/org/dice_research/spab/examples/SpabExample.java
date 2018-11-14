@@ -24,7 +24,7 @@ public class SpabExample {
 	 * Configuration: Number of iterations. Test run with 1000 iterations took about
 	 * 9 seconds
 	 */
-	public static final float LAMBDA = .1f;
+	public static final float LAMBDA = .0f;
 
 	/**
 	 * Configuration: Number of iterations. Test run with 1000 iterations took about
@@ -66,8 +66,11 @@ public class SpabExample {
 			posFile = RESOURCE_IGUANA_FUSEKI_POSITIVE;
 		}
 
+		// Deprication is allowed, as this example will not be used in generated jar.
+		@SuppressWarnings("deprecation")
 		List<String> negatives = FileReader.readFileToList(Resources.getResource(negFile).getPath(), true,
 				FileReader.UTF8);
+		@SuppressWarnings("deprecation")
 		List<String> positives = FileReader.readFileToList(Resources.getResource(posFile).getPath(), true,
 				FileReader.UTF8);
 
