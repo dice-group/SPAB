@@ -1,6 +1,5 @@
 package org.dice_research.spab;
 
-import java.util.Comparator;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
@@ -80,7 +79,8 @@ public class SpabAlgorithm {
 	 * 
 	 * @return The best candidate found.
 	 * 
-	 * @throws SpabException on errors in SPAB algorithm.
+	 * @throws SpabException
+	 *             on errors in SPAB algorithm.
 	 */
 	public CandidateVertex execute() throws SpabException {
 		return execute(null);
@@ -89,13 +89,15 @@ public class SpabAlgorithm {
 	/**
 	 * Executes SPAB algorithm.
 	 * 
-	 * @param matcher The matching algorithm to use. If null, the default
-	 *                implementation implemented by
-	 *                {@link CandidateVertex#matches(Candidate, String)} is used.
+	 * @param matcher
+	 *            The matching algorithm to use. If null, the default implementation
+	 *            implemented by {@link CandidateVertex#matches(Candidate, String)}
+	 *            is used.
 	 * 
 	 * @return The best candidate found.
 	 * 
-	 * @throws SpabException on errors in SPAB algorithm.
+	 * @throws SpabException
+	 *             on errors in SPAB algorithm.
 	 */
 	public CandidateVertex execute(Matcher matcher) throws SpabException {
 		long startTime = System.currentTimeMillis();
@@ -179,7 +181,6 @@ public class SpabAlgorithm {
 			this.runtime = (System.currentTimeMillis() - startTime) / 1000f;
 			LOGGER.info("Runtime: " + runtime + " seconds");
 
-			// TODO: Use method to make use of comparator
 			return bestCandidate;
 
 		} catch (PerfectSolutionException e) {
@@ -273,12 +274,7 @@ public class SpabAlgorithm {
 	 */
 	public List<CandidateVertex> getBestCandidates() {
 		List<CandidateVertex> bestCandidates = new LinkedList<CandidateVertex>(stack);
-		bestCandidates.sort(new Comparator<CandidateVertex>() {
-			@Override
-			public int compare(CandidateVertex v1, CandidateVertex v2) {
-				return Float.compare(v2.getScore(), v1.getScore());
-			}
-		});
+		bestCandidates.sort(new CandidateComparator());
 		return bestCandidates;
 	}
 }
