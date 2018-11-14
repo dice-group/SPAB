@@ -49,13 +49,13 @@ public class BenchmarkHandler extends AbstractHandler {
 		try {
 			form = getResource(Templates.BENCHMARK);
 			if (isStatic) {
-				form = form.replaceFirst(Templates.BENCHMARK_MARKER_QUERIES, getResource("data/benchmark_queries.txt"));
-				form = form.replaceFirst(Templates.BENCHMARK_MARKER_RESULTS, getResource("data/benchmark_results.tsv"));
+				form = form.replace(Templates.BENCHMARK_MARKER_QUERIES, getResource("data/benchmark_queries.txt"));
+				form = form.replace(Templates.BENCHMARK_MARKER_RESULTS, getResource("data/benchmark_results.tsv"));
 			} else {
 				String parameter = parameters.get(Templates.BENCHMARK_ID_QUERIES);
-				form = form.replaceFirst(Templates.BENCHMARK_MARKER_QUERIES, parameter == null ? "" : parameter);
+				form = form.replace(Templates.BENCHMARK_MARKER_QUERIES, parameter == null ? "" : parameter);
 				parameter = parameters.get(Templates.BENCHMARK_ID_RESULTS);
-				form = form.replaceFirst(Templates.BENCHMARK_MARKER_RESULTS, parameter == null ? "" : parameter);
+				form = form.replace(Templates.BENCHMARK_MARKER_RESULTS, parameter == null ? "" : parameter);
 			}
 		} catch (Exception e) {
 			setInternalServerError(e);
@@ -196,10 +196,10 @@ public class BenchmarkHandler extends AbstractHandler {
 							"<label for=\"" + triplestoreId + "\" class=\"radiolabel\">" + triplestoreId + "</label>");
 					tsBuilder.append("<br />");
 				}
-				setsForm = setsForm.replaceFirst(Templates.SETS_MARKER_TRIPLESTORE, tsBuilder.toString());
+				setsForm = setsForm.replace(Templates.SETS_MARKER_TRIPLESTORE, tsBuilder.toString());
 
 				// Benchmark
-				setsForm = setsForm.replaceFirst(Templates.SETS_MARKER_BENCHMARK,
+				setsForm = setsForm.replace(Templates.SETS_MARKER_BENCHMARK,
 						StringEscapeUtils.escapeHtml4(benchmark.toJson()));
 				stringBuilder.append(setsForm);
 			} catch (Exception e) {

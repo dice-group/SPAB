@@ -24,8 +24,8 @@ public abstract class Templates {
 
 	public final static String GRAPH = "templates/graph.js";
 	public final static String GRAPH_MARKER_ELEMENTS = "// ELEMENTS";
-	public final static String GRAPH_MARKER_MIN = "/\\*MIN\\*/";
-	public final static String GRAPH_MARKER_MAX = "/\\*MAX\\*/";
+	public final static String GRAPH_MARKER_MIN = "/*MIN*/";
+	public final static String GRAPH_MARKER_MAX = "/*MAX*/";
 
 	public final static String BENCHMARK = "templates/benchmark.html";
 	public final static String BENCHMARK_MARKER_QUERIES = "<!--QUERIES-->";

@@ -174,22 +174,22 @@ public abstract class AbstractHandler implements HttpHandler {
 		if (isStatic) {
 			String pos = getResource("data/positive.txt");
 			String neg = getResource("data/negative.txt");
-			form = form.replaceFirst(Templates.FORM_MARKER_POSITIVES, pos);
-			form = form.replaceFirst(Templates.FORM_MARKER_NEGATIVES, neg);
-			form = form.replaceFirst(Templates.FORM_MARKER_LAMBDA, "0.1");
-			form = form.replaceFirst(Templates.FORM_MARKER_ITERATIONNS, "100");
+			form = form.replace(Templates.FORM_MARKER_POSITIVES, pos);
+			form = form.replace(Templates.FORM_MARKER_NEGATIVES, neg);
+			form = form.replace(Templates.FORM_MARKER_LAMBDA, "0.1");
+			form = form.replace(Templates.FORM_MARKER_ITERATIONNS, "100");
 		} else {
 			String parameter = parameters.get(Templates.FORM_ID_POSITIVES);
-			form = form.replaceFirst(Templates.FORM_MARKER_POSITIVES, parameter == null ? "" : parameter);
+			form = form.replace(Templates.FORM_MARKER_POSITIVES, parameter == null ? "" : parameter);
 
 			parameter = parameters.get(Templates.FORM_ID_NEGATIVES);
-			form = form.replaceFirst(Templates.FORM_MARKER_NEGATIVES, parameter == null ? "" : parameter);
+			form = form.replace(Templates.FORM_MARKER_NEGATIVES, parameter == null ? "" : parameter);
 
 			parameter = parameters.get(Templates.FORM_ID_LAMBDA);
-			form = form.replaceFirst(Templates.FORM_MARKER_LAMBDA, parameter == null ? "" : parameter);
+			form = form.replace(Templates.FORM_MARKER_LAMBDA, parameter == null ? "" : parameter);
 
 			parameter = parameters.get(Templates.FORM_ID_ITERATIONNS);
-			form = form.replaceFirst(Templates.FORM_MARKER_ITERATIONNS, parameter == null ? "" : parameter);
+			form = form.replace(Templates.FORM_MARKER_ITERATIONNS, parameter == null ? "" : parameter);
 		}
 
 		return form;
@@ -260,11 +260,11 @@ public abstract class AbstractHandler implements HttpHandler {
 		try {
 			setOk(getResource(Templates.HTML)
 
-					.replaceFirst(Templates.HTML_MARKER_TITLE, TITLE)
+					.replace(Templates.HTML_MARKER_TITLE, TITLE)
 
-					.replaceFirst(Templates.HTML_MARKER_HEAD, "")
+					.replace(Templates.HTML_MARKER_HEAD, "")
 
-					.replaceFirst(Templates.HTML_MARKER_BODY, bodyBuilder.toString()));
+					.replace(Templates.HTML_MARKER_BODY, bodyBuilder.toString()));
 		} catch (Exception e) {
 			setInternalServerError(e);
 			return;

@@ -127,10 +127,10 @@ public class SetsHandler extends AbstractHandler {
 		String form = new String();
 		form = getResource(Templates.FORM);
 
-		form = form.replaceFirst(Templates.FORM_MARKER_POSITIVES, pos.toString());
-		form = form.replaceFirst(Templates.FORM_MARKER_NEGATIVES, neg.toString());
-		form = form.replaceFirst(Templates.FORM_MARKER_LAMBDA, "0.1");
-		form = form.replaceFirst(Templates.FORM_MARKER_ITERATIONNS, "100");
+		form = form.replace(Templates.FORM_MARKER_POSITIVES, pos.toString());
+		form = form.replace(Templates.FORM_MARKER_NEGATIVES, neg.toString());
+		form = form.replace(Templates.FORM_MARKER_LAMBDA, "0.1");
+		form = form.replace(Templates.FORM_MARKER_ITERATIONNS, "100");
 
 		return form;
 	}

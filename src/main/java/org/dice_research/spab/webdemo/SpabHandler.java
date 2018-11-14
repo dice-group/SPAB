@@ -103,11 +103,11 @@ public class SpabHandler extends AbstractHandler {
 				int maxBestCandidateVertices = 30;
 				GraphConstructor graphConstructor = new GraphConstructor();
 				String graphTemplate = getResource(Templates.GRAPH);
-				graphTemplate = graphTemplate.replaceFirst(Templates.GRAPH_MARKER_ELEMENTS,
+				graphTemplate = graphTemplate.replace(Templates.GRAPH_MARKER_ELEMENTS,
 						graphConstructor.construct(spabApi, maxBestCandidateVertices));
-				graphTemplate = graphTemplate.replaceFirst(Templates.GRAPH_MARKER_MAX,
+				graphTemplate = graphTemplate.replace(Templates.GRAPH_MARKER_MAX,
 						"" + graphConstructor.getMaxValue());
-				graphTemplate = graphTemplate.replaceFirst(Templates.GRAPH_MARKER_MIN,
+				graphTemplate = graphTemplate.replace(Templates.GRAPH_MARKER_MIN,
 						"" + graphConstructor.getMinValue());
 				stringBuilder.append(graphTemplate);
 
