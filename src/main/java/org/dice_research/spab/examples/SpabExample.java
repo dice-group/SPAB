@@ -24,7 +24,7 @@ public class SpabExample {
 	 * Configuration: Number of iterations. Test run with 1000 iterations took about
 	 * 9 seconds
 	 */
-	public static final float LAMBDA = .0f;
+	public static final float LAMBDA = .1f;
 
 	/**
 	 * Configuration: Number of iterations. Test run with 1000 iterations took about
