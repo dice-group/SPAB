@@ -1,15 +1,60 @@
 <form name="form" action="/spab" method="post">
-	<h3><label for="positives">Positive set of SPARQL queries</label></h3>
-	<textarea name="positives" id="positives" ><!--POSITIVES--></textarea>
-	
-	<h3><label for="negatives">Negative set of SPARQL queries</label></h3>
+	<p>The SPAB algorithm generates regular expressions, which
+		represent generalized SPARQL statements. It iteratively generates
+		candidates of regular expressions. In each iteration, the currently
+		best known candidate is selected and its children (refined regular
+		expressions) are generated.</p>
+	<p>For the selection of the best candidate, a score for every
+		generated candidate is calculated. Therefore, it is tested, if the
+		regular expression of a respective candidate matches pre-defined
+		SPARQL queries. A regular expression is tested to match as many
+		queries as possible from the positive set of SPARQL queries and as few
+		queries as possible from the negative set. This is implemented by
+		F-measure (F1 score) classification using precision and recall.</p>
+
+
+	<h3>
+		<label for="positives">Positive set of SPARQL queries</label>
+	</h3>
+	<p>
+		A generalization will be searched that <i>includes</i> all queries
+		from this set.
+	</p>
+	<textarea name="positives" id="positives"><!--POSITIVES--></textarea>
+
+	<h3>
+		<label for="negatives">Negative set of SPARQL queries</label>
+	</h3>
+	<p>
+		A generalization will be searched that <i>excludes</i> all queries
+		from this set.
+	</p>
 	<textarea name="negatives" id="negatives"><!--NEGATIVES--></textarea>
-	
-	<h3><label for="lambda">Lambda</label></h3>
+
+	<h3>
+		<label for="lambda">Lambda</label>
+	</h3>
+	<p>This constant represents a percentage value, which weights
+		positions of candidates in the graph. If lambda is 0, only F-measures
+		are used to select and evaluate candidates. If lambda is larger than
+		0, more general candidates are preferred.</p>
+
 	<input name="lambda" id="lambda" type="text" value="<!--LAMBDA-->" />
-	
-	<h3><label for="iterations">Maximum number of iterations</label></h3>
-	<input name="iterations" id="iterations" type="text" value="<!--ITERATIONNS-->" />
-	
-	<p><input type="submit" value="Start" /></p>
+
+	<h3>
+		<label for="iterations">Maximum number of iterations</label>
+	</h3>
+	<p>In each iteration, the currently best known candidate is
+		selected and its children are generated. The regular expressions of
+		the children are applied to all SPARQL queries and their F-measures
+		and final scores are calculated. A usual value is 100. A value of
+		approximately 400 can result in a runtime of 1 minute. A value of 1000
+		(maximum) can result in a runtime of several minutes. This depends on
+		the running machine.</p>
+	<input name="iterations" id="iterations" type="text"
+		value="<!--ITERATIONNS-->" />
+
+	<p>
+		<input type="submit" value="Start" />
+	</p>
 </form>

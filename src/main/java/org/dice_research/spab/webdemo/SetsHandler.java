@@ -30,6 +30,16 @@ public class SetsHandler extends AbstractHandler {
 	@Override
 	public void handle() throws WebserverIoException {
 
+		// Check static (GET) or dynamic (POST)
+
+		boolean isStatic = getHttpExchange().getRequestMethod().toUpperCase().equals("GET");
+
+		if (isStatic) {
+			setOkWithBody("<h2>No data given. Please create input sets.</h2>" 
+					+ "<p><a href=\"javascript:history.back()\">Back to previous page</a></p>");
+			return;
+		}
+		
 		// Get user parameters
 
 		Map<String, String> parameters = new HashMap<String, String>();
