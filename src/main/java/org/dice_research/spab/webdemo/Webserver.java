@@ -36,6 +36,7 @@ public class Webserver extends AbstractHandler {
 		server.createContext("/benchmark", new BenchmarkHandler());
 		server.createContext("/sets", new SetsHandler());
 		server.createContext("/spab", new SpabHandler());
+		server.createContext("/system", new SystemHandler());
 		server.start();
 
 		System.out.println("Webserver startet at port " + port);
