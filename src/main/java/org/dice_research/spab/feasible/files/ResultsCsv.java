@@ -20,7 +20,7 @@ import org.apache.commons.csv.CSVPrinter;
 import org.apache.commons.csv.CSVRecord;
 
 /**
- * Parses results of FUSEKI CSV files.
+ * Parses results of FEASIBLE CSV files.
  * 
  * 
  * The method {@link ResultsCsv#main(String[])} tests the import.

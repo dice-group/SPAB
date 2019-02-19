@@ -14,7 +14,7 @@ import org.apache.commons.io.IOUtils;
 import org.apache.commons.io.LineIterator;
 
 /**
- * Parses SPARQL queries FUSEKI text files.
+ * Parses SPARQL queries FEASIBLE text files.
  * 
  * 
  * The method {@link QueriesTxt#main(String[])} tests the import.

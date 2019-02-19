@@ -8,7 +8,8 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 /**
- * FEASIBLE file accessor.
+ * FEASIBLE file accessor. It is an interface for both, text and CSV files. Uses
+ * {@link QueriesTxt} and {@link ResultsCsv}.
  * 
  * @author Adrian Wilke
  */
@@ -36,9 +37,8 @@ public class FeasibleFileAccesor {
 	 * {@link FeasibleFileAccesor#SYSTEM_KEY_QUERIES} and
 	 * {@link FeasibleFileAccesor#SYSTEM_KEY_QUERIES} to set required directories.
 	 * 
-	 * @throws IOException
-	 *             If one of the directories can not be accessed. Or if one of the
-	 *             system properties is not set.
+	 * @throws IOException If one of the directories can not be accessed. Or if one
+	 *                     of the system properties is not set.
 	 */
 	public FeasibleFileAccesor() throws IOException {
 		String directoryQueries = System.getProperty(SYSTEM_KEY_QUERIES);
@@ -57,14 +57,11 @@ public class FeasibleFileAccesor {
 	/**
 	 * Reads FEASIBLE files.
 	 * 
-	 * @param directoryQueries
-	 *            containing the sub-directories 'Benchmarks_Errors' and
-	 *            'Benchmarks_Evaluation'.
-	 * @param directoryResults
-	 *            containing 10 CSV result files.
+	 * @param directoryQueries containing the sub-directories 'Benchmarks_Errors'
+	 *                         and 'Benchmarks_Evaluation'.
+	 * @param directoryResults containing 10 CSV result files.
 	 * 
-	 * @throws IOException
-	 *             If one of the directories can not be accessed.
+	 * @throws IOException If one of the directories can not be accessed.
 	 */
 	public FeasibleFileAccesor(File directoryQueries, File directoryResults) throws IOException {
 		this.queriesTxt = new QueriesTxt(directoryQueries);
@@ -74,12 +71,10 @@ public class FeasibleFileAccesor {
 	/**
 	 * Gets SPARQL queries.
 	 * 
-	 * @param queryType
-	 *            one of the QUERYTYPE constants defined in
-	 *            {@link FeasibleFileAccesor}
-	 * @param dataset
-	 *            one of the DATASET constants defined in
-	 *            {@link FeasibleFileAccesor}
+	 * @param queryType one of the QUERYTYPE constants defined in
+	 *                  {@link FeasibleFileAccesor}
+	 * @param dataset   one of the DATASET constants defined in
+	 *                  {@link FeasibleFileAccesor}
 	 */
 	public List<String> getQueries(int queryType, int dataset) throws FileNotFoundException, IOException {
 		return queriesTxt.getQueries(queryType, dataset);
@@ -88,12 +83,10 @@ public class FeasibleFileAccesor {
 	/**
 	 * Gets FEASIBLE benchmark results.
 	 * 
-	 * @param queryType
-	 *            one of the QUERYTYPE constants defined in
-	 *            {@link FeasibleFileAccesor}
-	 * @param dataset
-	 *            one of the DATASET constants defined in
-	 *            {@link FeasibleFileAccesor}
+	 * @param queryType one of the QUERYTYPE constants defined in
+	 *                  {@link FeasibleFileAccesor}
+	 * @param dataset   one of the DATASET constants defined in
+	 *                  {@link FeasibleFileAccesor}
 	 */
 	public List<Map<String, Float>> getResults(int queryType, int dataset) throws FileNotFoundException, IOException {
 		return resultsCsv.getResults(queryType, dataset);
@@ -102,15 +95,14 @@ public class FeasibleFileAccesor {
 	/**
 	 * Manual data access.
 	 * 
-	 * @param args
-	 *            [0] Query directory containing the sub-directories
-	 *            'Benchmarks_Errors' and 'Benchmarks_Evaluation'.
+	 * @param args [0] Query directory containing the sub-directories
+	 *             'Benchmarks_Errors' and 'Benchmarks_Evaluation'.
 	 * 
-	 *            [1] Results directory containing the 10 CSV files.
+	 *             [1] Results directory containing the 10 CSV files.
 	 * 
-	 *            [2] QUERYTYPE constant defined in {@link FeasibleFileAccesor}.
+	 *             [2] QUERYTYPE constant defined in {@link FeasibleFileAccesor}.
 	 * 
-	 *            [3] DATASET constant defined in {@link FeasibleFileAccesor}.
+	 *             [3] DATASET constant defined in {@link FeasibleFileAccesor}.
 	 */
 	public static void main(String[] args) throws FileNotFoundException, IOException {
 
