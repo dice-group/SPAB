@@ -18,6 +18,7 @@ import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVPrinter;
 import org.apache.commons.csv.CSVRecord;
+import org.dice_research.spab.feasible.Triplestore;
 
 /**
  * Parses results of FEASIBLE CSV files.
@@ -27,8 +28,8 @@ import org.apache.commons.csv.CSVRecord;
  * 
  * The method {@link ResultsCsv#getResults(int, int)} returns results of a
  * respective file. int queryType is one of the QUERYTYPE constants defined in
- * {@link FeasibleFileAccesor}. int dataset is one of the DATASET constants defined in
- * {@link FeasibleFileAccesor}.
+ * {@link FeasibleFileAccesor}. int dataset is one of the DATASET constants
+ * defined in {@link FeasibleFileAccesor}.
  * 
  * The method {@link ResultsCsv#generateRowBasedTsvFiles()} generates files for
  * the SPAB webdemo.
@@ -51,10 +52,10 @@ public class ResultsCsv {
 	public static final String SWDF_SELECT = "FEASIBLE-SWDF-SELECT-100.csv";
 	public static final String SWDF_MIX = "FEASIBLE-SWDF-175.csv";
 
-	public static final String TRIPLESTORE_FUSEKI = "Fuseki";
-	public static final String TRIPLESTORE_OWLIM_SE = "OWLIM-SE";
-	public static final String TRIPLESTORE_SESAME = "Sesame";
-	public static final String TRIPLESTORE_VITUOSO = "Virtuoso";
+	public static final String TRIPLESTORE_FUSEKI = Triplestore.FUSEKI.getCsvHeader();
+	public static final String TRIPLESTORE_OWLIM_SE = Triplestore.OWLIM_SE.getCsvHeader();
+	public static final String TRIPLESTORE_SESAME = Triplestore.SESAME.getCsvHeader();
+	public static final String TRIPLESTORE_VITUOSO = Triplestore.VITUOSO.getCsvHeader();
 
 	public static final String QUERY_ID = "Query-ID";
 
@@ -63,8 +64,7 @@ public class ResultsCsv {
 	/**
 	 * Checks existing directory.
 	 * 
-	 * @param directory
-	 *            containing the 10 CSV files
+	 * @param directory containing the 10 CSV files
 	 */
 	public ResultsCsv(File directory) throws IOException {
 		if (!directory.exists()) {
@@ -78,10 +78,10 @@ public class ResultsCsv {
 	/**
 	 * Gets FEASIBLE results.
 	 * 
-	 * @param queryType
-	 *            is one of the QUERYTYPE constants defined in {@link FeasibleFileAccesor}.
-	 * @param dataset
-	 *            is one of the DATASET constants defined in {@link FeasibleFileAccesor}.
+	 * @param queryType is one of the QUERYTYPE constants defined in
+	 *                  {@link FeasibleFileAccesor}.
+	 * @param dataset   is one of the DATASET constants defined in
+	 *                  {@link FeasibleFileAccesor}.
 	 * @return A list, whose position represents the query ID. The list contains
 	 *         Maps, which map a Triplestore ID to its result. Triplestore IDs are
 	 *         defined as constants in {@link ResultsCsv}.
@@ -117,9 +117,8 @@ public class ResultsCsv {
 	/**
 	 * Gets FEASIBLE results.
 	 * 
-	 * @param filename
-	 *            is one of the DBPEDIA or SWDF constants defined in
-	 *            {@link ResultsCsv}.
+	 * @param filename is one of the DBPEDIA or SWDF constants defined in
+	 *                 {@link ResultsCsv}.
 	 * @return A list, whose position represents the query ID. The list contains
 	 *         Maps, which map a Triplestore ID to its result. Triplestore IDs are
 	 *         defined as constants in {@link ResultsCsv}.

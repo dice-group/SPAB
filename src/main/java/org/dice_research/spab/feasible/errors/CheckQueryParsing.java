@@ -42,8 +42,8 @@ public class CheckQueryParsing {
 
 	public void run() throws FileNotFoundException, IOException, InterruptedException {
 
-		for (int querytype = 1; querytype <= 5; querytype++) {
-			for (int dataset = 1; dataset <= 2; dataset++) {
+		for (int querytype = 0; querytype <= 4; querytype++) {
+			for (int dataset = 0; dataset <= 1; dataset++) {
 				allChecks(querytype, dataset);
 			}
 		}

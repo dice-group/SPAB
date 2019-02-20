@@ -7,6 +7,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import org.dice_research.spab.feasible.Dataset;
+import org.dice_research.spab.feasible.QueryType;
+
 /**
  * FEASIBLE file accessor. It is an interface for both, text and CSV files. Uses
  * {@link QueriesTxt} and {@link ResultsCsv}.
@@ -15,14 +18,14 @@ import java.util.Map.Entry;
  */
 public class FeasibleFileAccesor {
 
-	public final static int QUERYTYPE_ASK = 1;
-	public final static int QUERYTYPE_CONSTRUCT = 2;
-	public final static int QUERYTYPE_DESCRIBE = 3;
-	public final static int QUERYTYPE_SELECT = 4;
-	public final static int QUERYTYPE_MIX = 5;
+	public final static int QUERYTYPE_ASK = QueryType.ASK.ordinal();
+	public final static int QUERYTYPE_CONSTRUCT = QueryType.CONSTRUCT.ordinal();
+	public final static int QUERYTYPE_DESCRIBE = QueryType.DESCRIBE.ordinal();
+	public final static int QUERYTYPE_SELECT = QueryType.SELECT.ordinal();
+	public final static int QUERYTYPE_MIX = QueryType.MIX.ordinal();
 
-	public final static int DATASET_DBPEDIA = 1;
-	public final static int DATASET_SWDF = 2;
+	public final static int DATASET_DBPEDIA = Dataset.DBPEDIA.ordinal();
+	public final static int DATASET_SWDF = Dataset.SWDF.ordinal();
 
 	public final static String SYSTEM_KEY_QUERIES = "spab.feasible.queries";
 	public final static String SYSTEM_KEY_RESULTS = "spab.feasible.results";
