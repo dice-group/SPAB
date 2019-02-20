@@ -1,8 +1,9 @@
-package org.dice_research.spab;
+package org.dice_research.spab.tests;
 
 import java.io.File;
 import java.io.IOException;
 
+import org.dice_research.spab.AbstractTestCase;
 import org.dice_research.spab.benchmark.Benchmark;
 import org.dice_research.spab.benchmark.BenchmarkNullException;
 import org.dice_research.spab.benchmark.InputSets;

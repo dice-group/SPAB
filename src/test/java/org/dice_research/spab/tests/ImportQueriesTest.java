@@ -1,4 +1,4 @@
-package org.dice_research.spab.active;
+package org.dice_research.spab.tests;
 
 import org.dice_research.spab.AbstractTestCase;
 import org.dice_research.spab.SpabApi;
