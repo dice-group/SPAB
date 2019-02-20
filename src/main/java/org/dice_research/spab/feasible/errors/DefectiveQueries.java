@@ -5,6 +5,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.jena.ext.com.google.common.collect.Lists;
 import org.dice_research.spab.feasible.files.FeasibleFileAccesor;
 
 /**
@@ -84,7 +85,7 @@ public abstract class DefectiveQueries {
 	 * 
 	 * @param querytype Index specified in {@link FeasibleFileAccesor}
 	 * @param dataset   Index specified in {@link FeasibleFileAccesor}
-	 * @return list of defective query numbers (index+1).
+	 * @return list of defective query indices
 	 */
 	public static List<Integer> getSpab(Integer querytype, Integer dataset) {
 		return defectiveQueriesSpab.get(querytype).get(dataset);
@@ -95,9 +96,23 @@ public abstract class DefectiveQueries {
 	 * 
 	 * @param querytype Index specified in {@link FeasibleFileAccesor}
 	 * @param dataset   Index specified in {@link FeasibleFileAccesor}
-	 * @return list of defective query numbers (index+1).
+	 * @return list of defective query indices
 	 */
 	public static List<Integer> getParse(Integer querytype, Integer dataset) {
 		return defectiveQueriesParse.get(querytype).get(dataset);
+	}
+
+	/**
+	 * Gets defective indices.
+	 * 
+	 * @param querytype Index specified in {@link FeasibleFileAccesor}
+	 * @param dataset   Index specified in {@link FeasibleFileAccesor}
+	 * @return list of defective indices
+	 */
+	public static List<Integer> getAll(Integer querytype, Integer dataset) {
+		List<Integer> list = Lists.newLinkedList();
+		list.addAll(getParse(querytype, dataset));
+		list.addAll(getSpab(querytype, dataset));
+		return list;
 	}
 }
