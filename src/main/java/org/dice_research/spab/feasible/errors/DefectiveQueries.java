@@ -33,42 +33,42 @@ public abstract class DefectiveQueries {
 		// Create objects
 
 		defectiveQueriesParse = new HashMap<>();
-		for (int querytype = 1; querytype <= 5; querytype++) {
+		for (int querytype = 0; querytype <= 4; querytype++) {
 			Map<Integer, List<Integer>> map = new HashMap<>();
 			defectiveQueriesParse.put(querytype, map);
-			for (int dataset = 1; dataset <= 2; dataset++) {
+			for (int dataset = 0; dataset <= 1; dataset++) {
 				map.put(dataset, new LinkedList<>());
 			}
 		}
 		defectiveQueriesSpab = new HashMap<>();
-		for (int querytype = 1; querytype <= 5; querytype++) {
+		for (int querytype = 0; querytype <= 4; querytype++) {
 			Map<Integer, List<Integer>> map = new HashMap<>();
 			defectiveQueriesSpab.put(querytype, map);
-			for (int dataset = 1; dataset <= 2; dataset++) {
+			for (int dataset = 0; dataset <= 1; dataset++) {
 				map.put(dataset, new LinkedList<>());
 			}
 		}
 
 		// Set data
 
-		put(false, 1, 1, 18);
-		put(false, 1, 1, 26);
-		put(false, 1, 1, 37);
-		put(false, 1, 1, 38);
-		put(false, 1, 1, 40);
-		put(false, 1, 1, 63);
-		put(false, 5, 1, 44);
-		put(false, 5, 1, 172);
+		put(false, 0, 0, 18 - 1);
+		put(false, 0, 0, 26 - 1);
+		put(false, 0, 0, 37 - 1);
+		put(false, 0, 0, 38 - 1);
+		put(false, 0, 0, 40 - 1);
+		put(false, 0, 0, 63 - 1);
+		put(false, 4, 0, 44 - 1);
+		put(false, 4, 0, 172 - 1);
 
-		put(true, 1, 2, 4);
-		put(true, 1, 2, 5);
-		put(true, 1, 2, 8);
-		put(true, 1, 2, 32);
-		put(true, 1, 2, 40);
-		put(true, 2, 2, 4);
-		put(true, 2, 2, 23);
-		put(true, 3, 1, 21);
-		put(true, 3, 1, 25);
+		put(true, 0, 1, 4 - 1);
+		put(true, 0, 1, 5 - 1);
+		put(true, 0, 1, 8 - 1);
+		put(true, 0, 1, 32 - 1);
+		put(true, 0, 1, 40 - 1);
+		put(true, 1, 1, 4 - 1);
+		put(true, 1, 1, 23 - 1);
+		put(true, 2, 0, 21 - 1);
+		put(true, 2, 0, 25 - 1);
 	}
 
 	private static void put(boolean spab, Integer querytype, Integer dataset, int number) {
@@ -84,7 +84,7 @@ public abstract class DefectiveQueries {
 	 * 
 	 * @param querytype Index specified in {@link FeasibleFileAccesor}
 	 * @param dataset   Index specified in {@link FeasibleFileAccesor}
-	 * @return list of defective query indices.
+	 * @return list of defective query numbers (index+1).
 	 */
 	public static List<Integer> getSpab(Integer querytype, Integer dataset) {
 		return defectiveQueriesSpab.get(querytype).get(dataset);
@@ -95,7 +95,7 @@ public abstract class DefectiveQueries {
 	 * 
 	 * @param querytype Index specified in {@link FeasibleFileAccesor}
 	 * @param dataset   Index specified in {@link FeasibleFileAccesor}
-	 * @return list of defective query indices.
+	 * @return list of defective query numbers (index+1).
 	 */
 	public static List<Integer> getParse(Integer querytype, Integer dataset) {
 		return defectiveQueriesParse.get(querytype).get(dataset);

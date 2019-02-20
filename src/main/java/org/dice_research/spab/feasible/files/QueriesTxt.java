@@ -21,8 +21,8 @@ import org.apache.commons.io.LineIterator;
  * 
  * The method {@link QueriesTxt#getQueries(int, int)} returns results of a
  * respective file. int queryType is one of the QUERYTYPE constants defined in
- * {@link FeasibleFileAccesor}. int dataset is one of the DATASET constants defined in
- * {@link FeasibleFileAccesor}.
+ * {@link FeasibleFileAccesor}. int dataset is one of the DATASET constants
+ * defined in {@link FeasibleFileAccesor}.
  * 
  * The method {@link QueriesTxt#generateToLinesSplittedFiles()} generates files
  * for the SPAB webdemo.
@@ -39,9 +39,8 @@ public class QueriesTxt {
 	/**
 	 * Checks existing directory.
 	 * 
-	 * @param directory
-	 *            containing the sub-directories 'Benchmarks_Errors' and
-	 *            'Benchmarks_Evaluation'.
+	 * @param directory containing the sub-directories 'Benchmarks_Errors' and
+	 *                  'Benchmarks_Evaluation'.
 	 */
 	public QueriesTxt(File directory) throws IOException {
 		if (!directory.exists()) {
@@ -55,16 +54,16 @@ public class QueriesTxt {
 	/**
 	 * Gets FEASIBLE SPARQL queries.
 	 * 
-	 * @param queryType
-	 *            is one of the QUERYTYPE constants defined in {@link FeasibleFileAccesor}.
-	 * @param dataset
-	 *            is one of the DATASET constants defined in {@link FeasibleFileAccesor}.
+	 * @param queryType is one of the QUERYTYPE constants defined in
+	 *                  {@link FeasibleFileAccesor}.
+	 * @param dataset   is one of the DATASET constants defined in
+	 *                  {@link FeasibleFileAccesor}.
 	 * @return A list of SPARQL queries.
 	 */
 	public List<String> getQueries(int queryType, int dataset) throws FileNotFoundException, IOException {
 		List<String> queries = new LinkedList<String>();
-
-		LineIterator lineIterator = IOUtils.lineIterator(new FileReader(getFile(queryType, dataset)));
+		File file = getFile(queryType, dataset);
+		LineIterator lineIterator = IOUtils.lineIterator(new FileReader(file));
 		StringBuilder stringBuilder = new StringBuilder();
 		while (lineIterator.hasNext()) {
 			String line = lineIterator.next();
@@ -91,8 +90,8 @@ public class QueriesTxt {
 	 */
 	public List<File> getQueryTextFiles() throws IOException {
 		List<File> files = new LinkedList<File>();
-		for (int querytype = 1; querytype <= 5; querytype++) {
-			for (int dataset = 1; dataset <= 2; dataset++) {
+		for (int querytype = 0; querytype <= 4; querytype++) {
+			for (int dataset = 0; dataset <= 1; dataset++) {
 				files.add(getFile(querytype, dataset));
 			}
 		}
@@ -107,7 +106,7 @@ public class QueriesTxt {
 	 */
 	public void generateToLinesSplittedFiles() throws FileNotFoundException, IOException {
 		for (int querytype = 1; querytype <= 5; querytype++) {
-			for (int dataset = 1; dataset <= 2; dataset++) {
+			for (int dataset = 0; dataset <= 1; dataset++) {
 
 				List<String> queries = getQueries(querytype, dataset);
 				StringBuilder stringBuilder = new StringBuilder();
@@ -171,10 +170,18 @@ public class QueriesTxt {
 	 */
 	protected File getFile(int queryType, int dataset) throws IOException {
 		StringBuilder pathBuilder = new StringBuilder();
-
 		pathBuilder.append("Benchmarks_Evaluation/");
-		pathBuilder.append(queryType == FeasibleFileAccesor.QUERYTYPE_MIX ? "mix-benchmarks/" : "individual-benchmarks/");
-		pathBuilder.append(dataset == FeasibleFileAccesor.DATASET_DBPEDIA ? "dbpedia351/" : "swdf/");
+		pathBuilder
+				.append(queryType == FeasibleFileAccesor.QUERYTYPE_MIX ? "mix-benchmarks/" : "individual-benchmarks/");
+
+		if (dataset == FeasibleFileAccesor.DATASET_DBPEDIA) {
+			pathBuilder.append("dbpedia351/");
+		} else if (dataset == FeasibleFileAccesor.DATASET_SWDF) {
+			pathBuilder.append("swdf/");
+		} else {
+			throw new RuntimeException("Unknown dataset: " + dataset);
+
+		}
 
 		if (queryType == FeasibleFileAccesor.QUERYTYPE_MIX) {
 			pathBuilder.append("queries-175.txt");
@@ -199,8 +206,11 @@ public class QueriesTxt {
 				} else if (queryType == FeasibleFileAccesor.QUERYTYPE_DESCRIBE) {
 					pathBuilder.append("dbpedia-describe-25/");
 
-				} else {
+				} else if (queryType == FeasibleFileAccesor.QUERYTYPE_SELECT) {
 					pathBuilder.append("dbpedia-select-100/");
+
+				} else {
+					throw new RuntimeException("Unknown queryType: " + queryType);
 
 				}
 
@@ -214,11 +224,15 @@ public class QueriesTxt {
 				} else if (queryType == FeasibleFileAccesor.QUERYTYPE_DESCRIBE) {
 					pathBuilder.append("swdf-describe-100/");
 
-				} else {
+				} else if (queryType == FeasibleFileAccesor.QUERYTYPE_SELECT) {
 					pathBuilder.append("swdf-select-100/");
+
+				} else {
+					throw new RuntimeException("Unknown queryType: " + queryType);
+
 				}
 			}
-			
+
 			pathBuilder.append("queries/queries.txt");
 			File file = new File(directory, pathBuilder.toString());
 			if (!file.exists()) {
@@ -249,8 +263,8 @@ public class QueriesTxt {
 
 		// Check queries
 		int queryCounter = 0;
-		for (int querytype = 1; querytype <= 5; querytype++) {
-			for (int dataset = 1; dataset <= 2; dataset++) {
+		for (int querytype = 0; querytype <= 4; querytype++) {
+			for (int dataset = 0; dataset <= 1; dataset++) {
 				List<String> queries = benchmarkTxt.getQueries(querytype, dataset);
 				queryCounter += queries.size();
 				for (String query : queries) {

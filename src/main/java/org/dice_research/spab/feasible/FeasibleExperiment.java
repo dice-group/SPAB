@@ -44,6 +44,9 @@ public class FeasibleExperiment {
 		feasibleFileAccesor = new FeasibleFileAccesor(directoryQueries, directoryResults);
 	}
 
+	/**
+	 * Creates benchmark usin all available triple-stores.
+	 */
 	private Benchmark createBenchmark(QueryType queryType, Dataset dataset) throws Exception {
 
 		// Read data from files

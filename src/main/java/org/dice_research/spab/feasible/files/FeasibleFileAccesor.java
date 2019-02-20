@@ -18,6 +18,7 @@ import org.dice_research.spab.feasible.QueryType;
  */
 public class FeasibleFileAccesor {
 
+	// TODO: Legacy: Old integer values started with 1
 	public final static int QUERYTYPE_ASK = QueryType.ASK.ordinal();
 	public final static int QUERYTYPE_CONSTRUCT = QueryType.CONSTRUCT.ordinal();
 	public final static int QUERYTYPE_DESCRIBE = QueryType.DESCRIBE.ordinal();
