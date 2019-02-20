@@ -17,14 +17,14 @@ import org.dice_research.spab.benchmark.Query;
 import org.dice_research.spab.benchmark.TripleStore;
 import org.dice_research.spab.exceptions.IoRuntimeException;
 import org.dice_research.spab.exceptions.SpabException;
+import org.dice_research.spab.feasible.ExperimentResult.InputSetsCreationType;
 import org.dice_research.spab.feasible.errors.DefectiveQueries;
 import org.dice_research.spab.feasible.files.FeasibleFileAccesor;
-import org.dice_research.spab.structures.CandidateVertex;
 
 public class FeasibleExperiment {
 
 	private static final float LAMBDA = 0.1f;
-	private static final int MAX_ITERATIONS = 100;
+	private static final int MAX_ITERATIONS = 10;
 	private static final int MINIMUM_SET_SIZE = 5;
 
 	private FeasibleFileAccesor feasibleFileAccesor;
@@ -41,26 +41,30 @@ public class FeasibleExperiment {
 
 		FeasibleExperiment experiment = new FeasibleExperiment(new File(args[0]), new File(args[1]));
 
-		List<InputSets> inputSetsList = new LinkedList<>();
+		List<ExperimentResult> results = new LinkedList<>();
 		for (QueryType queryType : QueryType.values()) {
 			for (Dataset dataset : Dataset.values()) {
 				Benchmark benchmark = experiment.createBenchmark(queryType, dataset);
-				InputSets inputSets = experiment.searchInputSet(benchmark);
-				if (inputSets != null) {
-					System.out.println(queryType.name() + " " + dataset.name());
-					inputSetsList.add(inputSets);
+				ExperimentResult result = experiment.searchInputSet(benchmark);
+				if (result != null) {
+					result.queryType = queryType;
+					result.dataset = dataset;
+					results.add(result);
 				}
 			}
 		}
 
-// TODO: Run SPAB
-//		for (InputSets inputSets : inputSetsList) {
-//			SpabApi spabApi = experiment.runSpab(inputSets.getPositives(triplestore.getCsvHeader()),
-//					inputSets.getNegatives(triplestore.getCsvHeader()));
-//
-//			System.out.println(spabApi.getBestCandidates().get(0).getScore());
-//			System.out.println(spabApi.getBestCandidates().get(0).getInfoLine());
-//		}
+		for (ExperimentResult result : results) {
+			for (Triplestore triplestore : result.triplestores) {
+				SpabApi spabApi = experiment.runSpab(result.inputSets.getPositives(triplestore.getCsvHeader()),
+						result.inputSets.getNegatives(triplestore.getCsvHeader()));
+				result.spabApis.add(spabApi);
+			}
+		}
+
+		for (ExperimentResult result : results) {
+			System.out.println(result);
+		}
 
 	}
 
@@ -120,25 +124,48 @@ public class FeasibleExperiment {
 	}
 
 	/**
-	 * Returns an acceptable InputSets-object or null.
+	 * Returns an acceptable result or null.
 	 */
-	private InputSets searchInputSet(Benchmark benchmark) throws BenchmarkNullException {
+	private ExperimentResult searchInputSet(Benchmark benchmark) throws BenchmarkNullException {
 		InputSetsCreator inputSetsCreator = new InputSetsCreator(benchmark);
+		float argument;
 		InputSets inputSets;
+		List<Triplestore> triplesstores;
 
-		inputSets = inputSetsCreator.createStandardDeviationSets(1, false);
-		if (!getAcceptable(inputSets, MINIMUM_SET_SIZE).isEmpty()) {
-			return inputSets;
+		argument = 1;
+		inputSets = inputSetsCreator.createStandardDeviationSets(argument, false);
+		triplesstores = getAcceptable(inputSets, MINIMUM_SET_SIZE);
+		if (!triplesstores.isEmpty()) {
+			ExperimentResult result = new ExperimentResult();
+			result.inputSetsCreationType = InputSetsCreationType.STDDEV;
+			result.inputSetsCreationTypeArgument = argument;
+			result.inputSets = inputSets;
+			result.triplestores = triplesstores;
+			return result;
 		}
 
-		inputSets = inputSetsCreator.createPercentualSets(10, false);
-		if (!getAcceptable(inputSets, MINIMUM_SET_SIZE).isEmpty()) {
-			return inputSets;
+		argument = 10;
+		inputSets = inputSetsCreator.createPercentualSets(0.2, false);
+		triplesstores = getAcceptable(inputSets, MINIMUM_SET_SIZE);
+		if (!triplesstores.isEmpty()) {
+			ExperimentResult result = new ExperimentResult();
+			result.inputSetsCreationType = InputSetsCreationType.PERCENTUAL;
+			result.inputSetsCreationTypeArgument = argument;
+			result.inputSets = inputSets;
+			result.triplestores = triplesstores;
+			return result;
 		}
 
+		argument = MINIMUM_SET_SIZE;
 		inputSets = inputSetsCreator.createMaxSizeSets(MINIMUM_SET_SIZE, false);
-		if (!getAcceptable(inputSets, MINIMUM_SET_SIZE).isEmpty()) {
-			return inputSets;
+		triplesstores = getAcceptable(inputSets, MINIMUM_SET_SIZE);
+		if (!triplesstores.isEmpty()) {
+			ExperimentResult result = new ExperimentResult();
+			result.inputSetsCreationType = InputSetsCreationType.SIZE;
+			result.inputSetsCreationTypeArgument = argument;
+			result.inputSets = inputSets;
+			result.triplestores = triplesstores;
+			return result;
 		}
 
 		return null;
