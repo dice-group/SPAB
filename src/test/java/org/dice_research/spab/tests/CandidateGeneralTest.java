@@ -1,4 +1,4 @@
-package org.dice_research.spab.active;
+package org.dice_research.spab.tests;
 
 import java.util.LinkedList;
 import java.util.List;
