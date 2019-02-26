@@ -9,6 +9,7 @@ import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.NoSuchElementException;
 
 import org.dice_research.spab.exceptions.IoRuntimeException;
 import org.dice_research.spab.io.FileReader;
@@ -76,6 +77,38 @@ public class Benchmark {
 		Result resultObj = new Result(tripleStore, query, result);
 		this.results.add(resultObj);
 		return resultObj;
+	}
+
+	public Result addResult(String tripleStoreId, String queryId, double result)
+			throws BenchmarkNullException, NoSuchElementException {
+
+		// Get triplestore
+
+		TripleStore tripleStore = null;
+		for (TripleStore tripleStoreInstance : tripleStores) {
+			if (tripleStoreInstance.getTripleStoreId().equals(tripleStoreId)) {
+				tripleStore = tripleStoreInstance;
+				break;
+			}
+		}
+		if (tripleStore == null) {
+			throw new NoSuchElementException("Triplestore ID not found: " + tripleStoreId);
+		}
+
+		// Get query
+
+		Query query = null;
+		for (Query queryInstance : queries) {
+			if (queryInstance.getQueryId().equals(queryId)) {
+				query = queryInstance;
+				break;
+			}
+		}
+		if (query == null) {
+			throw new NoSuchElementException("Query ID not found: " + queryId);
+		}
+
+		return addResult(tripleStore, query, result);
 	}
 
 	public String getBenchmarkId() {
