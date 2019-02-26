@@ -7,8 +7,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import org.dice_research.spab.feasible.Dataset;
-import org.dice_research.spab.feasible.QueryType;
+import org.dice_research.spab.feasible.enumerations.Dataset;
+import org.dice_research.spab.feasible.enumerations.QueryType;
 
 /**
  * FEASIBLE file accessor. It is an interface for both, text and CSV files. Uses

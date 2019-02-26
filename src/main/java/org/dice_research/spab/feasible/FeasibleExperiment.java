@@ -7,6 +7,8 @@ import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
+import java.util.TreeSet;
 
 import org.dice_research.spab.SpabApi;
 import org.dice_research.spab.benchmark.Benchmark;
@@ -18,10 +20,18 @@ import org.dice_research.spab.benchmark.TripleStore;
 import org.dice_research.spab.exceptions.IoRuntimeException;
 import org.dice_research.spab.exceptions.SpabException;
 import org.dice_research.spab.feasible.ExperimentResult.InputSetsCreationType;
+import org.dice_research.spab.feasible.enumerations.Dataset;
+import org.dice_research.spab.feasible.enumerations.QueryType;
+import org.dice_research.spab.feasible.enumerations.Triplestore;
 import org.dice_research.spab.feasible.errors.DefectiveQueries;
 import org.dice_research.spab.feasible.files.FeasibleFileAccesor;
 
 public class FeasibleExperiment {
+
+	private static int MODE = 2;
+
+	public static final int MODE_BEST_CREATOR = 1;
+	public static final int MODE_ALL_SETS = 2;
 
 	private static final float LAMBDA = 0.1f;
 	private static final int MAX_ITERATIONS = 10;
@@ -41,11 +51,55 @@ public class FeasibleExperiment {
 
 		FeasibleExperiment experiment = new FeasibleExperiment(new File(args[0]), new File(args[1]));
 
+		if (MODE == MODE_BEST_CREATOR) {
+			experiment.experientOne();
+
+		} else if (MODE == MODE_ALL_SETS) {
+
+			for (QueriesContainer container : experiment.createQueryContainers()) {
+				System.out.println(container);
+			}
+		}
+
+	}
+
+	public FeasibleExperiment(File directoryQueries, File directoryResults) throws IOException {
+		feasibleFileAccesor = new FeasibleFileAccesor(directoryQueries, directoryResults);
+	}
+
+	/**
+	 * Creates query sets and query properties
+	 */
+	public Set<QueriesContainer> createQueryContainers() throws Exception {
+		Set<QueriesContainer> containers = new TreeSet<>();
+		for (QueryType queryType : QueryType.values()) {
+			for (Dataset dataset : Dataset.values()) {
+				Benchmark benchmark = createBenchmark(queryType, dataset);
+				InputSets inputSets = new InputSetsCreator(benchmark).createMaxSizeSets(benchmark.getQueries().size(),
+						false);
+				for (Triplestore triplestore : Triplestore.values()) {
+					containers.add(new QueriesContainer().setQueryType(queryType).setDataset(dataset)
+							.setTriplestore(triplestore)
+							.setQueriesPositive(inputSets.getPositives(triplestore.getCsvHeader()))
+							.setQueriesNegative(inputSets.getNegatives(triplestore.getCsvHeader())));
+				}
+			}
+		}
+		return containers;
+	}
+
+	/**
+	 * First experiment
+	 */
+	public void experientOne() throws Exception {
+
+		// Create input sets
+
 		List<ExperimentResult> results = new LinkedList<>();
 		for (QueryType queryType : QueryType.values()) {
 			for (Dataset dataset : Dataset.values()) {
-				Benchmark benchmark = experiment.createBenchmark(queryType, dataset);
-				ExperimentResult result = experiment.searchInputSet(benchmark);
+				Benchmark benchmark = createBenchmark(queryType, dataset);
+				ExperimentResult result = searchInputSetUsingAllCreators(benchmark);
 				if (result != null) {
 					result.queryType = queryType;
 					result.dataset = dataset;
@@ -54,22 +108,21 @@ public class FeasibleExperiment {
 			}
 		}
 
+		// Run SPAB
+
 		for (ExperimentResult result : results) {
 			for (Triplestore triplestore : result.triplestores) {
-				SpabApi spabApi = experiment.runSpab(result.inputSets.getPositives(triplestore.getCsvHeader()),
+				SpabApi spabApi = runSpab(result.inputSets.getPositives(triplestore.getCsvHeader()),
 						result.inputSets.getNegatives(triplestore.getCsvHeader()));
 				result.spabApis.add(spabApi);
 			}
 		}
 
+		// Put results
+
 		for (ExperimentResult result : results) {
 			System.out.println(result);
 		}
-
-	}
-
-	public FeasibleExperiment(File directoryQueries, File directoryResults) throws IOException {
-		feasibleFileAccesor = new FeasibleFileAccesor(directoryQueries, directoryResults);
 	}
 
 	/**
@@ -126,7 +179,7 @@ public class FeasibleExperiment {
 	/**
 	 * Returns an acceptable result or null.
 	 */
-	private ExperimentResult searchInputSet(Benchmark benchmark) throws BenchmarkNullException {
+	private ExperimentResult searchInputSetUsingAllCreators(Benchmark benchmark) throws BenchmarkNullException {
 		InputSetsCreator inputSetsCreator = new InputSetsCreator(benchmark);
 		float argument;
 		InputSets inputSets;

@@ -5,6 +5,9 @@ import java.util.List;
 
 import org.dice_research.spab.SpabApi;
 import org.dice_research.spab.benchmark.InputSets;
+import org.dice_research.spab.feasible.enumerations.Dataset;
+import org.dice_research.spab.feasible.enumerations.QueryType;
+import org.dice_research.spab.feasible.enumerations.Triplestore;
 
 public class ExperimentResult {
 

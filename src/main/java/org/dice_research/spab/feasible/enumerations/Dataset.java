@@ -1,4 +1,4 @@
-package org.dice_research.spab.feasible;
+package org.dice_research.spab.feasible.enumerations;
 
 public enum Dataset {
 	DBPEDIA, SWDF;
