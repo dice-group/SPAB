@@ -58,6 +58,9 @@ public class FeasibleExperiment {
 
 			for (QueriesContainer container : experiment.createQueryContainers()) {
 				System.out.println(container);
+
+				// TODO: Virtuoso and Fuseki have so many negative benchmark results? -> There
+				// is a bug in the house. Should be inverted.
 			}
 		}
 

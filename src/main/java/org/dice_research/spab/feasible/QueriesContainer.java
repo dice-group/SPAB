@@ -28,15 +28,17 @@ public class QueriesContainer implements Comparable<QueriesContainer> {
 		stringBuffer.append(dataset.getShortHand());
 		stringBuffer.append(" ");
 		stringBuffer.append(triplestore.getShortHand());
-		for (int i = 0; i < 3 - new String("" + queriesPositive.size()).length(); i++) {
+
+		for (int i = 0; i < 4 - new String("" + queriesPositive.size()).length(); i++) {
 			stringBuffer.append(" ");
 		}
 		stringBuffer.append(queriesPositive.size());
-		stringBuffer.append(" ");
-		for (int i = 0; i < 3 - new String("" + queriesNegative.size()).length(); i++) {
+
+		for (int i = 0; i < 4 - new String("" + queriesNegative.size()).length(); i++) {
 			stringBuffer.append(" ");
 		}
 		stringBuffer.append(queriesNegative.size());
+
 		return stringBuffer.toString();
 	}
 
