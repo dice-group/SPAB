@@ -36,8 +36,10 @@ public class FeasibleExperiment {
 	public static final int MODE_ALL_SETS = 2;
 
 	private static final float LAMBDA = 0.1f;
-	private static final int MAX_ITERATIONS = 10;
+	private static final int MAX_ITERATIONS = 100;
 	private static final int MINIMUM_SET_SIZE = 5;
+
+	private static final int SLEEP_MILLIS_FILEWRITE = 100;
 
 	private FeasibleFileAccesor feasibleFileAccesor;
 
@@ -51,6 +53,14 @@ public class FeasibleExperiment {
 	 */
 	public static void main(String[] args) throws Exception {
 
+		if (args.length < 3) {
+			System.err.println("Please provide queries and results (CSV) directories.");
+			System.err.println(" 1. Queries directory");
+			System.err.println(" 2. Result files (CSV) directory");
+			System.err.println(" 3. Output file");
+			System.exit(1);
+		}
+
 		FeasibleExperiment experiment = new FeasibleExperiment(new File(args[0]), new File(args[1]));
 
 		if (MODE == MODE_BEST_CREATOR) {
@@ -58,7 +68,7 @@ public class FeasibleExperiment {
 
 		} else if (MODE == MODE_ALL_SETS) {
 
-			File file = new File("/tmp/experiment.txt");
+			File file = new File(args[2]);
 			for (QueriesContainer container : experiment.createQueryContainers()) {
 				System.out.println(container);
 
@@ -66,15 +76,15 @@ public class FeasibleExperiment {
 				// is a bug in the house. Should be inverted.
 
 				FileUtils.write(file, container.toString() + "\n", StandardCharsets.UTF_8, true);
-				Thread.sleep(1000);
+				Thread.sleep(SLEEP_MILLIS_FILEWRITE);
 				int iterations = Math.min(container.queriesPositive.size(), container.queriesNegative.size());
 				for (int i = 1; i <= iterations; i++) {
 					SpabApi spabApi = experiment.runSpab(container.queriesPositive, container.queriesNegative);
 					FileUtils.write(file, "" + i + "\n", StandardCharsets.UTF_8, true);
-					Thread.sleep(1000);
+					Thread.sleep(SLEEP_MILLIS_FILEWRITE);
 					FileUtils.write(file, spabApi.getBestCandidates().get(0).getInfoLine() + "\n",
 							StandardCharsets.UTF_8, true);
-					Thread.sleep(1000);
+					Thread.sleep(SLEEP_MILLIS_FILEWRITE);
 				}
 
 			}
