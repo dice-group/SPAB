@@ -2,6 +2,7 @@ package org.dice_research.spab.feasible;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.LinkedList;
@@ -10,6 +11,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
 
+import org.apache.commons.io.FileUtils;
 import org.dice_research.spab.SpabApi;
 import org.dice_research.spab.benchmark.Benchmark;
 import org.dice_research.spab.benchmark.BenchmarkNullException;
@@ -56,11 +58,25 @@ public class FeasibleExperiment {
 
 		} else if (MODE == MODE_ALL_SETS) {
 
+			File file = new File("/tmp/experiment.txt");
 			for (QueriesContainer container : experiment.createQueryContainers()) {
 				System.out.println(container);
 
 				// TODO: Virtuoso and Fuseki have so many negative benchmark results? -> There
 				// is a bug in the house. Should be inverted.
+
+				FileUtils.write(file, container.toString() + "\n", StandardCharsets.UTF_8, true);
+				Thread.sleep(1000);
+				int iterations = Math.min(container.queriesPositive.size(), container.queriesNegative.size());
+				for (int i = 1; i <= iterations; i++) {
+					SpabApi spabApi = experiment.runSpab(container.queriesPositive, container.queriesNegative);
+					FileUtils.write(file, "" + i + "\n", StandardCharsets.UTF_8, true);
+					Thread.sleep(1000);
+					FileUtils.write(file, spabApi.getBestCandidates().get(0).getInfoLine() + "\n",
+							StandardCharsets.UTF_8, true);
+					Thread.sleep(1000);
+				}
+
 			}
 		}
 
