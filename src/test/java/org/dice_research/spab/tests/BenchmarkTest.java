@@ -115,6 +115,26 @@ public class BenchmarkTest extends AbstractTestCase {
 		assert (inputSets.getPositives(TRIPLESTORE_C_ID).size() == 0);
 		assert (inputSets.getNegatives(TRIPLESTORE_C_ID).size() == 2);
 
+		// First element in list should have biggest distance / should be best result
+		// Q-A 100/120 = 0.8333 -> smaller should be better
+		// Q-B 110/130 = 0.8461
+		assert (inputSets.getPositives(TRIPLESTORE_A_ID).get(0).equals(queryA));
+		// Largest distance in negative set
+		// Q-A 140/120 = 1.1666 -> larger should be first element
+		// Q-B 150/130 = 1.1538
+		assert (inputSets.getNegatives(TRIPLESTORE_C_ID).get(0).equals(queryA));
+
+		// Same for smallIsNegative == largeIsPositive
+		inputSets = inputSetsCreator.createMaxSizeSets(3, false);
+		assert (inputSets.getPositives(TRIPLESTORE_A_ID).size() == 0);
+		assert (inputSets.getNegatives(TRIPLESTORE_A_ID).size() == 2);
+		assert (inputSets.getPositives(TRIPLESTORE_B_ID).size() == 0);
+		assert (inputSets.getNegatives(TRIPLESTORE_B_ID).size() == 0);
+		assert (inputSets.getPositives(TRIPLESTORE_C_ID).size() == 2);
+		assert (inputSets.getNegatives(TRIPLESTORE_C_ID).size() == 0);
+		assert (inputSets.getPositives(TRIPLESTORE_C_ID).get(0).equals(queryB));
+		assert (inputSets.getNegatives(TRIPLESTORE_A_ID).get(0).equals(queryB));
+
 		// Only best or rather worst result
 		// (Sorting test)
 		// TS-A should have query A with runtime 100
@@ -128,7 +148,7 @@ public class BenchmarkTest extends AbstractTestCase {
 		assert (inputSets.getPositives(TRIPLESTORE_C_ID).size() == 0);
 		assert (inputSets.getNegatives(TRIPLESTORE_C_ID).size() == 1);
 		assert (inputSets.getPositives(TRIPLESTORE_A_ID).iterator().next().getQueryId().equals(QUERY_ID_A));
-		assert (inputSets.getNegatives(TRIPLESTORE_C_ID).iterator().next().getQueryId().equals(QUERY_ID_B));
+		assert (inputSets.getNegatives(TRIPLESTORE_C_ID).iterator().next().getQueryId().equals(QUERY_ID_A));
 	}
 
 	@Test

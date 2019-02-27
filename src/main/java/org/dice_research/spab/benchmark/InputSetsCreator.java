@@ -33,12 +33,12 @@ public class InputSetsCreator {
 	 * Creates positive/negative set for best or rather worst results for each
 	 * triple store.
 	 * 
-	 * @param maxNumberOfElements:
-	 *            Maximum number of elements in each set. This is maximum and not
-	 *            exact number of elements, as a triple store may have no best/worst
-	 *            results.
-	 * @param smallIsPositive
-	 *            true for runtimes, false for number of executions per time period.
+	 * @param                 maxNumberOfElements: Maximum number of elements in
+	 *                        each set. This is maximum and not exact number of
+	 *                        elements, as a triple store may have no best/worst
+	 *                        results.
+	 * @param smallIsPositive true for runtimes, false for number of executions per
+	 *                        time period.
 	 */
 	public InputSets createMaxSizeSets(int maxNumberOfElements, boolean smallIsPositive) {
 
@@ -84,7 +84,12 @@ public class InputSetsCreator {
 			 */
 			@Override
 			public int compareTo(Container container) {
-				return Double.compare(this.percentage, container.percentage);
+				if (isPositiveSet) {
+					return Double.compare(this.percentage, container.percentage);
+				} else {
+					return Double.compare(container.percentage, this.percentage);
+				}
+
 			}
 		}
 		Map<String, SortedSet<Container>> containers = new HashMap<String, SortedSet<Container>>();
@@ -130,12 +135,11 @@ public class InputSetsCreator {
 	 * Creates positive/negative set for results, which deviate by the standard
 	 * deviation from the arithmetic mean.
 	 * 
-	 * @param factor:
-	 *            Is multiplied with standard deviation. 1: no change. Grater than
-	 *            1: accepted deviation is larger, more items could be chosen for
-	 *            sets.
-	 * @param smallIsPositive
-	 *            true for runtimes, false for number of executions per time period.
+	 * @param                 factor: Is multiplied with standard deviation. 1: no
+	 *                        change. Grater than 1: accepted deviation is larger,
+	 *                        more items could be chosen for sets.
+	 * @param smallIsPositive true for runtimes, false for number of executions per
+	 *                        time period.
 	 */
 	public InputSets createStandardDeviationSets(double factor, boolean smallIsPositive) {
 
@@ -183,12 +187,12 @@ public class InputSetsCreator {
 	 * Creates positive/negative set for results, which deviate by a percentage from
 	 * the arithmetic mean.
 	 * 
-	 * @param percentageDeviation
-	 *            0: Every value less/greater than the arithmetic mean is used in
-	 *            positive/negative sets. 0.2: values which have a divergence of at
-	 *            least 20 percent of the arithmetic mean are used in sets.
-	 * @param smallIsPositive
-	 *            true for runtimes, false for number of executions per time period.
+	 * @param percentageDeviation 0: Every value less/greater than the arithmetic
+	 *                            mean is used in positive/negative sets. 0.2:
+	 *                            values which have a divergence of at least 20
+	 *                            percent of the arithmetic mean are used in sets.
+	 * @param smallIsPositive     true for runtimes, false for number of executions
+	 *                            per time period.
 	 */
 	public InputSets createPercentualSets(double percentageDeviation, boolean smallIsPositive) {
 
@@ -257,8 +261,7 @@ public class InputSetsCreator {
 	/**
 	 * Checks, if there is a result for every triple store and every query.
 	 * 
-	 * @throws Exception
-	 *             if entry is missing
+	 * @throws Exception if entry is missing
 	 */
 	private void checkBenchmark() throws Exception {
 		Map<String, Set<String>> queryidsToTriplestoreids = new HashMap<String, Set<String>>();
