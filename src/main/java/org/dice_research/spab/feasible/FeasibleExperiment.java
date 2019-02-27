@@ -39,7 +39,7 @@ public class FeasibleExperiment {
 	private static final int MAX_ITERATIONS = 100;
 	private static final int MINIMUM_SET_SIZE = 5;
 
-	private static final int SLEEP_MILLIS_FILEWRITE = 100;
+	private static final int SLEEP_MILLIS_FILEWRITE = 0;
 
 	private FeasibleFileAccesor feasibleFileAccesor;
 
@@ -67,26 +67,45 @@ public class FeasibleExperiment {
 			experiment.experientOne();
 
 		} else if (MODE == MODE_ALL_SETS) {
-
+			SpabApi spabApi;
+			List<String> linesCache = new LinkedList<>();
 			File file = new File(args[2]);
 			for (QueriesContainer container : experiment.createQueryContainers()) {
-				System.out.println(container);
+
+				// TODO
+				if (container.dataset.equals(Dataset.DBPEDIA)) {
+					if (container.queryType.equals(QueryType.ASK)) {
+						if (container.triplestore.equals(Triplestore.FUSEKI)) {
+							System.out.println(
+									container.dataset + " " + container.queryType + " " + container.triplestore);
+							System.out.println("p " + container.queriesPositive.size());
+							for (Query p : container.queriesPositive) {
+								System.out.println(p.getQueryString().replace("\n", " ").replace("\r", ""));
+							}
+							System.out.println("n " + container.queriesNegative.size());
+							for (Query n : container.queriesNegative) {
+								System.out.println(n.getQueryString().replace("\n", " ").replace("\r", ""));
+							}
+						}
+					}
+				}
 
 				// TODO: Virtuoso and Fuseki have so many negative benchmark results? -> There
 				// is a bug in the house. Should be inverted.
 
-				FileUtils.write(file, container.toString() + "\n", StandardCharsets.UTF_8, true);
-				Thread.sleep(SLEEP_MILLIS_FILEWRITE);
-				int iterations = Math.min(container.queriesPositive.size(), container.queriesNegative.size());
-				for (int i = 1; i <= iterations; i++) {
-					SpabApi spabApi = experiment.runSpab(container.queriesPositive, container.queriesNegative);
-					FileUtils.write(file, "" + i + "\n", StandardCharsets.UTF_8, true);
-					Thread.sleep(SLEEP_MILLIS_FILEWRITE);
-					FileUtils.write(file, spabApi.getBestCandidates().get(0).getInfoLine() + "\n",
-							StandardCharsets.UTF_8, true);
-					Thread.sleep(SLEEP_MILLIS_FILEWRITE);
-				}
-
+//				linesCache.add(container.toString() + "\n");
+//
+//				int iterations = Math.min(container.queriesPositive.size(), container.queriesNegative.size());
+//				for (int i = 1; i <= iterations; i++) {
+//					spabApi = experiment.runSpab(container.queriesPositive, container.queriesNegative);
+//					linesCache.add(i + "\n");
+//					linesCache.add(i + spabApi.getBestCandidates().get(0).getInfoLine() + "\n");
+//
+//				}
+//
+//				Thread.sleep(SLEEP_MILLIS_FILEWRITE);
+//				FileUtils.writeLines(file, StandardCharsets.UTF_8.toString(), linesCache, true);
+//				linesCache.clear();
 			}
 		}
 
@@ -112,6 +131,14 @@ public class FeasibleExperiment {
 							.setQueriesPositive(inputSets.getPositives(triplestore.getCsvHeader()))
 							.setQueriesNegative(inputSets.getNegatives(triplestore.getCsvHeader())));
 				}
+
+				// TODO
+//				System.out.println(benchmark);
+//				System.out.println(dataset);
+//				System.out.println(queryType);
+//				if ("".equals("")) {
+//					return containers;
+//				}
 			}
 		}
 		return containers;
