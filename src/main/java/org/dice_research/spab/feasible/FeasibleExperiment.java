@@ -2,7 +2,7 @@ package org.dice_research.spab.feasible;
 
 import java.io.File;
 import java.io.IOException;
-import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.LinkedList;
@@ -30,16 +30,18 @@ import org.dice_research.spab.feasible.files.FeasibleFileAccesor;
 
 public class FeasibleExperiment {
 
-	private static int MODE = 2;
-
 	public static final int MODE_BEST_CREATOR = 1;
-	public static final int MODE_ALL_SETS = 2;
+	public static final int MODE_WRITE_SYMMETRIC_QUERIES = 2;
 
-	private static final float LAMBDA = 0.1f;
-	private static final int MAX_ITERATIONS = 100;
-	private static final int MINIMUM_SET_SIZE = 5;
+	// Config: Experimant type
+	private static int MODE = 0;
 
-	private static final int SLEEP_MILLIS_FILEWRITE = 0;
+	private static final float EX1_LAMBDA = 0.1f;
+	private static final int EX1_ITERATIONS = 100;
+	private static final int EX1_MINIMUM_SET_SIZE = 5;
+
+	private static final String EX2_OUTPUT_DIRECTORY = "/tmp/feasibleTry";
+	private static final boolean EX2_PRINT_DEBUG = false;
 
 	private FeasibleFileAccesor feasibleFileAccesor;
 
@@ -66,49 +68,69 @@ public class FeasibleExperiment {
 		if (MODE == MODE_BEST_CREATOR) {
 			experiment.experientOne();
 
-		} else if (MODE == MODE_ALL_SETS) {
-			SpabApi spabApi;
-			List<String> linesCache = new LinkedList<>();
-			File file = new File(args[2]);
-			for (QueriesContainer container : experiment.createQueryContainers()) {
+		} else if (MODE == MODE_WRITE_SYMMETRIC_QUERIES) {
 
-				// TODO
-				if (container.dataset.equals(Dataset.DBPEDIA)) {
-					if (container.queryType.equals(QueryType.ASK)) {
-						if (container.triplestore.equals(Triplestore.FUSEKI)) {
-							System.out.println(
-									container.dataset + " " + container.queryType + " " + container.triplestore);
-							System.out.println("p " + container.queriesPositive.size());
-							for (Query p : container.queriesPositive) {
-								System.out.println(p.getQueryString().replace("\n", " ").replace("\r", ""));
-							}
-							System.out.println("n " + container.queriesNegative.size());
-							for (Query n : container.queriesNegative) {
-								System.out.println(n.getQueryString().replace("\n", " ").replace("\r", ""));
+			// Data values are runtimes
+			boolean smallIsPositive = true;
+
+			for (QueriesContainer container : experiment.createQueryContainers(smallIsPositive)) {
+
+				if (EX2_PRINT_DEBUG) {
+					if (container.dataset.equals(Dataset.DBPEDIA)) {
+						if (container.queryType.equals(QueryType.ASK)) {
+							if (container.triplestore.equals(Triplestore.FUSEKI)) {
+								System.out.println(
+										container.dataset + " " + container.queryType + " " + container.triplestore);
+								System.out.println("p " + container.queriesPositive.size());
+								for (Query p : container.queriesPositive) {
+									System.out.println(p.getQueryString().replace("\n", " ").replace("\r", ""));
+								}
+								System.out.println("n " + container.queriesNegative.size());
+								for (Query n : container.queriesNegative) {
+									System.out.println(n.getQueryString().replace("\n", " ").replace("\r", ""));
+								}
 							}
 						}
 					}
 				}
 
-				// TODO: Virtuoso and Fuseki have so many negative benchmark results? -> There
-				// is a bug in the house. Should be inverted.
-
-//				linesCache.add(container.toString() + "\n");
-//
-//				int iterations = Math.min(container.queriesPositive.size(), container.queriesNegative.size());
-//				for (int i = 1; i <= iterations; i++) {
-//					spabApi = experiment.runSpab(container.queriesPositive, container.queriesNegative);
-//					linesCache.add(i + "\n");
-//					linesCache.add(i + spabApi.getBestCandidates().get(0).getInfoLine() + "\n");
-//
-//				}
-//
-//				Thread.sleep(SLEEP_MILLIS_FILEWRITE);
-//				FileUtils.writeLines(file, StandardCharsets.UTF_8.toString(), linesCache, true);
-//				linesCache.clear();
+				// Write
+				int iterations = Math.min(container.queriesPositive.size(), container.queriesNegative.size());
+				for (int i = 1; i <= iterations; i++) {
+					experiment.writeContainer(new File(EX2_OUTPUT_DIRECTORY), container, i);
+				}
 			}
+
+			System.out.println("Wrote to: " + EX2_OUTPUT_DIRECTORY);
+		} else {
+			System.out.println("No mode selected.");
+		}
+	}
+
+	private void writeContainer(File directory, QueriesContainer container, int maxElements) throws IOException {
+
+		if (!directory.exists()) {
+			directory.mkdirs();
 		}
 
+		String filePrefix = container.queryType.getShortHand() + "-" + container.dataset.getShortHand() + "-"
+				+ container.triplestore.getShortHand() + "-" + maxElements;
+		File file;
+		List<String> queries;
+
+		file = new File(directory, filePrefix + "-pos" + ".txt");
+		queries = new ArrayList<>(maxElements);
+		for (Query query : container.queriesPositive.subList(0, maxElements)) {
+			queries.add(query.getQueryString().replace("\n", " ").replace("\r", ""));
+		}
+		FileUtils.writeLines(file, queries);
+
+		file = new File(directory, filePrefix + "-neg" + ".txt");
+		queries = new ArrayList<>(maxElements);
+		for (Query query : container.queriesNegative.subList(0, maxElements)) {
+			queries.add(query.getQueryString().replace("\n", " ").replace("\r", ""));
+		}
+		FileUtils.writeLines(file, queries);
 	}
 
 	public FeasibleExperiment(File directoryQueries, File directoryResults) throws IOException {
@@ -118,27 +140,19 @@ public class FeasibleExperiment {
 	/**
 	 * Creates query sets and query properties
 	 */
-	public Set<QueriesContainer> createQueryContainers() throws Exception {
+	public Set<QueriesContainer> createQueryContainers(boolean smallIsPositive) throws Exception {
 		Set<QueriesContainer> containers = new TreeSet<>();
 		for (QueryType queryType : QueryType.values()) {
 			for (Dataset dataset : Dataset.values()) {
 				Benchmark benchmark = createBenchmark(queryType, dataset);
 				InputSets inputSets = new InputSetsCreator(benchmark).createMaxSizeSets(benchmark.getQueries().size(),
-						false);
+						smallIsPositive);
 				for (Triplestore triplestore : Triplestore.values()) {
 					containers.add(new QueriesContainer().setQueryType(queryType).setDataset(dataset)
 							.setTriplestore(triplestore)
 							.setQueriesPositive(inputSets.getPositives(triplestore.getCsvHeader()))
 							.setQueriesNegative(inputSets.getNegatives(triplestore.getCsvHeader())));
 				}
-
-				// TODO
-//				System.out.println(benchmark);
-//				System.out.println(dataset);
-//				System.out.println(queryType);
-//				if ("".equals("")) {
-//					return containers;
-//				}
 			}
 		}
 		return containers;
@@ -243,7 +257,7 @@ public class FeasibleExperiment {
 
 		argument = 1;
 		inputSets = inputSetsCreator.createStandardDeviationSets(argument, false);
-		triplesstores = getAcceptable(inputSets, MINIMUM_SET_SIZE);
+		triplesstores = getAcceptable(inputSets, EX1_MINIMUM_SET_SIZE);
 		if (!triplesstores.isEmpty()) {
 			ExperimentResult result = new ExperimentResult();
 			result.inputSetsCreationType = InputSetsCreationType.STDDEV;
@@ -255,7 +269,7 @@ public class FeasibleExperiment {
 
 		argument = 10;
 		inputSets = inputSetsCreator.createPercentualSets(0.2, false);
-		triplesstores = getAcceptable(inputSets, MINIMUM_SET_SIZE);
+		triplesstores = getAcceptable(inputSets, EX1_MINIMUM_SET_SIZE);
 		if (!triplesstores.isEmpty()) {
 			ExperimentResult result = new ExperimentResult();
 			result.inputSetsCreationType = InputSetsCreationType.PERCENTUAL;
@@ -265,9 +279,9 @@ public class FeasibleExperiment {
 			return result;
 		}
 
-		argument = MINIMUM_SET_SIZE;
-		inputSets = inputSetsCreator.createMaxSizeSets(MINIMUM_SET_SIZE, false);
-		triplesstores = getAcceptable(inputSets, MINIMUM_SET_SIZE);
+		argument = EX1_MINIMUM_SET_SIZE;
+		inputSets = inputSetsCreator.createMaxSizeSets(EX1_MINIMUM_SET_SIZE, false);
+		triplesstores = getAcceptable(inputSets, EX1_MINIMUM_SET_SIZE);
 		if (!triplesstores.isEmpty()) {
 			ExperimentResult result = new ExperimentResult();
 			result.inputSetsCreationType = InputSetsCreationType.SIZE;
@@ -300,8 +314,8 @@ public class FeasibleExperiment {
 	 */
 	private SpabApi runSpab(List<Query> positives, List<Query> negatives) throws SpabException {
 		SpabApi spabApi = new SpabApi();
-		spabApi.setLambda(LAMBDA);
-		spabApi.setMaxIterations(MAX_ITERATIONS);
+		spabApi.setLambda(EX1_LAMBDA);
+		spabApi.setMaxIterations(EX1_ITERATIONS);
 		for (Query query : positives) {
 			spabApi.addPositive(query.getQueryString());
 		}
