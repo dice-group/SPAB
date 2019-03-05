@@ -9,6 +9,7 @@ import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVPrinter;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.dice_research.spab.exceptions.SpabException;
 import org.dice_research.spab.structures.CandidateVertex;
 
@@ -87,26 +88,32 @@ public class Main {
 	private void run(String inputQueriesPosFile, String inputQueriesNegFile, String outputDirectory, int maxIterations,
 			float lambda) throws IOException, SpabException {
 
-		// Set SPAB parameters and run
-
-		SpabApi spabApi = new SpabApi();
-		spabApi.setMaxIterations(maxIterations);
-		spabApi.setLambda(lambda);
-		for (String line : FileUtils.readLines(new File(inputQueriesPosFile), StandardCharsets.UTF_8)) {
-			spabApi.addPositive(line);
-		}
-		for (String line : FileUtils.readLines(new File(inputQueriesNegFile), StandardCharsets.UTF_8)) {
-			spabApi.addNegative(line);
-		}
-		spabApi.run();
-
-		// Write results to file
-
-		CandidateVertex bestCandidate = spabApi.getBestCandidates().get(0);
-
 		String prefix = StringUtils.getCommonPrefix(
 				new String[] { new File(inputQueriesPosFile).getName(), new File(inputQueriesNegFile).getName() });
 		File outputFile = new File(outputDirectory, prefix + "spab.csv");
+
+		// Set SPAB parameters and run
+
+		SpabApi spabApi = null;
+		CandidateVertex bestCandidate = null;
+		try {
+			spabApi = new SpabApi();
+			spabApi.setMaxIterations(maxIterations);
+			spabApi.setLambda(lambda);
+			for (String line : FileUtils.readLines(new File(inputQueriesPosFile), StandardCharsets.UTF_8)) {
+				spabApi.addPositive(line);
+			}
+			for (String line : FileUtils.readLines(new File(inputQueriesNegFile), StandardCharsets.UTF_8)) {
+				spabApi.addNegative(line);
+			}
+			bestCandidate = spabApi.run();
+		} catch (Throwable e) {
+			FileUtils.write(new File(outputFile.getPath() + ".exception.txt"),
+					e.getMessage() + " " + ExceptionUtils.getStackTrace(e), StandardCharsets.UTF_8);
+			return;
+		}
+
+		// Write results to file
 
 		CSVPrinter csvPrinter = new CSVPrinter(new FileWriter(outputFile), CSVFormat.DEFAULT);
 		csvPrinter.printRecord(new String[] { "regex", "" + bestCandidate.getCandidate().getRegEx() });
