@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.time.ZonedDateTime;
 
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVPrinter;
@@ -128,6 +129,8 @@ public class Main {
 		csvPrinter.printRecord(new String[] { "lambda", "" + spabApi.getConfiguration().getLambda() });
 		csvPrinter.printRecord(new String[] { "maxIterations", "" + spabApi.getConfiguration().getMaxIterations() });
 		csvPrinter.printRecord(new String[] { "runtimeSecs", "" + spabApi.getRuntime() });
+		csvPrinter.printRecord(new String[] { "iteration", "" + spabApi.getIteration() });
+		csvPrinter.printRecord(new String[] { "datetime", "" + ZonedDateTime.now() });
 		csvPrinter.flush();
 		csvPrinter.close();
 

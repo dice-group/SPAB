@@ -52,7 +52,7 @@ public class SpabApi {
 	/**
 	 * Default lambda value.
 	 */
-	public static final float LAMBDA = 0.2f;
+	public static final float LAMBDA = 0.05f;
 
 	/**
 	 * Default number of iterations.
@@ -129,6 +129,13 @@ public class SpabApi {
 	 */
 	public float getRuntime() {
 		return spab.getRuntime();
+	}
+
+	/**
+	 * Gets last iteration number.
+	 */
+	public int getIteration() {
+		return spab.getIteration();
 	}
 
 	/**

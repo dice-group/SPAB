@@ -50,6 +50,11 @@ public class SpabAlgorithm {
 	protected CandidateQueue queue;
 
 	/**
+	 * Last iteration number
+	 */
+	protected int iteration = 0;
+
+	/**
 	 * Candidate stack of visited candidates
 	 */
 	protected List<CandidateVertex> stack = new LinkedList<CandidateVertex>();
@@ -79,8 +84,7 @@ public class SpabAlgorithm {
 	 * 
 	 * @return The best candidate found.
 	 * 
-	 * @throws SpabException
-	 *             on errors in SPAB algorithm.
+	 * @throws SpabException on errors in SPAB algorithm.
 	 */
 	public CandidateVertex execute() throws SpabException {
 		return execute(null);
@@ -89,15 +93,13 @@ public class SpabAlgorithm {
 	/**
 	 * Executes SPAB algorithm.
 	 * 
-	 * @param matcher
-	 *            The matching algorithm to use. If null, the default implementation
-	 *            implemented by {@link CandidateVertex#matches(Candidate, String)}
-	 *            is used.
+	 * @param matcher The matching algorithm to use. If null, the default
+	 *                implementation implemented by
+	 *                {@link CandidateVertex#matches(Candidate, String)} is used.
 	 * 
 	 * @return The best candidate found.
 	 * 
-	 * @throws SpabException
-	 *             on errors in SPAB algorithm.
+	 * @throws SpabException on errors in SPAB algorithm.
 	 */
 	public CandidateVertex execute(Matcher matcher) throws SpabException {
 		long startTime = System.currentTimeMillis();
@@ -124,12 +126,12 @@ public class SpabAlgorithm {
 			queue.add(firstCandidate);
 
 			// For specified number of iterations run algorithm
-			for (int i = 1; i <= configuration.getMaxIterations(); i++) {
+			for (iteration = 1; iteration <= configuration.getMaxIterations(); iteration++) {
 
 				// Get best candidate, generate children, and add them into graph
 				CandidateVertex bestCandidate = queue.pollBestCandidate();
 				if (bestCandidate == null) {
-					LOGGER.info("All candidates visited at iteration " + i);
+					LOGGER.info("All candidates visited at iteration " + iteration);
 					break;
 				}
 				stack.add(bestCandidate);
@@ -137,8 +139,8 @@ public class SpabAlgorithm {
 				removeDuplicates(bestCandidateChildren);
 				graph.addCandidates(bestCandidateChildren.keySet(), bestCandidate);
 
-				if (i <= 10 || i % 100 == 0) {
-					LOGGER.info("Iteration " + i + ". Generated " + bestCandidateChildren.size()
+				if (iteration <= 10 || iteration % 100 == 0) {
+					LOGGER.info("Iteration " + iteration + ". Generated " + bestCandidateChildren.size()
 							+ " children. Graph size: " + graph.getAllCandidates().size());
 				}
 
@@ -160,8 +162,8 @@ public class SpabAlgorithm {
 					Statistics.info();
 				}
 
-				if (i <= 10 || i % 100 == 0) {
-					LOGGER.info("Iteration " + i + ". Queue size: " + queue.getQueue().size());
+				if (iteration <= 10 || iteration % 100 == 0) {
+					LOGGER.info("Iteration " + iteration + ". Queue size: " + queue.getQueue().size());
 				}
 			}
 
@@ -267,6 +269,13 @@ public class SpabAlgorithm {
 	 */
 	public float getRuntime() {
 		return runtime;
+	}
+
+	/**
+	 * Gets last iteration number.
+	 */
+	public int getIteration() {
+		return iteration;
 	}
 
 	/**
