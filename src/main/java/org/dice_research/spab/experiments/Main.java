@@ -5,12 +5,18 @@ import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
+import java.util.StringTokenizer;
+import java.util.TreeSet;
 
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVPrinter;
+import org.apache.commons.io.FileUtils;
 
 /**
  * Main entry point.
@@ -69,8 +75,9 @@ public class Main {
 		combined.add("SPAB\nRuntime");
 		combined.add("FEAT\nRuntime");
 
-		combined.add("SPAB\nRegEx");
 		combined.add("SPAB\nScore");
+		combined.add("SPAB\nRegEx");
+		combined.add("SPAB\nIteration");
 		combined.add("SPAB\nGeneration");
 		combined.add("SPAB\nNumber");
 		combined.add("SPAB\nTP");
@@ -107,6 +114,7 @@ public class Main {
 			prefixesToTitle.put(key, stringBuilder.toString());
 		}
 
+		Set<String> allFeatures = new TreeSet<>();
 		int processedItems = 0;
 		for (String id : lsqwekaResults.keySet()) {
 			if (spabResults.containsKey(id)) {
@@ -116,14 +124,19 @@ public class Main {
 				combined.add(prefixesToTitle.get(id));
 
 				combined.add(s.get("fMeasure"));
-				combined.add(l.get("fMeasure"));
+				if (l.get("fMeasure").equals("NaN")) {
+					combined.add("0");
+				} else {
+					combined.add(l.get("fMeasure"));
+				}
 
 				combined.add("" + (Float.valueOf(s.get("runtimeSecs")) * 1000));
 				combined.add("" + (Long.parseLong(l.get("timeLsq")) + Long.parseLong(l.get("timeArff"))
 						+ Long.parseLong(l.get("timeWeka"))));
 
-				combined.add(s.get("regex"));
 				combined.add(s.get("score"));
+				combined.add(s.get("regex"));
+				combined.add(s.get("iteration"));
 				combined.add(s.get("generation"));
 				combined.add(s.get("number"));
 				combined.add(s.get("tp"));
@@ -138,17 +151,32 @@ public class Main {
 
 				csvPrinter.printRecord(combined);
 				combined.clear();
+
+				allFeatures.addAll(parseListString(l.get("features")));
 				processedItems++;
 			}
 		}
 		csvPrinter.close();
 
+		File allFeaturesFile = new File(new File(outputFile).getPath() + ".features");
+		FileUtils.writeLines(allFeaturesFile, allFeatures);
+
 		System.out.println(wekaDir);
 		System.out.println(spabDir);
 		System.out.println(outputFile);
+		System.out.println(allFeaturesFile);
 
 		System.out.println("LSQ/Weka files:  " + lsqwekaResults.size());
 		System.out.println("SPAB files:      " + spabResults.size());
 		System.out.println("Processed items: " + processedItems);
+	}
+
+	private List<String> parseListString(String string) {
+		List<String> list = new LinkedList<>();
+		Iterator<Object> it = new StringTokenizer(string.substring(1, string.length() - 1), ",").asIterator();
+		while (it.hasNext()) {
+			list.add(it.next().toString().trim());
+		}
+		return list;
 	}
 }
