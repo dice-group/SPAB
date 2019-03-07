@@ -4,7 +4,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -61,24 +61,51 @@ public class Main {
 
 		List<String> combined = new LinkedList<>();
 
-		combined.add("Data");
+		combined.add("Dataset");
 
-		combined.add("fMeasure LSQ/Weka");
-		combined.add("fMeasure SPAB");
+		combined.add("SPAB\nfMeasure");
+		combined.add("FEAT\nfMeasure");
 
-		combined.add("Runtime LSQ/Weka");
-		combined.add("Runtime SPAB");
+		combined.add("SPAB\nRuntime");
+		combined.add("FEAT\nRuntime");
 
-		combined.add("Runtime LSQ");
-		combined.add("Runtime ARFF");
-		combined.add("Runtime Weka");
+		combined.add("SPAB\nRegEx");
+		combined.add("SPAB\nScore");
+		combined.add("SPAB\nGeneration");
+		combined.add("SPAB\nNumber");
+		combined.add("SPAB\nTP");
+		combined.add("SPAB\nTN");
+		combined.add("SPAB\nFP");
+		combined.add("SPAB\nFN");
 
-		combined.add("SPAB regex");
-		combined.add("SPAB Generation");
-		combined.add("SPAB Number");
+		combined.add("FEAT\nRuntime LSQ");
+		combined.add("FEAT\nRuntime ARFF");
+		combined.add("FEAT\nRuntime Weka");
+		combined.add("FEAT\nFeatures");
 
 		csvPrinter.printRecord(combined);
 		combined.clear();
+
+		// Canonicalize indexes and sort keys
+		Map<String, String> prefixesToTitle = new HashMap<>();
+		for (String key : lsqwekaResults.keySet()) {
+			int firstDigitIndex = key.length() - 1;
+			try {
+				while (Integer.parseInt(key.substring(firstDigitIndex, firstDigitIndex + 1)) != -1) {
+					// Loop will throw exception on non-integer
+					firstDigitIndex--;
+				}
+			} catch (NumberFormatException e) {
+				firstDigitIndex++;
+			}
+			StringBuilder stringBuilder = new StringBuilder();
+			stringBuilder.append(key.substring(0, firstDigitIndex));
+			for (int i = key.substring(firstDigitIndex, key.length()).length(); i < 3; i++) {
+				stringBuilder.append("0");
+			}
+			stringBuilder.append(key.substring(firstDigitIndex, key.length()));
+			prefixesToTitle.put(key, stringBuilder.toString());
+		}
 
 		int processedItems = 0;
 		for (String id : lsqwekaResults.keySet()) {
@@ -86,22 +113,28 @@ public class Main {
 				Map<String, String> l = lsqwekaResults.get(id);
 				Map<String, String> s = spabResults.get(id);
 
-				combined.add(id);
+				combined.add(prefixesToTitle.get(id));
 
-				combined.add(l.get("fMeasure"));
 				combined.add(s.get("fMeasure"));
+				combined.add(l.get("fMeasure"));
 
+				combined.add("" + (Float.valueOf(s.get("runtimeSecs")) * 1000));
 				combined.add("" + (Long.parseLong(l.get("timeLsq")) + Long.parseLong(l.get("timeArff"))
 						+ Long.parseLong(l.get("timeWeka"))));
-				combined.add("" + (Float.valueOf(s.get("runtimeSecs")) * 1000));
+
+				combined.add(s.get("regex"));
+				combined.add(s.get("score"));
+				combined.add(s.get("generation"));
+				combined.add(s.get("number"));
+				combined.add(s.get("tp"));
+				combined.add(s.get("tn"));
+				combined.add(s.get("fp"));
+				combined.add(s.get("fn"));
 
 				combined.add(l.get("timeLsq"));
 				combined.add(l.get("timeArff"));
 				combined.add(l.get("timeWeka"));
-
-				combined.add(s.get("regex"));
-				combined.add(s.get("generation"));
-				combined.add(s.get("number"));
+				combined.add(l.get("features"));
 
 				csvPrinter.printRecord(combined);
 				combined.clear();
