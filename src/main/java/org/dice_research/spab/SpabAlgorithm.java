@@ -50,11 +50,6 @@ public class SpabAlgorithm {
 	protected CandidateQueue queue;
 
 	/**
-	 * Last iteration number
-	 */
-	protected int iteration = 0;
-
-	/**
 	 * Candidate stack of visited candidates
 	 */
 	protected List<CandidateVertex> stack = new LinkedList<CandidateVertex>();
@@ -112,7 +107,7 @@ public class SpabAlgorithm {
 			// Generate first candidate
 			Candidate<?> rootCandidate = CandidateFactory.createCandidate(configuration.getCandidateImplementation(),
 					matcher);
-			CandidateVertex firstCandidate = new CandidateVertex(this.graph, rootCandidate, getInput());
+			CandidateVertex firstCandidate = new CandidateVertex(this.graph, rootCandidate, getInput(), 0);
 			regExCheckSet.add(firstCandidate.getCandidate().getRegEx());
 
 			// Set matcher
@@ -126,7 +121,7 @@ public class SpabAlgorithm {
 			queue.add(firstCandidate);
 
 			// For specified number of iterations run algorithm
-			for (iteration = 1; iteration <= configuration.getMaxIterations(); iteration++) {
+			for (int iteration = 1; iteration <= configuration.getMaxIterations(); iteration++) {
 
 				// Get best candidate, generate children, and add them into graph
 				CandidateVertex bestCandidate = queue.pollBestCandidate();
@@ -135,11 +130,12 @@ public class SpabAlgorithm {
 					break;
 				}
 				stack.add(bestCandidate);
-				SortedMap<CandidateVertex, Candidate<?>> bestCandidateChildren = bestCandidate.generateChildren();
+				SortedMap<CandidateVertex, Candidate<?>> bestCandidateChildren = bestCandidate
+						.generateChildren(iteration);
 				removeDuplicates(bestCandidateChildren);
 				graph.addCandidates(bestCandidateChildren.keySet(), bestCandidate);
 
-				if (iteration <= 10 || iteration % 100 == 0) {
+				if (iteration <= 20 || iteration % 100 == 0) {
 					LOGGER.info("Iteration " + iteration + ". Generated " + bestCandidateChildren.size()
 							+ " children. Graph size: " + graph.getAllCandidates().size());
 				}
@@ -162,8 +158,9 @@ public class SpabAlgorithm {
 					Statistics.info();
 				}
 
-				if (iteration <= 10 || iteration % 100 == 0) {
-					LOGGER.info("Iteration " + iteration + ". Queue size: " + queue.getQueue().size());
+				if (iteration <= 20 || iteration % 100 == 0) {
+					LOGGER.info("Iteration " + iteration + ". Queue size: " + queue.getQueue().size()
+							+ ". Best at iteration: " + bestCandidate.getIteration());
 				}
 			}
 
@@ -269,13 +266,6 @@ public class SpabAlgorithm {
 	 */
 	public float getRuntime() {
 		return runtime;
-	}
-
-	/**
-	 * Gets last iteration number.
-	 */
-	public int getIteration() {
-		return iteration;
 	}
 
 	/**

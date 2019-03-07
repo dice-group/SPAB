@@ -34,6 +34,7 @@ public class CandidateVertex implements Matcher, Comparable<CandidateVertex> {
 	protected Candidate<?> candidate;
 	protected Float fMeasureCache = null;
 	protected int generation;
+	protected int iteration;
 	protected Input input;
 	protected CandidateVertex parent;
 	protected Float score = null;
@@ -53,8 +54,8 @@ public class CandidateVertex implements Matcher, Comparable<CandidateVertex> {
 	 * 
 	 * Stores the {@link Candidate}.
 	 */
-	public CandidateVertex(CandidateGraph candidateGraph, Candidate<?> candidate, Input input) {
-		this(candidateGraph, null, candidate, input);
+	public CandidateVertex(CandidateGraph candidateGraph, Candidate<?> candidate, Input input, int iteration) {
+		this(candidateGraph, null, candidate, input, iteration);
 	}
 
 	/**
@@ -62,12 +63,14 @@ public class CandidateVertex implements Matcher, Comparable<CandidateVertex> {
 	 * 
 	 * Stores the {@link Candidate}.
 	 */
-	public CandidateVertex(CandidateGraph candidateGraph, CandidateVertex parent, Candidate<?> candidate, Input input) {
+	public CandidateVertex(CandidateGraph candidateGraph, CandidateVertex parent, Candidate<?> candidate, Input input,
+			int iteration) {
 		if (parent == null) {
 			generation = START_GENERATION;
 		} else {
 			generation = parent.getGeneration() + 1;
 		}
+		this.iteration = iteration;
 
 		this.candidateGraph = candidateGraph;
 		this.parent = parent;
@@ -79,8 +82,8 @@ public class CandidateVertex implements Matcher, Comparable<CandidateVertex> {
 	/**
 	 * Calculates score of this candidate.
 	 * 
-	 * @throws PerfectSolutionException
-	 *             if candidate has no false positives or false negatives
+	 * @throws PerfectSolutionException if candidate has no false positives or false
+	 *                                  negatives
 	 */
 	public void calculateScore(Configuration configuration, int maxDepth, Matcher matcher)
 			throws PerfectSolutionException {
@@ -158,13 +161,13 @@ public class CandidateVertex implements Matcher, Comparable<CandidateVertex> {
 	/**
 	 * Generates children for this candidate.
 	 * 
-	 * @throws CandidateRuntimeException
-	 *             on Exceptions in {@link Candidate} implementations
+	 * @throws CandidateRuntimeException on Exceptions in {@link Candidate}
+	 *                                   implementations
 	 */
-	public SortedMap<CandidateVertex, Candidate<?>> generateChildren() throws CandidateRuntimeException {
+	public SortedMap<CandidateVertex, Candidate<?>> generateChildren(int iteration) throws CandidateRuntimeException {
 		SortedMap<CandidateVertex, Candidate<?>> map = new TreeMap<CandidateVertex, Candidate<?>>();
 		for (Candidate<?> candidate : this.candidate.getChildren(getInput())) {
-			map.put(new CandidateVertex(this.candidateGraph, this, candidate, input), candidate);
+			map.put(new CandidateVertex(this.candidateGraph, this, candidate, input, iteration), candidate);
 		}
 		return map;
 	}
@@ -200,6 +203,13 @@ public class CandidateVertex implements Matcher, Comparable<CandidateVertex> {
 	 */
 	public int getGeneration() {
 		return generation;
+	}
+
+	/**
+	 * Gets iteration of this candidate.
+	 */
+	public int getIteration() {
+		return iteration;
 	}
 
 	/**

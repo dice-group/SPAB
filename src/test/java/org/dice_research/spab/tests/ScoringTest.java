@@ -60,7 +60,7 @@ public class ScoringTest extends AbstractTestCase implements Candidate<Object>, 
 
 		// SPAB
 
-		CandidateVertex candidateVertex = new CandidateVertex(new CandidateGraph(), this, input);
+		CandidateVertex candidateVertex = new CandidateVertex(new CandidateGraph(), this, input, 0);
 		candidateVertex.calculateScore(new Configuration(), 0, this);
 		if (PRINT) {
 			System.out.println("TP " + candidateVertex.getNumberOfTruePositives());

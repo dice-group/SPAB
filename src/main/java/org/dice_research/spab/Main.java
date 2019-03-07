@@ -129,7 +129,7 @@ public class Main {
 		csvPrinter.printRecord(new String[] { "lambda", "" + spabApi.getConfiguration().getLambda() });
 		csvPrinter.printRecord(new String[] { "maxIterations", "" + spabApi.getConfiguration().getMaxIterations() });
 		csvPrinter.printRecord(new String[] { "runtimeSecs", "" + spabApi.getRuntime() });
-		csvPrinter.printRecord(new String[] { "iteration", "" + spabApi.getIteration() });
+		csvPrinter.printRecord(new String[] { "iteration", "" + bestCandidate.getIteration() });
 		csvPrinter.printRecord(new String[] { "datetime", "" + ZonedDateTime.now() });
 		csvPrinter.flush();
 		csvPrinter.close();

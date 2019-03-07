@@ -132,13 +132,6 @@ public class SpabApi {
 	}
 
 	/**
-	 * Gets last iteration number.
-	 */
-	public int getIteration() {
-		return spab.getIteration();
-	}
-
-	/**
 	 * Runs SPAB.
 	 * 
 	 * @return The best candidate found.
